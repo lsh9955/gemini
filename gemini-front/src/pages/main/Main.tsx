@@ -6,6 +6,7 @@ import React from "react";
 function Main() {
   return (
     <>
+    메인페이지야!!
       {/* <Head>
         <div className="grid grid-cols-16 gap-1">
           <div className="col-start-2 col-span-2">

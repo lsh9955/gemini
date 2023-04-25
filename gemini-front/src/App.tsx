@@ -5,6 +5,7 @@ import "./App.css";
 import { logoutAccount } from "./store/UserSlice";
 import { logout } from "./store/Cookie";
 import axios from "axios";
+import Main from "./pages/main/Main";
 
 function App() {
   // const navigate = useNavigate();
@@ -51,7 +52,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Mainpage />} /> */}
+        <Route path="/" element={<Main />} />
         {/* <Route path="/*" element={<NotFound />} /> */}
         {/* <Route path="/map/*" element={<Map mapdata={mapdata} />} />
         <Route element={<AdminRoute />}>
