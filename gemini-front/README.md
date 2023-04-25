@@ -1,3 +1,33 @@
+# gemini-front
+
+[개발 환경]
+
+npm init
+
+- 필요한 패키지 목록
+  npm install axios@1.3.6
+  npm install @fortawesome/fontawesome-svg-core@6.4.0
+  npm install @fortawesome/free-solid-svg-icons@6.4.0
+  npm install @reduxjs/toolkit@1.9.5
+  npm install @testing-library/jest-dom@5.16.5
+  npm install @testing-library/react@13.4.0
+  npm install @testing-library/user-event@13.5.0
+  npm install react@18.2.0
+  npm install react-dom@18.2.0
+  npm install react-redux@8.0.5
+  npm install react-router-dom@6.8.2
+  npm install react-scripts@5.0.1
+  npm install redux@4.2.1
+  npm install redux-persist@6.0.0
+  npm install styled-components@5.3.9
+  npm install styled-reset@4.4.5
+  npm install typescript@4.9.5
+  npm install universal-cookie@4.0.4
+  npm install web-vitals@2.1.4
+
+- 개발용 패키지 목록
+  npm install --save-dev @types/jest@27.5.2 @types/node@16.18.24 @types/react@18.0.38 @types/react-dom@18.0.11 @types/styled-components@5.1.26
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
