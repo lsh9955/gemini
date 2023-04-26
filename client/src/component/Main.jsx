@@ -3,7 +3,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
 const Main = () => {
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(
+    io.connect("http://localhost:5000/room")
+  );
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
     const res = async () => {
@@ -16,8 +18,6 @@ const Main = () => {
       );
     };
     res();
-
-    setSocket(io.connect("http://localhost:5000/room"));
   }, []);
   useEffect(() => {
     socket?.on("newRoom", function (data) {
@@ -29,6 +29,7 @@ const Main = () => {
     socket?.on("removeRoom", function (data) {
       // 방 제거 이벤트 시 id가 일치하는 방 제거
       console.log("방 제거");
+      console.log(data);
       setRooms(rooms.slice().splice(rooms.indexOf(JSON.stringify(data)), 1));
     });
   }, [socket]);
