@@ -1,13 +1,15 @@
 package com.gemini.authservice.config;
 
-
-import com.gemini.authservice.config.oauth.PrincipalOauth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.gemini.authservice.config.oauth.PrincipalOauth2UserService;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -19,6 +21,32 @@ public class SecurityConfig {
     public BCryptPasswordEncoder encodePwd() {
         return new BCryptPasswordEncoder();
     }
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable();
+//        http.authorizeRequests()
+//                .antMatchers("/user/**").authenticated()
+//                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+//                .anyRequest().permitAll()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .loginProcessingUrl("/loginProc")
+//                .defaultSuccessUrl("/")
+//                .and()
+//                .oauth2Login()
+//                .loginPage("/login")
+//                .userInfoEndpoint()
+//                .userService(principalOauth2UserService); //to be continued..
+//
+//        return http.build();
+//    }
+@Bean
+public AuthenticationSuccessHandler successHandler() {
+    SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/");
+    return successHandler;
+}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,7 +64,9 @@ public class SecurityConfig {
                 .oauth2Login()
                 .loginPage("/login")
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService); //to be continued..
+                .userService(principalOauth2UserService)
+                .and()
+                .successHandler(successHandler());
 
         return http.build();
     }

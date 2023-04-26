@@ -19,14 +19,15 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto? Identity? check later
-    private int Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto? Identity? check later 😶 additional inspection needed
+    private Long id; // better datatype for id
     private String username;
     private String password;
-    private String email;
+
+//    private String email; // Decided not to use email for now
     private String role; // ROLE_USER, ROLE_ADMIN
 
-    //for OAuth
+    // for OAuth. additional field
     private String provider;
     private String providerId;
     @CreationTimestamp

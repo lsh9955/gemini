@@ -41,3 +41,9 @@ spring:
         format_sql: true
 
 jwt.secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds8d9sfasd87w9d88as7d897ds78das7d7as8d78qw78d789as7ds87'
+
+logging:
+  level:
+    org:
+      springframework:
+        security=DEBUG:
