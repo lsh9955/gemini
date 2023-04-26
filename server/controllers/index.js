@@ -5,7 +5,6 @@ const { removeRoom: removeRoomService } = require("../services");
 exports.renderMain = async (req, res, next) => {
   try {
     const rooms = await Room.find({});
-    res.render("main", { rooms, title: "채팅방" });
   } catch (error) {
     console.error(error);
     next(error);
@@ -56,12 +55,6 @@ exports.enterRoom = async (req, res, next) => {
     if (room.max <= rooms.get(req.params.id)?.size) {
       return res.redirect("/?error=허용 인원이 초과하였습니다.");
     }
-    return res.render("chat", {
-      room,
-      title: room.title,
-      chats: [],
-      user: req.session.color,
-    });
   } catch (error) {
     console.error(error);
     return next(error);
