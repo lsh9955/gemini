@@ -70,7 +70,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return attributes;
     }
 
-    //PK of user
+    //PK of user 😀 this is weird.
     @Override
     public String getName() {
         return user.getId() + ""; // for type casting
@@ -79,4 +79,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public Long getId() {
         return user.getId();
     } // added for JwtAuthenticationFilter
+
+
 }

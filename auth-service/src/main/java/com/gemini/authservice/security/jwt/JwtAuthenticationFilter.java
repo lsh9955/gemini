@@ -41,12 +41,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
+
+    // 😀 modification needed. we decided to locate RefreshToken in the Cookie. 😀
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        Long userId = ((PrincipalDetails) authResult.getPrincipal()).getId();
-        String accessToken = jwtUtil.generateAccessToken(userId);
-        String refreshToken = jwtUtil.generateRefreshToken(userId);
+        String accessToken = jwtUtil.generateAccessToken(authResult);
+        String refreshToken = jwtUtil.generateRefreshToken(authResult);
 
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);
