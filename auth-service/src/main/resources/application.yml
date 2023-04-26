@@ -40,7 +40,10 @@ spring:
         order_updates: true
         format_sql: true
 
-jwt.secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds8d9sfasd87w9d88as7d897ds78das7d7as8d78qw78d789as7ds87'
+jwt:
+  secret: 'G1e2m2i3n6i7g8o9f4i1r2s3t4p5l6z7'
+  access-token-expiration: 7200000 # 2hours (2 * 60 * 60 * 1000 ms)
+  refresh-token-expiration: 604800000 # 1week (7 * 24 * 60 * 60 * 1000 ms)
 
 logging:
   level:

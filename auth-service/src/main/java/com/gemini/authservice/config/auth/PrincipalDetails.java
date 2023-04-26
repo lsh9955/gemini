@@ -76,4 +76,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return user.getId() + ""; // for type casting
     }
 
+    public Long getId() {
+        return user.getId();
+    } // added for JwtAuthenticationFilter
 }
