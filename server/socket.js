@@ -1,6 +1,7 @@
 const SocketIO = require("socket.io");
 const { removeRoom } = require("./services");
 const cors = require("cors");
+const redis = require("socket.io-redis");
 
 module.exports = (server, app, sessionMiddleware) => {
   let roomsUsers = {};
@@ -9,7 +10,9 @@ module.exports = (server, app, sessionMiddleware) => {
     cors: {
       origin: "http://localhost:3000",
     },
+    transports: ["websocket"],
   });
+  io.adapter(redis({ host: "localhost", port: 6379 }));
   app.set("io", io);
   const room = io.of("/room");
   const chat = io.of("/chat");
@@ -31,7 +34,7 @@ module.exports = (server, app, sessionMiddleware) => {
         roomsUsers[data.roomId] = {};
       }
       roomsUsers[data.roomId][socket.id] = data.user;
-
+      console.log(roomsUsers);
       socket.join(data.roomId);
       roomInfo = data;
       socket.to(data.roomId).emit("join", {

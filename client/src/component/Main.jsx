@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import io from "socket.io-client";
 const Main = () => {
   const [socket, setSocket] = useState(
-    io.connect("http://localhost:5000/room")
+    io.connect("http://localhost:5000/room", {
+      transports: ["websocket"],
+    })
   );
   const [rooms, setRooms] = useState([]);
   useEffect(() => {

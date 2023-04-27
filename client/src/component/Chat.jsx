@@ -8,7 +8,9 @@ const Chat = () => {
   const [chatList, setChatList] = useState([]);
   const [firCome, setFirCome] = useState(true);
   const [socket, setSocket] = useState(
-    io.connect("http://localhost:5000/chat")
+    io.connect("http://localhost:5000/chat", {
+      transports: ["websocket"],
+    })
   );
   useEffect(() => {
     console.log("소켓 변화");
