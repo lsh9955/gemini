@@ -1,12 +1,24 @@
 // import LoginInput from '../../Components/Auth/LoginInput';
 // import GoBackPage from '../../Components/Menu/goBackPage';
 // import { Head, BannerLine, Title } from '../../styles/Menu/NavStyle';
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 const Main: FC = () => {
+  const history = useHistory();
+  const accessToken = window.localStorage.getItem("accessToken");
+  console.log(`accessToken:${accessToken}`);
+
+  useEffect(() => {
+    if (!accessToken) {
+      alert("로그인이 필요합니다. 로그인페이지로 이동합니다.");
+      history.push("/login");
+    }
+  }, []);
+
   return (
     <>
-      메인페이지야!!
+      메인페이지야!! 로그인이 안되어있으면 로그인페이지로 넘길것임.
       {/* Uncomment your JSX code when you want to use it */}
     </>
   );

@@ -7,10 +7,12 @@ import LoginSuccess from "./pages/auth/LoginSuccess";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
+  const pathsWithoutHeader = ["/login", "/loginSuccess"];
+  const shouldShowHeader = !pathsWithoutHeader.includes(location.pathname);
 
   return (
     <>
-      {location.pathname !== "/login" && <Header />}
+      {shouldShowHeader && <Header />}
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/login" component={Login} />

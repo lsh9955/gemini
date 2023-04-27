@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { LoginWrapper } from "./Login.styles";
+import { LoginWrapper, StyledLink } from "./Login.styles";
 // import LoginInput from '../../Components/Auth/LoginInput';
 // import GoBackPage from '../../Components/Menu/goBackPage';
 // import { Head, BannerLine, Title } from '../../styles/Menu/NavStyle';
@@ -8,17 +8,17 @@ const Login: FC = () => {
   return (
     <>
       <LoginWrapper>
-        <a href="http://localhost:8080/oauth2/authorization/google">
+        <StyledLink href="http://localhost:8080/oauth2/authorization/google">
           구글로그인 테스트
-        </a>
+        </StyledLink>
         <br />
-        <a href="http://localhost:8080/login/oauth2/code/twitter">
+        <StyledLink href="http://localhost:8080/login/oauth2/code/twitter">
           트위터 로그인 테스트
-        </a>
+        </StyledLink>
         <br />
-        <a href="http://localhost:8080/oauth2/authorization/twitter">
+        <StyledLink href="http://localhost:8080/oauth2/authorization/twitter">
           트위터 로그인 테스트2
-        </a>
+        </StyledLink>
       </LoginWrapper>
       {/* Uncomment your JSX code when you want to use it */}
       {/* <Head>

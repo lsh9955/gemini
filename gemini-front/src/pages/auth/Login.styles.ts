@@ -12,7 +12,7 @@ export const LoginWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  &::before {
+  &::after {
     content: "";
     position: absolute;
     top: 0;
@@ -33,4 +33,9 @@ export const LoginWrapper = styled.div`
   //     background-color: rgba(217, 217, 217, 0.3);
   //     z-index: 2;
   //   }
+`;
+
+export const StyledLink = styled.a`
+  z-index: 2;
+  position: relative;
 `;

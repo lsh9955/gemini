@@ -1,11 +1,21 @@
 import React, { FC } from "react";
+import {
+  CenteredDiv,
+  ContentWrapper,
+  LoginSuccessWrapper,
+} from "./LoginSuccess.styles";
 
 const LoginSuccess: FC = () => {
   return (
     <>
-      {/* Uncomment your JSX code when you want to use it */}로그인 성공 페이지
-      <br />
-      유저정보를 받아옵니다.
+      <LoginSuccessWrapper>
+        <CenteredDiv>
+          <ContentWrapper>
+            <p>Gemini로 확인되었습니다.</p>
+            <p>메인페이지로 입장합니다.</p>
+          </ContentWrapper>
+        </CenteredDiv>
+      </LoginSuccessWrapper>
     </>
   );
 };
