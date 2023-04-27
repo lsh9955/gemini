@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/");
+        return new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/loginSuccess");
     }
 
     @Bean
