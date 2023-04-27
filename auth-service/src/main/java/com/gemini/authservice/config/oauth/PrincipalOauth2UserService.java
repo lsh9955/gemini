@@ -42,6 +42,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new TwitterUserInfo(oAuth2User.getAttributes());
         } else {
             System.out.println("We service only google, twitter login for now");
+            throw new IllegalArgumentException("We only support Google and Twitter login for now.");
         }
 
         Optional<User> userOptional = userRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());

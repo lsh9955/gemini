@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.gemini.authservice.config.oauth.PrincipalOauth2UserService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -35,26 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtUtil();
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-//        http.authorizeRequests()
-//                .antMatchers("/user/**").authenticated()
-//                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-//                .anyRequest().permitAll()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/loginProc")
-//                .defaultSuccessUrl("/")
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login")
-//                .userInfoEndpoint()
-//                .userService(principalOauth2UserService); //to be continued..
-//
-//        return http.build();
-//    }
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/");
@@ -66,8 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .httpBasic().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -89,11 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .successHandler(successHandler())
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil())); // JWT 필터 추가
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtUtil()), UsernamePasswordAuthenticationFilter.class); // JWT 필터를 UsernamePasswordAuthenticationFilter 뒤에 추가
+//                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil())); // JWT 필터 추가
 
-
-
-        return http.build();
     }
 
 }

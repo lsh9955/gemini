@@ -1,8 +1,3 @@
-//package com.gemini.authservice.security.jwt;
-//
-//public class JwtUtil {
-//}
-
 package com.gemini.authservice.security.jwt;
 
 import com.gemini.authservice.config.auth.PrincipalDetails;
@@ -17,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
+
 @ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
 
