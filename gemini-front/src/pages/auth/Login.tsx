@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { LoginWrapper } from "./Login.styles";
 // import LoginInput from '../../Components/Auth/LoginInput';
 // import GoBackPage from '../../Components/Menu/goBackPage';
 // import { Head, BannerLine, Title } from '../../styles/Menu/NavStyle';
@@ -6,17 +7,19 @@ import React, { FC } from "react";
 const Login: FC = () => {
   return (
     <>
-      <a href="http://localhost:8080/oauth2/authorization/google">
-        구글로그인 테스트
-      </a>
-      <br />
-      <a href="http://localhost:8080/login/oauth2/code/twitter">
-        트위터 로그인 테스트
-      </a>
-      <br />
-      <a href="http://localhost:8080/oauth2/authorization/twitter">
-        트위터 로그인 테스트2
-      </a>
+      <LoginWrapper>
+        <a href="http://localhost:8080/oauth2/authorization/google">
+          구글로그인 테스트
+        </a>
+        <br />
+        <a href="http://localhost:8080/login/oauth2/code/twitter">
+          트위터 로그인 테스트
+        </a>
+        <br />
+        <a href="http://localhost:8080/oauth2/authorization/twitter">
+          트위터 로그인 테스트2
+        </a>
+      </LoginWrapper>
       {/* Uncomment your JSX code when you want to use it */}
       {/* <Head>
         <div className="grid grid-cols-16 gap-1">
