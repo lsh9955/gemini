@@ -2,6 +2,7 @@
 
 Branch Structure
 
+```
 📦main
 ┣ 📂develop
 ┃ ┣ 📂front-dev
@@ -10,6 +11,7 @@ Branch Structure
 ┃ ...┃
 ┃ ...┣ 📂back-dev_trpg
 ┃ ...┃
-┃ ...┗ 📂back-dev_ml_cd
-┃ ......┗ 📂back-dev_ml
+┃ ...┗ 📂back-dev_ml
+┃ ...
 ┗ 📂release
+```
