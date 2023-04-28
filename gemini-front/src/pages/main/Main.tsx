@@ -3,6 +3,7 @@
 // import { Head, BannerLine, Title } from '../../styles/Menu/NavStyle';
 import React, { FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { LeftComponent, MainWrapper, RightComponent } from "./Main.styles";
 
 const Main: FC = () => {
   const history = useHistory();
@@ -18,8 +19,10 @@ const Main: FC = () => {
 
   return (
     <>
-      메인페이지야!! 로그인이 안되어있으면 로그인페이지로 넘길것임.
-      {/* Uncomment your JSX code when you want to use it */}
+      <MainWrapper>
+        <LeftComponent to="/"></LeftComponent>
+        <RightComponent to="/"></RightComponent>
+      </MainWrapper>
     </>
   );
 };
