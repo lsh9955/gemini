@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import MessageImg from "../../../assets/img/Message.png";
-import Notification from "../../../assets/img/Notification.png";
 // import ProfileImage from "../../../assets/img/ProfileImage.png";
 
 export const StyledHeaderTools = styled.div`

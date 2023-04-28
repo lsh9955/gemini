@@ -4,6 +4,7 @@
 import React, { FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { LeftComponent, MainWrapper, RightComponent } from "./Main.styles";
+import AnimatedArrow from "../../components/main/AnimatedArrow";
 
 const Main: FC = () => {
   const history = useHistory();
@@ -21,24 +22,12 @@ const Main: FC = () => {
     <>
       <MainWrapper>
         <LeftComponent to="/"></LeftComponent>
-        <RightComponent to="/"></RightComponent>
+        <RightComponent to="/">
+          <AnimatedArrow></AnimatedArrow>
+        </RightComponent>
       </MainWrapper>
     </>
   );
 };
 
 export default Main;
-{
-  /* <Head>
-  <div className="grid grid-cols-16 gap-1">
-    <div className="col-start-2 col-span-2">
-      <GoBackPage></GoBackPage>
-    </div>
-    <div className="col-start-4 col-end-8">
-      <Title>로그인</Title>
-    </div>
-  </div>
-</Head>
-<BannerLine />
-<LoginInput></LoginInput> */
-}
