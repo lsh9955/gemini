@@ -6,6 +6,7 @@ import com.gemini.authservice.config.oauth.provider.OAuth2UserInfo;
 import com.gemini.authservice.config.oauth.provider.TwitterUserInfo;
 import com.gemini.authservice.model.User;
 import com.gemini.authservice.repository.UserRepository;
+import com.gemini.authservice.service.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ExternalApiService externalApiService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -63,6 +67,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
             userRepository.save(user);
+
+            externalApiService.sendUserToUserServiceServer(user);
         }
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());
