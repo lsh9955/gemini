@@ -1,43 +1,28 @@
 package com.gemini.authservice.api;
 
-import lombok.RequiredArgsConstructor;
+import com.gemini.authservice.security.jwt.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-
-
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/auth")
-//@Api(tags = "메인페이지 관련 API")
+@RequestMapping("/auth")
 public class AuthApiController {
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    @GetMapping("/check")
-    public ResponseEntity<?> getMemberInfo(HttpServletRequest request) {
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-
-        // fetching Token from Header
-        String accessToken = request.getHeader("accessToken");
-
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+        String username = jwtUtil.validateTokenAndGetUsername(token);
+        if (username != null) {
+            return ResponseEntity.ok().header("username", username).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
-
-//    @GetMapping("/reIssue")
-//    public ResponseEntity<?> reIssueToken(HttpServletRequest request) { return null; };
-//
-//    @GetMapping("/reIssue")
-//    public ResponseEntity<?> reIssueToken(HttpServletRequest request) { return null; };
-//
-//    @GetMapping("/reIssue")
-//    public ResponseEntity<?> reIssueToken(HttpServletRequest request) { return null; };
-
-
-
 }

@@ -69,4 +69,13 @@ public class JwtUtil {
         Claims claims = getClaims(token);
         return Long.parseLong(claims.getSubject());
     }
+
+    public String validateTokenAndGetUsername(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+            return claims.getSubject();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
