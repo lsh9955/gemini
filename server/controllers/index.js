@@ -1,6 +1,13 @@
 const Room = require("../schemas/room");
 const Chat = require("../schemas/chat");
 const { removeRoom: removeRoomService } = require("../services");
+const redis = require("redis");
+const client = redis.createClient({
+  socket: {
+    host: "redis-15197.c290.ap-northeast-1-2.ec2.cloud.redislabs.com",
+    port: 15197,
+  },
+});
 
 exports.renderMain = async (req, res, next) => {
   try {
@@ -26,6 +33,8 @@ exports.createRoom = async (req, res, next) => {
       password: req.body.password,
       users: req.body.userId,
     });
+    console.log(`${newRoom}`);
+    client.set(`${newRoom._id}`, `${newRoom}`);
     const io = req.app.get("io");
     io.of("/room").emit("newRoom", newRoom);
     if (req.body.password) {

@@ -8,9 +8,13 @@ const Chat = () => {
   const [chatList, setChatList] = useState([]);
   const [firCome, setFirCome] = useState(true);
   const [socket, setSocket] = useState(
-    io.connect("http://localhost:5000/chat", {
-      transports: ["websocket"],
-    })
+    io.connect(
+      "http://localhost:5000/chat",
+      {
+        transports: ["websocket"],
+      },
+      { path: "/custom/socket.io" }
+    )
   );
   useEffect(() => {
     console.log("소켓 변화");
@@ -41,7 +45,10 @@ const Chat = () => {
       setChatList([...chatList, data]);
     });
     return () => {
-      socket.disconnect();
+      socket.off("join");
+      socket.off("userUpdate");
+      socket.off("exit");
+      socket.off("chat");
     };
   }, []);
 

@@ -4,9 +4,13 @@ import { Link } from "react-router-dom";
 import io from "socket.io-client";
 const Main = () => {
   const [socket, setSocket] = useState(
-    io.connect("http://localhost:5000/room", {
-      transports: ["websocket"],
-    })
+    io.connect(
+      "http://localhost:5000/room",
+      {
+        transports: ["websocket"],
+      },
+      { path: "/custom/socket.io" }
+    )
   );
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
@@ -34,7 +38,11 @@ const Main = () => {
       console.log(data);
       setRooms(rooms.slice().splice(rooms.indexOf(JSON.stringify(data)), 1));
     });
-  }, [socket]);
+    return () => {
+      socket.off("newRoom");
+      socket.off("removeRoom");
+    };
+  }, []);
 
   //비밀번호가 필요한 경우 추가할 것
 

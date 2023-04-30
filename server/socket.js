@@ -1,7 +1,13 @@
 const SocketIO = require("socket.io");
 const { removeRoom } = require("./services");
 const cors = require("cors");
-const redis = require("socket.io-redis");
+const redis = require("redis");
+const client = redis.createClient({
+  socket: {
+    host: "redis-15197.c290.ap-northeast-1-2.ec2.cloud.redislabs.com",
+    port: 15197,
+  },
+});
 
 module.exports = (server, app, sessionMiddleware) => {
   let roomsUsers = {};
@@ -12,7 +18,6 @@ module.exports = (server, app, sessionMiddleware) => {
     },
     transports: ["websocket"],
   });
-  io.adapter(redis({ host: "localhost", port: 6379 }));
   app.set("io", io);
   const room = io.of("/room");
   const chat = io.of("/chat");
@@ -30,11 +35,37 @@ module.exports = (server, app, sessionMiddleware) => {
     let roomInfo;
     socket.on("join", (data) => {
       console.log("채팅방에 입장 체크");
+
+      console.log("새 방을 만듦");
+      let newUserObj = {};
+      client.hgetall(`roomToUser`, (err, obj) => {
+        if (obj.data?.roomId?.users) {
+          newUserObj = JSON.parse(obj.users);
+
+          newUserObj[socket.id] = data.user;
+          //방 안의 유저 정보
+          client.hmset(`roomToUser`, "users", JSON.stringify(newUserObj));
+          //유저의 방 정보
+          client.hmset(
+            `userToRoom`,
+            `${data.user}`,
+            JSON.stringify(newUserObj)
+          );
+        } else {
+          newUserObj[socket.id] = data.user;
+
+          client.hmset(
+            `room_${data.roomId}`,
+            "users",
+            JSON.stringify(newUserObj)
+          );
+        }
+      });
+
       if (!roomsUsers[data.roomId]) {
         roomsUsers[data.roomId] = {};
       }
       roomsUsers[data.roomId][socket.id] = data.user;
-      console.log(roomsUsers);
       socket.join(data.roomId);
       roomInfo = data;
       socket.to(data.roomId).emit("join", {
@@ -71,6 +102,7 @@ module.exports = (server, app, sessionMiddleware) => {
           delete roomsUsers[roomId];
           await removeRoom(roomId); // 컨트롤러 대신 서비스를 사용
           room.emit("removeRoom", roomId);
+          client.del(roomId);
           console.log("방 제거 요청 성공");
         } else {
           delete roomsUsers[roomId][socket.id];
