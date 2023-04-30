@@ -42,7 +42,7 @@ spring:
         format_sql: true
 
 jwt:
-  secret: 'G1e2m2i3n6i7g8o9f4i1r2s3t4p5l6z7'
+  secret: 'G1e2m2i3n6i7g8o9f4i1r2s3t4p5l6z7uifjdohiosfjsf231391ghsicjafioasdasdasd2313151ajf'
   access-token-expiration: 7200000 # 2hours (2 * 60 * 60 * 1000 ms)
   refresh-token-expiration: 604800000 # 1week (7 * 24 * 60 * 60 * 1000 ms)
 

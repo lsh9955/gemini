@@ -25,6 +25,9 @@ public class JwtUtil {
     @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpiration;
 
+    public long getRefreshTokenExpiration() {
+        return refreshTokenExpiration;
+    }
 
     // 😀 gotta inspect if using .getId(); method directly is ok. rather than "Long userId = principalDetails.getUser().getId();"
     public String generateAccessToken(Authentication authentication) {
