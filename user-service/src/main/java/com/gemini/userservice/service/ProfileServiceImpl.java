@@ -37,7 +37,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .map(gemini -> GeminiDto.builder()
                         .geminiPk(gemini.getId())
                         .image(gemini.getImage())
-                        .userPk(gemini.getUserInfo().getUserPk().toString())
+                        .userPk(gemini.getUserInfo().getUserPk())
                         .build())
                 .collect(Collectors.toList());
 
