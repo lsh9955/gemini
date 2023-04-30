@@ -1,8 +1,3 @@
-//package com.gemini.authservice.security.jwt;
-//
-//public class JwtUtil {
-//}
-
 package com.gemini.authservice.security.jwt;
 
 import com.gemini.authservice.config.auth.PrincipalDetails;
@@ -17,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
+
 @ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
 
@@ -30,6 +25,9 @@ public class JwtUtil {
     @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpiration;
 
+    public long getRefreshTokenExpiration() {
+        return refreshTokenExpiration;
+    }
 
     // 😀 gotta inspect if using .getId(); method directly is ok. rather than "Long userId = principalDetails.getUser().getId();"
     public String generateAccessToken(Authentication authentication) {
@@ -73,5 +71,14 @@ public class JwtUtil {
     public Long getUserIdFromToken(String token) {
         Claims claims = getClaims(token);
         return Long.parseLong(claims.getSubject());
+    }
+
+    public String validateTokenAndGetUsername(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+            return claims.getSubject();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
