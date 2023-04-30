@@ -1,5 +1,6 @@
 package com.gemini.authservice.service;
 
+import com.gemini.authservice.dto.UserDto;
 import com.gemini.authservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,16 +22,17 @@ public class ExternalApiService {
 
     public String sendUserToUserServiceServer(User user) {
         String url = "https://"+apiGatewayUrl +"/api/profile/enroll";
+        UserDto userDto = user.toUserDto();
 
         return webClient.post()
                 .uri(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"userDto\":" + new JSONObject(user).toString() + "}")
+                .bodyValue("{\"userDto\":" + new JSONObject(userDto).toString() + "}")
                 .exchangeToMono(response -> {
                     HttpStatus statusCode = response.statusCode();
                     System.out.println("응답 코드: " + statusCode);
 
-                    // 필요하다면 응답 본문도 출력할 수 있습니다.
+                    // 혹시 모르니 응답 본문도 출력
                     return response.bodyToMono(String.class)
                             .doOnNext(responseBody -> System.out.println("응답 본문: " + responseBody))
                             .thenReturn(statusCode.toString());
