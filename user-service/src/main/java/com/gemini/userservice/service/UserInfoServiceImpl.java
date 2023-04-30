@@ -24,4 +24,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .username(userInfo.getUsername())
                 .build();
     }
+
+    @Override
+    public boolean isNicknameDuplicated(String nickname) {
+        UserInfo userInfo = userRepository.findByNickname(nickname);
+        return userInfo != null;
+    }
 }
