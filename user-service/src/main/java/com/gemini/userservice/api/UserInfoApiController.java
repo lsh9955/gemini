@@ -1,6 +1,7 @@
 package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.NicknameCheckDto;
+import com.gemini.userservice.dto.OtherUserProfileResponseDto;
 import com.gemini.userservice.dto.UserDto;
 import com.gemini.userservice.dto.UserInfoDto;
 import com.gemini.userservice.service.UserInfoService;
@@ -38,6 +39,12 @@ public class UserInfoApiController {
     public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
         boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
         return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).build());
+    }
+
+    @GetMapping("/{nickname}")
+    public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@PathVariable String nickname) {
+        OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(nickname);
+        return ResponseEntity.ok(otherUserProfileDto);
     }
 
 }

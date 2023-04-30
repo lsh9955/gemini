@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface GeminiRepository extends JpaRepository<Gemini, Long> {
     List<Gemini> findByUserInfo(UserInfo userInfo);
+
+    List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic);
+
 }

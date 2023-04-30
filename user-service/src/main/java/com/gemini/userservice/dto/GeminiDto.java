@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class GeminiDto {
     private Long geminiPk;
     private String image;
-    private String userPk;
+    private Long userPk;
 }
