@@ -21,7 +21,7 @@ public class UserInfoApiController {
     @Autowired
     private UserInfoService userInfoService;
 
-    @GetMapping
+    @GetMapping("/login")
     public ResponseEntity<UserInfoDto> getUserProfile(HttpServletRequest request) {
         String username = request.getHeader("username");
         UserInfoDto userInfoDto = userInfoService.getUserInfoByUsername(username);
