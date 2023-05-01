@@ -9,6 +9,7 @@
 
 import React from "react";
 import { useHistory } from "react-router-dom";
+import OpenPayModalButton from "../../components/profile/pay/button/OpenPayModalButton";
 
 function MyPage() {
   const history = useHistory();
@@ -69,6 +70,7 @@ function MyPage() {
 				</div>
 			</div>
 			<MyLine /> */}
+      <OpenPayModalButton />
     </>
   );
 }
