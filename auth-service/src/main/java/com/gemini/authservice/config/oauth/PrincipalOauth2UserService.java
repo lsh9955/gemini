@@ -6,6 +6,7 @@ import com.gemini.authservice.config.oauth.provider.OAuth2UserInfo;
 import com.gemini.authservice.config.oauth.provider.TwitterUserInfo;
 import com.gemini.authservice.model.User;
 import com.gemini.authservice.repository.UserRepository;
+import com.gemini.authservice.service.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ExternalApiService externalApiService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -42,6 +46,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new TwitterUserInfo(oAuth2User.getAttributes());
         } else {
             System.out.println("We service only google, twitter login for now");
+            throw new IllegalArgumentException("We only support Google and Twitter login for now.");
         }
 
         Optional<User> userOptional = userRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
@@ -61,7 +66,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
-            userRepository.save(user);
+
+            externalApiService.sendUserToUserServiceServer(user); // after enrolling userinfo on user_service
+            userRepository.save(user); // save user on USER TABLE
         }
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());
