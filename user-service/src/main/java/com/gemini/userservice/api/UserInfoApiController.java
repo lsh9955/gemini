@@ -1,9 +1,6 @@
 package com.gemini.userservice.api;
 
-import com.gemini.userservice.dto.NicknameCheckDto;
-import com.gemini.userservice.dto.OtherUserProfileResponseDto;
-import com.gemini.userservice.dto.UserDto;
-import com.gemini.userservice.dto.UserInfoDto;
+import com.gemini.userservice.dto.*;
 import com.gemini.userservice.service.UserInfoService;
 import com.gemini.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +20,11 @@ public class UserInfoApiController {
     private UserInfoService userInfoService;
 
 
-//    @Autowired
-//    private UserService userService;
-//
-//    @PatchMapping("/profile")
-//    public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequestDto requestDto, @RequestHeader("username") String username) {
-//        userService.updateProfile(requestDto, username);
-//        return ResponseEntity.noContent().build();
-//    }
+    @PatchMapping("/profile")
+    public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequestDto requestDto, @RequestHeader("username") String username) {
+        userService.updateProfile(requestDto, username);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/login")
     public ResponseEntity<UserInfoDto> getUserProfile(HttpServletRequest request) {
