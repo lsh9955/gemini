@@ -33,12 +33,14 @@ public class JwtUtil {
     public String generateAccessToken(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = principalDetails.getId();
+        System.out.println("엑세스토큰 발급했다!");
         return generateToken(userId, accessTokenExpiration);
     }
 
     public String generateRefreshToken(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = principalDetails.getId();
+        System.out.println("refreshToken발급했다!");
         return generateToken(userId, refreshTokenExpiration);
     }
 
