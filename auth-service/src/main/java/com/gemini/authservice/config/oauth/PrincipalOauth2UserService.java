@@ -66,9 +66,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
-            userRepository.save(user);
 
-            externalApiService.sendUserToUserServiceServer(user);
+            externalApiService.sendUserToUserServiceServer(user); // after enrolling userinfo on user_service
+            userRepository.save(user); // save user on USER TABLE
         }
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());
