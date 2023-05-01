@@ -63,7 +63,7 @@ public void onAuthenticationSuccess(HttpServletRequest request, HttpServletRespo
 
     response.addHeader("Authorization", "Bearer " + accessToken);
     response.addCookie(refreshTokenCookie);
-    setDefaultTargetUrl("http://localhost:3000/loginSuccess");
+    setDefaultTargetUrl("http://mygemini.co.kr/loginSuccess");
     super.onAuthenticationSuccess(request, response, authentication);
 }
 }
