@@ -27,10 +27,13 @@ public class AuthApiController {
 
     @PostMapping("/validate")
     public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+        System.out.println("======================@@@@@@@@@@@token_valate start======================@@@@@");
         String username = jwtUtil.validateTokenAndGetUsername(token);
         if (username != null) {
+            System.out.println("username != null @@@@@@@@@@@@@@@");
             return ResponseEntity.ok().header("username", username).build();
         } else {
+            System.out.println("username == null @@@@@@@@@@@@@@@");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
@@ -38,7 +41,9 @@ public class AuthApiController {
 
     @PostMapping("/reissue")
     public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken, HttpServletResponse response) {
+        System.out.println("token reisuue @@@@@@@@@@@@@@@");
         if (refreshToken == null || !jwtUtil.validateToken(refreshToken)) {
+            System.out.println("token reisuue failed. refreshToken==null @@@@@@@@@@@@@@@");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
