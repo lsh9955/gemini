@@ -22,6 +22,16 @@ public class UserInfoApiController {
     @Autowired
     private UserInfoService userInfoService;
 
+
+//    @Autowired
+//    private UserService userService;
+//
+//    @PatchMapping("/profile")
+//    public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequestDto requestDto, @RequestHeader("username") String username) {
+//        userService.updateProfile(requestDto, username);
+//        return ResponseEntity.noContent().build();
+//    }
+
     @GetMapping("/login")
     public ResponseEntity<UserInfoDto> getUserProfile(HttpServletRequest request) {
         String username = request.getHeader("username");
