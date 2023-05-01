@@ -13,5 +13,6 @@ Branch Structure
 ┃ ...┃
 ┃ ...┗ 📂back-dev_ml
 ┃ ...
-┗ 📂release
+┣ 📂release
+┗ 📂Learning_history
 ```
