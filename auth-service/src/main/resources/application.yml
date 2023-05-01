@@ -11,7 +11,7 @@ spring:
     include: oauth
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${api_gateway_url}:3307/gemini?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+    url: jdbc:mysql://${api_gateway_url}:3307/gemini_auth?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
     username: gemini
     password: b106b106
     hikari:
