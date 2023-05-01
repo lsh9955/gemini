@@ -6,6 +6,7 @@ spring:
           google:
             client-id: 424629007631-55vci0bsgdt2vbo73mrc7537d18dvsde.apps.googleusercontent.com
             client-secret: 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
+            redirectUri: https://${api_gateway_url}/login/oauth2/code/google
             scope:
 #              - email // Decided not to use email for now
               - profile
