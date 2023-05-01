@@ -3,8 +3,9 @@ const { removeRoom } = require("./services");
 const cors = require("cors");
 const redis = require("redis");
 const client = redis.createClient({
+  password: `${process.env.REDIS_PASSWORD}`,
   socket: {
-    host: "redis-15197.c290.ap-northeast-1-2.ec2.cloud.redislabs.com",
+    host: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     port: 15197,
   },
 });
@@ -39,7 +40,7 @@ module.exports = (server, app, sessionMiddleware) => {
       console.log("새 방을 만듦");
       let newUserObj = {};
       client.hgetall(`roomToUser`, (err, obj) => {
-        if (obj.data?.roomId?.users) {
+        if (obj?.data?.roomId?.users) {
           newUserObj = JSON.parse(obj.users);
 
           newUserObj[socket.id] = data.user;
@@ -53,7 +54,6 @@ module.exports = (server, app, sessionMiddleware) => {
           );
         } else {
           newUserObj[socket.id] = data.user;
-
           client.hmset(
             `room_${data.roomId}`,
             "users",
@@ -71,7 +71,6 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.to(data.roomId).emit("join", {
         user: roomsUsers[data.roomId],
         roomInfo: chat.adapter.rooms.get(data.roomId),
-
         chat: `${data.user}님이 입장하셨습니다.`,
       });
     });
