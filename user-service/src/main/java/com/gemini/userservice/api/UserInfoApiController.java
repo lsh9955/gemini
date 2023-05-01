@@ -31,7 +31,9 @@ public class UserInfoApiController {
 
     @PostMapping("/enroll")
     public ResponseEntity<String> enrollUser(@RequestBody UserDto userDto) {
+        System.out.println("======================@@@@@@@@@@@@@@@@user_service enroll start======================@@@@@@@@@@@@@@@@");
         userService.enrollUser(userDto);
+        System.out.println("======================@@@@@@@@@@@@@@@@user_service enroll done======================@@@@@@@@@@@@@@@@");
         return ResponseEntity.ok("success");
     }
 
