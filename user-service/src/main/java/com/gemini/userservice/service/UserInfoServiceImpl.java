@@ -50,7 +50,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public OtherUserProfileResponseDto getOtherUserProfile(String nickname) {
-        UserInfo userInfo = userInfoRepository.findByNickname(nickname);
+        UserInfo userInfo = userInfoRepository.findByNickname(nickname)
+                .orElseThrow(() -> new RuntimeException("User not found"));;
         List<Gemini> publicGeminis = geminiRepository.findByUserInfoAndIsPublic(userInfo, true);
 
         List<GeminiDto> geminiDtos = publicGeminis.stream()
