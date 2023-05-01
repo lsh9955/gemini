@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public AuthenticationSuccessHandler successHandler() {
+        System.out.println("successHandler start!!!!!!!!!!!!!!!!!");
         return new JwtAuthenticationSuccessHandler(jwtUtil());
     }
 
