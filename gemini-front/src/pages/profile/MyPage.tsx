@@ -1,5 +1,3 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
 // import GoBackPage from '../../Components/Menu/goBackPage';
 // import UserInfo from '../../Components/Profile/UserInfo';
 // import MyImg from '../../Components/Profile/MyImg';
@@ -9,19 +7,22 @@ import { useNavigate } from "react-router-dom";
 // import { Head, Line, Title } from '../../styles/Menu/NavStyle';
 // import { ThickLine, P, MyLine, Image, Ptag } from '../../styles/Profile/MyPagestyle';
 
+import React from "react";
+import { useHistory } from "react-router-dom";
+
 function MyPage() {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const moveDonation = () => {
-    navigate("/Mypage/Donation");
+    history.push("/Mypage/Donation");
   };
 
   const moveMyInfo = () => {
-    navigate("/Mypage/MyInfoManage");
+    history.push("/Mypage/MyInfoManage");
   };
 
   const moveReview = () => {
-    navigate("/Mypage/MyReview");
+    history.push("/Mypage/MyReview");
   };
 
   return (

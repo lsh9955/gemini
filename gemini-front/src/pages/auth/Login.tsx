@@ -1,11 +1,26 @@
-import React from "react";
+import React, { FC } from "react";
+import { LoginWrapper, StyledLink } from "./Login.styles";
 // import LoginInput from '../../Components/Auth/LoginInput';
 // import GoBackPage from '../../Components/Menu/goBackPage';
 // import { Head, BannerLine, Title } from '../../styles/Menu/NavStyle';
 
-function Login() {
+const Login: FC = () => {
   return (
     <>
+      <LoginWrapper>
+        <StyledLink href="http://localhost:8080/oauth2/authorization/google">
+          구글로그인 테스트
+        </StyledLink>
+        <br />
+        <StyledLink href="http://localhost:8080/login/oauth2/code/twitter">
+          트위터 로그인 테스트
+        </StyledLink>
+        <br />
+        <StyledLink href="http://localhost:8080/oauth2/authorization/twitter">
+          트위터 로그인 테스트2
+        </StyledLink>
+      </LoginWrapper>
+      {/* Uncomment your JSX code when you want to use it */}
       {/* <Head>
         <div className="grid grid-cols-16 gap-1">
           <div className="col-start-2 col-span-2">
@@ -20,5 +35,6 @@ function Login() {
       <LoginInput></LoginInput> */}
     </>
   );
-}
+};
+
 export default Login;
