@@ -15,10 +15,20 @@ const Login: FC = () => {
   return (
     <>
       <LoginWrapper>
-        <StyledLink href="https://mygemini.co.kr/oauth2/authorization/google">
+        <StyledLink
+          href={
+            // `${process.env.API_OAUTH2_BASE_URL}` +
+            // "/oauth2/authorization/google"
+            `${process.env.REACT_APP_API_OAUTH2_BASE_URL}` +
+            "/oauth2/authorization/google"
+          }
+        >
           구글로그인 테스트
         </StyledLink>
         <br />
+        <StyledLink href={"http://localhost:8080/oauth2/authorization/google"}>
+          구글로그인 테스트2
+        </StyledLink>
         <StyledLink href="https://mygemini.co.kr/login/oauth2/code/twitter">
           트위터 로그인 테스트
         </StyledLink>
