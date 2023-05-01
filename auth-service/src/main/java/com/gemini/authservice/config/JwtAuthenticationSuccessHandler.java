@@ -1,6 +1,7 @@
 package com.gemini.authservice.config;
 
 import com.gemini.authservice.security.jwt.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
@@ -22,6 +23,9 @@ public class JwtAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
     public JwtAuthenticationSuccessHandler(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
+
+    @Value("${custom.react.redirect_uri}")
+    private String reactRedirectUri;
 
 //    @Override
 //    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
@@ -63,7 +67,7 @@ public void onAuthenticationSuccess(HttpServletRequest request, HttpServletRespo
 
     response.addHeader("Authorization", "Bearer " + accessToken);
     response.addCookie(refreshTokenCookie);
-    setDefaultTargetUrl("https://mygemini.co.kr/loginSuccess");
+    setDefaultTargetUrl(reactRedirectUri);
 //    setDefaultTargetUrl("http://localhost:3000/loginSuccess");
     super.onAuthenticationSuccess(request, response, authentication);
 }
