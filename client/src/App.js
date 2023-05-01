@@ -9,6 +9,15 @@ import Chat from "./component/Chat";
 import Room from "./component/Room";
 import Main from "./component/Main";
 import React, { useEffect, useState } from "react";
+const redis = require("redis");
+
+const client = redis.createClient({
+  password: `${process.env.REDIS_PASSWORD}`,
+  socket: {
+    host: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+    port: 15197,
+  },
+});
 
 function App({ userId }) {
   const [userInfo, setUserInfo] = useState(null);
@@ -23,9 +32,20 @@ function App({ userId }) {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact render={() => <Main userId={userInfo} />} />
-        <Route path="/room" exact render={() => <Room userId={userInfo} />} />
-        <Route path="/room/:id" render={() => <Chat userId={userInfo} />} />
+        <Route
+          path="/"
+          exact
+          render={() => <Main userId={userInfo} client={client} />}
+        />
+        <Route
+          path="/room"
+          exact
+          render={() => <Room userId={userInfo} client={client} />}
+        />
+        <Route
+          path="/room/:id"
+          render={() => <Chat userId={userInfo} client={client} />}
+        />
       </Switch>
     </BrowserRouter>
   );

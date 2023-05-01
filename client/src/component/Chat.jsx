@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
-const Chat = () => {
-  const userN = localStorage.getItem("userInfo");
+const Chat = ({ client }) => {
+  const userN = useState(localStorage.getItem("userInfo"));
   const [userList, setUserList] = useState([userN]);
   const [chatList, setChatList] = useState([]);
   const [firCome, setFirCome] = useState(true);
@@ -16,9 +16,24 @@ const Chat = () => {
       { path: "/custom/socket.io" }
     )
   );
+  const getUser = async () => {
+    let userArr = [];
+    const getArr = await client.lrange(
+      `${new URL(window.location).pathname.split("/").at(-1)}`,
+      0,
+      -1,
+      (err, arr) => {
+        userArr = arr;
+      }
+    );
+    getArr();
+    return userArr;
+  };
+
   useEffect(() => {
-    console.log("소켓 변화");
-  }, [socket]);
+    getUser();
+  }, []);
+
   useEffect(() => {
     //현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
     socket.emit("join", {
@@ -27,16 +42,9 @@ const Chat = () => {
     });
     socket.on("join", function (data) {
       console.log("join 이벤트", data.user);
-      setUserList(Object.values(data.user));
-      socket.emit("userUpdate", {
-        user: data.user,
-        roomId: new URL(window.location).pathname.split("/").at(-1),
-      });
+      setUserList(setUserList(...userList, data.user));
     });
-    socket.on("userUpdate", function (data) {
-      console.log("처음 입장");
-      setUserList(Object.values(data.user));
-    });
+
     socket.on("exit", function (data) {
       console.log(data.user);
       setUserList(Object.values(data.user));
