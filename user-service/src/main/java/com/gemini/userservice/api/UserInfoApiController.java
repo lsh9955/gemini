@@ -20,6 +20,23 @@ public class UserInfoApiController {
     private UserInfoService userInfoService;
 
 
+    @PostMapping
+    public ResponseEntity<Void> followUser(@RequestHeader("userId") String currentUserId, @RequestBody FollowRequestDto followRequestDto) {
+        userService.followUser(currentUserId, followRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> unfollowUser(
+            @RequestHeader("userId") String currentUserId,
+            @PathVariable("userId") String userIdToUnfollow) {
+
+        userService.unfollowUser(currentUserId, userIdToUnfollow);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @PatchMapping("/profile")
     public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequestDto requestDto, @RequestHeader("username") String username) {
         userService.updateProfile(requestDto, username);
