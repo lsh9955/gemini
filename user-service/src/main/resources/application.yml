@@ -1,4 +1,5 @@
-api_gateway_url: localhost
+#api_gateway_url: localhost
+api_gateway_url: mygemini.co.kr
 
 server:
   port: 8081
@@ -18,7 +19,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${api_gateway_url}:3306/gemini?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+    url: jdbc:mysql://${api_gateway_url}:3306/gemini_user?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
     username: gemini
     password: b106b106
     hikari:
