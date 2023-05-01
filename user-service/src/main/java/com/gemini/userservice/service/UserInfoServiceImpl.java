@@ -29,8 +29,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     private FollowRepository followRepository;
 
     @Override
-    public UserInfoDto getUserInfoByUsername(String username) {
-        UserInfo userInfo = userRepository.findByUsername(username);
+    public UserInfoDto getUserInfoByUserPk(Long userPk) {
+        UserInfo userInfo = userRepository.findById(userPk)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         return UserInfoDto.builder()
                 .userPk(userInfo.getUserPk())
                 .description(userInfo.getDescription())
@@ -40,6 +42,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .username(userInfo.getUsername())
                 .build();
     }
+
 
     @Override
     public boolean isNicknameDuplicated(String nickname) {

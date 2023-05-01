@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public void updateProfile(UpdateProfileRequestDto requestDto, String username) {
-        UserInfo userInfo = userInfoRepository.findByUsername(username)
+    public void updateProfile(UpdateProfileRequestDto requestDto, Long userPk) {
+        UserInfo userInfo = userInfoRepository.findById(userPk)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (requestDto.getDescription() != null) {

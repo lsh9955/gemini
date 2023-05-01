@@ -37,16 +37,15 @@ public class UserInfoApiController {
     }
 
 
-    @PatchMapping("/profile")
-    public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequestDto requestDto, @RequestHeader("username") String username) {
-        userService.updateProfile(requestDto, username);
+    @PatchMapping
+    public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequestDto requestDto, @RequestHeader("userId") Long userPk) {
+        userService.updateProfile(requestDto, userPk);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/login")
-    public ResponseEntity<UserInfoDto> getUserProfile(HttpServletRequest request) {
-        String username = request.getHeader("username");
-        UserInfoDto userInfoDto = userInfoService.getUserInfoByUsername(username);
+    public ResponseEntity<UserInfoDto> getUserProfile(@RequestHeader("userId") Long userPk) {
+        UserInfoDto userInfoDto = userInfoService.getUserInfoByUserPk(userPk);
         return ResponseEntity.ok(userInfoDto);
     }
 

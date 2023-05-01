@@ -8,7 +8,7 @@ import com.gemini.userservice.dto.UserDto;
 public interface UserService {
     void enrollUser(UserDto userDto);
 
-    void updateProfile(UpdateProfileRequestDto requestDto, String username);
+    void updateProfile(UpdateProfileRequestDto requestDto, Long userPk);
 
     void followUser(String currentUserId, FollowRequestDto followRequestDto);
 
