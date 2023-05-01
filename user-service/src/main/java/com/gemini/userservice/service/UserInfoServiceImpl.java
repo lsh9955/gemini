@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,10 +45,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
 
-    @Override
     public boolean isNicknameDuplicated(String nickname) {
-        UserInfo userInfo = userRepository.findByNickname(nickname);
-        return userInfo != null;
+        Optional<UserInfo> userInfoOptional = userRepository.findByNickname(nickname);
+        return userInfoOptional.isPresent();
     }
 
 

@@ -57,10 +57,17 @@ public class UserInfoApiController {
         return ResponseEntity.ok("success");
     }
 
+//    @PostMapping("/checkNickname")
+//    public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
+//        boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
+//        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).build());
+//    }
+
+    //여기부터 다시 체크
     @PostMapping("/checkNickname")
     public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
         boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
-        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).build());
+        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).nickname(requestDto.getNickname()).build());
     }
 
     @GetMapping("/{nickname}")
