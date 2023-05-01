@@ -36,7 +36,7 @@ spring:
             client-secret: jgmFmKBMj5RYPcdTwKLPWT_Liw2hsBy6Q1qrpF_wdbhQHiN4un
             scope:
               - read:user
-            redirect-uri: http://localhost:8080/login/oauth2/code/twitter
+            redirect-uri: http://mygemini.co.kr/login/oauth2/code/twitter
             authorization-grant-type: authorization_code
             client-authentication-method: post
         provider:
