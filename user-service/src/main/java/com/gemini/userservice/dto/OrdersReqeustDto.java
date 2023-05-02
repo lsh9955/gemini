@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersDto {
+public class OrdersReqeustDto {
     private Integer orderStar;
     private String merchantUid;
     private Long userPk;

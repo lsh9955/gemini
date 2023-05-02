@@ -1,5 +1,5 @@
-#api_gateway_url: localhost
-api_gateway_url: mygemini.co.kr
+api_gateway_url: localhost
+#api_gateway_url: mygemini.co.kr
 
 server:
   port: 8081

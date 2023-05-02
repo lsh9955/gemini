@@ -1,5 +1,9 @@
 package com.gemini.userservice.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,6 +11,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="ORDERS")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Orders {
 
     @Id
