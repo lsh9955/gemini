@@ -41,7 +41,7 @@ const PayModal = () => {
 
   return (
     <>
-      <button onClick={onClickPayment}>구매하기</button>
+      <button onClick={onClickPayment}>별 구매하기</button>
     </>
   );
 };
