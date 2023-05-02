@@ -77,4 +77,19 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .geminis(geminiDtos)
                 .build();
     }
+
+    @Override
+    public UserInfoDto getUserInfoByUsername(String username) {
+        UserInfo userInfo = userInfoRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return UserInfoDto.builder()
+                .userPk(userInfo.getUserPk())
+                .description(userInfo.getDescription())
+                .nickname(userInfo.getNickname())
+                .profileBackground(userInfo.getProfileBackground())
+                .star(userInfo.getStar())
+                .username(userInfo.getUsername())
+                .build();
+    }
 }

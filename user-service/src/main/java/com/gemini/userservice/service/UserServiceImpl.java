@@ -54,9 +54,11 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public void updateProfile(UpdateProfileRequestDto requestDto, Long userPk) {
-        UserInfo userInfo = userInfoRepository.findById(userPk)
+    public void updateProfile(UpdateProfileRequestDto requestDto, String username) {
+        UserInfo userInfo = userInfoRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("updateprofile method start@@@@@@@@@@@@@");
+        System.out.println("requestDto: "+ requestDto);
 
         if (requestDto.getDescription() != null) {
             userInfo.setDescription(requestDto.getDescription());
@@ -67,6 +69,9 @@ public class UserServiceImpl implements UserService {
         if (requestDto.getProfileBackground() != null) {
             userInfo.setProfileBackground(requestDto.getProfileBackground());
         }
+        System.out.println("userInfo result@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println("userInfo:" + userInfo);
+        System.out.println("return으로 뭔가 body에 민감하지 않은 정보들이라도 보여주는게 좋을지?");
         userInfoRepository.save(userInfo);
     }
 
