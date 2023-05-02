@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrdersDto {
-    private Long orderPk;
     private Integer orderStar;
     private String merchantUid;
     private Long userPk;
