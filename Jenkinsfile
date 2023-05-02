@@ -10,12 +10,6 @@ pipeline {
 
     stages {
 		stage('build') {
-            when {
-                anyOf {
-                	branch 'develop'
-                	changeRequest()
-            	}
-            }
             parallel {
                 stage('client build') {
 					when {
@@ -115,9 +109,6 @@ pipeline {
 			}
         }
         stage('deploy') {
-            when {
-                expression { env.BRANCH_NAME == 'develop' }
-            }
             parallel {
                 stage('replace client container') {
                     when {
