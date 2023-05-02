@@ -11,7 +11,7 @@ pipeline {
     stages {
 		stage('build') {
             when {
-                branch 'develop'
+                expression { env.BRANCH_NAME == 'develop' }
             }
             parallel {
                 stage('client build') {
@@ -113,7 +113,7 @@ pipeline {
         }
         stage('deploy') {
             when {
-                branch 'develop'
+                expression { env.BRANCH_NAME == 'develop' }
             }
             parallel {
                 stage('replace client container') {
