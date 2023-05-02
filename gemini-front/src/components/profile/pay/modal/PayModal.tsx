@@ -17,13 +17,13 @@ const PayModal = () => {
   // 아임포트 결제 모듈
   const onClickPayment = () => {
     const IMP = window.IMP;
-    IMP.init("imp47473242");
+    IMP.init(process.env.REACT_APP_KAKAOPAY_IMP);
     const data = {
       pg: "kakaopay",
       pay_method: "card",
       merchant_uid: "57008833-33004",
       name: "별 구매하기",
-      amount: payInput * 1000,
+      amount: 1000,
     };
     IMP.request_pay(data, callback);
   };
