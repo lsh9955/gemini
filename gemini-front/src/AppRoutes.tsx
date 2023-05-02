@@ -4,10 +4,11 @@ import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
+import AiImage from "./pages/ai_image/AiImage";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
-  const pathsWithoutHeader = ["/login", "/loginSuccess"];
+  const pathsWithoutHeader = ["/loginPage", "/loginSuccess"];
   const shouldShowHeader = !pathsWithoutHeader.includes(location.pathname);
 
   return (
@@ -17,6 +18,7 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/loginPage" component={Login} />
         <Route exact path="/loginSuccess" component={LoginSuccess} />
+        <Route exact path="/aiImage" component={AiImage} />
         {/* ... */}
       </Switch>
     </>
