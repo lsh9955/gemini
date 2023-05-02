@@ -9,7 +9,7 @@ spring:
           google:
             client-id: 424629007631-55vci0bsgdt2vbo73mrc7537d18dvsde.apps.googleusercontent.com
             client-secret: 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
-            redirectUri: http://${api_gateway_url}/login/oauth2/code/google
+            redirectUri: http://${api_gateway_url}:8080/login/oauth2/code/google
             scope:
               - profile
           twitter:
@@ -29,6 +29,9 @@ spring:
 
 api_gateway_url: localhost
 
+
 custom:
   react:
     redirect_uri: http://localhost:3000/loginSuccess # 기본값 설정
+  springboot:
+    user_service_url: http://localhost:8081
