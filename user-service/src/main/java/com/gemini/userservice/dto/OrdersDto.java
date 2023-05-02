@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentsDto {
-    private Integer plus_star;
-    private String merchant_uid;
+public class OrdersDto {
+    private Long orderPk;
+    private Integer orderStar;
+    private String merchantUid;
+    private Long userPk;
 
 }
