@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-	tools {node "nodejs-16.3.0"}
+	tools {nodejs "node"}
 
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
