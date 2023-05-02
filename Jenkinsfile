@@ -14,6 +14,13 @@ pipeline {
     }
 
     stages {
+
+		stage('checkout') {
+    		steps {
+        		checkout([$class: 'GitSCM', branches: [[name: '*/develop']], userRemoteConfigs: [[url: 'https://lab.ssafy.com/s08-final/S08P31B106']]])
+    		}	
+		}
+
 		stage('build') {
             parallel {
                 stage('client build') {
