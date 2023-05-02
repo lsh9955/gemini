@@ -1,0 +1,43 @@
+version: '3'
+services:
+  client:
+    container_name: client
+    image: bshello25/gemini:client
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - gemini
+
+  auth-serivce:
+    container_name: auth-service
+    image: bshello25/gemini:auth-service
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      - gemini
+
+  user-serivce:
+    container_name: user-service
+    image: bshello25/gemini:user-service
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    networks:
+      - gemini
+  
+  # socket:
+  #   container_name: socket
+  #   image: bshello25/gemini:socket
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./data/certbot/conf:/etc/letsencrypt
+  #   ports:
+  #     - 5000:5000    
+  #   networks:
+  #     - gemini  
+
+networks:
+  gemini:
+    external: true
