@@ -17,9 +17,9 @@ pipeline {
 
 		stage('checkout') {
     		steps {
-        		checkout([$class: 'GitSCM', branches: [[name: '*/develop']], 
+        		checkout([$class: 'git', branches: [[name: '*/develop']], 
 				userRemoteConfigs: [[url: 'https://lab.ssafy.com/s08-final/S08P31B106']],
-				credentials: 'gg'
+				credentialsId: 'gg'
 				])
     		}	
 		}
