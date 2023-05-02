@@ -126,9 +126,16 @@ pipeline {
                     	}
                   	}
                     steps {
-                        sh 'docker container stop client && docker container rm client'
-                        sh 'docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}/${CLIENT_IMAGE_TAG}'
-                    }
+                        script {
+            				sshagent(['/root/.ssh/K8B106T.pem']) {
+                			sh """
+                    			ssh -o StrictHostKeyChecking=no -i /root/.ssh/K8B106T.pem ubuntu@k8b106.p.ssafy.io \
+                    			"docker container stop client && docker container rm client"
+                				docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}/${CLIENT_IMAGE_TAG}
+                			"""
+            				}
+        				}
+		           	}
                 }
 
                 stage('replace auth-service container') {
@@ -141,8 +148,15 @@ pipeline {
                     	}
                   	}
                     steps {
-                        sh 'docker container stop auth-service && docker container rm auth-service'
-                        sh 'docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}/${AUTH_SERVICE_IMAGE_TAG}'
+						script {
+            				sshagent(['/root/.ssh/K8B106T.pem']) {
+                			sh """
+                    			ssh -o StrictHostKeyChecking=no -i /root/.ssh/K8B106T.pem ubuntu@k8b106.p.ssafy.io \
+                    			"docker container stop auth-service && docker container rm auth-service"
+                				docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}/${AUTH_SERVICE_IMAGE_TAG}
+                			"""
+            				}
+        				}
                     }
                 }
 
@@ -156,8 +170,15 @@ pipeline {
                     	}
                   	}
                     steps {
-                        sh 'docker container stop user-service && docker container rm user-service'
-                        sh 'docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}/${USER_SERVICE_IMAGE_TAG}'
+						script {
+            				sshagent(['/root/.ssh/K8B106T.pem']) {
+                			sh """
+                    			ssh -o StrictHostKeyChecking=no -i /root/.ssh/K8B106T.pem ubuntu@k8b106.p.ssafy.io \
+                    			"docker container stop user-service && docker container rm user-service"
+                				docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}/${USER_SERVICE_IMAGE_TAG}
+                			"""
+            				}
+        				}
                     }
                 }
             }
