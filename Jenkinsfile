@@ -1,6 +1,8 @@
 pipeline {
     agent any
 
+	tools {nodejs "nodejs-16.3.0"}
+
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
         CLIENT_IMAGE_TAG = "client"
