@@ -24,17 +24,11 @@ const PayModal = () => {
       merchant_uid: "57008833-33004",
       name: "별 구매하기",
       amount: payInput * 1000,
-      // m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}",
-      // buyer_email: "Iamport@chai.finance",
-      // buyer_name: "포트원 기술지원팀",
-      // buyer_tel: "010-1234-5678",
-      // buyer_addr: "서울특별시 강남구 삼성동",
-      // buyer_postcode: "123-456",
     };
     IMP.request_pay(data, callback);
   };
 
-  // 결제 모듈 성공시 별 개수 변경
+  // 결제 모듈 성공시 별 개수 변경, merchant_uid 등 결제 정보 보내서 저장하기
   const callback = (res: any) => {
     if (res.success) {
       alert("별 구매가 완료되었습니다.");
