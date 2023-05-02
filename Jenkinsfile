@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-	tools {
-		nodejs "node"
-		gradle "gradle"
-	}
+	// tools {
+	// 	nodejs "node"
+	// 	gradle "gradle"
+	// }
 
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
