@@ -15,15 +15,6 @@ pipeline {
 
     stages {
 
-		stage('checkout') {
-    		steps {
-        		checkout([$class: 'git', branches: [[name: '*/develop']], 
-				userRemoteConfigs: [[url: 'https://lab.ssafy.com/s08-final/S08P31B106']],
-				credentialsId: 'gg'
-				])
-    		}	
-		}
-
 		stage('build') {
             parallel {
                 stage('client build') {
