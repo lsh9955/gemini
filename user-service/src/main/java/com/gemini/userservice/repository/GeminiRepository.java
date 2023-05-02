@@ -11,19 +11,5 @@ import java.util.List;
 public interface GeminiRepository extends JpaRepository<Gemini, Long>, CustomGeminiRepository {
 
     List<Gemini> findByUserInfo(UserInfo userInfo);
-//    List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic);
-//    List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic); // 😀이거 상속받음.
-
-//    List<Gemini> findByUserPkAndIsPublic(Long userPk, boolean isPublic);
-
-
-
-//    List<Gemini> findByUserInfo_UserPkAndIsPublic(Long userPk, boolean isPublic);
-
-//    List<Gemini> findByUserPkAndIsPublic(Long userPk, boolean isPublic);
-
-
-
-
 
 }

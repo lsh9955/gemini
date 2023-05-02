@@ -82,7 +82,7 @@ public class UserInfoApiController {
         return ResponseEntity.ok(NicknameCheckResponseDto.builder().duplicated(isDuplicated).nickname(requestDto.getNickname()).build());
     }
 
-    @GetMapping("/{nickname}")
+    @GetMapping("/{nickname}") // test complete 😀
     public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@PathVariable String nickname) {
         OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(nickname);
         return ResponseEntity.ok(otherUserProfileDto);

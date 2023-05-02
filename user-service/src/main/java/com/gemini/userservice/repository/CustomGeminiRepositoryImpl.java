@@ -15,7 +15,6 @@ public class CustomGeminiRepositoryImpl implements CustomGeminiRepository {
     @Override
     public List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic) {
         System.out.println("제발기도해555");
-//        String qlString = "SELECT g FROM Gemini g WHERE g.userInfo = :userInfo AND g.isPublic = :isPublic";
         String qlString = "select g from Gemini g where g.userInfo = :userInfo and g.isPublic = :isPublic";
 
         TypedQuery<Gemini> query = em.createQuery(qlString, Gemini.class);
