@@ -2,6 +2,7 @@ pipeline {
     agent any
 
 	tools {nodejs "node"}
+	tools {gradle "gradle"}
 
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
