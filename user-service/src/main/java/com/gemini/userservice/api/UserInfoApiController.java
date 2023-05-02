@@ -20,19 +20,28 @@ public class UserInfoApiController {
     private UserInfoService userInfoService;
 
 
-    @PostMapping
-    public ResponseEntity<Void> followUser(@RequestHeader("userId") String currentUserId, @RequestBody FollowRequestDto followRequestDto) {
-        userService.followUser(currentUserId, followRequestDto);
+    @PostMapping // test complete 😀 exception for following myself needed, duplicated request also should be handled.
+    public ResponseEntity<Void> followUser(@RequestHeader("username") String currentUsername, @RequestBody FollowRequestDto followRequestDto) {
+        System.out.println("follow test start@@@@@@@@@@@@@@@@@@@@");
+        userService.followUser(currentUsername, followRequestDto);
+        System.out.println(currentUsername);
+        System.out.println(followRequestDto);
+        System.out.println("follow success");
         return ResponseEntity.ok().build();
     }
 
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{userId}") // test complete 😀
     public ResponseEntity<Void> unfollowUser(
-            @RequestHeader("userId") String currentUserId,
-            @PathVariable("userId") String userIdToUnfollow) {
+            @RequestHeader("username") String currentUsername,
+            @PathVariable("userId") Long userPkToUnfollow) {
+        System.out.println("unfollow test start@@@@@@@@@@@@@@@@@@@@");
 
-        userService.unfollowUser(currentUserId, userIdToUnfollow);
+        System.out.println("currentUsername"+ currentUsername);
+        System.out.println("userPkToUnfollow: "+ userPkToUnfollow);
+
+        userService.unfollowUser(currentUsername, userPkToUnfollow);
+        System.out.println("unfollow success");
         return ResponseEntity.noContent().build();
     }
 
@@ -49,9 +58,10 @@ public class UserInfoApiController {
         return ResponseEntity.ok(userInfoDto);
     }
 
-    @PostMapping("/enroll")
+    @PostMapping("/enroll") // test complete 😀
     public ResponseEntity<String> enrollUser(@RequestBody UserDto userDto) {
         System.out.println("======================@@@@@@@@@@@@@@@@user_service enroll start======================@@@@@@@@@@@@@@@@");
+        System.out.println(userDto);
         userService.enrollUser(userDto);
         System.out.println("======================@@@@@@@@@@@@@@@@user_service enroll done======================@@@@@@@@@@@@@@@@");
         return ResponseEntity.ok("success");
