@@ -5,10 +5,7 @@ pipeline {
 	// 	nodejs "node"
 	// 	gradle "gradle"
 	// }
-	tools {
-		docker "docker"
-	}
-
+	
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
         CLIENT_IMAGE_TAG = "client"
