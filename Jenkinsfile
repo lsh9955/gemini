@@ -23,7 +23,7 @@ pipeline {
 							expression {
 								currentBuild.result == null || currentBuild.result == 'SUCCESS'
 							}
-							changeset "*/gemini-front/**"
+							changeset "gemini-front/**"
 						}
 					}
 					steps {
