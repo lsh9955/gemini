@@ -2,11 +2,9 @@ const Room = require("../schemas/room");
 const Chat = require("../schemas/chat");
 const { removeRoom: removeRoomService } = require("../services");
 const redis = require("redis");
-const client = redis.createClient({
-  socket: {
-    host: "redis-15197.c290.ap-northeast-1-2.ec2.cloud.redislabs.com",
-    port: 15197,
-  },
+const redisClient = redis.createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASSWORD,
 });
 
 exports.renderMain = async (req, res, next) => {

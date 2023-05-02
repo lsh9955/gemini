@@ -3,7 +3,7 @@ import axios from "axios";
 import io from "socket.io-client";
 const Room = () => {
   const userId = localStorage.getItem("userInfo");
-  const submitHandler = (e) => {
+  const submitHandler = (e: any) => {
     e.preventDefault();
     console.log(e);
   };
