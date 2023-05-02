@@ -8,9 +8,22 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GeminiRepository extends JpaRepository<Gemini, Long> {
-    List<Gemini> findByUserInfo(UserInfo userInfo);
+public interface GeminiRepository extends JpaRepository<Gemini, Long>, CustomGeminiRepository {
 
-    List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic);
+    List<Gemini> findByUserInfo(UserInfo userInfo);
+//    List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic);
+//    List<Gemini> findByUserInfoAndIsPublic(UserInfo userInfo, boolean isPublic); // 😀이거 상속받음.
+
+//    List<Gemini> findByUserPkAndIsPublic(Long userPk, boolean isPublic);
+
+
+
+//    List<Gemini> findByUserInfo_UserPkAndIsPublic(Long userPk, boolean isPublic);
+
+//    List<Gemini> findByUserPkAndIsPublic(Long userPk, boolean isPublic);
+
+
+
+
 
 }

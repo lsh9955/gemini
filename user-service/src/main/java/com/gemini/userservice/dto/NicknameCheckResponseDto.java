@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NicknameCheckDto {
+public class NicknameCheckResponseDto {
     private boolean duplicated;
     private String nickname;
 }

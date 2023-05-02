@@ -76,10 +76,10 @@ public class UserInfoApiController {
 //    }
 
     //여기부터 다시 체크
-    @PostMapping("/checkNickname")
-    public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
+    @PostMapping("/checkNickname") // test complete 😀
+    public ResponseEntity<NicknameCheckResponseDto> checkNickname(@RequestBody NicknameCheckRequestDto requestDto) {
         boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
-        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).nickname(requestDto.getNickname()).build());
+        return ResponseEntity.ok(NicknameCheckResponseDto.builder().duplicated(isDuplicated).nickname(requestDto.getNickname()).build());
     }
 
     @GetMapping("/{nickname}")

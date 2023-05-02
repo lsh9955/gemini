@@ -29,8 +29,11 @@ public class UserInfo {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "profile_background")
+    @Column(name = "profile_background_url")
     private String profileBackground;
+
+    @Column(name = "profile_img_url")
+    private String profileImg;
 
     @Column(name = "star", nullable = false)
     private Integer star;
