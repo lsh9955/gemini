@@ -1,151 +1,166 @@
-stages:
-  - libs
-  - build
-  - deploy
+pipeline {
+    agent any
 
-npm:
-  stage: libs
-  only:
-    - develop
-  cache:
-    paths:
-      - gemini-front/node_modules
-  script:
-    - cd gemini-front
-    - npm install
+    environment {
+        DOCKER_REGISTRY = "bshello25/gemini"
+        CLIENT_IMAGE_TAG = "client"
+        AUTH_SERVICE_IMAGE_TAG = "auth-service"
+        USER_SERVICE_IMAGE_TAG = "user-service"
+    }
 
-client:
-  stage: build
-  environment: react-framework-build
-  only:
-    - develop
-  cache:
-    paths:
-      - gemini-front/build
-      - gemini-front/node_modules
-  needs: ["npm"]
-  when: on_success
-  script:
-    - cd gemini-front
-    - CI=false npm run build
-    - docker build -t bshello25/gemini:client .
-    - docker push bshello25/gemini:client
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR/gemini-front/build
+    stages {
+		stage('build') {
+            when {
+                branch 'develop'
+            }
+            parallel {
+                stage('client build') {
+					when {
+						allOf {
+							expression {
+								currentBuild.result == null || currentBuild.result == 'SUCCESS'
+							}
+							changeset "gemini-front/**"
+						}
+					}
+					steps {
+						dir('gemini-front') {
+							sh 'npm install'
+							sh 'CI=false npm run build'
+							sh 'docker build -t ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG} .'
+							sh 'docker push ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}'
+						}
+					}
+					post {
+						always {
+							dir('gemini-front') {
+								junit 'reports/**/*.xml'
+								archiveArtifacts 'build/**'
+							}
+						}
+						success {
+							echo 'client build succeeded'
+						}
+						failure {
+							echo 'client build failed'
+						}
+					}
+        		}
 
-client:on_failure:
-  stage: build
-  only:
-    - develop
-  cache:
-    paths:
-      - gemini-front/build
-      - gemini-front/node_modules
-  needs: ["npm"]
-  when: on_failure
-  script:
-    - echo "client build failed"
+				stage('auth-service build') {
+					when {
+						allOf {
+							expression {
+								currentBuild.result == null || currentBuild.result == 'SUCCESS'
+							}
+							changeset "auth-service/**"
+						}
+					}
+					steps {
+						dir('auth-service') {
+							sh './gradlew clean build'
+							sh 'docker build -t ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG} .'
+							sh 'docker push ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}'
+						}
+					}
+					post {
+						always {
+							dir('auth-service') {
+								junit 'build/test-results/**/*.xml'
+							}
+						}
+						success {
+							echo 'auth-service build succeeded'
+						}
+						failure {
+							echo 'auth-service build failed'
+						}
+					}
+				}
 
-deploy-job/client:preparing_for_replace:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  only:
-    - develop
-  needs: ["client"]
-  allow_failure: true
-  when: on_success
-  script:
-    - docker container stop client && docker container rm client
+				stage('user-service build') {
+					when {
+						allOf {
+							expression {
+								currentBuild.result == null || currentBuild.result == 'SUCCESS'
+							}
+							changeset "user-service/**"
+						}
+					}
+					steps {
+						dir('user-service') {
+							sh './gradlew clean build'
+							sh 'docker build -t ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG} .'
+							sh 'docker push ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}'
+							sh 'docker rm '
+						}
+					}
+					post {
+						always {
+							dir('user-service') {
+								junit 'build/test-results/**/*.xml'
+							}
+						}
+						success {
+							echo 'user-service build succeeded'
+						}
+						failure {
+							echo 'user-service build failed'
+						}
+					}
+				}
+			}
+        }
+        stage('deploy') {
+            when {
+                branch 'develop'
+            }
+            parallel {
+                stage('replace client container') {
+                    when {
+                    	allOf {
+                      		expression {
+                        		currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                      		}
+                      		changeset "gemini-front/**"
+                    	}
+                  	}
+                    steps {
+                        sh 'docker container stop client && docker container rm client'
+                        sh 'docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}/${CLIENT_IMAGE_TAG}'
+                    }
+                }
 
-deploy-job/client:replace_docker_container:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  only:
-    - develop
-  needs: ["deploy-job/client:preparing_for_replace"]
-  when: on_success
-  script:
-    - docker run -p 3000:3000 --name client --network gemini -d bshello25/gemini:client
+                stage('replace auth-service container') {
+                    when {
+                    	allOf {
+                      		expression {
+                        		currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                      		}
+                      		changeset "auth-service/**"
+                    	}
+                  	}
+                    steps {
+                        sh 'docker container stop auth-service && docker container rm auth-service'
+                        sh 'docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}/${AUTH_SERVICE_IMAGE_TAG}'
+                    }
+                }
 
-auth-service:
-  stage: build
-  only:
-    - develop
-  script:
-    - cd auth-service
-    - chmod +x gradlew
-    - ./gradlew clean build
-    - docker build -t bshello25/gemini:auth-service .
-    - docker push bshello25/gemini:auth-service
-
-auth-service:on_failure:
-  stage: build
-  only:
-    - develop
-  when: on_failure
-  script:
-    - echo "auth-service build failed"
-
-deploy-job/auth-service:preparing_for_replace:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  only:
-    - develop
-  needs: ["auth-service"]
-  allow_failure: true
-  when: on_success
-  script:
-    - docker container stop auth-service && docker container rm auth-service
-
-deploy-job/auth-service:replace_docker_container:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  only:
-    - develop
-  needs: ["deploy-job/auth-service:preparing_for_replace"]
-  # allow_failure: true
-  when: on_success
-  script:
-    - docker run -p 8080:8080 --name auth-service --network gemini -d bshello25/gemini:auth-service
-
-user-service:
-  stage: build
-  only:
-    - develop
-  script:
-    - cd user-service
-    - chmod +x gradlew
-    - ./gradlew clean build
-    - docker build -t bshello25/gemini:user-service .
-    - docker push bshello25/gemini:user-service
-
-user-service:on_failure:
-  stage: build
-  only:
-    - develop
-  when: on_failure
-  script:
-    - echo "user-service build failed"
-
-deploy-job/user-service:preparing_for_replace:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  only:
-    - develop
-  needs: ["user-service"]
-  allow_failure: true
-  when: on_success
-  script:
-    - docker container stop user-service && docker container rm user-service
-
-deploy-job/user-service:replace_docker_container:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  only:
-    - develop
-  needs: ["deploy-job/user-service:preparing_for_replace"]
-  # allow_failure: true
-  when: on_success
-  script:
-    - docker run -p 8081:8081 --name user-service --network gemini -d bshello25/gemini:user-service
+                stage('replace user-service container') {
+                    when {
+                    	allOf {
+                      		expression {
+                        		currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                      		}
+                      		changeset "user-service/**"
+                    	}
+                  	}
+                    steps {
+                        sh 'docker container stop user-service && docker container rm user-service'
+                        sh 'docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}/${USER_SERVICE_IMAGE_TAG}'
+                    }
+                }
+            }
+        }
+  	}
+}
