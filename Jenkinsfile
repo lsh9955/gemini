@@ -15,12 +15,13 @@ pipeline {
     }
 
     stages {
-		
 
-		stage('build') {
+		stage('docekrLogin') {
 			steps {
         		sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       		}
+		}
+		stage('build') {
             parallel {
                 stage('client build') {
 					when {
