@@ -1,6 +1,7 @@
 package com.gemini.authservice.config;
 
 import com.gemini.authservice.security.jwt.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
@@ -22,6 +23,9 @@ public class JwtAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
     public JwtAuthenticationSuccessHandler(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
+
+    @Value("${custom.react.redirect_uri}")
+    private String reactRedirectUri;
 
 //    @Override
 //    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
@@ -57,13 +61,14 @@ public void onAuthenticationSuccess(HttpServletRequest request, HttpServletRespo
     Cookie refreshTokenCookie = new Cookie("Refresh-Token", refreshToken);
     refreshTokenCookie.setHttpOnly(true);
     refreshTokenCookie.setSecure(true); // Set this to 'true' only if using HTTPS 배포해서 HTTPS를 사용시, true로 변경😀
-    refreshTokenCookie.setPath("/");
+    refreshTokenCookie.setPath("/"); // needs to inspect 😀
 //    refreshTokenCookie.setMaxAge(Integer.parseInt("${jwt.refresh-token-expiration}")); // 7 days yml setting
     refreshTokenCookie.setMaxAge((int) jwtUtil.getRefreshTokenExpiration() / 1000); // expiration is in milliseconds, converting it to seconds
 
     response.addHeader("Authorization", "Bearer " + accessToken);
     response.addCookie(refreshTokenCookie);
-    setDefaultTargetUrl("http://mygemini.co.kr/loginSuccess");
-    super.onAuthenticationSuccess(request, response, authentication);
+    setDefaultTargetUrl(reactRedirectUri);
+//    setDefaultTargetUrl("http://localhost:3000/loginSuccess");
+    super.onAuthenticationSuccess(request, response, authentication); // test success 😀
 }
 }

@@ -27,10 +27,11 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileResponseDto getProfileByUsername(String username) {
-        UserInfo userInfo = userInfoRepository.findByUsername(username);
+        UserInfo userInfo = userInfoRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        long follower = followRepository.countByFollowing(userInfo.getUserPk());
-        long following = followRepository.countByFollower(userInfo.getUserPk());
+        long follower = followRepository.countByFollowing(userInfo);
+        long following = followRepository.countByFollower(userInfo);
 
         List<Gemini> geminis = geminiRepository.findByUserInfo(userInfo);
         List<GeminiDto> geminiDtoList = geminis.stream()
