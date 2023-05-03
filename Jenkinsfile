@@ -1,18 +1,27 @@
 pipeline {
     agent any
 
+	tools {
+		nodejs "node"
+		gradle "gradle"
+	}
+
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
         CLIENT_IMAGE_TAG = "client"
         AUTH_SERVICE_IMAGE_TAG = "auth-service"
         USER_SERVICE_IMAGE_TAG = "user-service"
+		DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
     stages {
+
+		stage('dockerLogin') {
+			steps {
+        		sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      		}
+		}
 		stage('build') {
-            when {
-                branch 'develop'
-            }
             parallel {
                 stage('client build') {
 					when {
@@ -26,18 +35,17 @@ pipeline {
 					steps {
 						dir('gemini-front') {
 							sh 'npm install'
+							sh 'echo -e "REACT_APP_KAKAOPAY_IMP=\'${REACT_APP_KAKAOPAY_IMP}\'
+							\nREACT_APP_API_OAUTH2_BASE_URL=\'${REACT_APP_API_OAUTH2_BASE_URL}\'
+							\nREACT_APP_GOOGLE_AUTH_URL=\'${REACT_APP_GOOGLE_AUTH_URL}\'
+							\nREACT_APP_TWITTER_AUTH_URL=\'${REACT_APP_TWITTER_AUTH_URL}\'
+							\nREACT_APP_API_BASE_URL=\'${REACT_APP_API_BASE_URL}\'" > .env.local'
 							sh 'CI=false npm run build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}'
 						}
 					}
 					post {
-						always {
-							dir('gemini-front') {
-								junit 'reports/**/*.xml'
-								archiveArtifacts 'build/**'
-							}
-						}
 						success {
 							echo 'client build succeeded'
 						}
@@ -58,17 +66,13 @@ pipeline {
 					}
 					steps {
 						dir('auth-service') {
+							sh 'chmod +x ./gradlew'
 							sh './gradlew clean build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}'
 						}
 					}
 					post {
-						always {
-							dir('auth-service') {
-								junit 'build/test-results/**/*.xml'
-							}
-						}
 						success {
 							echo 'auth-service build succeeded'
 						}
@@ -89,18 +93,13 @@ pipeline {
 					}
 					steps {
 						dir('user-service') {
+							sh 'chmod +x ./gradlew'
 							sh './gradlew clean build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}'
-							sh 'docker rm '
 						}
 					}
 					post {
-						always {
-							dir('user-service') {
-								junit 'build/test-results/**/*.xml'
-							}
-						}
 						success {
 							echo 'user-service build succeeded'
 						}
@@ -112,9 +111,6 @@ pipeline {
 			}
         }
         stage('deploy') {
-            when {
-                branch 'develop'
-            }
             parallel {
                 stage('replace client container') {
                     when {
@@ -126,9 +122,17 @@ pipeline {
                     	}
                   	}
                     steps {
-                        sh 'docker container stop client && docker container rm client'
-                        sh 'docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}/${CLIENT_IMAGE_TAG}'
-                    }
+                        script {
+            				sshagent(credentials: ['ssh']) {
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${CLIENT_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${CLIENT_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 3000:3000 --name ${CLIENT_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}
+								"""
+            				}
+        				}
+		           	}
                 }
 
                 stage('replace auth-service container') {
@@ -137,12 +141,20 @@ pipeline {
                       		expression {
                         		currentBuild.result == null || currentBuild.result == 'SUCCESS'
                       		}
-                      		changeset "auth-service/**"
+							changeset "auth-service/**"
                     	}
                   	}
                     steps {
-                        sh 'docker container stop auth-service && docker container rm auth-service'
-                        sh 'docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}/${AUTH_SERVICE_IMAGE_TAG}'
+						script {
+            				sshagent(credentials: ['ssh']) {
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${AUTH_SERVICE_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${AUTH_SERVICE_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 8080:8080 --name ${AUTH_SERVICE_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}
+								"""
+            				}
+        				}
                     }
                 }
 
@@ -156,8 +168,16 @@ pipeline {
                     	}
                   	}
                     steps {
-                        sh 'docker container stop user-service && docker container rm user-service'
-                        sh 'docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}/${USER_SERVICE_IMAGE_TAG}'
+						script {
+            				sshagent(credentials: ['ssh']) {
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${USER_SERVICE_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${USER_SERVICE_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 8081:8081 --name ${USER_SERVICE_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}
+								"""
+            				}
+        				}
                     }
                 }
             }

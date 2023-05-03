@@ -4,6 +4,7 @@ import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
+import MyPage from "./pages/profile/MyPage";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
