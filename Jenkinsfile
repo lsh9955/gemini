@@ -23,15 +23,16 @@ pipeline {
 							expression {
 								currentBuild.result == null || currentBuild.result == 'SUCCESS'
 							}
-							changeset "gemini-front/**"
+							// changeset "gemini-front/**"
 						}
 					}
 					steps {
 						dir('gemini-front') {
 							sh 'npm install'
 							sh 'CI=false npm run build'
-							sh 'docker build -t ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG} .'
-							sh 'docker push ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}'
+							sh 'docker run hello-world'
+							// sh 'docker build -t ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG} .'
+							// sh 'docker push ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}'
 						}
 					}
 					post {
