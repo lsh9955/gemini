@@ -11,11 +11,16 @@ pipeline {
         CLIENT_IMAGE_TAG = "client"
         AUTH_SERVICE_IMAGE_TAG = "auth-service"
         USER_SERVICE_IMAGE_TAG = "user-service"
+		DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
     stages {
+		
 
 		stage('build') {
+			steps {
+        		sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      		}
             parallel {
                 stage('client build') {
 					when {
