@@ -25,6 +25,6 @@ public class Pairchild {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "image", nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String image;
 }
