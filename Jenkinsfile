@@ -19,7 +19,6 @@ pipeline {
 		stage('dockerLogin') {
 			steps {
         		sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh 'chmod +x ./gradlew'
       		}
 		}
 		stage('build') {
@@ -64,6 +63,7 @@ pipeline {
 					}
 					steps {
 						dir('auth-service') {
+							sh 'chmod +x ./gradlew'
 							sh './gradlew clean build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}'
@@ -90,6 +90,7 @@ pipeline {
 					}
 					steps {
 						dir('user-service') {
+							sh 'chmod +x ./gradlew'
 							sh './gradlew clean build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}'
