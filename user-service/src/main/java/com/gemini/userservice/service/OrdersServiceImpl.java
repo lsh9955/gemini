@@ -20,9 +20,6 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private final UserInfoRepository userInfoRepository;
 
-    @Autowired
-    private EntityManager em;
-
 
     public OrdersServiceImpl(OrdersRepository ordersRepository, UserInfoRepository userInfoRepository) {
         this.ordersRepository = ordersRepository;
@@ -31,9 +28,9 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto) {
+        // 회원정보 찾아오기
         UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername());
-        System.out.println(requestDto.getUsername());
-        System.out.println(userInfo);
+        
         // 기존 별 개수 및 추가할 별 개수 조회
         Integer oldTotalStars = userInfo.getStar();
         Integer addStars = requestDto.getOrderStar();
@@ -47,6 +44,7 @@ public class OrdersServiceImpl implements OrdersService {
         Orders orders = Orders.builder()
                 .star(requestDto.getOrderStar())
                 .merchantUid(requestDto.getMerchantUid())
+                .userInfo(userInfo)
                 .build();
         ordersRepository.save(orders);
 
