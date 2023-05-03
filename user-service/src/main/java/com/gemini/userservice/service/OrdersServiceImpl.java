@@ -26,7 +26,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto) {
 
-        UserInfo userInfo = userInfoRepository.findByUserPk(requestDto.getUserPk());
+        UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername());
 
         // 기존 별 개수 및 추가할 별 개수 조회
         Integer oldTotalStars = userInfo.getStar();
@@ -49,4 +49,6 @@ public class OrdersServiceImpl implements OrdersService {
                 .star(newTotalStar)
                 .build();
     }
+
+
 }
