@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "LIKE")
+@Table(name = "`LIKE`")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
