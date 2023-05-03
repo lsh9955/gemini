@@ -94,7 +94,6 @@ pipeline {
 							sh './gradlew clean build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}'
-							sh 'docker rm '
 						}
 					}
 					post {
