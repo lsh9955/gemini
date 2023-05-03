@@ -149,7 +149,7 @@ pipeline {
 									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${AUTH_SERVICE_IMAGE_TAG}; then
 										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${AUTH_SERVICE_IMAGE_TAG} && ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container rm ${AUTH_SERVICE_IMAGE_TAG}
 									fi
-									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 3000:3000 --name ${AUTH_SERVICE_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 8080:8080 --name ${AUTH_SERVICE_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}
 								"""
             				}
         				}
@@ -172,7 +172,7 @@ pipeline {
 									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${USER_SERVICE_IMAGE_TAG}; then
 										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${USER_SERVICE_IMAGE_TAG} && ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container rm ${USER_SERVICE_IMAGE_TAG}
 									fi
-									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 3000:3000 --name ${USER_SERVICE_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 8081:8081 --name ${USER_SERVICE_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}
 								"""
             				}
         				}
