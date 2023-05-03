@@ -27,4 +27,7 @@ public class Follow {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following", nullable = false)
     private UserInfo following;
+//
+//
+//
 }

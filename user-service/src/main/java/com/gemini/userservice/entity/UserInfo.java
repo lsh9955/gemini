@@ -29,8 +29,11 @@ public class UserInfo {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "profile_background")
+    @Column(name = "profile_background_url")
     private String profileBackground;
+
+    @Column(name = "profile_img_url")
+    private String profileImg;
 
     @Column(name = "star", nullable = false)
     private Integer star;
@@ -47,4 +50,8 @@ public class UserInfo {
 
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follow> followings = new HashSet<>();
+
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Like> likes;
+
 }
