@@ -28,7 +28,4 @@ public class Gallery {
     @JoinColumn(name = "gemini_no")
     private Gemini gemini;
 
-    @ManyToOne
-    @JoinColumn(name = "user_no")
-    private UserInfo userInfo;
 }

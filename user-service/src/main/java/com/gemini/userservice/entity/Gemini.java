@@ -22,18 +22,20 @@ public class Gemini {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
     @Column(name = "image_url", nullable = false)
-    private String image;
+    private String imageUrl;
 
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
     @Column(name = "total_like", nullable = false)
     private Integer totalLike;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
-//    private UserInfo userInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
