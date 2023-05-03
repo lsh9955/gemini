@@ -39,18 +39,10 @@ public class OrdersServiceImpl implements OrdersService {
         ordersRepository.save(orders);
 
         // client에 보낼 DTO 생성 및 반환
-        OrdersResponseDto ordersResponseDto = OrdersResponseDto.builder()
+        return OrdersResponseDto.builder()
                 .star(newTotalStar)
                 .build();
-        return ordersResponseDto;
 
 
     }
-
-
-//    @Override
-//    public void orderSave(OrdersReqeustDto ordersReqeustDto){
-//
-//
-//    }
 }

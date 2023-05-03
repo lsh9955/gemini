@@ -20,10 +20,10 @@ public class OrdersController {
     private OrdersService ordersService;
 
     @PostMapping("/kakao/single-payment")
-        public ResponseEntity<OrdersReqeustDto> kakaoOrder(@RequestBody OrdersReqeustDto ordersReqeustDto, UserInfo userInfo) {
+        public ResponseEntity<OrdersResponseDto> kakaoOrder(@RequestBody OrdersReqeustDto ordersReqeustDto, UserInfo userInfo) {
             String username = userInfo.getUsername();
             OrdersResponseDto ordersResponseDto = ordersService.kakaoOrder(ordersReqeustDto, username);
-            return ResponseEntity.ok(ordersReqeustDto);
+            return ResponseEntity.ok(ordersResponseDto);
     }
 
 }
