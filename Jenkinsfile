@@ -16,7 +16,7 @@ pipeline {
 
     stages {
 
-		stage('docekrLogin') {
+		stage('dockerLogin') {
 			steps {
         		sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       		}
@@ -121,7 +121,7 @@ pipeline {
                 			sh """
                     			ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io \
                     			"docker container stop client && docker container rm client"
-                				docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}/${CLIENT_IMAGE_TAG}
+                				docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}
                 			"""
             				}
         				}
@@ -143,7 +143,7 @@ pipeline {
                 			sh """
                     			ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io \
                     			"docker container stop auth-service && docker container rm auth-service"
-                				docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}/${AUTH_SERVICE_IMAGE_TAG}
+                				docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}
                 			"""
             				}
         				}
@@ -165,7 +165,7 @@ pipeline {
                 			sh """
                     			ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io \
                     			"docker container stop user-service && docker container rm user-service"
-                				docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}/${USER_SERVICE_IMAGE_TAG}
+                				docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}
                 			"""
             				}
         				}
