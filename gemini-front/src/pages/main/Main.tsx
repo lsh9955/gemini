@@ -22,10 +22,9 @@ const Main: FC = () => {
     <>
       <MainWrapper>
         <LeftComponent to="/aiImage"></LeftComponent>
-        <RightComponent to="/">
-          <AnimatedArrow></AnimatedArrow>
-        </RightComponent>
+        <RightComponent to="/"></RightComponent>
       </MainWrapper>
+      <AnimatedArrow></AnimatedArrow>
     </>
   );
 };

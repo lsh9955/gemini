@@ -12,8 +12,7 @@ const AnimatedArrow: FC = () => {
       <StyledArrowWrapper>
         <StyledAnimatedArrow>
           <KeyboardDoubleArrowDownIcon
-            htmlColor="black"
-            style={{ fontSize: "20vh" }} // 원하는 크기로 변경하세요
+            style={{ fontSize: "15vh", color: "#fff" }} // 원하는 크기로 변경하세요
           />
         </StyledAnimatedArrow>
       </StyledArrowWrapper>
