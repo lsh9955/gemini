@@ -1,6 +1,6 @@
 package com.gemini.userservice.api;
 
-import com.gemini.userservice.dto.OrdersReqeustDto;
+import com.gemini.userservice.dto.OrdersRequestDto;
 import com.gemini.userservice.dto.OrdersResponseDto;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.OrdersRepository;
@@ -20,7 +20,7 @@ public class OrdersController {
     private OrdersService ordersService;
 
     @PostMapping("/kakao/single-payment")
-        public ResponseEntity<OrdersResponseDto> kakaoOrder(@RequestBody OrdersReqeustDto ordersReqeustDto, UserInfo userInfo) {
+        public ResponseEntity<OrdersResponseDto> kakaoOrder(@RequestBody OrdersRequestDto ordersReqeustDto, UserInfo userInfo) {
             String username = userInfo.getUsername();
             OrdersResponseDto ordersResponseDto = ordersService.kakaoOrder(ordersReqeustDto, username);
             return ResponseEntity.ok(ordersResponseDto);

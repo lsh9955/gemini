@@ -1,6 +1,6 @@
 package com.gemini.userservice.service;
 
-import com.gemini.userservice.dto.OrdersReqeustDto;
+import com.gemini.userservice.dto.OrdersRequestDto;
 import com.gemini.userservice.dto.OrdersResponseDto;
 import com.gemini.userservice.entity.Orders;
 import com.gemini.userservice.entity.UserInfo;
@@ -19,7 +19,7 @@ public class OrdersServiceImpl implements OrdersService {
     private UserInfoRepository userInfoRepository;
 
     @Override
-    public OrdersResponseDto kakaoOrder(OrdersReqeustDto requestDto, String username) {
+    public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto, String username) {
         UserInfo userInfo = userInfoRepository.findByUsername(username);
 
         // 기존 별 개수 및 추가할 별 개수 조회
