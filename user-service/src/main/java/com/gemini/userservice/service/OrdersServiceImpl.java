@@ -29,7 +29,8 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto) {
         // 회원정보 찾아오기
-        UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername());
+        UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         
         // 기존 별 개수 및 추가할 별 개수 조회
         Integer oldTotalStars = userInfo.getStar();
