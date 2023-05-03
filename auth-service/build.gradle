@@ -53,3 +53,7 @@ tasks.named('test') {
 bootJar {
 	duplicatesStrategy = 'exclude'
 }
+
+jar {
+	duplicatesStrategy = 'exclude'
+}
