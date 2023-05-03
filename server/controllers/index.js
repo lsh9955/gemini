@@ -30,9 +30,9 @@ exports.createRoom = async (req, res, next) => {
       owner: req.body.userId,
       password: req.body.password,
       users: req.body.userId,
+      usernum: 0,
     });
     console.log(`${newRoom}`);
-    client.set(`${newRoom._id}`, `${newRoom}`);
     const io = req.app.get("io");
     io.of("/room").emit("newRoom", newRoom);
     if (req.body.password) {
@@ -49,6 +49,13 @@ exports.createRoom = async (req, res, next) => {
 
 exports.enterRoom = async (req, res, next) => {
   try {
+    const willupdateRoom = await Room.find({ _id: req.params.id });
+
+    await Room.updateOne(
+      { _id: req.params.id },
+      { $set: { usernum: willupdateRoom.usernum + 1 } }
+    );
+
     const room = await Room.findOne({ _id: req.params.id });
     if (!room) {
       return res.redirect("/?error=존재하지 않는 방입니다.");

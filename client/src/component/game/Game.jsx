@@ -2,34 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io, { Socket } from "socket.io-client";
 
-type SocketIOClient = Socket<
-  // 이벤트 목록 (client -> server)
-  {
-    join_room: (room_id: string) => void;
-    leave_room: () => void;
-    chat_message: (message: string) => void;
-  },
-  // 이벤트 목록 (server -> client)
-  {
-    user_joined: (user_id: string) => void;
-    user_left: (user_id: string) => void;
-    chat_message: (user_id: string, message: string) => void;
-    join: (user: string, roomId: string) => void;
-  }
->;
-
-const Chat = (): JSX.Element => {
-  const userN: string | undefined = localStorage.getItem("userInfo")?.[0];
-
-  const [userList, setUserList] = useState<string[]>([]);
-  const [chatList, setChatList] = useState<
-    { user_id: string; message: string }[]
-  >([]);
+const Game = () => {
+  const userN = localStorage.getItem("userInfo");
+  console.log(userN);
+  const [userList, setUserList] = useState([]);
+  const [chatList, setChatList] = useState([]);
   const [firCome, setFirCome] = useState(true);
-  const [socket, setSocket] = useState<SocketIOClient>(
+  const [socket, setSocket] = useState(
     io("http://localhost:5000/chat", {
       transports: ["websocket"],
-      path: "/custom/socket.io",
     })
   );
 
@@ -39,21 +20,22 @@ const Chat = (): JSX.Element => {
       user: String(userN),
       roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
     });
-    socket.on("join", function (data: any) {
+    socket.on("join", function (data) {
       setUserList([...userList, data.user]);
     });
 
-    socket.on("exit", function (data: any) {
-      setUserList(Object.values(data.user));
-    });
-    socket.on("chat", function (data: any) {
+    socket.on("chat", function (data) {
       setChatList([...chatList, data]);
+    });
+    socket.on("roomupdate", function (data) {
+      console.log(data);
+      setUserList(data);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [socket, chatList, userList, userN]);
+  }, []);
 
   return (
     <>
@@ -81,4 +63,4 @@ const Chat = (): JSX.Element => {
   );
 };
 
-export default Chat;
+export default Game;

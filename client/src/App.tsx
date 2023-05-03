@@ -5,10 +5,10 @@ import {
   Redirect,
   BrowserRouter,
 } from "react-router-dom";
-import Chat from "./component/Chat";
-import Room from "./component/Room";
-import Main from "./component/Main";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import RoomList from "./component/roomList/RoomList";
+import Game from "./component/game/Game";
+import CreateRoomModal from "./component/roomList/CreateRoomModal";
 
 function App() {
   useEffect(() => {
@@ -21,9 +21,9 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact render={() => <Main />} />
-        <Route path="/room" exact render={() => <Room />} />
-        <Route path="/room/:id" render={() => <Chat />} />
+        <Route path="/room" exact render={() => <RoomList />} />
+        <Route path="/test" exact render={() => <CreateRoomModal />} />
+        <Route path="/room/:id" render={() => <Game />} />
       </Switch>
     </BrowserRouter>
   );

@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import io from "socket.io-client";
-const Main = () => {
-  const [socket, setSocket] = useState(
-    io.connect(
-      "http://localhost:5000/room",
-      {
-        transports: ["websocket"],
-      },
-      { path: "/custom/socket.io" }
-    )
-  );
-  const [rooms, setRooms] = useState([]);
+import { io, Socket } from "socket.io-client";
+
+interface ClienttoServerEvents {
+  newRoom: (data: any) => void;
+  removeRoom: (data: any) => void;
+  allroomInfo: (data: any) => void;
+}
+
+const RoomList = () => {
+  const [rooms, setRooms] = useState<string[]>([]);
   useEffect(() => {
     const res = async () => {
       const getRoomInfo = await axios.get("http://localhost:5000/room");
       console.log(getRoomInfo);
       setRooms(
-        getRoomInfo.data.room.map((v, i) => {
+        getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
         })
       );
@@ -26,21 +24,30 @@ const Main = () => {
     res();
   }, []);
   useEffect(() => {
-    socket?.on("newRoom", function (data) {
+    const socket: Socket<ClienttoServerEvents> = io(
+      "http://localhost:5000/room",
+      {
+        transports: ["websocket"],
+      }
+    );
+    socket?.on("newRoom", function (data: any) {
       // 새 방 이벤트 시 새 방 생성
       console.log("새 방 생성");
       setRooms([...rooms, JSON.stringify(data)]);
     });
 
-    socket?.on("removeRoom", function (data) {
+    socket?.on("removeRoom", function (data: any) {
       // 방 제거 이벤트 시 id가 일치하는 방 제거
       console.log("방 제거");
       console.log(data);
       setRooms(rooms.slice().splice(rooms.indexOf(JSON.stringify(data)), 1));
     });
+    socket?.on("allroomInfo", function (data: any) {
+      console.log(data);
+    });
+
     return () => {
-      socket.off("newRoom");
-      socket.off("removeRoom");
+      socket.disconnect();
     };
   }, []);
 
@@ -48,7 +55,7 @@ const Main = () => {
 
   return (
     <>
-      <h1>채팅방</h1>
+      <h1>TRPG</h1>
       <div>
         {rooms.map((v, i) => {
           return (
@@ -69,31 +76,12 @@ const Main = () => {
               <th>방장</th>
             </tr>
           </thead>
-          {/* <tbody>
-        {% for room in rooms %}
-        <tr data-id="{{room._id}}">
-          <td>{{room.title}}</td>
-          <td>{{'비밀방' if room.password else '공개방'}}</td>
-          <td>{{room.max}}</td>
-          <td style="color: {{room.owner}}">{{room.owner}}</td>
-          <td>
-            <button
-              data-password="{{'true' if room.password else 'false'}}"
-              data-id="{{room._id}}"
-              class="join-btn"
-            >
-              입장
-            </button>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody> */}
         </table>
 
-        <a href="/room">채팅방 생성</a>
+        <a href="/test">채팅방 생성</a>
       </fieldset>
     </>
   );
 };
 
-export default Main;
+export default RoomList;
