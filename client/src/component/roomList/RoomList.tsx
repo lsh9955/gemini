@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
+import { RoomListWrap, RoomTitle, RoomUserNum, RoomWrap } from "./RoomListStyle";
 
 interface ClienttoServerEvents {
   newRoom: (data: any) => void;
@@ -14,7 +15,6 @@ const RoomList = () => {
   useEffect(() => {
     const res = async () => {
       const getRoomInfo = await axios.get("http://localhost:5000/room");
-      console.log(getRoomInfo);
       setRooms(
         getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
@@ -54,34 +54,24 @@ const RoomList = () => {
   //비밀번호가 필요한 경우 추가할 것
 
   return (
-    <>
+    <RoomListWrap>
       <h1>TRPG</h1>
+      <a href="/test">방 생성하기</a>
       <div>
         {rooms.map((v: any, i) => {
           return (
-            <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i}>
-              {v}
-              <img src={JSON.parse(v).defaultpicture} alt="방 기본사진" />
+            
+            <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i} style={{textDecoration:"none"}}>
+      
+              <RoomWrap roombgimg={JSON.parse(v).defaultpicture}>
+                <RoomTitle>{JSON.parse(v).title}</RoomTitle>
+                <RoomUserNum>{JSON.parse(v).usernum}/8</RoomUserNum>
+              </RoomWrap>
             </Link>
           );
         })}
       </div>
-      <fieldset>
-        <legend>채팅방 목록</legend>
-        <table>
-          <thead>
-            <tr>
-              <th>방 제목</th>
-              <th>종류</th>
-              <th>허용 인원</th>
-              <th>방장</th>
-            </tr>
-          </thead>
-        </table>
-
-        <a href="/test">채팅방 생성</a>
-      </fieldset>
-    </>
+    </RoomListWrap>
   );
 };
 
