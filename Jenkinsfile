@@ -144,7 +144,7 @@ pipeline {
                       		expression {
                         		currentBuild.result == null || currentBuild.result == 'SUCCESS'
                       		}
-                      		changeset "auth-service/**"
+							changeset "auth-service/**"
                     	}
                   	}
                     steps {
