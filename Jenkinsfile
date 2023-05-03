@@ -35,8 +35,7 @@ pipeline {
 					steps {
 						dir('gemini-front') {
 							sh 'npm install'
-							sh 'echo -e "REACT_APP_KAKAOPAY_IMP=\'${REACT_APP_KAKAOPAY_IMP}\'" > .env'
-							// sh 'echo -e "REACT_APP_KAKAOPAY_IMP=\'${REACT_APP_KAKAOPAY_IMP}\'\nVUE_APP_KAKAO_MAP_API_KEY=\'{키 내용}\'\nVUE_APP_KAKAO_CLIENT_ID=\'{키 내용}\'" > .env.local'
+							sh 'echo -e "REACT_APP_KAKAOPAY_IMP=\'${REACT_APP_KAKAOPAY_IMP}\'\nREACT_APP_API_OAUTH2_BASE_URL=\'${REACT_APP_API_OAUTH2_BASE_URL}\'\nREACT_APP_GOOGLE_AUTH_URL=\'${REACT_APP_GOOGLE_AUTH_URL}\'\nREACT_APP_TWITTER_AUTH_URL=\'${REACT_APP_TWITTER_AUTH_URL}\'\nREACT_APP_API_BASE_URL=\'${REACT_APP_API_BASE_URL}\'" > .env.local'
 							sh 'CI=false npm run build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}'
