@@ -32,6 +32,6 @@ api_gateway_url: localhost
 
 custom:
   react:
-    redirect_uri: http://localhost:3000/loginSuccess # 기본값 설정
+    redirect_uri: http://localhost:3000/loginsuccess # 기본값 설정
   springboot:
     user_service_url: http://localhost:8081
