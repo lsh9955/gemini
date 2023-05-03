@@ -28,5 +28,6 @@ public class Follow {
     @JoinColumn(name = "following", nullable = false)
     private UserInfo following;
 //
-//    
+//
+//
 }
