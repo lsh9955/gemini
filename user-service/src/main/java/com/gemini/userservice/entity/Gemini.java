@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "GEMINI")
 @Data
@@ -33,4 +35,8 @@ public class Gemini {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
     private UserInfo userInfo;
+
+    // 1:N relation 😀
+    @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Like> likes;
 }
