@@ -1,9 +1,6 @@
 package com.gemini.userservice.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -52,6 +49,15 @@ public class UserInfo {
     private Set<Follow> followings = new HashSet<>();
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Orders> orders;
+
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes;
+
+    // 별 구매 시 총 별 개수 변경
+    public void updateStar(Integer star) {
+        this.star = star;
+    }
+
 
 }

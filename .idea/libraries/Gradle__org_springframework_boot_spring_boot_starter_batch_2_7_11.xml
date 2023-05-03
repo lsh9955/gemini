@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springframework.boot:spring-boot-starter-batch:2.7.11" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.springframework.boot" artifactId="spring-boot-starter-batch" version="2.7.11" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-batch/2.7.11/b9a1922cb12488ccde0808a4adcae658649c2c2d/spring-boot-starter-batch-2.7.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-batch/2.7.11/b1d17de30b0479bda067ef95a14dcd73dee8ba0d/spring-boot-starter-batch-2.7.11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
