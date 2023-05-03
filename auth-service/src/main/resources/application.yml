@@ -5,7 +5,7 @@ spring:
   application:
     name: auth-service
   profiles:
-    active: local # yml setting that I want to use -> local/ prod
+    active: prod # yml setting that I want to use -> local/ prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${api_gateway_url}:3306/gemini?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
@@ -56,6 +56,6 @@ logging:
 # 다른 설정은 application-*.yml 파일에 위치함. 배포용이랑 로컬용 나눠놨음. -아래 설정은 META-INF의 custom 변수 설정으로 만들어 둠.
 custom:
   react:
-    redirect_uri: http://localhost:3000/loginsuccess # 기본값 설정
+    redirect_uri: http://localhost:3000/loginSuccess # 기본값 설정
   springboot:
     user_service_url: localhost:8081
