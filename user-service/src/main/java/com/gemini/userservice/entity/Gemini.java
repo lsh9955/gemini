@@ -39,4 +39,5 @@ public class Gemini {
     // 1:N relation 😀
     @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes;
+
 }
