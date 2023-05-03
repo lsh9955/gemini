@@ -57,10 +57,11 @@ const RoomList = () => {
     <>
       <h1>TRPG</h1>
       <div>
-        {rooms.map((v, i) => {
+        {rooms.map((v: any, i) => {
           return (
             <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i}>
               {v}
+              <img src={JSON.parse(v).defaultpicture} alt="방 기본사진" />
             </Link>
           );
         })}

@@ -39,7 +39,7 @@ const Game = () => {
 
   return (
     <>
-      <a href="/" id="exit-btn">
+      <a href="/room" id="exit-btn">
         방 나가기
       </a>
       <div>유저리스트</div>
