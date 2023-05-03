@@ -29,4 +29,6 @@ public class Gemini {
     @ManyToOne
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
     private UserInfo userInfo;
+
+
 }

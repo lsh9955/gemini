@@ -9,6 +9,8 @@ import com.gemini.userservice.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+
 @Service
 public class OrdersServiceImpl implements OrdersService {
 
@@ -18,6 +20,10 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private final UserInfoRepository userInfoRepository;
 
+    @Autowired
+    private EntityManager em;
+
+
     public OrdersServiceImpl(OrdersRepository ordersRepository, UserInfoRepository userInfoRepository) {
         this.ordersRepository = ordersRepository;
         this.userInfoRepository = userInfoRepository;
@@ -25,9 +31,9 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto) {
-
         UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername());
-
+        System.out.println(requestDto.getUsername());
+        System.out.println(userInfo);
         // 기존 별 개수 및 추가할 별 개수 조회
         Integer oldTotalStars = userInfo.getStar();
         Integer addStars = requestDto.getOrderStar();

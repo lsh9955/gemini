@@ -1,11 +1,8 @@
 package com.gemini.userservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,4 +11,8 @@ public class OrdersRequestDto {
     private String merchantUid;
     private String username;
 
+
+    public String getUsername() {
+        return username;
+    }
 }
