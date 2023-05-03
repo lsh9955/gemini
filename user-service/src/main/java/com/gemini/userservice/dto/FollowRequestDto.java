@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NicknameCheckDto {
-    private boolean duplicated;
-    private String nickname;
+public class FollowRequestDto {
+    private Long userPk;
 }
