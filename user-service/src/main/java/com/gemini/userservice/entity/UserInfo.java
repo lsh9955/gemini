@@ -26,8 +26,11 @@ public class UserInfo {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "profile_background")
+    @Column(name = "profile_background_url")
     private String profileBackground;
+
+    @Column(name = "profile_img_url")
+    private String profileImg;
 
     @Column(name = "star", nullable = false)
     private Integer star;
@@ -48,8 +51,13 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders;
 
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Like> likes;
 
+    // 별 구매 시 총 별 개수 변경
     public void updateStar(Integer star) {
         this.star = star;
     }
+
+
 }

@@ -7,5 +7,7 @@ public interface UserInfoService {
     UserInfoDto getUserInfoByUsername(String username);
     boolean isNicknameDuplicated(String nickname);
 
+    UserInfoDto getUserInfoByUserPk(Long userPk);
+
     OtherUserProfileResponseDto getOtherUserProfile(String nickname);
 }
