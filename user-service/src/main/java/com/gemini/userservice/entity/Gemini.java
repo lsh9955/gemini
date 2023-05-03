@@ -28,6 +28,9 @@ public class Gemini {
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
+    @Column(name = "total_like", nullable = false)
+    private Integer totalLike;
+
 //    @ManyToOne
 //    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
 //    private UserInfo userInfo;
@@ -39,4 +42,8 @@ public class Gemini {
     // 1:N relation 😀
     @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes;
+
+    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL)
+    @JoinColumn(name = "gallery_no")
+    private Gallery gallery;
 }
