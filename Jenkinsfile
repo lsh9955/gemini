@@ -118,11 +118,12 @@ pipeline {
                     steps {
                         script {
             				sshagent(credentials: ['ssh']) {
-                			sh """
-                    			ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io \
-                    			"docker container stop client && docker container rm client"
-                				docker run -p 3000:3000 --name client --network gemini -d ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}
-                			"""
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${CLIENT_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${CLIENT_IMAGE_TAG} && ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container rm ${CLIENT_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 3000:3000 --name ${CLIENT_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}
+								"""
             				}
         				}
 		           	}
@@ -140,11 +141,12 @@ pipeline {
                     steps {
 						script {
             				sshagent(credentials: ['ssh']) {
-                			sh """
-                    			ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io \
-                    			"docker container stop auth-service && docker container rm auth-service"
-                				docker run -p 8080:8080 --name auth-service --network gemini -d ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}
-                			"""
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${AUTH_SERVICE_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${AUTH_SERVICE_IMAGE_TAG} && ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container rm ${AUTH_SERVICE_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 3000:3000 --name ${AUTH_SERVICE_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${AUTH_SERVICE_IMAGE_TAG}
+								"""
             				}
         				}
                     }
@@ -162,11 +164,12 @@ pipeline {
                     steps {
 						script {
             				sshagent(credentials: ['ssh']) {
-                			sh """
-                    			ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io \
-                    			"docker container stop user-service && docker container rm user-service"
-                				docker run -p 8081:8081 --name user-service --network gemini -d ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}
-                			"""
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${USER_SERVICE_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${USER_SERVICE_IMAGE_TAG} && ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container rm ${USER_SERVICE_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 3000:3000 --name ${USER_SERVICE_IMAGE_TAG} --network gemini -d ${DOCKER_REGISTRY}:${USER_SERVICE_IMAGE_TAG}
+								"""
             				}
         				}
                     }
