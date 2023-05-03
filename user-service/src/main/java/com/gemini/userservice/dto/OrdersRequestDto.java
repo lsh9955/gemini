@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class OrdersRequestDto {
     private Integer orderStar;
     private String merchantUid;
-    private Long userPk;
+    private String username;
 
 }

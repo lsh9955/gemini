@@ -1,9 +1,6 @@
 package com.gemini.userservice.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -50,4 +47,9 @@ public class UserInfo {
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders;
+
+
+    public void updateStar(Integer star) {
+        this.star = star;
+    }
 }

@@ -13,14 +13,20 @@ import org.springframework.stereotype.Service;
 public class OrdersServiceImpl implements OrdersService {
 
     @Autowired
-    private OrdersRepository ordersRepository;
+    private final OrdersRepository ordersRepository;
 
     @Autowired
-    private UserInfoRepository userInfoRepository;
+    private final UserInfoRepository userInfoRepository;
+
+    public OrdersServiceImpl(OrdersRepository ordersRepository, UserInfoRepository userInfoRepository) {
+        this.ordersRepository = ordersRepository;
+        this.userInfoRepository = userInfoRepository;
+    }
 
     @Override
-    public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto, String username) {
-        UserInfo userInfo = userInfoRepository.findByUsername(username);
+    public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto) {
+
+        UserInfo userInfo = userInfoRepository.findByUserPk(requestDto.getUserPk());
 
         // 기존 별 개수 및 추가할 별 개수 조회
         Integer oldTotalStars = userInfo.getStar();
@@ -28,7 +34,7 @@ public class OrdersServiceImpl implements OrdersService {
 
         // 별 개수 총합 계산 후 저장
         Integer newTotalStar = oldTotalStars + addStars;
-        userInfo.setStar(newTotalStar);
+        userInfo.updateStar(newTotalStar);
         userInfoRepository.save(userInfo);
 
         // 새로운 주문 정보 저장
@@ -42,7 +48,5 @@ public class OrdersServiceImpl implements OrdersService {
         return OrdersResponseDto.builder()
                 .star(newTotalStar)
                 .build();
-
-
     }
 }
