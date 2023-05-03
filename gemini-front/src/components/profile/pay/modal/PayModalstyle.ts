@@ -40,7 +40,56 @@ export const ModalForm = styled.div`
   width: 77%;
   height: 77%;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
 `;
 
-export const PayButton = styled.button``;
+export const PayButton = styled.button`
+  background: #fbed6d;
+  width: 60%;
+  height: 18%;
+  font-size: 20px;
+  position: fixed;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  @media screen and (max-width: 500px) {
+    font-size: 14px;
+  }
+`;
+
+export const LogoImage = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+
+  @media screen and (max-width: 500px) {
+    width: 14px;
+    height: 14px;
+  }
+`;
+
+export const PayTitle = styled.div`
+  position: fixed;
+  color: #ffffff;
+  top: 22%;
+  left: 22%;
+  font-size: 12px;
+  text-align: center;
+`;
+
+export const Input = styled.input`
+  width: 33%;
+  height: 22%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+  z-index: 101;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+`;
+export const InputSpan = styled.span`
+  top: 55%;
+  left: 55%;
+`;

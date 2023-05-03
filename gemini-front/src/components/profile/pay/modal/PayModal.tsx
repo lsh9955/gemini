@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import axios from "axios";
 import PayModalBackground from "../../../../assets/img/PayModalBackground.png";
+import KakaoLogo from "../../../../assets/img/kakao_logo.png";
 
 //styled-components
 import {
@@ -8,24 +9,31 @@ import {
   ModalContainer,
   Overlay,
   ModalForm,
+  PayButton,
+  LogoImage,
+  PayTitle,
+  Input,
+  InputSpan,
 } from "./PayModalstyle";
-
-declare const window: typeof globalThis & {
-  IMP: any;
-};
 
 interface Props {
   onClose: () => void;
 }
 
-const PayModal: React.FC<Props> = ({ onClose }) => {
-  const [payInput, setPayInput] = useState<number>(0);
+declare const window: typeof globalThis & {
+  IMP: any;
+};
 
-  // 숫자 입력 input
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const currentInput = e.target.value;
-    const inputValue = parseInt(currentInput);
-    setPayInput(inputValue);
+const PayModal: React.FC<Props> = ({ onClose }) => {
+  const [numberValue, setNumberValue] = useState("");
+
+  // 숫자 외 입력 불가
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const numberRegex = /^[0-9]*$/;
+    if (numberRegex.test(newValue)) {
+      setNumberValue(newValue);
+    }
   };
 
   // 아임포트 결제 모듈
@@ -60,9 +68,20 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
         <div aria-hidden onClick={(e) => e.stopPropagation()}>
           <ModalContainer>
             <ModalForm>
-              <button onClick={onClickPayment}>구매하기</button>
+              <PayTitle>별조각 1개당 1000원이 결제됩니다.</PayTitle>
+              <InputSpan>
+                <Input
+                  type="text"
+                  value={numberValue}
+                  onChange={handleInputChange}
+                />
+                별조각
+              </InputSpan>
+              <PayButton onClick={onClickPayment}>
+                <LogoImage src={KakaoLogo} alt="logo"></LogoImage>
+                구매하기
+              </PayButton>
             </ModalForm>
-
             <ModalBackground src={PayModalBackground} alt="modal-background" />
           </ModalContainer>
         </div>
