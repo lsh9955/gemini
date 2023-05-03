@@ -6,8 +6,6 @@ pipeline {
 		gradle "gradle"
 	}
 
-	dockerTool "docker"
-
     environment {
         DOCKER_REGISTRY = "bshello25/gemini"
         CLIENT_IMAGE_TAG = "client"
