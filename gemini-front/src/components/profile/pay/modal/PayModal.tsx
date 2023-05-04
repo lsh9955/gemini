@@ -45,7 +45,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
       pg: "kakaopay",
       pay_method: "card",
       // merchant_uid가 결제마다 꼭 달라야 함
-      merchant_uid: "570088sfa33004",
+      merchant_uid: "570088sfa3300qrasfqweq4",
       name: "별 구매하기",
       amount: 1000,
     };
@@ -54,28 +54,24 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
 
   // 결제 모듈 성공시 별 개수 변경, merchant_uid 등 결제 정보 보내서 저장하기
   const callback = (res: any) => {
-    const data = { orderStar: numberValue, merchantUid: "s3242" };
     if (res.success) {
       axios
         .post(
           "http://192.168.31.221:8081/order/kakao/single-payment",
-          JSON.stringify(data),
+          {
+            orderStart: 3,
+            merchantUid: "570088sfa3300qrasfqweq4",
+          },
           {
             headers: {
               "X-Username": "yyj",
             },
           }
         )
-        .then((res) => {
-          console.log(res);
-          alert("별 구매가 완료되었습니다.");
-        })
-        .catch((err) => {
-          console.log(err);
+        .then((res) => console.log(res))
+        .catch((error) => {
+          console.log(error);
         });
-    } else {
-      alert("다시 한 번 시도하여 주십시오.");
-      console.log(res);
     }
   };
 
