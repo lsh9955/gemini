@@ -19,13 +19,18 @@ public class Gallery {
     private Long galleryNo;
 
     @Column(name = "daily_like")
-    private Long dailyLike;
+    private Integer dailyLike;
 
     @Column(name = "weekly_like")
-    private Long weeklyLike;
+    private Integer weeklyLike;
 
     @OneToOne
     @JoinColumn(name = "gemini_no")
     private Gemini gemini;
+
+    public void updateLikes(Integer dailyLike, Integer weeklyLike) {
+        this.dailyLike = dailyLike;
+        this.weeklyLike = weeklyLike;
+    }
 
 }
