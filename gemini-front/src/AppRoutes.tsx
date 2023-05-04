@@ -18,6 +18,7 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/loginpage" component={Login} />
         <Route exact path="/loginsuccess" component={LoginSuccess} />
+        <Route exact path="/mypage" component={MyPage} />
         {/* ... */}
       </Switch>
     </>
