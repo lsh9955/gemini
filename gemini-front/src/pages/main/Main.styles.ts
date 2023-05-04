@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MainPageImage from "../../assets/img/MainPageImage.png";
 import GamePageImage from "../../assets/img/GamePageImage.png";
+import MiddleImage from "../../assets/img/MiddleImage.png";
 
 export const MainWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   overflow: hidden;
 `;
@@ -69,4 +70,10 @@ export const RightComponent = styled(Link)`
       center fixed;
     background-size: cover;
   }
+`;
+
+export const MiddleBox = styled.div`
+  width: 100%;
+  height: 20vh;
+  background-image: url(${MiddleImage});
 `;
