@@ -1,9 +1,6 @@
 package com.gemini.userservice.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,20 +14,20 @@ public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "send-id", nullable = false)
+    @Column(name = "send_id")
     private String sender;
 
-    @Column(name = "alarm-memo", nullable = false)
-    private Long alarm_memo;
+    @Column(name = "memo")
+    private Long memo;
 
-    @Column(name = "check-memo")
-    private boolean check_memo;
+    @Column(name = "checked")
+    private Boolean checked;
 
     @ManyToOne
-    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
+    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")
     private UserInfo userInfo;
 
 
