@@ -1,4 +1,10 @@
 package com.gemini.userservice.service;
 
-public class AlarmService {
+import com.gemini.userservice.repository.FollowRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public interface AlarmService {
+
+    @Autowired
+    private final FollowRepository followRepository;
 }
