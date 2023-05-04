@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local # 기본으로 쓸 프로파일
+    active: prod # 기본으로 쓸 프로파일
 
   application:
     name: user-service
