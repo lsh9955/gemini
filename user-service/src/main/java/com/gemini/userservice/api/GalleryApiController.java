@@ -20,12 +20,19 @@ public class GalleryApiController {
 
     private final GalleryService galleryService;
 
+    @GetMapping("/total")
+    public  ResponseEntity<Long> getTotal() {
+
+        Long total = galleryService.getTotal();
+        return ResponseEntity.status(HttpStatus.OK).body(total);
+    }
+
     @GetMapping
-    public ResponseEntity<ResponseGalleryPageDto> getGalleryPage(@RequestParam Integer page, @RequestParam Integer size) {
+    public ResponseEntity<?> getGalleryPage(@RequestParam Integer page, @RequestParam Integer size) {
 
         ResponseGalleryPageDto responseGalleryPageDto = galleryService.getGalleryPage(page, size);
         if (responseGalleryPageDto.getGalleryPage() == null) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
     }
@@ -65,7 +72,7 @@ public class GalleryApiController {
         Long galleryNo = galleryMap.get("gallery_no");
         String res = galleryService.likeGallery(username, galleryNo);
         if (res == "fail") {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(res);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
@@ -76,7 +83,7 @@ public class GalleryApiController {
 
         String res = galleryService.cancelGallery(username, galleryNo);
         if (res == "fail") {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(res);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }

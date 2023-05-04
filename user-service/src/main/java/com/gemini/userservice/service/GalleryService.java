@@ -6,6 +6,8 @@ import com.gemini.userservice.dto.response.ResponseGalleryRankingDto;
 
 public interface GalleryService {
 
+    Long getTotal();
+
     ResponseGalleryPageDto getGalleryPage(Integer page, Integer size);
 
     ResponseGalleryRankingDto getDailyGallery();
