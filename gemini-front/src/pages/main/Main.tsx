@@ -23,8 +23,8 @@ const Main: FC = () => {
       <MainWrapper>
         <LeftComponent to="/aiImage"></LeftComponent>
         <RightComponent to="/"></RightComponent>
+        <AnimatedArrow></AnimatedArrow>
       </MainWrapper>
-      <AnimatedArrow></AnimatedArrow>
     </>
   );
 };
