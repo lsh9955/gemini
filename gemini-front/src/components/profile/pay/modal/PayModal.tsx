@@ -26,6 +26,7 @@ declare const window: typeof globalThis & {
 
 const PayModal: React.FC<Props> = ({ onClose }) => {
   const [numberValue, setNumberValue] = useState("");
+  const [newStar, setNewStar] = useState<number>(0);
 
   // 숫자 외 입력 불가
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +54,25 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
 
   // 결제 모듈 성공시 별 개수 변경, merchant_uid 등 결제 정보 보내서 저장하기
   const callback = (res: any) => {
+    const data = { orderStar: numberValue, merchantUid: "s3242" };
     if (res.success) {
-      alert("별 구매가 완료되었습니다.");
-      // axios.post("").then().catch();
+      axios
+        .post(
+          "http://192.168.31.221:8081/order/kakao/single-payment",
+          JSON.stringify(data),
+          {
+            headers: {
+              "X-Username": "yyj",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          alert("별 구매가 완료되었습니다.");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       alert("다시 한 번 시도하여 주십시오.");
       console.log(res);
