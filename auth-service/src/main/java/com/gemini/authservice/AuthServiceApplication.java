@@ -14,18 +14,18 @@ public class AuthServiceApplication {
 		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
-	@Bean
-	public CorsFilter corsFilter() {
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
-		config.addAllowedOriginPattern("*");
-		config.addAllowedMethod("*");
-		config.addAllowedHeader("*");
-		config.setAllowCredentials(true);
-		config.addExposedHeader("accessToken");
-		source.registerCorsConfiguration("/**", config);
-		return new CorsFilter(source);
-	}
+//	@Bean
+//	public CorsFilter corsFilter() {
+//
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		CorsConfiguration config = new CorsConfiguration();
+//		config.addAllowedOriginPattern("*");
+//		config.addAllowedMethod("*");
+//		config.addAllowedHeader("*");
+//		config.setAllowCredentials(true);
+//		config.addExposedHeader("accessToken");
+//		source.registerCorsConfiguration("/**", config);
+//		return new CorsFilter(source);
+//	}
 
 }
