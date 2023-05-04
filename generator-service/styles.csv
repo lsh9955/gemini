@@ -1,0 +1,46 @@
+﻿name,prompt,negative_prompt
+basic_person,"((best quality, masterpiece, high resolution)),
+(hyper detail, ultra detailed, Incredibly detailed, perfect anatomy)
+
+","lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw))"
+basic,"((best quality, masterpiece, high resolution)),
+(hyper detail, ultra detailed, Incredibly detailed, perfect anatomy, illustration),
+solo, standing, off_shoulder_dress, disheveled hair, wind lift hair, absurdly long hair, ponytail, light smile, outdoors, hill,","lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw)),"
+2person_base,"(best quality), (masterpiece), (high resolution), perfect anatomy, hyper detail, ultra detailed cloths, Incredibly detailed, (illustration),
+(1boy:<red hair, short cut hair, silver plate armor, blue jean, blue eyes>),  
+(1girl:<blond hair, long and cur and wavy hair, green eyes, a medieval dress, an emerald earring, an green emerald necklace>)"," lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw))"
+1_preset,"(portrait:1.3), (best quality), (masterpiece), (high resolution), perfect anatomy, perfect_finger, hyper detail,  Incredibly detail, high quality, intricate details, hyper detailsuper detail, (finely detailedbeautiful eyes and detailedface), ultra detailed cloths,
+green long cur hair,
+red eyes,
+empty eyes,
+zombie,
+pink kimino,
+sword, gloves,","(back ground:2), (nsfw:2), lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)),"
+semi_chibi,"(best quality), (masterpiece), (high resolution), perfect anatomy, perfect_finger, hyper detail, high quality, intricate details, super detail, (finely detailed beautiful eyes and detailed face), ultra detailed cloths,
+1girl, <lora:blindbox_v1_mix:1>",nsfw
+Chibi_base,"[(white background:1.5)::1], (masterpiece, realistic, best quality, ultra detailed, highres, super fine illustration, 8k, anime screencap:1.2), (detailed beautiful face and eyes:1.2), (full body:1.2), chibi, (beautiful detailed face and eyes:1.2), 1girl, solo, cute, happy, side shot, looking at another, open mouth, walking, (long hair:1.2), animal ears, blue eyes, blonde hair, skirt, intricate skirt, cardigan, hair flower, grass, flower, (frying petal:1.1), (cloudy sky:0.7), (musical note print:1.5), butterfly, <lora:blindbox_V1Mix:1>","EasyNegative, bad-hands-5, worst quality, low quality, drill hair, wavy hair, hair bun, (teeth:1.5), (headphones:1.4), midriff,"
+Chibi_base2,"(masterpiece, realistic, best quality, ultra detailed, highres, super fine illustration, 8k, anime screencap:1.2), (detailed beautiful face and eyes:1.2),
+(full body:1.2),
+chibi, (beautiful detailed face and eyes:1.2), 
+1girl, solo, cute, happy,
+
+<lora:blindbox_V1Mix:1>","(nsfw:2), lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts))"
+Chibi,"(masterpiece, realistic, best quality, ultra detailed, highres, super fine illustration, 8k, anime screencap:1.2), (detailed beautiful face and eyes:1.2),
+(full body:1.2),
+1boy,chibi,cute, 
+
+<lora:blindbox_V1Mix:1>","(nsfw:2), lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts))"
+realistic,"(masterpiece, realistic, best quality, ultra detailed, highres, super fine illustration, 8k, anime screencap:1.2), (detailed beautiful face and eyes:1.2),
+(full body:1.2),
+romance_fantasy,
+1girl, solo
+long hair, cur hair, red hair,
+green eyes, happy face,
+dress,","(nsfw:2), lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts))"
+realistic portrait,"(masterpiece, realistic, best quality, ultra detailed, highres, super fine illustration, 8k, anime screencap:1.2), (detailed beautiful face and eyes:1.2),
+(full body:1.2),
+romance_fantasy,
+1girl, solo
+long hair, cur hair, red hair
+green eyes, happy face,
+dress,<lora:blindbox_v1_mix:1.0>","(nsfw:2), lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts))"
