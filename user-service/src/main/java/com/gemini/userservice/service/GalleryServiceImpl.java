@@ -15,16 +15,15 @@ import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.LikeRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +35,15 @@ public class GalleryServiceImpl implements GalleryService{
     private final UserInfoRepository userInfoRepository;
 
     private final LikeRepository likeRepository;
+
     private final GeminiRepository geminiRepository;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public Long getTotal() {
+        Long total = galleryRepository.count();
+        return total;
+    }
 
     public ResponseGalleryPageDto getGalleryPage(Integer page, Integer size) {
 
@@ -71,12 +78,30 @@ public class GalleryServiceImpl implements GalleryService{
 
     public ResponseGalleryRankingDto getDailyGallery() {
 
-        return null;
+        ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
+        return responseGalleryRankingDto;
     }
 
     public ResponseGalleryRankingDto getWeeklyGallery() {
 
-        return null;
+        String key = "weekly";
+        long start = 0;
+        long end = -1;
+
+        Set<Object> galleries = redisTemplate.execute((RedisCallback<Set<Object>>) connection -> {
+            Set<Object> weeklySet = new LinkedHashSet<>();
+            Set<byte[]> bytesSet = connection.zRange(key.getBytes(), start, end);
+            for (byte[] bytes : bytesSet) {
+                weeklySet.add(redisTemplate.getValueSerializer().deserialize(bytes));
+            }
+            return weeklySet;
+        });
+
+        for (Object gallery : galleries) {
+            System.out.println("gallery: " + gallery);
+        }
+        ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
+        return responseGalleryRankingDto;
     }
 
     public ResponseGalleryDetailDto getGalleryDetail(String username, Long galleryNo) {
