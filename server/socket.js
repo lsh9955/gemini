@@ -108,6 +108,8 @@ module.exports = (server, app, sessionMiddleware) => {
       const roomLen = await getRoomInfo(`${data.roomId}`);
       chat.emit("roomupdate", roomLen);
       const willupdateRoom = await Room.find({ _id: data.roomId });
+      console.log("#############$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      console.log(willupdateRoom);
       await Room.updateOne(
         { _id: data.roomId },
         { $set: { usernum: willupdateRoom[0].usernum + 1 } }

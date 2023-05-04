@@ -2,38 +2,32 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io, { Socket } from "socket.io-client";
 
-const Game = () => {
+const Game = ({ chatSocket }: { chatSocket: Socket }) => {
   const userN = localStorage.getItem("userInfo");
   console.log(userN);
-  const [userList, setUserList] = useState([]);
-  const [chatList, setChatList] = useState([]);
-  const [firCome, setFirCome] = useState(true);
-  const [socket, setSocket] = useState(
-    io("http://localhost:5000/chat", {
-      transports: ["websocket"],
-    })
-  );
+  const [userList, setUserList] = useState<string[]>([]);
+  const [chatList, setChatList] = useState<string[]>([]);
 
   useEffect(() => {
     // 현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
-    socket.emit("join", {
+    chatSocket.emit("join", {
       user: String(userN),
       roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
     });
-    socket.on("join", function (data) {
+    chatSocket.on("join", function (data: any) {
       setUserList([...userList, data.user]);
     });
 
-    socket.on("chat", function (data) {
+    chatSocket.on("chat", function (data: any) {
       setChatList([...chatList, data]);
     });
-    socket.on("roomupdate", function (data) {
+    chatSocket.on("roomupdate", function (data: any) {
       console.log(data);
       setUserList(data);
     });
 
     return () => {
-      socket.disconnect();
+      chatSocket.disconnect();
     };
   }, []);
 
@@ -50,7 +44,7 @@ const Game = () => {
       </div>
       <div>채팅리스트</div>
       <div>
-        {chatList.map((v, i) => {
+        {chatList.map((v: any, i) => {
           return (
             <div key={i}>
               {v.user_id}: {v.message}

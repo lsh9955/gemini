@@ -9,6 +9,15 @@ import React, { useEffect } from "react";
 import RoomList from "./component/roomList/RoomList";
 import Game from "./component/game/Game";
 import CreateRoomModal from "./component/roomList/CreateRoomModal";
+import io, { Socket } from "socket.io-client";
+
+const chatSocket = io("http://localhost:5000/chat", {
+  transports: ["websocket"],
+});
+
+const roomSocket = io("http://localhost:5000/room", {
+  transports: ["websocket"],
+});
 
 function App() {
   useEffect(() => {
@@ -21,9 +30,16 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/room" exact render={() => <RoomList />} />
+        <Route
+          path="/room"
+          exact
+          render={() => <RoomList roomSocket={roomSocket} />}
+        />
         <Route path="/test" exact render={() => <CreateRoomModal />} />
-        <Route path="/room/:id" render={() => <Game />} />
+        <Route
+          path="/room/:id"
+          render={() => <Game chatSocket={chatSocket} />}
+        />
       </Switch>
     </BrowserRouter>
   );

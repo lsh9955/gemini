@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import { RoomListWrap, RoomTitle, RoomUserNum, RoomWrap } from "./RoomListStyle";
+import {
+  RoomListWrap,
+  RoomTitle,
+  RoomUserNum,
+  RoomWrap,
+} from "./RoomListStyle";
 
-interface ClienttoServerEvents {
-  newRoom: (data: any) => void;
-  removeRoom: (data: any) => void;
-  allroomInfo: (data: any) => void;
-}
-
-const RoomList = () => {
+const RoomList = ({ roomSocket }: { roomSocket: Socket }) => {
   const [rooms, setRooms] = useState<string[]>([]);
   useEffect(() => {
     const res = async () => {
@@ -24,30 +23,24 @@ const RoomList = () => {
     res();
   }, []);
   useEffect(() => {
-    const socket: Socket<ClienttoServerEvents> = io(
-      "http://localhost:5000/room",
-      {
-        transports: ["websocket"],
-      }
-    );
-    socket?.on("newRoom", function (data: any) {
+    roomSocket.on("newRoom", function (data: any) {
       // 새 방 이벤트 시 새 방 생성
       console.log("새 방 생성");
       setRooms([...rooms, JSON.stringify(data)]);
     });
 
-    socket?.on("removeRoom", function (data: any) {
+    roomSocket.on("removeRoom", function (data: any) {
       // 방 제거 이벤트 시 id가 일치하는 방 제거
       console.log("방 제거");
       console.log(data);
       setRooms(rooms.slice().splice(rooms.indexOf(JSON.stringify(data)), 1));
     });
-    socket?.on("allroomInfo", function (data: any) {
+    roomSocket.on("allroomInfo", function (data: any) {
       console.log(data);
     });
 
     return () => {
-      socket.disconnect();
+      roomSocket.disconnect();
     };
   }, []);
 
@@ -60,9 +53,11 @@ const RoomList = () => {
       <div>
         {rooms.map((v: any, i) => {
           return (
-            
-            <Link to={`/room/${JSON.parse(v)["_id"]}`} key={i} style={{textDecoration:"none"}}>
-      
+            <Link
+              to={`/room/${JSON.parse(v)["_id"]}`}
+              key={i}
+              style={{ textDecoration: "none" }}
+            >
               <RoomWrap roombgimg={JSON.parse(v).defaultpicture}>
                 <RoomTitle>{JSON.parse(v).title}</RoomTitle>
                 <RoomUserNum>{JSON.parse(v).usernum}/8</RoomUserNum>

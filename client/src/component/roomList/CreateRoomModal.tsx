@@ -23,8 +23,10 @@ const CreateRoomModal = () => {
   //   }, [handleOpen]);
 
   const handleClose = () => setOpen(false);
-  const userId = localStorage.getItem("userInfo");
-  const submitHandler = (e) => {
+  let myString: string | null = localStorage.getItem("userInfo");
+  let userId: string | number | readonly string[] | undefined =
+    myString ?? undefined;
+  const submitHandler = (e: any) => {
     e.preventDefault();
     console.log(e);
   };

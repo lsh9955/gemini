@@ -44,12 +44,8 @@ exports.createRoom = async (req, res, next) => {
     console.log(`${newRoom}`);
     const io = req.app.get("io");
     io.of("/room").emit("newRoom", newRoom);
-    if (req.body.password) {
-      // 비밀번호가 있는 방이면
-      res.redirect(`/room/${newRoom._id}?password=${req.body.password}`);
-    } else {
-      res.redirect(`http://localhost:3000/room/${newRoom._id}`);
-    }
+
+    res.redirect(`http://localhost:3000/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
     next(error);
@@ -65,19 +61,19 @@ exports.enterRoom = async (req, res, next) => {
       { $set: { usernum: willupdateRoom.usernum + 1 } }
     );
 
-    const room = await Room.findOne({ _id: req.params.id });
-    if (!room) {
-      return res.redirect("/?error=존재하지 않는 방입니다.");
-    }
-    if (room.password && room.password !== req.query.password) {
-      return res.redirect("/?error=비밀번호가 틀렸습니다.");
-    }
-    const io = req.app.get("io");
-    const { rooms } = io.of("/chat").adapter;
+    // const room = await Room.findOne({ _id: req.params.id });
+    // if (!room) {
+    //   return res.redirect("/?error=존재하지 않는 방입니다.");
+    // }
+    // if (room.password && room.password !== req.query.password) {
+    //   return res.redirect("/?error=비밀번호가 틀렸습니다.");
+    // }
+    // const io = req.app.get("io");
+    // const { rooms } = io.of("/chat").adapter;
 
-    if (room.max <= rooms.get(req.params.id)?.size) {
-      return res.redirect("/?error=허용 인원이 초과하였습니다.");
-    }
+    // if (room.max <= rooms.get(req.params.id)?.size) {
+    //   return res.redirect("/?error=허용 인원이 초과하였습니다.");
+    // }
   } catch (error) {
     console.error(error);
     return next(error);
