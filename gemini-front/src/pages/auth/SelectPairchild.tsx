@@ -1,10 +1,13 @@
 import React, { FC } from "react";
 import { SelectPairchildBg } from "./SelectPairchild.styles";
+import SelectPairchildComp from "../../components/auth/SelectPairchildComp";
 
 const SelectPairchild: FC = () => {
   return (
     <>
-      <SelectPairchildBg></SelectPairchildBg>
+      <SelectPairchildBg>
+        <SelectPairchildComp></SelectPairchildComp>
+      </SelectPairchildBg>
     </>
   );
 };

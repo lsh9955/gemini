@@ -9,7 +9,7 @@ import SelectPairchild from "./pages/auth/SelectPairchild";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
-  const pathsWithoutHeader = ["/login", "/loginSuccess"];
+  const pathsWithoutHeader = ["/login", "/loginSuccess", "/selectPairchild"];
   const shouldShowHeader = !pathsWithoutHeader.includes(location.pathname);
 
   return (

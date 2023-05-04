@@ -4,6 +4,7 @@ import {
   FormLabel,
   TextInput,
   TextArea,
+  InputWrapper,
   CharacterContainer,
   CharacterImage,
 } from "./SelectPairchildComp.styles";
@@ -50,21 +51,27 @@ const SelectPairchildComp: FC = () => {
   return (
     <>
       <SelectPairchildWrapper>
-        <FormLabel htmlFor="nickname">닉네임:</FormLabel>
-        <TextInput
-          type="text"
-          id="nickname"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        />
+        <InputWrapper>
+          <FormLabel htmlFor="nickname">닉네임</FormLabel>
 
-        <FormLabel htmlFor="description">자기소개:</FormLabel>
-        <TextArea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          maxLength={255}
-        />
+          <TextInput
+            type="text"
+            id="nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            placeholder="닉네임은 2~15글자 한글, 영어, 숫자만 입력 가능합니다."
+          />
+        </InputWrapper>
+
+        <InputWrapper>
+          <FormLabel htmlFor="description">자기소개</FormLabel>
+          <TextArea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            maxLength={255}
+          />
+        </InputWrapper>
 
         <CharacterContainer>
           <CharacterImage
