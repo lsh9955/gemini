@@ -47,10 +47,17 @@ public class GalleryServiceImpl implements GalleryService{
             }
             Pageable pageable = PageRequest.of(page, size);
             int start = (int)pageable.getOffset();
-            int end = Math.min((start + pageable.getPageSize()), size);
+            if (start + 1 > galleries.size()) {
+                ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
+                return responseGalleryPageDto;
+            }
             List<GalleryDto> galleryDtos = new ArrayList<>();
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < start + size; i++) {
+                if (galleries.size() < i + 1) {
+                    break;
+                }
                 Gallery gallery = galleries.get(i);
+
                 GalleryDto galleryDto = new GalleryDto(gallery, gallery.getGemini());
                 galleryDtos.add(galleryDto);
             }
