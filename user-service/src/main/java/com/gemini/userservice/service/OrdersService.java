@@ -1,11 +1,11 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.OrdersRequestDto;
-import com.gemini.userservice.dto.OrdersResponseDto;
+import com.gemini.userservice.dto.response.ResponseOrdersDto;
 
 
 public interface OrdersService {
-    OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto);
+    ResponseOrdersDto kakaoOrder(OrdersRequestDto requestDto);
 
 
 }

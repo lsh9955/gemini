@@ -1,15 +1,13 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.OrdersRequestDto;
-import com.gemini.userservice.dto.OrdersResponseDto;
+import com.gemini.userservice.dto.response.ResponseOrdersDto;
 import com.gemini.userservice.entity.Orders;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.OrdersRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
@@ -27,7 +25,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public OrdersResponseDto kakaoOrder(OrdersRequestDto requestDto) {
+    public ResponseOrdersDto kakaoOrder(OrdersRequestDto requestDto) {
         // 회원정보 찾아오기
         UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -50,7 +48,7 @@ public class OrdersServiceImpl implements OrdersService {
         ordersRepository.save(orders);
 
         // client에 보낼 DTO 생성 및 반환
-        return OrdersResponseDto.builder()
+        return ResponseOrdersDto.builder()
                 .star(newTotalStar)
                 .build();
     }

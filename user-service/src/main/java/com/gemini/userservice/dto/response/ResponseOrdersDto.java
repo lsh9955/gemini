@@ -1,4 +1,4 @@
-package com.gemini.userservice.dto;
+package com.gemini.userservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersResponseDto {
+public class ResponseOrdersDto {
     private Integer star;
 }

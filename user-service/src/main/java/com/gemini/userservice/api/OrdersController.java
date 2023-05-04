@@ -1,7 +1,7 @@
 package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.OrdersRequestDto;
-import com.gemini.userservice.dto.OrdersResponseDto;
+import com.gemini.userservice.dto.response.ResponseOrdersDto;
 import com.gemini.userservice.repository.OrdersRepository;
 import com.gemini.userservice.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ public class OrdersController {
 
 
     @PostMapping("/kakao/single-payment")
-        public ResponseEntity<OrdersResponseDto> kakaoOrder(@RequestBody OrdersRequestDto ordersRequestDto) {
+        public ResponseEntity<ResponseOrdersDto> kakaoOrder(@RequestBody OrdersRequestDto ordersRequestDto) {
             System.out.println(ordersRequestDto.toString());
-            OrdersResponseDto ordersResponseDto = ordersService.kakaoOrder(ordersRequestDto);
-            return ResponseEntity.ok(ordersResponseDto);
+            ResponseOrdersDto responseOrdersDto = ordersService.kakaoOrder(ordersRequestDto);
+            return ResponseEntity.ok(responseOrdersDto);
     }
 
 }
