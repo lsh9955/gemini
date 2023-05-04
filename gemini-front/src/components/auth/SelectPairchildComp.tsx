@@ -7,6 +7,7 @@ import {
   CharacterContainer,
   CharacterImage,
 } from "./SelectPairchildComp.styles";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 const SelectPairchildComp: FC = () => {
   const [nickname, setNickname] = useState("");
@@ -14,7 +15,30 @@ const SelectPairchildComp: FC = () => {
   const [selectedCharacter, setSelectedCharacter] = useState("");
 
   const handleSubmit = async () => {
-    // axios POST 요청을 보내는 코드 작성
+    // 닉네임과 캐릭터 선택 여부 확인
+    if (!validateNickname(nickname) || !selectedCharacter) {
+      alert("닉네임과 캐릭터를 정확하게 선택해 주세요.");
+      return;
+    }
+
+    // axiosInstanceWithAccessToken을 사용한 POST 요청
+    try {
+      const response = await axiosInstanceWithAccessToken.post(
+        "/api/register",
+        {
+          nickname,
+          description,
+          character: selectedCharacter,
+        }
+      );
+
+      if (response.status === 201) {
+        alert("가입 완료!");
+        // 가입 완료 후 로직 작성
+      }
+    } catch (error) {
+      console.error("가입 실패:", error);
+    }
   };
 
   const validateNickname = (inputNickname: string) => {
@@ -56,7 +80,7 @@ const SelectPairchildComp: FC = () => {
             onClick={() => setSelectedCharacter("두번째 캐릭터")}
           />
         </CharacterContainer>
-        {/* 나머지 코드... */}
+        <button onClick={handleSubmit}>가입완료</button>
       </SelectPairchildWrapper>
     </>
   );
