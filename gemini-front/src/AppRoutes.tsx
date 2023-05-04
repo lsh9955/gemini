@@ -5,6 +5,7 @@ import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
 import MyPage from "./pages/profile/MyPage";
+import Alarm from "./pages/main/Alarm";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/loginpage" component={Login} />
         <Route exact path="/loginsuccess" component={LoginSuccess} />
         <Route exact path="/mypage" component={MyPage} />
+        <Route exact path="/alarm" component={Alarm} />
         {/* ... */}
       </Switch>
     </>
