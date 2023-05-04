@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod # 기본으로 쓸 프로파일
+    active: local # 기본으로 쓸 프로파일
 
   application:
     name: user-service
@@ -30,6 +30,12 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
+
+  redis:
+    host: mygemini.co.kr
+    port: 6379
+    password: b106b106
+
 
 server:
   port: 8081

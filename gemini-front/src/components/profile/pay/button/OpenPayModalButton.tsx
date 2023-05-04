@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import PayModal from "../modal/PayModal";
 
-const OpenPayModalButton = () => {
+const OpenPayModalButton: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
-      <button>구매창 열기</button>
+      <button onClick={openModal}>구매창 열기</button>
+      {showModal && <PayModal onClose={closeModal} />}
     </>
   );
 };
