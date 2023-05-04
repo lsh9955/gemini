@@ -11,6 +11,7 @@ import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.Like;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.GalleryRepository;
+import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.LikeRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class GalleryServiceImpl implements GalleryService{
     private final UserInfoRepository userInfoRepository;
 
     private final LikeRepository likeRepository;
+    private final GeminiRepository geminiRepository;
 
     public ResponseGalleryPageDto getGalleryPage(Integer page, Integer size) {
 
@@ -87,7 +89,8 @@ public class GalleryServiceImpl implements GalleryService{
 
         Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
         Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
-        Optional<Like> isLiked = likeRepository.findByUserInfoAndGemini(userInfo.get(), gallery.getGemini());
+        Gemini gemini = gallery.getGemini();
+        Optional<Like> isLiked = likeRepository.findByUserInfoAndGemini(userInfo.get(), gemini);
         if (isLiked.isPresent()) {
             return "fail";
         }
@@ -96,6 +99,13 @@ public class GalleryServiceImpl implements GalleryService{
                     .userInfo(userInfo.get())
                     .build();
         likeRepository.save(like);
+        Integer totalLikes = gemini.getTotalLike();
+        Integer dailyLikes = gallery.getDailyLike();
+        Integer weeklyLikes = gallery.getWeeklyLike();
+        gemini.updateLikes(totalLikes + 1);
+        gallery.updateLikes(dailyLikes + 1, weeklyLikes + 1);
+        geminiRepository.save(gemini);
+        galleryRepository.save(gallery);
         return "success";
     }
 
@@ -103,9 +113,17 @@ public class GalleryServiceImpl implements GalleryService{
 
         Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
         Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
-        Optional<Like> isLiked = likeRepository.findByUserInfoAndGemini(userInfo.get(), gallery.getGemini());
+        Gemini gemini = gallery.getGemini();
+        Optional<Like> isLiked = likeRepository.findByUserInfoAndGemini(userInfo.get(), gemini);
         if (isLiked.isPresent()) {
             likeRepository.delete(isLiked.get());
+            Integer totalLikes = gemini.getTotalLike();
+            Integer dailyLikes = gallery.getDailyLike();
+            Integer weeklyLikes = gallery.getWeeklyLike();
+            gemini.updateLikes(totalLikes - 1);
+            gallery.updateLikes(dailyLikes - 1, weeklyLikes - 1);
+            geminiRepository.save(gemini);
+            galleryRepository.save(gallery);
             return "success";
         }
         return "fail";

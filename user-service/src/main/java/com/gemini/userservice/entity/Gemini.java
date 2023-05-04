@@ -48,4 +48,8 @@ public class Gemini {
     @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL)
     @JoinColumn(name = "gallery_no")
     private Gallery gallery;
+
+    public void updateLikes(Integer totalLike) {
+        this.totalLike = totalLike;
+    }
 }
