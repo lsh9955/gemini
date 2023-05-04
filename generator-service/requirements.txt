@@ -31,3 +31,5 @@ torchsde
 safetensors
 psutil
 rich
+python-dotenv
+boto3

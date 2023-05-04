@@ -4,7 +4,7 @@ import requests
 
 class TestTxt2ImgWorking(unittest.TestCase):
     def setUp(self):
-        self.url_txt2img = "http://localhost:7860/api/txt2img"
+        self.url_txt2img = "http://localhost:8000/ml_api/txt2img"
         self.simple_txt2img = {
             "enable_hr": False,
             "denoising_strength": 0,
@@ -31,7 +31,7 @@ class TestTxt2ImgWorking(unittest.TestCase):
             "s_tmax": 0,
             "s_tmin": 0,
             "s_noise": 1,
-            "sampler_index": "DPM++ 2M Karras"
+            "sampler_index": "Euler a"
         }
 
     def test_txt2img_simple_performed(self):

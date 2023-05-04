@@ -111,13 +111,9 @@ def list_models():
         model_url = None
     else:
         # model_url = "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors"
-        model_url = "https://huggingface.co/ckpt/anything-v5.0/resolve/main/AnythingV5V3_v5PrtRE.safetensors"
+        model_url = "https://huggingface.co/sakistriker/Anything_V5_PrtRE/resolve/main/anythingV5Anything_anythingV5PrtRE.safetensors"
 
-    # model_list = modelloader.load_models(model_path=model_path, model_url=model_url, command_path=shared.cmd_opts.ckpt_dir, ext_filter=[".ckpt", ".safetensors"], download_name="v1-5-pruned-emaonly.safetensors", ext_blacklist=[".vae.ckpt", ".vae.safetensors"])
-    model_list = modelloader.load_models(model_path=model_path, model_url=model_url,
-                                         command_path=shared.cmd_opts.ckpt_dir, ext_filter=[".ckpt", ".safetensors"],
-                                         download_name="AnythingV5V3_v5PrtRE.safetensors",
-                                         ext_blacklist=[".vae.ckpt", ".vae.safetensors"])
+    model_list = modelloader.load_models(model_path=model_path, model_url=model_url, command_path=shared.cmd_opts.ckpt_dir, ext_filter=[".ckpt", ".safetensors"], download_name="anythingV5Anything_anythingV5PrtRE.safetensors", ext_blacklist=[".vae.ckpt", ".vae.safetensors"])
 
     if os.path.exists(cmd_ckpt):
         checkpoint_info = CheckpointInfo(cmd_ckpt)

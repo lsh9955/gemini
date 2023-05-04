@@ -217,15 +217,25 @@ def wait_on_server(demo=None):
 
 def api_only():
     initialize()
+    ### app = FastAPI()
+    ### 제가 작성한 openapi, 즉 스웨거로 바꿔치기 합니당
+    app = FastAPI(openapi_url="/api/my_api.yaml")
 
-    app = FastAPI()
     setup_middleware(app)
     api = create_api(app)
 
     modules.script_callbacks.app_started_callback(None, app)
+    print("Gemini API 서버 정상 기동합니다.")
 
+    print("CUDA available:", torch.cuda.is_available())
+    print("CUDA device count:", torch.cuda.device_count())
+    if torch.cuda.is_available():
+        print("Current CUDA device:", torch.cuda.current_device())
+        print("CUDA device name:", torch.cuda.get_device_name(torch.cuda.current_device()))
     print(f"Startup time: {startup_timer.summary()}.")
-    api.launch(server_name="0.0.0.0" if cmd_opts.listen else "127.0.0.1", port=cmd_opts.port if cmd_opts.port else 7861)
+    ### Original 구동 체계. 이걸 All host, 8000 port로 변경
+    ### api.launch(server_name="0.0.0.0" if cmd_opts.listen else "127.0.0.1", port=cmd_opts.port if cmd_opts.port else 7861)
+    api.launch(server_name="0.0.0.0", port=cmd_opts.port if cmd_opts.port else 8000)
 
 
 def webui():
@@ -335,6 +345,8 @@ def webui():
 
 if __name__ == "__main__":
     if cmd_opts.nowebui:
+        print("GEMINI API version 기동합니다.")
         api_only()
     else:
+        print("GEMINI Webui version 기동합니다.")
         webui()

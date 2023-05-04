@@ -345,7 +345,11 @@ def tests(test_dir):
 def start():
     print(f"Launching {'API server' if '--nowebui' in sys.argv else 'Web UI'} with arguments: {' '.join(sys.argv[1:])}")
     import webui
-    webui.api_only()
+    if '--nowebui' in sys.argv:
+        webui.api_only()
+    else:
+        webui.webui()
+
 
 if __name__ == "__main__":
     prepare_environment()

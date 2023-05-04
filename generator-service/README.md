@@ -1,19 +1,3 @@
-# 0. 시작하기
-### 1. Run start.bat
- - start.bat을 실행시키십시오.
-### 2. docs 확인하기
- - fast api 기반 프로젝트이기에 127.0.0.1:7861/docs 로 접속하시면 스웨거 문서가 보입니다.
-
-# 1. 서비스 설명
-
-# 2. 사용 모델
-## 1. CKPT
- - 보안상의 문제로 Safetensors 사용.
- - Anything V5v3 pretrained 모델을 기반 모델로 사용
-
-# 부록:
-### 이 API 서비스는 Stable diffusion Web UI를 기반으로 만들어졌습니다.
-
 # Stable Diffusion web UI
 A browser interface based on Gradio library for Stable Diffusion.
 

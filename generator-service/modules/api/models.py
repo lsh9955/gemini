@@ -6,6 +6,7 @@ from inflection import underscore
 from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img
 from modules.shared import sd_upscalers, opts, parser
 from typing import Dict, List
+from fastapi.responses import FileResponse
 
 API_NOT_ALLOWED = [
     "self",
@@ -101,11 +102,25 @@ StableDiffusionTxt2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingTxt2Img",
     StableDiffusionProcessingTxt2Img,
     [
-        {"key": "sampler_index", "type": str, "default": "DPM++ 2M Karras"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
         {"key": "script_name", "type": str, "default": None},
         {"key": "script_args", "type": list, "default": []},
         {"key": "send_images", "type": bool, "default": True},
-        {"key": "save_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
+        {"key": "alwayson_scripts", "type": dict, "default": {}},
+    ]
+).generate_model()
+
+StableDiffusionTxt2GeminiProcessingAPI = PydanticModelGenerator(
+    "StableDiffusionProcessingTxt2Gemini",
+    StableDiffusionProcessingTxt2Img,
+    [
+        {"key": "user_id", "type": str, "default": "TestUser"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
+        {"key": "script_name", "type": str, "default": None},
+        {"key": "script_args", "type": list, "default": []},
+        {"key": "send_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
         {"key": "alwayson_scripts", "type": dict, "default": {}},
     ]
 ).generate_model()
@@ -114,7 +129,7 @@ StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingImg2Img",
     StableDiffusionProcessingImg2Img,
     [
-        {"key": "sampler_index", "type": str, "default": "DPM++ 2M Karras"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
         {"key": "init_images", "type": list, "default": None},
         {"key": "denoising_strength", "type": float, "default": 0.75},
         {"key": "mask", "type": str, "default": None},
@@ -122,7 +137,7 @@ StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
         {"key": "script_name", "type": str, "default": None},
         {"key": "script_args", "type": list, "default": []},
         {"key": "send_images", "type": bool, "default": True},
-        {"key": "save_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
         {"key": "alwayson_scripts", "type": dict, "default": {}},
     ]
 ).generate_model()
@@ -131,6 +146,20 @@ class TextToImageResponse(BaseModel):
     images: List[str] = Field(default=None, title="Image", description="The generated image in base64 format.")
     parameters: dict
     info: str
+
+class TextToGeminiResponse(BaseModel):
+    user_id = str
+    parameters: dict
+    info: str
+
+class MakeSampleResponse(BaseModel):
+    user_id = str
+    parameters: dict
+    info: str
+
+
+class GetSampleResponse(BaseModel):
+    url: str
 
 class ImageToImageResponse(BaseModel):
     images: List[str] = Field(default=None, title="Image", description="The generated image in base64 format.")
@@ -203,6 +232,10 @@ class CreateResponse(BaseModel):
 
 class PreprocessResponse(BaseModel):
     info: str = Field(title="Preprocess info", description="Response string from preprocessing task.")
+
+### 직접 작성한 Sample class 입니다.
+# class GetSampleResponse(BaseModel):
+#     file: FileResponse
 
 fields = {}
 for key, metadata in opts.data_labels.items():

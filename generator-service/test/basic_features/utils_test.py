@@ -3,16 +3,16 @@ import requests
 
 class UtilsTests(unittest.TestCase):
   def setUp(self):
-    self.url_options = "http://localhost:7860/api/options"
-    self.url_cmd_flags = "http://localhost:7860/api/cmd-flags"
-    self.url_samplers = "http://localhost:7860/api/samplers"
-    self.url_upscalers = "http://localhost:7860/api/upscalers"
-    self.url_sd_models = "http://localhost:7860/api/sd-models"
-    self.url_hypernetworks = "http://localhost:7860/api/hypernetworks"
-    self.url_face_restorers = "http://localhost:7860/api/face-restorers"
-    self.url_realesrgan_models = "http://localhost:7860/api/realesrgan-models"
-    self.url_prompt_styles = "http://localhost:7860/api/prompt-styles"
-    self.url_embeddings = "http://localhost:7860/api/embeddings"
+    self.url_options = "http://localhost:8000/ml_api/options"
+    self.url_cmd_flags = "http://localhost:8000/ml_api/cmd-flags"
+    self.url_samplers = "http://localhost:8000/ml_api/samplers"
+    self.url_upscalers = "http://localhost:8000/ml_api/upscalers"
+    self.url_sd_models = "http://localhost:8000/ml_api/sd-models"
+    self.url_hypernetworks = "http://localhost:8000/ml_api/hypernetworks"
+    self.url_face_restorers = "http://localhost:8000/ml_api/face-restorers"
+    self.url_realesrgan_models = "http://localhost:8000/ml_api/realesrgan-models"
+    self.url_prompt_styles = "http://localhost:8000/ml_api/prompt-styles"
+    self.url_embeddings = "http://localhost:8000/ml_api/embeddings"
 
   def test_options_get(self):
     self.assertEqual(requests.get(self.url_options).status_code, 200)
