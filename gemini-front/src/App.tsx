@@ -9,7 +9,7 @@ import AppRoutes from "./AppRoutes";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  const accessToken = window.localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("accessToken");
 
   const handleResize = () => {
     const vh = window.innerHeight * 0.01;
@@ -24,28 +24,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!accessToken) {
+      console.log("로그아웃합니다.");
       dispatch(logoutAccount());
       logout();
-      window.localStorage.clear();
+      localStorage.clear();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
-
-  const [mapdata, setMapdata] = useState([]);
-
-  const getData = async () => {
-    try {
-      const response = await axios.get("/api/spots");
-      console.log(response.data.spots);
-      setMapdata(response.data.spots);
-    } catch (error) {
-      // console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <BrowserRouter>
