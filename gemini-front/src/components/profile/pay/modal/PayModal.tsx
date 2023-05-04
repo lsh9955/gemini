@@ -45,7 +45,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
       pg: "kakaopay",
       pay_method: "card",
       // merchant_uid가 결제마다 꼭 달라야 함
-      merchant_uid: "570088sfa3300qrasfqweq4",
+      merchant_uid: "570088sfa3300qr23asdfsfqweq42",
       name: "별 구매하기",
       amount: 1000,
     };
@@ -59,8 +59,8 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
         .post(
           "http://192.168.31.221:8081/order/kakao/single-payment",
           {
-            orderStart: 3,
-            merchantUid: "570088sfa3300qrasfqweq4",
+            orderStar: 3,
+            merchantUid: "570088sfa3300qr23asdfsfqweq42",
           },
           {
             headers: {
