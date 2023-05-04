@@ -24,34 +24,33 @@ public class OrdersServiceImpl implements OrdersService {
         this.userInfoRepository = userInfoRepository;
     }
 
+
     @Override
-    public ResponseOrdersDto kakaoOrder(OrdersRequestDto requestDto) {
-        // 회원정보 찾아오기
-        UserInfo userInfo = userInfoRepository.findByUsername(requestDto.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        // 기존 별 개수 및 추가할 별 개수 조회
-        Integer oldTotalStars = userInfo.getStar();
-        Integer addStars = requestDto.getOrderStar();
+    public ResponseOrdersDto kakaoOrder(String username, OrdersRequestDto requestDto) {
+            // 회원정보 찾아오기
+            UserInfo userInfo = userInfoRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 별 개수 총합 계산 후 저장
-        Integer newTotalStar = oldTotalStars + addStars;
-        userInfo.updateStar(newTotalStar);
-        userInfoRepository.save(userInfo);
+            // 기존 별 개수 및 추가할 별 개수 조회
+            Integer oldTotalStars = userInfo.getStar();
+            Integer addStars = requestDto.getOrderStar();
 
-        // 새로운 주문 정보 저장
-        Orders orders = Orders.builder()
-                .star(requestDto.getOrderStar())
-                .merchantUid(requestDto.getMerchantUid())
-                .userInfo(userInfo)
-                .build();
-        ordersRepository.save(orders);
+            // 별 개수 총합 계산 후 저장
+            Integer newTotalStar = oldTotalStars + addStars;
+            userInfo.updateStar(newTotalStar);
+            userInfoRepository.save(userInfo);
 
-        // client에 보낼 DTO 생성 및 반환
-        return ResponseOrdersDto.builder()
-                .star(newTotalStar)
-                .build();
+            // 새로운 주문 정보 저장
+            Orders orders = Orders.builder()
+                    .star(requestDto.getOrderStar())
+                    .merchantUid(requestDto.getMerchantUid())
+                    .userInfo(userInfo)
+                    .build();
+            ordersRepository.save(orders);
+
+            // client에 보낼 DTO 생성 및 반환
+            return ResponseOrdersDto.builder()
+                    .star(newTotalStar)
+                    .build();
+        }
     }
-
-
-}

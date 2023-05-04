@@ -5,7 +5,6 @@ import com.gemini.userservice.dto.response.ResponseOrdersDto;
 
 
 public interface OrdersService {
-    ResponseOrdersDto kakaoOrder(OrdersRequestDto requestDto);
-
+    ResponseOrdersDto kakaoOrder(String username, OrdersRequestDto requestDto);
 
 }
