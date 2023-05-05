@@ -14,7 +14,7 @@ const Main: FC = () => {
   useEffect(() => {
     if (!accessToken) {
       alert("로그인이 필요합니다. 로그인페이지로 이동합니다.");
-      history.push("/loginPage");
+      history.push("/loginpage");
     }
   }, []);
 
