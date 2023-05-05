@@ -5,13 +5,13 @@ const ChatBody = ({ messages, typingStatus, lastMessageRef }: any) => {
   const history = useHistory();
 
 
-
   return (
     <>
 
 
 
       <div className='message__container'>
+
         {messages.map((message: any) => (
           message.name === localStorage.getItem("userInfo") ? (
             <div className="message__chats" key={message.id}>
