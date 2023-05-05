@@ -37,13 +37,14 @@ exports.createRoom = async (req, res, next) => {
       owner: req.body.userId,
       password: req.body.password,
       users: req.body.userId,
+      userArr: [],
       usernum: 0,
       //추후 유저 연결시 변경할 것
       defaultpicture: userPicList[Math.floor(Math.random() * 4)],
     });
-    console.log(`${newRoom}`);
-    const io = req.app.get("io");
-    io.of("/room").emit("newRoom", newRoom);
+
+    //const io = req.app.get("io");
+    // io.emit("newRoom", newRoom);
 
     res.redirect(`http://localhost:3000/room/${newRoom._id}`);
   } catch (error) {
@@ -60,20 +61,6 @@ exports.enterRoom = async (req, res, next) => {
       { _id: req.params.id },
       { $set: { usernum: willupdateRoom.usernum + 1 } }
     );
-
-    // const room = await Room.findOne({ _id: req.params.id });
-    // if (!room) {
-    //   return res.redirect("/?error=존재하지 않는 방입니다.");
-    // }
-    // if (room.password && room.password !== req.query.password) {
-    //   return res.redirect("/?error=비밀번호가 틀렸습니다.");
-    // }
-    // const io = req.app.get("io");
-    // const { rooms } = io.of("/chat").adapter;
-
-    // if (room.max <= rooms.get(req.params.id)?.size) {
-    //   return res.redirect("/?error=허용 인원이 초과하였습니다.");
-    // }
   } catch (error) {
     console.error(error);
     return next(error);
@@ -97,7 +84,7 @@ exports.sendChat = async (req, res, next) => {
       user: req.session.color,
       chat: req.body.chat,
     });
-    req.app.get("io").of("/chat").to(req.params.id).emit("chat", chat);
+    req.app.get("io").to(req.params.id).emit("chat", chat);
     res.send("ok");
   } catch (error) {
     console.error(error);
@@ -112,7 +99,7 @@ exports.sendPic = async (req, res, next) => {
       user: req.session.color,
       pic: req.file.filename,
     });
-    req.app.get("io").of("/chat").to(req.params.id).emit("chat", chat);
+    req.app.get("io").to(req.params.id).emit("chat", chat);
     res.send("ok");
   } catch (error) {
     console.error(error);

@@ -11,11 +11,7 @@ import Game from "./component/game/Game";
 import CreateRoomModal from "./component/roomList/CreateRoomModal";
 import io, { Socket } from "socket.io-client";
 
-const chatSocket = io("http://localhost:5000/chat", {
-  transports: ["websocket"],
-});
-
-const roomSocket = io("http://localhost:5000/room", {
+const chatSocket = io("http://localhost:5000", {
   transports: ["websocket"],
 });
 
@@ -33,7 +29,7 @@ function App() {
         <Route
           path="/room"
           exact
-          render={() => <RoomList roomSocket={roomSocket} />}
+          render={() => <RoomList chatSocket={chatSocket} />}
         />
         <Route path="/test" exact render={() => <CreateRoomModal />} />
         <Route

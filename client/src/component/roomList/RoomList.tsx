@@ -9,7 +9,7 @@ import {
   RoomWrap,
 } from "./RoomListStyle";
 
-const RoomList = ({ roomSocket }: { roomSocket: Socket }) => {
+const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [rooms, setRooms] = useState<string[]>([]);
   useEffect(() => {
     const res = async () => {
@@ -23,24 +23,21 @@ const RoomList = ({ roomSocket }: { roomSocket: Socket }) => {
     res();
   }, []);
   useEffect(() => {
-    roomSocket.on("newRoom", function (data: any) {
-      // 새 방 이벤트 시 새 방 생성
-      console.log("새 방 생성");
-      setRooms([...rooms, JSON.stringify(data)]);
-    });
-
-    roomSocket.on("removeRoom", function (data: any) {
-      // 방 제거 이벤트 시 id가 일치하는 방 제거
-      console.log("방 제거");
-      console.log(data);
-      setRooms(rooms.slice().splice(rooms.indexOf(JSON.stringify(data)), 1));
-    });
-    roomSocket.on("allroomInfo", function (data: any) {
-      console.log(data);
+    chatSocket.on("allroomchange", (data: any) => {
+      console.log("방 목록 정보 바뀜");
+      const res = async () => {
+        const getRoomInfo = await axios.get("http://localhost:5000/room");
+        setRooms(
+          getRoomInfo.data.room.map((v: any, i: any) => {
+            return JSON.stringify(v);
+          })
+        );
+      };
+      res();
     });
 
     return () => {
-      roomSocket.disconnect();
+      chatSocket.off("allroomchange");
     };
   }, []);
 

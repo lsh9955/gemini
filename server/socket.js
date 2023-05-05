@@ -86,58 +86,62 @@ module.exports = (server, app, sessionMiddleware) => {
     transports: ["websocket"],
   });
   app.set("io", io);
-  const room = io.of("/room");
-  const chat = io.of("/chat");
-
-  room.on("connection", async (socket) => {
-    console.log("room 네임스페이스에 접속");
-    socket.on("disconnect", () => {
-      console.log("room 네임스페이스 접속 해제");
-    });
-  });
-
-  chat.on("connection", (socket) => {
+  io.on("connection", (socket) => {
     console.log("chat 네임스페이스에 접속");
+
     let nowSocket = socket;
 
     socket.on("join", async (data) => {
       console.log("채팅방에 입장 체크");
-      console.log("새 방을 만듦");
       await saveUser(data, socket);
       socket.join(data.roomId);
       const roomLen = await getRoomInfo(`${data.roomId}`);
-      chat.emit("roomupdate", roomLen);
+      socket.emit("roomupdate", roomLen);
       const willupdateRoom = await Room.find({ _id: data.roomId });
-      console.log("#############$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-      console.log(willupdateRoom);
+      const changeUserArr = willupdateRoom[0].userarr.slice();
+      changeUserArr.push(data.user);
       await Room.updateOne(
         { _id: data.roomId },
-        { $set: { usernum: willupdateRoom[0].usernum + 1 } }
+        {
+          $set: {
+            usernum: willupdateRoom[0].usernum + 1,
+            userarr: changeUserArr,
+          },
+        }
       );
+
+      io.emit("allroomchange", "mongoDBChange");
     });
 
     socket.on("disconnect", async () => {
       console.log("chat 네임스페이스 접속 해제");
-      console.log(nowSocket.id);
+
       let thisUserName = await findUserName(nowSocket);
       if (thisUserName) {
         let thisUserRoom = await findUserRoom(thisUserName);
         const willupdateRoom = await Room.find({ _id: thisUserRoom });
+        const changeUserArr = willupdateRoom[0].userarr.slice();
+        changeUserArr.splice(changeUserArr.indexOf(thisUserName), 1);
         await Room.updateOne(
           { _id: thisUserRoom },
-          { $set: { usernum: willupdateRoom[0].usernum - 1 } }
+          {
+            $set: {
+              usernum: willupdateRoom[0].usernum - 1,
+              userarr: changeUserArr,
+            },
+          }
         );
         await client.del(`${nowSocket.id}`);
         await client.del(`${thisUserName}`);
         await client.lrem(`${thisUserRoom}`, 0, `${thisUserName}`);
         const nowroomState = await getRoomInfo(`${thisUserRoom}`);
-        chat.emit("roomupdate", nowroomState);
+        socket.emit("roomupdate", nowroomState);
         const roomLen = await getUserNum(`${thisUserRoom}`);
         if (Number(roomLen) === 0) {
           // 유저가 0명이면 방 삭제
           await removeRoom(thisUserRoom); // 컨트롤러 대신 서비스를 사용
-          room.emit("removeRoom", thisUserRoom);
         }
+        io.emit("allroomchange", "mongoDBChange");
       }
     });
   });

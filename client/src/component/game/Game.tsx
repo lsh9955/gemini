@@ -25,11 +25,29 @@ const Game = ({ chatSocket }: { chatSocket: Socket }) => {
       console.log(data);
       setUserList(data);
     });
+    chatSocket.on("allroomchange", (data: any) => {
+      console.log("방 목록 정보 바뀜");
+      const res = async () => {
+        const getRoomInfo = await axios.get("http://localhost:5000/room");
+        const nowURL = new URL(window.location.href).pathname.split("/").at(-1);
+        setUserList(
+          getRoomInfo.data.room
+            .filter((v: any) => v._id === nowURL)
+            .map((v: any, i: any) => {
+              return v.userarr;
+            })
+        );
+      };
+      res();
+    });
 
     return () => {
-      chatSocket.disconnect();
+      chatSocket.off("join");
+      chatSocket.off("chat");
+      chatSocket.off("roomupdate");
+      chatSocket.off("allroomchange");
     };
-  }, []);
+  }, [chatSocket]);
 
   return (
     <>
