@@ -1,6 +1,7 @@
 package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.*;
+import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 import com.gemini.userservice.service.UserInfoService;
 import com.gemini.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,14 @@ public class UserInfoApiController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+
+    //  X-Username으로 모두 변경 필요. 로컬 테스트 끝나고. 😀
+    @PostMapping("/select-pairchild")
+    public ResponseEntity<UserInfoDto> selectGemini(@RequestHeader("username") String username, @RequestBody RequestSelectPairchildDto selectGeminiDto) {
+        UserInfoDto updatedUserInfo = userInfoService.selectPairchild(username, selectGeminiDto);
+        return ResponseEntity.status(201).body(updatedUserInfo);
+    }
 
 
     @PostMapping // test complete 😀 exception for following myself needed, duplicated request also should be handled.

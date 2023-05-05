@@ -36,7 +36,7 @@ public class ResponseGalleryDetailDto {
     public ResponseGalleryDetailDto(UserInfo userInfo, Gemini gemini, Boolean isLiked) {
 
         this.nickname = userInfo.getNickname();
-        this.profileImage = userInfo.getProfileImg();
+        this.profileImage = userInfo.getProfileImgUrl();
         this.geminiName = gemini.getName();
         this.geminiImage = gemini.getImageUrl();
         this.geminiDescription = gemini.getDescription();
