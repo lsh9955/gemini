@@ -22,7 +22,7 @@ export const SelectPairchildWrapper = styled.div`
 export const FormLabel = styled.label`
   display: block;
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 1.4rem;
   font-weight: bold;
   //   margin-bottom: 8px;
   white-space: nowrap;
@@ -31,7 +31,7 @@ export const FormLabel = styled.label`
 
 export const TextInput = styled.input`
   display: block;
-  width: 74%;
+  width: 82.5%;
   //   padding: 8px;
   margin-bottom: 16px;
   color: white;
@@ -82,8 +82,8 @@ export const CharacterContainer = styled.div`
 
 // 원형으로 보여주기
 export const CharacterImage = styled.img<{ isSelected: boolean }>`
-  width: 120px;
-  height: 120px;
+  width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   transition: transform 0.3s;
   cursor: pointer;
