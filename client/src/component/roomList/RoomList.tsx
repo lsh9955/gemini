@@ -32,7 +32,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
             return JSON.stringify(v);
           })
         );
-      };
+      }
       res();
     });
 

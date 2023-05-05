@@ -60,13 +60,15 @@ exports.enterRoom = async (req, res, next) => {
   try {
     const willupdateRoom = await Room.find({ _id: req.params.id });
     //비밀번호 방인 경우
-    
+    if(willupdateRoom.password){
 
+    }else{
+      
 
     await Room.updateOne(
       { _id: req.params.id },
       { $set: { usernum: willupdateRoom.usernum + 1 } }
-    );
+    );}
   } catch (error) {
     console.error(error);
     return next(error);

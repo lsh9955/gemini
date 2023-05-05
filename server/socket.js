@@ -88,7 +88,8 @@ module.exports = (server, app, sessionMiddleware) => {
   app.set("io", io);
   io.on("connection", (socket) => {
     console.log("chat 네임스페이스에 접속");
-
+    const clientSocket = io.sockets;
+    console.log(clientSocket);
     let nowSocket = socket;
 
     socket.on("join", async (data) => {
@@ -111,6 +112,9 @@ module.exports = (server, app, sessionMiddleware) => {
       );
 
       io.emit("allroomchange", "mongoDBChange");
+      socket.on("message", (chatData) => {
+        io.to(data.roomId).emit("messageResponse", chatData);
+      });
     });
 
     socket.on("disconnect", async () => {

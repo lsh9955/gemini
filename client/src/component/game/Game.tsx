@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io, { Socket } from "socket.io-client";
+import ChatPage from "../chat/Chat";
 
 const Game = ({ chatSocket }: { chatSocket: Socket }) => {
   const userN = localStorage.getItem("userInfo");
@@ -51,6 +52,7 @@ const Game = ({ chatSocket }: { chatSocket: Socket }) => {
 
   return (
     <>
+      <ChatPage chatSocket={chatSocket} />
       <a href="/room" id="exit-btn">
         방 나가기
       </a>
