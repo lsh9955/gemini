@@ -6,7 +6,7 @@ import { RequestAccessTokenWithRefreshToken } from "./api/login-http";
 const cookies = new Cookies();
 
 const axiosInstanceWithAccessToken = axios.create({
-  baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_API_USER_BASE_URL}`, // 로컬테스트 끝나고 일반적인 포트 없는걸로 변경 😀
 });
 
 axiosInstanceWithAccessToken.interceptors.request.use((config) => {

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   SelectPairchildWrapper,
   FormLabel,
@@ -7,13 +7,27 @@ import {
   InputWrapper,
   CharacterContainer,
   CharacterImage,
+  SubmitButton,
+  // Overlay,
 } from "./SelectPairchildComp.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
+import { useHistory } from "react-router-dom";
 
 const SelectPairchildComp: FC = () => {
+  const history = useHistory();
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
   const [selectedCharacter, setSelectedCharacter] = useState("");
+  const [characterUrls, setCharacterUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    //일단 임시로 고정 url. adol이 안나옴. 이후에 axios로 get해서 가져오는걸로 변경.
+    const tempUrls = [
+      "https://lh3.googleusercontent.com/u/0/drive-viewer/AFGJ81r9Md-AaVpurl3lRMJMfPKAFqgvYZsLB2HKcV27uFa231aukM05iYc7KZL1n82Y15sjE99n4dNHpyd-wR5Sg3wpZGfifg=w1920-h969",
+      "https://lh3.googleusercontent.com/u/0/drive-viewer/AFGJ81pJK8rg6uSAUf8akO_F3nDZNs6YPma5pG6f273VhvQMBuXKPxd84Vh7ZJ6ttAdnQ-dLtwC2Y-xs0jNAYTfvUzQwpRDr=w1920-h969",
+    ];
+    setCharacterUrls(tempUrls);
+  }, []);
 
   const handleSubmit = async () => {
     // 닉네임과 캐릭터 선택 여부 확인
@@ -25,17 +39,18 @@ const SelectPairchildComp: FC = () => {
     // axiosInstanceWithAccessToken을 사용한 POST 요청
     try {
       const response = await axiosInstanceWithAccessToken.post(
-        "/api/register",
+        "/user-service/select-pairchild",
         {
           nickname,
           description,
-          character: selectedCharacter,
+          profile_img_url: selectedCharacter,
         }
       );
 
       if (response.status === 201) {
         alert("가입 완료!");
         // 가입 완료 후 로직 작성
+        history.push("/");
       }
     } catch (error) {
       console.error("가입 실패:", error);
@@ -73,21 +88,44 @@ const SelectPairchildComp: FC = () => {
           />
         </InputWrapper>
 
+        <FormLabel htmlFor="description">기본 캐릭터 선택</FormLabel>
         <CharacterContainer>
           <CharacterImage
-            src="character1.png"
-            alt="아리에스"
-            isSelected={selectedCharacter === "아리에스"}
-            onClick={() => setSelectedCharacter("아리에스")}
+            src={characterUrls[0]}
+            alt="Aries"
+            isSelected={selectedCharacter === characterUrls[0]}
+            onClick={() => setSelectedCharacter(characterUrls[0])}
           />
           <CharacterImage
-            src="character2.png"
-            alt="두번째 캐릭터"
-            isSelected={selectedCharacter === "두번째 캐릭터"}
-            onClick={() => setSelectedCharacter("두번째 캐릭터")}
+            src={characterUrls[1]}
+            alt="Adol"
+            isSelected={selectedCharacter === characterUrls[1]}
+            onClick={() => setSelectedCharacter(characterUrls[1])}
           />
+          {/* <CharacterImage
+            backgroundImage={characterUrls[0]}
+            // alt="Aries"
+            isSelected={selectedCharacter === characterUrls[0]}
+            onClick={() => setSelectedCharacter(characterUrls[0])}
+          >
+            <Overlay
+              backgroundImage={characterUrls[0].replace(".png", "-mask.png")}
+              isSelected={selectedCharacter === characterUrls[0]}
+            />
+          </CharacterImage>
+          <CharacterImage
+            backgroundImage={characterUrls[1]}
+            // alt="Adol"
+            isSelected={selectedCharacter === characterUrls[1]}
+            onClick={() => setSelectedCharacter(characterUrls[1])}
+          >
+            <Overlay
+              backgroundImage={characterUrls[1].replace(".png", "-mask.png")}
+              isSelected={selectedCharacter === characterUrls[1]}
+            />
+          </CharacterImage> */}
         </CharacterContainer>
-        <button onClick={handleSubmit}>가입완료</button>
+        <SubmitButton onClick={handleSubmit}>가입완료</SubmitButton>
       </SelectPairchildWrapper>
     </>
   );

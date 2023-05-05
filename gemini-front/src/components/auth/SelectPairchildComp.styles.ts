@@ -4,7 +4,8 @@ const selectPairChildWrapperHeight = "75%";
 
 export const SelectPairchildWrapper = styled.div`
   position: absolute;
-  padding-top: 10.5%;
+  //   padding-top: 10.5%;
+  padding-top: 5.25%;
   padding-bottom: 16px;
   padding-left: 11.3%;
   padding-right: 11.3%;
@@ -22,6 +23,7 @@ export const FormLabel = styled.label`
   display: block;
   color: #ffffff;
   font-size: 1rem;
+  font-weight: bold;
   //   margin-bottom: 8px;
   white-space: nowrap;
   margin-right: 16px;
@@ -60,7 +62,9 @@ export const TextArea = styled.textarea`
   color: white;
   border: 2px solid white;
   background-color: transparent;
-  font-size: 8px;
+  font-weight: bold;
+  //   font-size: 8px;
+  font-size: 0.6rem;
 
   &:focus {
     outline: none;
@@ -72,11 +76,14 @@ export const CharacterContainer = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 16px;
+  margin-top: 5%;
+  margin-bottom: 5%;
 `;
 
+// 원형으로 보여주기
 export const CharacterImage = styled.img<{ isSelected: boolean }>`
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   transition: transform 0.3s;
   cursor: pointer;
@@ -94,10 +101,106 @@ export const CharacterImage = styled.img<{ isSelected: boolean }>`
   }
 `;
 
+// 문제있는 2번 방법
+// export const CharacterImage = styled.img<{ isSelected: boolean }>`
+//   width: 120px;
+//   height: 120px;
+//   border-radius: 50%;
+//   transition: transform 0.3s;
+//   cursor: pointer;
+
+//   ${(props) =>
+//     props.isSelected &&
+//     css`
+//       transform: scale(1.2);
+//       border: 2px solid white;
+//       mask-image: url(${props.src && props.src.replace(".png", "-mask.png")});
+//     `}
+
+//   &:hover {
+//     transform: scale(1.2);
+//     border: 2px solid white;
+//     mask-image: url(${(props) =>
+//       props.src && props.src.replace(".png", "-mask.png")});
+//   }
+// `;
+
+// 마지막시도. 안되면 원형으로 넘어감.
+// export const CharacterImage = styled.div<{
+//   isSelected: boolean;
+//   backgroundImage: string;
+// }>`
+//   width: 120px;
+//   height: 120px;
+//   background-image: url(${(props) => props.backgroundImage});
+//   background-position: center;
+//   background-size: cover;
+//   border-radius: 50%;
+//   transition: transform 0.3s;
+//   cursor: pointer;
+//   position: relative;
+
+//   ${(props) =>
+//     props.isSelected &&
+//     css`
+//       transform: scale(1.2);
+//       border: 2px solid white;
+//     `}
+// `;
+// // 마지막시도. 안되면 원형으로 넘어감.
+// export const Overlay = styled.div<{
+//   isSelected: boolean;
+//   backgroundImage: string;
+// }>`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background-image: url(${(props) => props.backgroundImage});
+//   background-position: center;
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   opacity: 0;
+//   transition: opacity 0.3s;
+
+//   ${(props) =>
+//     props.isSelected &&
+//     css`
+//       opacity: 0.5;
+//     `}
+// `;
+
 export const InputWrapper = styled.div`
   display: flex;
+  margin-bottom: 1%;
   //   width: 75%;
   flex-direction: row;
   justify-content: space-between;
   /* 추가적인 스타일 속성들 */
+`;
+
+export const SubmitButton = styled.div`
+  // width:
+  // height:
+  margin-bottom: 8px;
+  margin-top: 3%;
+  align-self: center;
+  color: white;
+  font-weight: bold;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 3% 10% 3% 10%;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(0.95);
+  }
 `;
