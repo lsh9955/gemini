@@ -7,12 +7,12 @@
 // import { Head, Line, Title } from '../../styles/Menu/NavStyle';
 // import { ThickLine, P, MyLine, Image, Ptag } from '../../styles/Profile/MyPagestyle';
 
-import React from "react";
+import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
 import OpenPayModalButton from "../../components/profile/pay/button/OpenPayModalButton";
 import PayModal from "../../components/profile/pay/modal/PayModal";
 
-function MyPage() {
+const MyProfile: FC = () => {
   const history = useHistory();
 
   const moveDonation = () => {
@@ -74,5 +74,5 @@ function MyPage() {
       <PayModal />
     </>
   );
-}
-export default MyPage;
+};
+export default MyProfile;

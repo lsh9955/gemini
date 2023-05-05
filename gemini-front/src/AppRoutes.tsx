@@ -4,8 +4,10 @@ import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
-import MyPage from "./pages/profile/MyPage";
+import MyPage from "./pages/profile/MyProfile";
 import SelectPairchild from "./pages/auth/SelectPairchild";
+import MyProfile from "./pages/profile/MyProfile";
+import UserProfile from "./pages/profile/UserProfile";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
@@ -20,6 +22,8 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/loginPage" component={Login} />
         <Route exact path="/loginSuccess" component={LoginSuccess} />
         <Route exact path="/selectPairchild" component={SelectPairchild} />
+        <Route exact path="/myProfile" component={MyProfile} />
+        <Route exact path="/userProfile/:nickname" component={UserProfile} />
 
         {/* ... */}
       </Switch>
