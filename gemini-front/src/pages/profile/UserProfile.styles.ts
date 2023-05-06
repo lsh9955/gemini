@@ -139,14 +139,15 @@ export const EditButton = styled.div`
 `;
 
 export const FollowingAndPayWrappter = styled.div`
-  background-color: #ffffff;
+  //   background-color: #ffffff;
   margin-top: 1vh;
   display: flex;
   flex-direction: column;
+  height: 14vh;
 `;
 
 export const FollowingTextWrapper = styled.div`
-  background-color: #ffffff;
+  //   background-color: #ffffff;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -154,7 +155,7 @@ export const FollowingTextWrapper = styled.div`
 `;
 
 export const NumText = styled.div`
-  background-color: #ffffff;
+  //   background-color: #ffffff;
   text-align: center;
   font-size: 1.2rem;
   color: black;

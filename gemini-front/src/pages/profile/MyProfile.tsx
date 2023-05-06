@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
 import OpenPayModalButton from "../../components/profile/pay/button/OpenPayModalButton";
-import PayModal from "../../components/profile/pay/modal/PayModal";
+import PayButton from "../../components/profile/pay/modal/PayButton";
 import {
   Desc,
   EditButton,
@@ -69,7 +69,7 @@ const MyProfile: FC = () => {
                   별조각
                 </NumText>
               </FollowingTextWrapper>
-              <PayModal />
+              <PayButton />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>

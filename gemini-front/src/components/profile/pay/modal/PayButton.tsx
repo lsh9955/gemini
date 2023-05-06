@@ -1,5 +1,10 @@
 import React, { ChangeEvent, useState } from "react";
 import axios from "axios";
+import {
+  StarImgWrapper,
+  StyledPayButton,
+  StyledPayButtonText,
+} from "./PayButton.styles";
 
 declare const window: typeof globalThis & {
   IMP: any;
@@ -41,7 +46,10 @@ const PayModal = () => {
 
   return (
     <>
-      <button onClick={onClickPayment}>별 구매하자</button>
+      <StyledPayButton onClick={onClickPayment}>
+        <StyledPayButtonText>별조각 구매하기 </StyledPayButtonText>
+        <StarImgWrapper />
+      </StyledPayButton>
     </>
   );
 };
