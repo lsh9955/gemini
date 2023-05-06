@@ -21,6 +21,7 @@ import {
   Nickname,
   NumText,
 } from "./UserProfile.styles";
+import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -83,7 +84,9 @@ const MyProfile: FC = () => {
               닉네임님의 TRPG 추억로그
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
-          <MyProfileContentBodyWrapper></MyProfileContentBodyWrapper>
+          <MyProfileContentBodyWrapper>
+            <MyProfileContentBody></MyProfileContentBody>
+          </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>
     </>

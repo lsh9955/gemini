@@ -20,6 +20,7 @@ import {
   NumText,
 } from "./UserProfile.styles";
 import PayButton from "../../components/profile/pay/modal/PayButton";
+import FollowButton from "../../components/profile/userprofile/FollowButton";
 
 type UserProfileParams = {
   nickname: string;
@@ -75,7 +76,7 @@ const UserProfile: FC = () => {
                   별조각
                 </NumText>
               </FollowingTextWrapper>
-              <PayButton />
+              <FollowButton />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>

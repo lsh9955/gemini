@@ -13,13 +13,22 @@ export const StyledPayButton = styled.div`
   border-radius: 5px;
 
   cursor: pointer;
+  transition: background-color 0.3s ease;
 
+  // &:hover {
+  //   background-color: #fce86d;
+  // }
+
+  // &:active {
+  //   background-color: #fada5e;
+  //   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  // }
   &:hover {
-    background-color: #fce86d;
+    background-color: #f9e258;
   }
 
   &:active {
-    background-color: #fada5e;
+    background-color: #f5d741;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 `;
