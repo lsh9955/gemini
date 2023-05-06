@@ -11,17 +11,17 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
 
-  const handleResize = () => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-  };
-  // 스크롤바
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // const handleResize = () => {
+  //   const vh = window.innerHeight * 0.01;
+  //   document.documentElement.style.setProperty("--vh", `${vh}px`);
+  // };
+  // useEffect(() => {
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
 
+  // 스크롤바
   const [scrollBarHeight, setScrollBarHeight] = useState(30);
 
   const updateScrollBarHeight = () => {

@@ -23,6 +23,7 @@ import {
 } from "./UserProfile.styles";
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
 import axios from "axios";
+import { getInfScrollImgLength } from "./UserProfile";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -42,9 +43,22 @@ const MyProfile: FC = () => {
   }, []);
 
   // for infinite scroll 😀
-  const [images, setImages] = useState<string[]>([]);
+  const dummyImgs = [
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+    "http://placeimg.com/150/200/tech",
+  ];
+  const [images, setImages] = useState<string[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
+  const infScrollImgLength = getInfScrollImgLength(images.length);
+  const minHeight = `${39.2 + infScrollImgLength * 20}vh`; // 동적높이적용
 
   const loadMoreImages = useCallback(async () => {
     try {
@@ -78,7 +92,7 @@ const MyProfile: FC = () => {
 
   return (
     <>
-      <MyProfileWrapper>
+      <MyProfileWrapper minHeight={minHeight}>
         <MyInfoWrapper>
           <MyBgImg></MyBgImg>
           <MyInfoSpace></MyInfoSpace>
@@ -111,14 +125,14 @@ const MyProfile: FC = () => {
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>
-        <MyProfileContentWrapper>
+        <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
             <MyProfileContentTitle>닉네임님의 Gemini</MyProfileContentTitle>
             <MyProfileContentTitle>
               닉네임님의 TRPG 추억로그
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
-          <MyProfileContentBodyWrapper>
+          <MyProfileContentBodyWrapper minHeight={minHeight}>
             <MyProfileContentBody
               images={images}
               hasMore={hasMore}

@@ -2,6 +2,10 @@ import styled from "styled-components";
 import MyProfileBg from "../../assets/img/MyProfileBg.png";
 import MyBackgoundImgExample from "../../assets/img/MyBackgoundImgExample.png";
 
+interface MyProfileContentBodyWrapperProps {
+  minHeight: string;
+}
+
 const myProfileWrapperHeight = "91vh";
 const myInfoWrapperHeight = "43vh";
 const myBgImgHeight = "26vh";
@@ -12,9 +16,13 @@ const MyProfileImgDiameter = "12.5vw";
 // }px)`;
 const myProfileContentWrapperHeight = `calc(${myProfileWrapperHeight} - ${myInfoWrapperHeight} - 5.5vh)`;
 
-export const MyProfileWrapper = styled.div`
+// 3번 동적높이
+// export const MyProfileWrapper = styled.div`
+export const MyProfileWrapper = styled.div<MyProfileContentBodyWrapperProps>`
+  min-height: ${({ minHeight }) => minHeight};
   //   height: ${myProfileWrapperHeight};
-  height: 1000vh; // 수정필요 😀
+  //   min-height: ${myProfileWrapperHeight};
+
   background-image: url(${MyProfileBg});
   background-repeat: no-repeat;
   background-size: cover;
@@ -49,7 +57,7 @@ export const MyBgImg = styled.div`
 
 export const MyInfoSpace = styled.div`
   height: ${myInfoSpaceHeight};
-  background-color: #ffffff90;
+  background-color: #ffffff99;
 `;
 
 // export const MyInfoContentWrapper = styled.div`
@@ -159,17 +167,26 @@ export const NumText = styled.div`
   line-height: 1.5; // 원하는 줄 간격 비율로 조정하세요.
 `;
 
-export const MyProfileContentWrapper = styled.div`
+// 2번 동적높이
+export const MyProfileContentWrapper = styled.div<MyProfileContentBodyWrapperProps>`
+  min-height: ${({ minHeight }) => minHeight};
   //   height: ${myProfileContentWrapperHeight};
+  //   min-height: ${myProfileContentWrapperHeight}; // 수정필요
   padding-left: 5.2vw;
   padding-right: 5.2vw;
-  background-color: #eeeeee; // 수정 필요😀
+  background-color: #ffffff99; // 수정 필요😀
 `;
 
-export const MyProfileContentBodyWrapper = styled.div`
-  //   height: ${myProfileContentWrapperHeight};
-  height: 39.2vh;
-  background-color: #d9d9d9; // 수정 필요😀
+// export const MyProfileContentBodyWrapper = styled.div`
+//   //   height: ${myProfileContentWrapperHeight};
+//   min-height: 39.2vh;
+//   background-color: #d9d9d9; // 수정 필요😀
+// `;
+
+// 1번 동적높이
+export const MyProfileContentBodyWrapper = styled.div<MyProfileContentBodyWrapperProps>`
+  min-height: ${({ minHeight }) => minHeight};
+  //   background-color: #ffffff99; // 바꿀까? 😀
 `;
 
 export const MyProfileContentTitleWrapper = styled.div`
@@ -180,5 +197,6 @@ export const MyProfileContentTitleWrapper = styled.div`
 export const MyProfileContentTitle = styled.div`
   //   height: ${myProfileContentWrapperHeight};
   font-size: 1.6rem;
-  background-color: #ffffff;
+  //   background-color: #ffffff99;
+  margin-right: 2vw;
 `;

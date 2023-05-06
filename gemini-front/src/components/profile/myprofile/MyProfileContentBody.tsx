@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import {
   StyledMyProfileContentBody,
   ImageWrapper,
+  EndMessage,
   //   InfiniteScrollWrapper,
 } from "./MyProfileContentBody.styles";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -35,93 +36,7 @@ const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
       loader={<h4>Loading...</h4>}
       endMessage={
         <p style={{ textAlign: "center" }}>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
-          <br></br>
-          <b>모든 이미지를 탐색했습니다.</b>
+          <EndMessage>모든 제미니를 탐색했습니다.</EndMessage>
         </p>
       }
     >
