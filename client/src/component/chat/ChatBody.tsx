@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from "react-router";
 
-const ChatBody = ({ messages, typingStatus, lastMessageRef }: any) => {
+const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
   const history = useHistory();
 
 
@@ -12,10 +12,10 @@ const ChatBody = ({ messages, typingStatus, lastMessageRef }: any) => {
 
       <div className='message__container'>
 
-        {messages.map((message: any) => (
+        {messages.filter((message: any) => message.type === "개인채팅" ? (message.sendtarget === localStorage.getItem("userInfo") || message.name === localStorage.getItem("userInfo")) : (message.type === nowMsgType)).map((message: any) => (
           message.name === localStorage.getItem("userInfo") ? (
             <div className="message__chats" key={message.id}>
-              <p className='sender__name'>나</p>
+              <p className='sender__name'>{message.name}(나)</p>
               <div className='message__sender'>
                 <p>{message.text}</p>
               </div>

@@ -5,39 +5,51 @@ import { io, Socket } from "socket.io-client";
 import Typed from 'typed.js';
 const ChatPage = ({ chatSocket }: { chatSocket: Socket }) => {
   const [messages, setMessages] = useState<any[]>([])
+  const [gameMsg, setGameMsg] = useState<any[]>([])
+  const [nowMsgType, setNowMsgType] = useState("룸 채팅")
   const [typingStatus, setTypingStatus] = useState("")
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const el = React.useRef(null);
 
   useEffect(() => {
     console.log(messages)
-    chatSocket.on("messageResponse", (data: any) => setMessages([...messages, data]))
+    chatSocket.on("messageResponse", (data: any) => {
+      setMessages([...messages, data])
+      if (data.type === "룸 채팅") {
+        setGameMsg([...gameMsg, data])
+      }
+    })
+    return (() => {
+      chatSocket.off("messageResponse")
+    })
   }, [chatSocket, messages])
 
 
 
   useEffect(() => {
-    if (messages.length >= 1) {
+    if (gameMsg.length >= 1 && gameMsg[gameMsg.length - 1].type === "룸 채팅") {
       lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
       const typed = new Typed(el.current, {
-        strings: [`${messages[messages.length - 1].text}`],
+        strings: [`${gameMsg[gameMsg.length - 1].text}`],
         typeSpeed: 50,
       });
-
-
       return () => {
-        // Destroy Typed instance during cleanup to stop animation
         typed.destroy();
       };
     }
-  }, [messages]);
+
+  }, [gameMsg]);
+
+  const nowMsgTypeHandler = (data: string) => {
+    setNowMsgType(data)
+  }
 
   return (
     <div className="chat">
       <span ref={el} />
       <div className='chat__main'>
-        <ChatBody messages={messages} typingStatus={typingStatus} lastMessageRef={lastMessageRef} />
-        <ChatFooter chatSocket={chatSocket} />
+        <ChatBody messages={messages} typingStatus={typingStatus} lastMessageRef={lastMessageRef} nowMsgType={nowMsgType} />
+        <ChatFooter chatSocket={chatSocket} nowMsgTypeHandler={nowMsgTypeHandler} />
       </div>
     </div>
   )
