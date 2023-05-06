@@ -14,6 +14,7 @@ import {
   PayTitle,
   Input,
   InputSpan,
+  InputContainer,
 } from "./PayModalstyle";
 
 interface Props {
@@ -26,7 +27,6 @@ declare const window: typeof globalThis & {
 
 const PayModal: React.FC<Props> = ({ onClose }) => {
   const [numberValue, setNumberValue] = useState("");
-  const [newStar, setNewStar] = useState<number>(0);
 
   // 숫자 외 입력 불가
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +36,9 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
       setNumberValue(newValue);
     }
   };
+
+  const intNumberValue = parseInt(numberValue, 10);
+  console.log(typeof intNumberValue);
 
   // 아임포트 결제 모듈
   const onClickPayment = () => {
@@ -47,7 +50,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
       // merchant_uid가 결제마다 꼭 달라야 함
       merchant_uid: "570088sfa3300qr23asdfsfqweq42",
       name: "별 구매하기",
-      amount: 1000,
+      amount: intNumberValue * 1000,
     };
     IMP.request_pay(data, callback);
   };
@@ -59,7 +62,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
         .post(
           "http://192.168.31.221:8081/order/kakao/single-payment",
           {
-            orderStar: 3,
+            orderStar: intNumberValue,
             merchantUid: "570088sfa3300qr23asdfsfqweq42",
           },
           {
@@ -82,14 +85,15 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
           <ModalContainer>
             <ModalForm>
               <PayTitle>별조각 1개당 1000원이 결제됩니다.</PayTitle>
-              <InputSpan>
+              <InputContainer>
                 <Input
                   type="text"
                   value={numberValue}
                   onChange={handleInputChange}
                 />
-                별조각
-              </InputSpan>
+                <InputSpan>별조각</InputSpan>
+              </InputContainer>
+
               <PayButton onClick={onClickPayment}>
                 <LogoImage src={KakaoLogo} alt="logo"></LogoImage>
                 구매하기

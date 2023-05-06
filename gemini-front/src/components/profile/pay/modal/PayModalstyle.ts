@@ -42,13 +42,20 @@ export const ModalForm = styled.div`
   z-index: 100;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const PayButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fbed6d;
   width: 60%;
   height: 18%;
-  font-size: 20px;
+  font-size: 18px;
   position: fixed;
   bottom: 20%;
   left: 50%;
@@ -62,9 +69,9 @@ export const PayButton = styled.button`
 export const LogoImage = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 680px) {
     width: 14px;
     height: 14px;
   }
@@ -74,22 +81,37 @@ export const PayTitle = styled.div`
   position: fixed;
   color: #ffffff;
   top: 22%;
-  left: 22%;
-  font-size: 12px;
+  font-size: 16px;
   text-align: center;
+
+  @media screen and (max-width: 680px) {
+    font-size: 12px;
+  }
+`;
+
+export const InputContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 `;
 
 export const Input = styled.input`
-  width: 33%;
-  height: 22%;
+  width: 50%;
+  height: 100%;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ffffff;
   font-size: 16px;
   z-index: 101;
-  background: rgba(0, 0, 0, 0.7);
+  background-color: transparent;
   color: #ffffff;
 `;
+
 export const InputSpan = styled.span`
-  top: 55%;
-  left: 55%;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  color: #ffffff;
+  margin-right: 0.7rem;
 `;
