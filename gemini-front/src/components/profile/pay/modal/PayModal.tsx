@@ -3,6 +3,8 @@ import axios from "axios";
 import PayModalBackground from "../../../../assets/img/PayModalBackground.png";
 import KakaoLogo from "../../../../assets/img/kakao_logo.png";
 
+import uuid from "react-uuid";
+
 //styled-components
 import {
   ModalBackground,
@@ -38,7 +40,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
   };
 
   const intNumberValue = parseInt(numberValue, 10);
-  console.log(typeof intNumberValue);
+  const uid = uuid();
 
   // 아임포트 결제 모듈
   const onClickPayment = () => {
@@ -48,7 +50,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
       pg: "kakaopay",
       pay_method: "card",
       // merchant_uid가 결제마다 꼭 달라야 함
-      merchant_uid: "570088sfa3300qr23asdfsfqweq42",
+      merchant_uid: uid,
       name: "별 구매하기",
       amount: intNumberValue * 1000,
     };
@@ -63,7 +65,7 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
           "http://192.168.31.221:8081/order/kakao/single-payment",
           {
             orderStar: intNumberValue,
-            merchantUid: "570088sfa3300qr23asdfsfqweq42",
+            merchantUid: uid,
           },
           {
             headers: {
@@ -71,9 +73,14 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
             },
           }
         )
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+        })
         .catch((error) => {
           console.log(error);
+        })
+        .finally(() => {
+          onClose(); // axios 요청이 끝난 후에 모달이 닫히도록 함
         });
     }
   };
