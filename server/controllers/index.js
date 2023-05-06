@@ -2,7 +2,7 @@ const Room = require("../schemas/room");
 const Chat = require("../schemas/chat");
 const { removeRoom: removeRoomService } = require("../services");
 const redis = require("redis");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
@@ -30,7 +30,6 @@ const userPicList = [
 ];
 
 exports.createRoom = async (req, res, next) => {
-
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   try {
     const newRoom = await Room.create({
@@ -60,15 +59,10 @@ exports.enterRoom = async (req, res, next) => {
   try {
     const willupdateRoom = await Room.find({ _id: req.params.id });
     //비밀번호 방인 경우
-    if(willupdateRoom.password){
-
-    }else{
-      
-
-    await Room.updateOne(
-      { _id: req.params.id },
-      { $set: { usernum: willupdateRoom.usernum + 1 } }
-    );}
+    if (willupdateRoom.password) {
+    } else {
+      await Room.updateOne({ _id: req.params.id }, { $set: { usernum: willupdateRoom.usernum + 1 } });
+    }
   } catch (error) {
     console.error(error);
     return next(error);

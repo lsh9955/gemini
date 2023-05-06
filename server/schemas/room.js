@@ -20,6 +20,7 @@ const roomSchema = new Schema({
   usernum: Number,
   userarr: Array,
   defaultpicture: String,
+  createPic: Array,
   createdAt: {
     type: Date,
     default: Date.now,

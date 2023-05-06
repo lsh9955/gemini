@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io, { Socket } from "socket.io-client";
 import ChatPage from "../chat/Chat";
+import GetPicture from "../playAsset/GetPicture";
 
-const Game = ({ chatSocket }: { chatSocket: Socket }) => {
+const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const userN = localStorage.getItem("userInfo");
   console.log(userN);
   const [userList, setUserList] = useState<Array<string>>([]);
@@ -49,6 +50,7 @@ const Game = ({ chatSocket }: { chatSocket: Socket }) => {
 
   return (
     <>
+      <GetPicture />
       <ChatPage chatSocket={chatSocket} userList={userList} />
       <a href="/room" id="exit-btn">
         방 나가기
@@ -59,19 +61,9 @@ const Game = ({ chatSocket }: { chatSocket: Socket }) => {
           return <div key={i}>{v}</div>;
         })}
       </div>
-      <div>채팅리스트</div>
-      <div>
-        {chatList.map((v: any, i) => {
-          return (
-            <div key={i}>
-              {v.user_id}: {v.message}
-            </div>
-          );
-        })}
-      </div>
-      <div>채팅 내용</div>
+
     </>
   );
 };
 
-export default Game;
+export default GameRoom;

@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import React, { useEffect } from "react";
 import RoomList from "./component/roomList/RoomList";
-import Game from "./component/game/Game";
 import CreateRoomModal from "./component/roomList/CreateRoomModal";
 import io, { Socket } from "socket.io-client";
+import GameRoom from "./component/game/GameRoom";
 
 const chatSocket = io("http://localhost:5000", {
   transports: ["websocket"],
@@ -34,7 +34,7 @@ function App() {
         <Route path="/test" exact render={() => <CreateRoomModal />} />
         <Route
           path="/room/:id"
-          render={() => <Game chatSocket={chatSocket} />}
+          render={() => <GameRoom chatSocket={chatSocket} />}
         />
       </Switch>
     </BrowserRouter>
