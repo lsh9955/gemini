@@ -152,10 +152,10 @@ class TextToGeminiResponse(BaseModel):
     parameters: dict
     info: str
 
-class MakeSampleResponse(BaseModel):
-    user_id = str
-    parameters: dict
-    info: str
+# class MakeSampleResponse(BaseModel):
+#     user_id = str
+#     parameters: dict
+#     info: str
 
 
 class GetSampleResponse(BaseModel):

@@ -184,7 +184,7 @@ class Api:
         api_middleware(self.app)
         ### 직접 작성한 Sample API
         self.add_api_route("/ml_api/get_sample", self.getsampleapi, methods=["GET"], response_model=GetSampleResponse)
-        self.add_api_route("/ml_api/make_sample", self.makesampleapi, methods=["GET"], response_model=MakeSampleResponse)
+        # self.add_api_route("/ml_api/make_sample", self.makesampleapi, methods=["GET"], response_model=MakeSampleResponse)
         self.add_api_route("/ml_api/makegemini", self.makegeminiapi, methods=["POST"], response_model=TextToGeminiResponse)
         self.add_api_route("/ml_api/txt2img", self.text2imgapi, methods=["POST"], response_model=TextToImageResponse)
         self.add_api_route("/ml_api/img2img", self.img2imgapi, methods=["POST"], response_model=ImageToImageResponse)
@@ -223,65 +223,65 @@ class Api:
     ### 직접 짜올리는 api 구동 함수
     def getsampleapi(self):
         return FileResponse("./asset/sample_img.png")
-
-    def makesampleapi(self, background_tasks: BackgroundTasks):
-        user_id = "test_user"
-        make_samplereq = {
-            "enable_hr": False,
-            "denoising_strength": 0,
-            "firstphase_width": 0,
-            "firstphase_height": 0,
-            "hr_scale": 2.0,
-            "hr_upscaler": "",
-            "hr_second_pass_steps": 0,
-            "hr_resize_x": 0,
-            "hr_resize_y": 0,
-            "user_id": "test_user",
-            "prompt": "(illustration:1.3),(portrait:1.3),(best quality),(masterpiece),(high resolution),perfect anatomy,perfect_finger,hyper detail,high quality, super detail,(finely detailed beautiful eyes and detailed face),ultra detailed cloths,1girl,solo,red_hair,cur_hair,green_eyes,kimono,sword",
-            "styles": "",
-            "seed": -1,
-            "subseed": -1,
-            "subseed_strength": 0,
-            "seed_resize_from_h": -1,
-            "seed_resize_from_w": -1,
-            "sampler_name": "",
-            "batch_size": 1,
-            "n_iter": 1,
-            "steps": 13,
-            "cfg_scale": 11.0,
-            "width": 507,
-            "height": 676,
-            "restore_faces": False,
-            "tiling": False,
-            "do_not_save_samples": True,
-            "do_not_save_grid": True,
-            "negative_prompt": "(nsfw:2),lowres,((bad anatomy)),((bad hands)),text,missing finger,extra digits,fewer digits,blurry,((mutated hands and fingers)),(poorly drawn face),((mutation)),((deformed face)),(ugly),((bad proportions)),((extra limbs)),extra face,(double head),(extra head),((extra feet)),monster,logo,cropped,worst quality,low quality,normal quality,jpeg,humpbacked,long body,long neck,((jpeg artifacts))",
-            "eta": "",
-            "s_churn": 0.0,
-            "s_tmax": "",
-            "s_tmin": 0.0,
-            "s_noise": 1.0,
-            "override_settings": "",
-            "override_settings_restore_afterwards": True,
-            "script_args": [],
-            "sampler_index": "DPM++ 2M Karras",
-            "script_name": "",
-            "send_images": True,
-            "save_images": True,
-            "alwayson_scripts": {}
-        }
-        now = datetime.now()
-        timestamp = now.strftime("%Y%m%d_%H%M%S%f")
-        object_name = f"gemini/{timestamp}_{user_id}.png"
-        url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
-        background_tasks.add_task(self.back_makegeminiapi, make_samplereq, object_name)
-        return {
-            "status": 200,
-            "parameters": {"url": url,
-                           "prompt": make_samplereq,
-                           },
-            "info": f"{user_id}의 제미니가 생성되고 있어요!",  # 적절한 값을 입력하세요
-        }
+    #
+    # def makesampleapi(self, background_tasks: BackgroundTasks):
+    #     user_id = "test_user"
+    #     make_samplereq = {
+    #         "enable_hr": False,
+    #         "denoising_strength": 0,
+    #         "firstphase_width": 0,
+    #         "firstphase_height": 0,
+    #         "hr_scale": 2.0,
+    #         "hr_upscaler": "",
+    #         "hr_second_pass_steps": 0,
+    #         "hr_resize_x": 0,
+    #         "hr_resize_y": 0,
+    #         "user_id": "test_user",
+    #         "prompt": "(illustration:1.3),(portrait:1.3),(best quality),(masterpiece),(high resolution),perfect anatomy,perfect_finger,hyper detail,high quality, super detail,(finely detailed beautiful eyes and detailed face),ultra detailed cloths,1girl,solo,red_hair,cur_hair,green_eyes,kimono,sword",
+    #         "styles": "",
+    #         "seed": -1,
+    #         "subseed": -1,
+    #         "subseed_strength": 0,
+    #         "seed_resize_from_h": -1,
+    #         "seed_resize_from_w": -1,
+    #         "sampler_name": "",
+    #         "batch_size": 1,
+    #         "n_iter": 1,
+    #         "steps": 13,
+    #         "cfg_scale": 11.0,
+    #         "width": 507,
+    #         "height": 676,
+    #         "restore_faces": False,
+    #         "tiling": False,
+    #         "do_not_save_samples": True,
+    #         "do_not_save_grid": True,
+    #         "negative_prompt": "(nsfw:2),lowres,((bad anatomy)),((bad hands)),text,missing finger,extra digits,fewer digits,blurry,((mutated hands and fingers)),(poorly drawn face),((mutation)),((deformed face)),(ugly),((bad proportions)),((extra limbs)),extra face,(double head),(extra head),((extra feet)),monster,logo,cropped,worst quality,low quality,normal quality,jpeg,humpbacked,long body,long neck,((jpeg artifacts))",
+    #         "eta": "",
+    #         "s_churn": 0.0,
+    #         "s_tmax": "",
+    #         "s_tmin": 0.0,
+    #         "s_noise": 1.0,
+    #         "override_settings": "",
+    #         "override_settings_restore_afterwards": True,
+    #         "script_args": [],
+    #         "sampler_index": "DPM++ 2M Karras",
+    #         "script_name": "",
+    #         "send_images": True,
+    #         "save_images": True,
+    #         "alwayson_scripts": {}
+    #     }
+    #     now = datetime.now()
+    #     timestamp = now.strftime("%Y%m%d_%H%M%S%f")
+    #     object_name = f"gemini/{timestamp}_{user_id}.png"
+    #     url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+    #     background_tasks.add_task(self.back_makegeminiapi, make_samplereq, object_name)
+    #     return {
+    #         "status": 200,
+    #         "parameters": {"url": url,
+    #                        "prompt": make_samplereq,
+    #                        },
+    #         "info": f"{user_id}의 제미니가 생성되고 있어요!",  # 적절한 값을 입력하세요
+    #     }
 
 
     def back_makegeminiapi(self, txt2geminireq, object_name):
