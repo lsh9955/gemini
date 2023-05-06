@@ -72,8 +72,9 @@ export const RightComponent = styled(Link)`
   }
 `;
 
+// 중간에 그라데이션 이미지 컴포넌트
 export const MiddleBox = styled.div`
   width: 100%;
-  height: 20vh;
+  height: 30vh;
   background-image: url(${MiddleImage});
 `;
