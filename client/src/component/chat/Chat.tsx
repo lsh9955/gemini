@@ -3,7 +3,7 @@ import ChatBody from './ChatBody'
 import ChatFooter from './ChatFooter'
 import { io, Socket } from "socket.io-client";
 import Typed from 'typed.js';
-const ChatPage = ({ chatSocket }: { chatSocket: Socket }) => {
+const ChatPage = ({ userList, chatSocket }: { userList: Array<string>, chatSocket: Socket }) => {
   const [messages, setMessages] = useState<any[]>([])
   const [gameMsg, setGameMsg] = useState<any[]>([])
   const [nowMsgType, setNowMsgType] = useState("룸 채팅")
@@ -49,7 +49,7 @@ const ChatPage = ({ chatSocket }: { chatSocket: Socket }) => {
       <span ref={el} />
       <div className='chat__main'>
         <ChatBody messages={messages} typingStatus={typingStatus} lastMessageRef={lastMessageRef} nowMsgType={nowMsgType} />
-        <ChatFooter chatSocket={chatSocket} nowMsgTypeHandler={nowMsgTypeHandler} />
+        <ChatFooter chatSocket={chatSocket} nowMsgTypeHandler={nowMsgTypeHandler} userList={userList} />
       </div>
     </div>
   )

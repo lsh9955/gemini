@@ -6,7 +6,7 @@ import ChatPage from "../chat/Chat";
 const Game = ({ chatSocket }: { chatSocket: Socket }) => {
   const userN = localStorage.getItem("userInfo");
   console.log(userN);
-  const [userList, setUserList] = useState<string[]>([]);
+  const [userList, setUserList] = useState<Array<string>>([]);
   const [chatList, setChatList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -22,21 +22,18 @@ const Game = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket.on("chat", function (data: any) {
       setChatList([...chatList, data]);
     });
-    chatSocket.on("roomupdate", function (data: any) {
-      console.log(data);
-      setUserList(data);
-    });
+
     chatSocket.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
         const getRoomInfo = await axios.get("http://localhost:5000/room");
         const nowURL = new URL(window.location.href).pathname.split("/").at(-1);
+
         setUserList(
           getRoomInfo.data.room
-            .filter((v: any) => v._id === nowURL)
-            .map((v: any, i: any) => {
-              return v.userarr;
-            })
+            .filter((v: any) => v._id === nowURL)[0].userarr
+
+
         );
       };
       res();
@@ -52,7 +49,7 @@ const Game = ({ chatSocket }: { chatSocket: Socket }) => {
 
   return (
     <>
-      <ChatPage chatSocket={chatSocket} />
+      <ChatPage chatSocket={chatSocket} userList={userList} />
       <a href="/room" id="exit-btn">
         방 나가기
       </a>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { io, Socket } from "socket.io-client";
-const ChatFooter = ({ nowMsgTypeHandler, chatSocket }: { nowMsgTypeHandler: any, chatSocket: Socket }) => {
+import Dialogue from '../dialogue/Dialogue';
+import PersonalMsgSelect from './PersonalMsgSelect';
+const ChatFooter = ({ nowMsgTypeHandler, chatSocket, userList }: { nowMsgTypeHandler: any, chatSocket: Socket, userList: Array<string> }) => {
   const [message, setMessage] = useState("")
   const [msType, setMsType] = useState("룸 채팅")
   const [sendTo, setSendTo] = useState("")
@@ -16,7 +18,7 @@ const ChatFooter = ({ nowMsgTypeHandler, chatSocket }: { nowMsgTypeHandler: any,
           socketID: chatSocket.id,
           //룸(게임만을 위한) 채팅, 정보 채팅, 잡담, 개인채팅에 따라 유형을 나눔
           type: msType,
-          sendtarget: "",
+          sendtarget: sendTo,
         }
       )
     }
@@ -25,6 +27,9 @@ const ChatFooter = ({ nowMsgTypeHandler, chatSocket }: { nowMsgTypeHandler: any,
   const chatTypeHandler = (chatType: string) => {
     setMsType(chatType)
     nowMsgTypeHandler(chatType)
+  }
+  const sendtargetHandler = (targetUser: string) => {
+    setSendTo(targetUser)
   }
   return (
     <div className='chat__footer'>
@@ -35,7 +40,7 @@ const ChatFooter = ({ nowMsgTypeHandler, chatSocket }: { nowMsgTypeHandler: any,
         <button onClick={() => { chatTypeHandler("잡담") }}>잡담</button>
         <button onClick={() => { chatTypeHandler("개인채팅") }}>개인채팅</button>
       </div>
-      {msType === "개인채팅" && <div></div>}
+      {msType === "개인채팅" && <PersonalMsgSelect userList={userList} sendtargetHandler={sendtargetHandler} />}
       <form className='form' onSubmit={handleSendMessage}>
         <input
           type="text"
