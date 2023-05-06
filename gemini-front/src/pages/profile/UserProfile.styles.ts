@@ -26,6 +26,7 @@ export const MyProfileWrapper = styled.div`
 export const MyInfoWrapper = styled.div`
   height: ${myInfoWrapperHeight};
   position: relative;
+  //   margin-bottom: 0px;
 
   //   background-image: url(${MyProfileBg});
   //   background-repeat: no-repeat;
@@ -74,12 +75,6 @@ export const MyProfileImg = styled.div`
   width: ${MyProfileImgDiameter};
   margin-top: calc(-${MyProfileImgDiameter} / 2);
   border-radius: 50%;
-  background-color: #ffffff;
-`;
-
-export const MyProfileContentWrapper = styled.div`
-  //   height: ${myProfileContentWrapperHeight};
-
   background-color: #ffffff;
 `;
 
@@ -160,4 +155,27 @@ export const NumText = styled.div`
   font-size: 1.2rem;
   color: black;
   line-height: 1.5; // 원하는 줄 간격 비율로 조정하세요.
+`;
+
+export const MyProfileContentWrapper = styled.div`
+  //   height: ${myProfileContentWrapperHeight};
+  padding-left: 5.2vw;
+  background-color: #ffffff;
+`;
+
+export const MyProfileContentBodyWrapper = styled.div`
+  //   height: ${myProfileContentWrapperHeight};
+
+  background-color: #ffffff;
+`;
+
+export const MyProfileContentTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const MyProfileContentTitle = styled.div`
+  //   height: ${myProfileContentWrapperHeight};
+  font-size: 1.6rem;
+  background-color: #ffffff;
 `;

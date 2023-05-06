@@ -11,6 +11,9 @@ import {
   MyInfoContentWrapper,
   MyInfoSpace,
   MyInfoWrapper,
+  MyProfileContentBodyWrapper,
+  MyProfileContentTitle,
+  MyProfileContentTitleWrapper,
   MyProfileContentWrapper,
   MyProfileImg,
   MyProfileTextWrapper,
@@ -47,7 +50,7 @@ const MyProfile: FC = () => {
               <Nickname>닉네임</Nickname>
               <Desc>
                 자기소개 부분: 내가 좋아하는 세계관, 캐릭터 등등을 적어보자 자
-                뭘 좋아하는 지 적어보세요
+                최대 몇글자로 하는게 좋을까? 넘기면 ...으로 만들까
               </Desc>
               <EditButton>수정하기</EditButton>
             </MyProfileTextWrapper>
@@ -73,7 +76,15 @@ const MyProfile: FC = () => {
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>
-        <MyProfileContentWrapper></MyProfileContentWrapper>
+        <MyProfileContentWrapper>
+          <MyProfileContentTitleWrapper>
+            <MyProfileContentTitle>닉네임님의 Gemini</MyProfileContentTitle>
+            <MyProfileContentTitle>
+              닉네임님의 TRPG 추억로그
+            </MyProfileContentTitle>
+          </MyProfileContentTitleWrapper>
+          <MyProfileContentBodyWrapper></MyProfileContentBodyWrapper>
+        </MyProfileContentWrapper>
       </MyProfileWrapper>
     </>
   );
