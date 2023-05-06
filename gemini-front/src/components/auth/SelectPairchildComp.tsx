@@ -8,6 +8,7 @@ import {
   CharacterContainer,
   CharacterImage,
   SubmitButton,
+  NicknameLabel,
   // Overlay,
 } from "./SelectPairchildComp.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
@@ -67,8 +68,7 @@ const SelectPairchildComp: FC = () => {
     <>
       <SelectPairchildWrapper>
         <InputWrapper>
-          <FormLabel htmlFor="nickname">닉네임</FormLabel>
-
+          <NicknameLabel htmlFor="nickname">닉네임</NicknameLabel>
           <TextInput
             type="text"
             id="nickname"
@@ -96,6 +96,7 @@ const SelectPairchildComp: FC = () => {
             isSelected={selectedCharacter === characterUrls[0]}
             onClick={() => setSelectedCharacter(characterUrls[0])}
           />
+
           <CharacterImage
             src={characterUrls[1]}
             alt="Adol"

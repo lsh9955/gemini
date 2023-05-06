@@ -5,11 +5,11 @@ const selectPairChildWrapperHeight = "75%";
 export const SelectPairchildWrapper = styled.div`
   position: absolute;
   //   padding-top: 10.5%;
-  padding-top: 5.25%;
+  padding-top: 5.25vh;
   padding-bottom: 16px;
-  padding-left: 11.3%;
-  padding-right: 11.3%;
-  width: 50%;
+  padding-left: 11.3vw;
+  padding-right: 11.3vw;
+  width: 60vw;
   height: ${selectPairChildWrapperHeight};
   background-color: rgba(217, 217, 217, 0.3);
   display: flex;
@@ -17,6 +17,17 @@ export const SelectPairchildWrapper = styled.div`
   //   justify-content: center;
   //   align-items: center;
   border-radius: 32px;
+`;
+
+export const NicknameLabel = styled.label`
+  display: block;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  // margin-bottom: 8px;
+  // margin-right: 100px;
+  white-space: nowrap;
+  margin-right: 16px;
 `;
 
 export const FormLabel = styled.label`
@@ -31,18 +42,21 @@ export const FormLabel = styled.label`
 
 export const TextInput = styled.input`
   display: block;
-  width: 82.5%;
+  // width: 82.5%;
+  width: 100%;
+  margin-left: 1.3rem;
   //   padding: 8px;
   margin-bottom: 16px;
   color: white;
   border: none;
   border-bottom: 2px solid white;
   background-color: transparent;
-  //   font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: bold;
   &::placeholder {
     color: white;
     opacity: 0.5;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
   }
 
   &:focus {
@@ -56,15 +70,15 @@ export const TextArea = styled.textarea`
   width: 100%;
   padding: 8px;
   //   height: calc(${selectPairChildWrapperHeight} * 0.9); // 0.75에 0.9를 그냥 곱해버리네;
-  height: 102px;
+  height: 195px;
   border-radius: 10px;
   margin-bottom: 16px;
   color: white;
   border: 2px solid white;
   background-color: transparent;
   font-weight: bold;
-  //   font-size: 8px;
-  font-size: 0.6rem;
+  // font-size: 8px;
+  font-size: 0.9rem;
 
   &:focus {
     outline: none;
@@ -82,8 +96,8 @@ export const CharacterContainer = styled.div`
 
 // 원형으로 보여주기
 export const CharacterImage = styled.img<{ isSelected: boolean }>`
-  width: 10rem;
-  height: 10rem;
+  width: 20vh;
+  height: 20vh;
   border-radius: 50%;
   transition: transform 0.3s;
   cursor: pointer;
@@ -173,7 +187,7 @@ export const CharacterImage = styled.img<{ isSelected: boolean }>`
 
 export const InputWrapper = styled.div`
   display: flex;
-  margin-bottom: 1%;
+  margin-bottom: 1.5vh;
   //   width: 75%;
   flex-direction: row;
   justify-content: space-between;

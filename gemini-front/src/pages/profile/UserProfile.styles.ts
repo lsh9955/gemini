@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MyProfileBg from "../../assets/img/MyProfileBg.png";
 import MyBackgoundImgExample from "../../assets/img/MyBackgoundImgExample.png";
+import AriesDummyProfile from "../../assets/img/AriesDummyProfile.png";
 
 interface MyProfileContentBodyWrapperProps {
   minHeight: string;
@@ -83,7 +84,10 @@ export const MyInfoContentWrapper = styled.div`
 export const MyProfileImg = styled.div`
   height: ${MyProfileImgDiameter};
   width: ${MyProfileImgDiameter};
+  background-image: url(${AriesDummyProfile}); //axios받아서 받는걸로 수정예정.
+  background-size: cover;
   margin-top: calc(-${MyProfileImgDiameter} / 2);
+
   border-radius: 50%;
   background-color: #ffffff;
 `;
