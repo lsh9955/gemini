@@ -13,12 +13,7 @@ import {
 import AlarmModal from "../alarm/AlarmModal";
 
 const HeaderTools: FC = () => {
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   const profileImgHandler = () => {
     // history.push("/");
@@ -26,12 +21,15 @@ const HeaderTools: FC = () => {
 
   const messageHandler = () => {
     // history.push("/");
+    setShowModal((prevState) => !prevState);
   };
 
   const notificationImgHandler = () => {
     // history.push("/");
-    setIsNotificationOpen(!isNotificationOpen);
-    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -52,9 +50,7 @@ const HeaderTools: FC = () => {
           alt="NotificationImg"
           onClick={notificationImgHandler}
         ></StyledNotification>
-        {showModal && (
-          <AlarmModal isOpen={isNotificationOpen} onClose={closeModal} />
-        )}
+        {showModal && <AlarmModal onClose={closeModal} />}
       </StyledHeaderTools>
     </>
   );

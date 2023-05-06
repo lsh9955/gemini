@@ -1,15 +1,43 @@
 import React from "react";
 
+// styled-components
+import {
+  Overlay,
+  ModalContainer,
+  AlarmTitle,
+  AlarmContent,
+} from "./AlarmModalStyle";
+
 interface Props {
-  isOpen: boolean;
   onClose: () => void;
 }
 
 const AlarmModal: React.FC<Props> = ({ onClose }) => {
-  console.log(1);
+  const alarmMesseges = [
+    {
+      id: 1,
+      content: "Alarm1",
+    },
+    {
+      id: 2,
+      content: "Alarm2",
+    },
+    {
+      id: 3,
+      content: "Alarm3",
+    },
+  ];
+
   return (
     <>
-      <p>알람 실험</p>
+      <ModalContainer>
+        <AlarmTitle>알림</AlarmTitle>
+        {alarmMesseges.map((alarm, idx) => (
+          <AlarmContent key={alarm.id} idx={idx}>
+            {alarm.content}
+          </AlarmContent>
+        ))}
+      </ModalContainer>
     </>
   );
 };
