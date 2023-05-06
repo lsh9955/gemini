@@ -13,7 +13,8 @@ const MyProfileImgDiameter = "12.5vw";
 const myProfileContentWrapperHeight = `calc(${myProfileWrapperHeight} - ${myInfoWrapperHeight} - 5.5vh)`;
 
 export const MyProfileWrapper = styled.div`
-  height: ${myProfileWrapperHeight};
+  //   height: ${myProfileWrapperHeight};
+  height: 1000vh; // 수정필요 😀
   background-image: url(${MyProfileBg});
   background-repeat: no-repeat;
   background-size: cover;
@@ -21,6 +22,7 @@ export const MyProfileWrapper = styled.div`
   padding-top: 5.5vh;
   padding-left: 8vw;
   padding-right: 8vw;
+  background-attachment: fixed;
 `;
 
 export const MyInfoWrapper = styled.div`
@@ -160,13 +162,14 @@ export const NumText = styled.div`
 export const MyProfileContentWrapper = styled.div`
   //   height: ${myProfileContentWrapperHeight};
   padding-left: 5.2vw;
-  background-color: #ffffff;
+  padding-right: 5.2vw;
+  background-color: #eeeeee; // 수정 필요😀
 `;
 
 export const MyProfileContentBodyWrapper = styled.div`
   //   height: ${myProfileContentWrapperHeight};
-
-  background-color: #ffffff;
+  height: 39.2vh;
+  background-color: #d9d9d9; // 수정 필요😀
 `;
 
 export const MyProfileContentTitleWrapper = styled.div`

@@ -15,12 +15,30 @@ const App: React.FC = () => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   };
-
+  // 스크롤바
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const [scrollBarHeight, setScrollBarHeight] = useState(30);
+
+  const updateScrollBarHeight = () => {
+    const scrollableElement = document.documentElement;
+    const scrollHeight = scrollableElement.scrollHeight;
+    const clientHeight = scrollableElement.clientHeight;
+
+    const newScrollBarHeight = (clientHeight / scrollHeight) * 100;
+    setScrollBarHeight(newScrollBarHeight);
+  };
+
+  useEffect(() => {
+    updateScrollBarHeight();
+    window.addEventListener("resize", updateScrollBarHeight);
+    return () => window.removeEventListener("resize", updateScrollBarHeight);
+  }, []);
+  // 스크롤바
 
   useEffect(() => {
     if (!accessToken) {
@@ -34,6 +52,21 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
+      <style>{`
+        body::-webkit-scrollbar {
+          width: 16px;
+        }
+        body::-webkit-scrollbar-thumb {
+          height: ${scrollBarHeight}%;
+        }
+        body::-webkit-scrollbar-thumb {
+          background: #051320;
+          border-radius: 5px;
+        }
+        body::-webkit-scrollbar-track {
+          background: rgba(33, 122, 244, .1);
+        }
+      `}</style>
       <AppRoutes />
     </BrowserRouter>
   );

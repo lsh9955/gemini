@@ -30,18 +30,6 @@ const UserProfile: FC = () => {
   const { nickname } = useParams<UserProfileParams>();
   const history = useHistory();
 
-  const moveDonation = () => {
-    history.push("/Mypage/Donation");
-  };
-
-  const moveMyInfo = () => {
-    history.push("/Mypage/MyInfoManage");
-  };
-
-  const moveReview = () => {
-    history.push("/Mypage/MyReview");
-  };
-
   return (
     <>
       <MyProfileWrapper>
