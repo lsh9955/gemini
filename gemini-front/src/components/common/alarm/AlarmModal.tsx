@@ -30,14 +30,18 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
 
   return (
     <>
-      <ModalContainer>
-        <AlarmTitle>알림</AlarmTitle>
-        {alarmMesseges.map((alarm, idx) => (
-          <AlarmContent key={alarm.id} idx={idx}>
-            {alarm.content}
-          </AlarmContent>
-        ))}
-      </ModalContainer>
+      <Overlay onClick={onClose} aria-hidden>
+        <div aria-hidden onClick={(e) => e.stopPropagation()}>
+          <ModalContainer>
+            <AlarmTitle>알림</AlarmTitle>
+            {alarmMesseges.map((alarm, idx) => (
+              <AlarmContent key={alarm.id} idx={idx}>
+                {alarm.content}
+              </AlarmContent>
+            ))}
+          </ModalContainer>
+        </div>
+      </Overlay>
     </>
   );
 };
