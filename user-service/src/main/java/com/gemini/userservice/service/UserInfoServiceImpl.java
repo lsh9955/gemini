@@ -124,6 +124,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .description(userInfo.getDescription())
                 .nickname(userInfo.getNickname())
                 .profileBackground(userInfo.getProfileBackgroundUrl())
+                .profileImgUrl(userInfo.getProfileImgUrl())
                 .star(userInfo.getStar())
                 .username(userInfo.getUsername())
                 .build();
