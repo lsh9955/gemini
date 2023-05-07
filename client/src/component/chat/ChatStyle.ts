@@ -36,7 +36,7 @@ export const ChatStatuButtonWrap = styled.div`
   height: 5%;
   background: #212121;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  text-algin: center;
+  text-align: center;
 
   justify-content: space-between;
   align-items: center;
@@ -72,7 +72,7 @@ export const ChatInputWrap = styled.div`
     font-size: 100%;
   }
 `;
-export const ChatInputForm = styled.form`
+export const ChatInputForm = styled.div`
   width: 100%;
   height: 30%;
   background: #212121;
@@ -85,7 +85,6 @@ export const ChatInputForm = styled.form`
     width: 95%;
     height: 95%;
     background: #212121;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border: transparent;
     outline: none;
     font-size: 18px;
