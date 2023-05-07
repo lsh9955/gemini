@@ -91,9 +91,9 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
           return <div key={i}>{v}</div>;
         })}
       </div> */}
-      {userList.map((v, i) => {
+      {/* {userList.map((v, i) => {
         return <div key={i}>{v}</div>;
-      })}
+      })} */}
     </RoomWrap>
   );
 };

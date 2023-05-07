@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BeforeBtn, ChatLine, DialogueWrap, NextBtn } from "./DialogueStyle";
+import {
+  BeforeBtn,
+  ButtonsWrap,
+  ChatLine,
+  DialogueMainWrap,
+  DialogueWrap,
+  NextBtn,
+} from "./DialogueStyle";
 import Typed from "typed.js";
 import { io, Socket } from "socket.io-client";
 import nextButton from "../../assets/img/nextButton.svg";
@@ -43,7 +50,7 @@ const Dialogue = ({ gameMsg }: { gameMsg: any }) => {
         typed.destroy();
       };
     }
-  }, [gameMsg]);
+  }, [gameMsg.length >= 1 && nowTxtPage === 0]);
 
   useEffect(() => {
     if (gameMsg.length >= 1) {
@@ -66,15 +73,19 @@ const Dialogue = ({ gameMsg }: { gameMsg: any }) => {
     setNowTxtPage(nowTxtPage - 1);
   };
   return (
-    <DialogueWrap>
-      <ChatLine ref={el} />
-      {nowTxtPage !== gameMsg.length - 1 && gameMsg.length > 1 && (
-        <NextBtn src={nextButton} onClick={nextTxtHandler} />
-      )}
-      {nowTxtPage !== 0 && gameMsg.length > 1 && (
-        <BeforeBtn src={nextButton} onClick={beforeTxtHandler} />
-      )}
-    </DialogueWrap>
+    <DialogueMainWrap>
+      <ButtonsWrap>
+        {nowTxtPage !== 0 && gameMsg.length > 1 && (
+          <BeforeBtn src={nextButton} onClick={beforeTxtHandler} />
+        )}
+        {nowTxtPage !== gameMsg.length - 1 && gameMsg.length > 1 && (
+          <NextBtn src={nextButton} onClick={nextTxtHandler} />
+        )}
+      </ButtonsWrap>
+      <DialogueWrap>
+        <ChatLine ref={el} />
+      </DialogueWrap>
+    </DialogueMainWrap>
   );
 };
 
