@@ -99,7 +99,7 @@ module.exports = (server, app, sessionMiddleware) => {
       const roomLen = await getRoomInfo(`${data.roomId}`);
       socket.emit("roomupdate", roomLen);
       const willupdateRoom = await Room.find({ _id: data.roomId });
-      const changeUserArr = willupdateRoom[0].userarr.slice();
+      let changeUserArr = willupdateRoom[0].userarr.slice();
       changeUserArr.push(data.user);
       await Room.updateOne(
         { _id: data.roomId },

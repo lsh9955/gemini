@@ -3,9 +3,6 @@ import { useHistory } from "react-router";
 
 const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
   const history = useHistory();
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
 
   return (
     <>
@@ -35,7 +32,7 @@ const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
               </div>
             )
           )}
-        {messages
+        {/* {messages
           .filter((message: any) =>
             message.type === "개인채팅"
               ? message.type === nowMsgType &&
@@ -59,10 +56,9 @@ const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
                 </div>
               </div>
             )
-          )}
+          )} */}
 
-        <div className="message__status"></div>
-        {/* <div ref={lastMessageRef}></div> */}
+        <div ref={lastMessageRef}></div>
       </div>
     </>
   );

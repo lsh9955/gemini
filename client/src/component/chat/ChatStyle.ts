@@ -7,22 +7,6 @@ export const ChatWrap = styled.div`
   align-items: center;
 `;
 
-export const ChatStatus = styled.div`
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 700;
-  display: flex;
-  font-size: 32px;
-  line-height: 39px;
-  width: 100%;
-  height: 10%;
-  background: #212121;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  text-algin: center;
-  color: #ffffff;
-  justify-content: center;
-  align-items: center;
-`;
 export const ChatBodyWrap = styled.div`
   background: #2a2a2a;
   height: 50%;
@@ -99,4 +83,19 @@ export const ChatInputForm = styled.div`
     font-style: normal;
     font-size: 18px;
   }
+`;
+export const ChatStatus = styled.div`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  display: flex;
+  font-size: 32px;
+  line-height: 39px;
+  width: 100%;
+  height: 10%;
+  background: #212121;
+  text-align: left;
+  color: #ffffff;
+  justify-content: center;
+  align-items: center;
 `;

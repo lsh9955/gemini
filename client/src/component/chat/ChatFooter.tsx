@@ -16,30 +16,19 @@ const ChatFooter = ({
   const [msType, setMsType] = useState("룸 채팅");
   const [sendTo, setSendTo] = useState("");
   const handleSendMessage = () => {
-    chatSocket.emit("message", {
-      //추후 유저 이미지도 추가할것
-      text: message,
-      name: localStorage.getItem("userInfo"),
-      time: Date.now(),
-      socketID: chatSocket.id,
-      //룸(게임만을 위한) 채팅, 정보 채팅, 잡담, 개인채팅에 따라 유형을 나눔
-      type: msType,
-      sendtarget: sendTo,
-    });
-
-    // if (message.trim() && localStorage.getItem("userInfo")) {
-    //   chatSocket.emit("message", {
-    //     //추후 유저 이미지도 추가할것
-    //     text: message,
-    //     name: localStorage.getItem("userInfo"),
-    //     time: Date.now(),
-    //     socketID: chatSocket.id,
-    //     //룸(게임만을 위한) 채팅, 정보 채팅, 잡담, 개인채팅에 따라 유형을 나눔
-    //     type: msType,
-    //     sendtarget: sendTo,
-    //   });
-    // }
-    // setMessage("");
+    if (message.trim() && localStorage.getItem("userInfo")) {
+      chatSocket.emit("message", {
+        //추후 유저 이미지도 추가할것
+        text: message,
+        name: localStorage.getItem("userInfo"),
+        time: Date.now(),
+        socketID: chatSocket.id,
+        //룸(게임만을 위한) 채팅, 정보 채팅, 잡담, 개인채팅에 따라 유형을 나눔
+        type: msType,
+        sendtarget: sendTo,
+      });
+    }
+    setMessage("");
   };
   const chatTypeHandler = (chatType: string) => {
     setMsType(chatType);
