@@ -20,7 +20,7 @@ import {
   Nickname,
   NumText,
 } from "./UserProfile.styles";
-import PayButton from "../../components/profile/pay/modal/PayButton";
+import PayButton from "../../components/profile/pay/modal/PayModal";
 import FollowButton from "../../components/profile/userprofile/FollowButton";
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
 import axios from "axios";

@@ -97,12 +97,11 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
 
   return (
     <>
-<<<<<<< HEAD:gemini-front/src/components/profile/pay/modal/PayButton.tsx
-      <StyledPayButton onClick={onClickPayment}>
+      {/* <StyledPayButton onClick={onClickPayment}>
         <StyledPayButtonText>별조각 구매하기 </StyledPayButtonText>
         <StarImgWrapper />
-      </StyledPayButton>
-=======
+      </StyledPayButton> */}
+      {/* 아래가 새로 들어온거 😀 */}
       <Overlay onClick={onClose} aria-hidden>
         <div aria-hidden onClick={(e) => e.stopPropagation()}>
           <ModalContainer>
@@ -126,7 +125,6 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
           </ModalContainer>
         </div>
       </Overlay>
->>>>>>> origin/front-dev_pay:gemini-front/src/components/profile/pay/modal/PayModal.tsx
     </>
   );
 };
