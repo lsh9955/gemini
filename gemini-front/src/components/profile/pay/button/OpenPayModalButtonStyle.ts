@@ -4,13 +4,15 @@ export const Button = styled.button`
   background-color: #fbed6d;
   border: #fbed6d;
   color: #051320;
-  margin-top: 1rem;
-  margin-left: 1rem;
+  margin-top: auto;
+  // margin-top: 1rem;
+  // margin-left: 1rem;
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
   padding-left: 1.5rem;
   padding-right: 1.2rem;
   border-radius: 5px;
+  height: 38%;
 
   &:hover {
     background-color: #051320;

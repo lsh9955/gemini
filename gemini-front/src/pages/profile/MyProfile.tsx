@@ -125,7 +125,7 @@ const MyProfile: FC = () => {
                 </NumText>
               </FollowingTextWrapper>
               {/* <PayButton /> */}
-              <OpenPayModalButton></OpenPayModalButton>
+              <OpenPayModalButton />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>

@@ -22,7 +22,7 @@ export const ImageWrapper = styled.div`
   // width: 12.6vw;
   height: 19.467vw;
   margin-bottom: 2vw;
-  margin-right: 2.9vw;
+  margin-right: 2.8vw;
   transition: transform 0.3s ease; // 추가
   cursor: pointer; // 추가
   border-radius: 10px;
