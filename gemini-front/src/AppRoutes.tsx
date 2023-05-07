@@ -25,6 +25,7 @@ const AppRoutes: React.FC = () => {
       {shouldShowHeader && <Header />}
       <Switch>
         <Route exact path="/" component={Main} />
+
         <Route exact path="/loginPage" component={Login} />
         <Route exact path="/loginSuccess" component={LoginSuccess} />
 
