@@ -18,7 +18,7 @@ public class Alarm {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "memo")
+    @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
     @Column(name = "checked")

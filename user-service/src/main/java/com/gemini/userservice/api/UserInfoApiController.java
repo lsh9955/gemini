@@ -5,13 +5,16 @@ import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.dto.response.ResponseOrdersDto;
 import com.gemini.userservice.service.AlarmService;
+import com.gemini.userservice.service.EmitterService;
 import com.gemini.userservice.service.UserInfoService;
 import com.gemini.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user-service/profile")
@@ -26,25 +29,40 @@ public class UserInfoApiController {
     @Autowired
     private AlarmService alarmService;
 
+    @Autowired
+    private EmitterService emitterService;
+
 
     @PostMapping // test complete 😀 exception for following myself needed, duplicated request also should be handled.
-    public ResponseEntity<Void> followUser(@RequestHeader("username") String currentUsername, @RequestBody FollowRequestDto followRequestDto) {
+    public ResponseEntity<Void> followUser(@RequestHeader("username") String currentUsername, @RequestBody FollowRequestDto followRequestDto) throws IOException {
 
         System.out.println("follow test start@@@@@@@@@@@@@@@@@@@@");
-        userService.followUser(currentUsername, followRequestDto);
 //        System.out.println(currentUsername);
 //        System.out.println(followRequestDto);
         System.out.println("follow success");
+        SseEmitter emitter = new SseEmitter();
+        emitterService.addEmitter(emitter);
 
-        //알람 메세지를 만들기 위해 FollowAlarmDto에 넣어준다.
-        FollowAlarmDto followAlarmDto = new FollowAlarmDto();
-        //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!!
-        followAlarmDto.setGetAlarmPk(followRequestDto.getUserPk());
-        //알람을 보내는 사람 => 팔로우 한 사람
-        followAlarmDto.setSendAlarmUserName(currentUsername);
+        try {
+            userService.followUser(currentUsername, followRequestDto);
+            //알람 메세지를 만들기 위해 FollowAlarmDto에 넣어준다.
+            FollowAlarmDto followAlarmDto = new FollowAlarmDto();
+            //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!!
+            followAlarmDto.setGetAlarmPk(followRequestDto.getUserPk());
+            //알람을 보내는 사람 => 팔로우 한 사람
+            followAlarmDto.setSendAlarmUserName(currentUsername);
 
-        // 팔로우 알림 생성
-        alarmService.createFollowAlarm(currentUsername, followAlarmDto);
+            // 팔로우 알림 생성
+            alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
+
+            emitter.send(SseEmitter.event().name("COMPLETE").data("SUCCESS")); // success message
+        } catch (Exception e) {
+            emitter.send(SseEmitter.event().name("ERROR").data(e.getMessage())); // error message
+        } finally {
+            emitter.complete(); // complete emitter
+            emitterService.removeEmitter(emitter); // remove emitter from emitterService
+        }
+
 
         return ResponseEntity.ok().build();
     }
