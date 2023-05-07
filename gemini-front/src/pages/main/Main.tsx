@@ -28,7 +28,9 @@ const Main: FC = () => {
     <>
       <MainWrapper>
         <LeftComponent to="/aiImage"></LeftComponent>
-        <RightComponent to="/"></RightComponent>
+        <RightComponent to="/">
+          <AnimatedArrow></AnimatedArrow>
+        </RightComponent>
       </MainWrapper>
       <MiddleBox>
         <AnimatedArrow></AnimatedArrow>
