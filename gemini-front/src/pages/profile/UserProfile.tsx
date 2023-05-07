@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import {
   Desc,
   EditButton,
+  EditPenButton,
   FollowingAndPayWrappter,
   FollowingTextWrapper,
   MyBgImg,

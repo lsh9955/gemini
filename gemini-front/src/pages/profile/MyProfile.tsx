@@ -5,6 +5,7 @@ import PayButton from "../../components/profile/pay/modal/PayButton";
 import {
   Desc,
   EditButton,
+  EditPenButton,
   FollowingAndPayWrappter,
   FollowingTextWrapper,
   MyBgImg,
@@ -29,7 +30,7 @@ import { getInfScrollImgLength } from "./UserProfile";
 const MyProfile: FC = () => {
   const history = useHistory();
 
-  const [nickname, setNickname] = useState<string>("닉네임");
+  const [nickname, setNickname] = useState<string>("내 닉네임");
   const [desc, setDesc] = useState<string>(
     "자기소개 부분: 내가 좋아하는 세계관, 캐릭터 등등을 적어보자 자  최대 몇글자로 하는게 좋을까? 넘기면 ...으로 만들까?"
   );
@@ -97,7 +98,9 @@ const MyProfile: FC = () => {
           <MyBgImg></MyBgImg>
           <MyInfoSpace></MyInfoSpace>
           <MyInfoContentWrapper>
-            <MyProfileImg></MyProfileImg>
+            <MyProfileImg>
+              <EditPenButton></EditPenButton>
+            </MyProfileImg>
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
@@ -127,7 +130,7 @@ const MyProfile: FC = () => {
         </MyInfoWrapper>
         <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
-            <MyProfileContentTitle>닉네임님의 Gemini</MyProfileContentTitle>
+            <MyProfileContentTitle>{nickname}님의 Gemini</MyProfileContentTitle>
             <MyProfileContentTitle>
               닉네임님의 TRPG 추억로그
             </MyProfileContentTitle>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import MyProfileBg from "../../assets/img/MyProfileBg.png";
 import MyBackgoundImgExample from "../../assets/img/MyBackgoundImgExample.png";
 import AriesDummyProfile from "../../assets/img/AriesDummyProfile.png";
+import EditPenSvg from "../../assets/img/EditPen.svg";
 
 interface MyProfileContentBodyWrapperProps {
   minHeight: string;
@@ -16,6 +17,7 @@ const MyProfileImgDiameter = "12.5vw";
 //   parseFloat(MyProfileImgDiameter) / 1
 // }px)`;
 const myProfileContentWrapperHeight = `calc(${myProfileWrapperHeight} - ${myInfoWrapperHeight} - 5.5vh)`;
+const EditPenButtonOffset = "9.25vw";
 
 // 3번 동적높이
 // export const MyProfileWrapper = styled.div`
@@ -203,4 +205,54 @@ export const MyProfileContentTitle = styled.div`
   font-size: 1.6rem;
   //   background-color: #ffffff99;
   margin-right: 2vw;
+`;
+
+// export const EditPenButton = styled.div`
+//   height: 2vh;
+//   width: 2vh;
+//   background-image: url(${EditPenSvg}); //axios받아서 받는걸로 수정예정.
+//   background-size: cover;
+//   // margin-top: calc(-${MyProfileImgDiameter} / 2);
+
+//   border-radius: 50%;
+//   background-color: #ffffff;
+// `;
+
+export const EditPenButton = styled.div`
+  position: relative;
+  margin-left: ${EditPenButtonOffset};
+  margin-top: ${EditPenButtonOffset};
+  height: 5vh;
+  width: 5vh;
+  background-image: url(${EditPenSvg});
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f4f4f4;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  &:active {
+    background-color: #d0d0d0;
+  }
+
+  // Make the clickable area larger than the visible part
+  &::before {
+    content: "";
+    position: absolute;
+    // top: -5px;
+    // left: -5px;
+    // right: -5px;
+    // bottom: -5px;
+    top: -3vh;
+    left: -3vh;
+    right: -3vh;
+    bottom: -3vh;
+  }
 `;
