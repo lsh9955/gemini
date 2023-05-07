@@ -18,3 +18,10 @@ export const GenreSampleImage = styled.img`
     opacity: 0.5;
   }
 `;
+
+export const GenreSampleImageLock = styled.img`
+  width: 100%;
+  height: 18vh;
+  padding: 1%;
+  border-radius: 20px;
+`;
