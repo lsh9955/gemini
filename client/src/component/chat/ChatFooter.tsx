@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { io, Socket } from "socket.io-client";
 import Dialogue from '../dialogue/Dialogue';
 import PersonalMsgSelect from './PersonalMsgSelect';
+import { ChatInputForm, ChatInputWrap, ChatStatuButtonWrap } from './ChatStyle';
 const ChatFooter = ({ nowMsgTypeHandler, chatSocket, userList }: { nowMsgTypeHandler: any, chatSocket: Socket, userList: Array<string> }) => {
   const [message, setMessage] = useState("")
   const [msType, setMsType] = useState("룸 채팅")
@@ -32,26 +33,31 @@ const ChatFooter = ({ nowMsgTypeHandler, chatSocket, userList }: { nowMsgTypeHan
     setSendTo(targetUser)
   }
   return (
-    <div className='chat__footer'>
-      <div>{msType}</div>
-      <div>
+    <>
+      <ChatStatuButtonWrap>
         <button onClick={() => { chatTypeHandler("룸 채팅") }}>룸 채팅</button>
         <button onClick={() => { chatTypeHandler("정보") }}>정보</button>
         <button onClick={() => { chatTypeHandler("잡담") }}>잡담</button>
         <button onClick={() => { chatTypeHandler("개인채팅") }}>개인채팅</button>
-      </div>
-      {msType === "개인채팅" && <PersonalMsgSelect userList={userList} sendtargetHandler={sendtargetHandler} />}
-      <form className='form' onSubmit={handleSendMessage}>
-        <input
-          type="text"
+      </ChatStatuButtonWrap>
+      <ChatInputWrap>
+        <div>내 이름 : {localStorage.getItem("userInfo")}</div>
+        <div>{msType === "개인채팅" && <PersonalMsgSelect userList={userList} sendtargetHandler={sendtargetHandler} />}</div>
+        <button className="sendBtn">전송</button>
+
+      </ChatInputWrap>
+      <ChatInputForm className='form' onSubmit={handleSendMessage}>
+
+        <textarea
+
           placeholder='메세지를 입력해주세요'
           className='message'
           value={message}
           onChange={e => setMessage(e.target.value)}
         />
-        <button className="sendBtn">전송</button>
-      </form>
-    </div>
+
+      </ChatInputForm>
+    </>
   )
 }
 

@@ -10,7 +10,7 @@ import RoomList from "./component/roomList/RoomList";
 import CreateRoomModal from "./component/roomList/CreateRoomModal";
 import io, { Socket } from "socket.io-client";
 import GameRoom from "./component/game/GameRoom";
-
+import GlobalStyles from './GlobalStyles';
 const chatSocket = io("http://localhost:5000", {
   transports: ["websocket"],
 });
@@ -25,6 +25,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <GlobalStyles />
       <Switch>
         <Route
           path="/room"

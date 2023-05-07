@@ -3,12 +3,19 @@ import axios from "axios";
 import io, { Socket } from "socket.io-client";
 import ChatPage from "../chat/Chat";
 import GetPicture from "../playAsset/GetPicture";
+import PlayBar from "../playAsset/PlayBar";
+import { ChatScreen, GameScreen, RoomWrap } from "./GameRoomStyle";
+
+import Dialogue from "../dialogue/Dialogue";
+import GroundMain from "../groundMain/GroundMain";
+
 
 const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const userN = localStorage.getItem("userInfo");
   console.log(userN);
   const [userList, setUserList] = useState<Array<string>>([]);
   const [chatList, setChatList] = useState<string[]>([]);
+  const [createPicList, setCreatePicList] = useState<string[]>([])
 
   useEffect(() => {
     // 현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
@@ -22,6 +29,10 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
 
     chatSocket.on("chat", function (data: any) {
       setChatList([...chatList, data]);
+    });
+
+    chatSocket.on("picCreateResponse", function (data: any) {
+      setCreatePicList([...createPicList, data.createPicture]);
     });
 
     chatSocket.on("allroomchange", (data: any) => {
@@ -49,9 +60,11 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   }, [chatSocket]);
 
   return (
-    <>
-      <GetPicture />
-      <ChatPage chatSocket={chatSocket} userList={userList} />
+
+    <RoomWrap>
+      <GameScreen><PlayBar /><GroundMain /><Dialogue /></GameScreen>
+      <ChatScreen> <ChatPage chatSocket={chatSocket} userList={userList} /></ChatScreen>
+      {/* 
       <a href="/room" id="exit-btn">
         방 나가기
       </a>
@@ -60,9 +73,9 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
         {userList.map((v, i) => {
           return <div key={i}>{v}</div>;
         })}
-      </div>
+      </div> */}
+    </RoomWrap>
 
-    </>
   );
 };
 

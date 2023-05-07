@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
+import { Socket } from "socket.io-client";
 
 
 
 
-const GetPicture = () => {
-    const imgRef = useRef<HTMLImageElement>(null)
+const GetPicture = ({ chatSocket }: { chatSocket: Socket }) => {
     const inputRef = useRef<HTMLInputElement>(null)
 
     const imgCreateHandler = () => {
@@ -23,18 +23,22 @@ const GetPicture = () => {
 
         passQuery({ "inputs": inputRef }).then((response) => {
             const objectURL = URL.createObjectURL(response)
-            imgRef.current!.src = objectURL;
+            chatSocket.emit("createPicture", {
+                createPicture: objectURL,
+                roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+            });
 
         });
     }
 
 
     return (<>
+
         <div>GetPicture</div>
+
         <div>이미지 프롬포트 입력</div>
         <input ref={inputRef} defaultValue={"masterpiece, best quality, ultra-detailed, illustration, close-up, straight on, face focus, 1girl, white hair, golden eyes, long hair, halo, angel wings, serene expression, looking at viewer"} />
         <button onClick={imgCreateHandler}>이미지 생성</button>
-        <img ref={imgRef} alt="이미지 생성 실험" />
     </>
     )
 }

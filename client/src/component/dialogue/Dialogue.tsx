@@ -1,8 +1,9 @@
 import React from 'react'
+import { DialogueWrap } from './DialogueStyle'
 
 const Dialogue = () => {
     return (
-        <div>Dialogue</div>
+        <DialogueWrap>Dialogue</DialogueWrap>
     )
 }
 

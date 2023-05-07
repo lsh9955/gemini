@@ -33,6 +33,7 @@
     "socket.io-client": "^4.5.4",
     "styled-components": "^5.1.26",
     "styled-reset": "^4.4.5",
+    "three": "^0.152.2",
     "typed.js": "^2.0.16",
     "typescript": "^4.9.5",
     "universal-cookie": "^4.0.4",
@@ -65,6 +66,7 @@
   "devDependencies": {
     "@testing-library/react": "^12.1.2",
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "@types/three": "^0.152.0"
   }
 }

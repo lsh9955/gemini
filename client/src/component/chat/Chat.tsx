@@ -3,6 +3,7 @@ import ChatBody from './ChatBody'
 import ChatFooter from './ChatFooter'
 import { io, Socket } from "socket.io-client";
 import Typed from 'typed.js';
+import { ChatBodyWrap, ChatStatus, ChatWrap } from './ChatStyle';
 const ChatPage = ({ userList, chatSocket }: { userList: Array<string>, chatSocket: Socket }) => {
   const [messages, setMessages] = useState<any[]>([])
   const [gameMsg, setGameMsg] = useState<any[]>([])
@@ -45,13 +46,15 @@ const ChatPage = ({ userList, chatSocket }: { userList: Array<string>, chatSocke
   }
 
   return (
-    <div className="chat">
-      <span ref={el} />
-      <div className='chat__main'>
-        <ChatBody messages={messages} typingStatus={typingStatus} lastMessageRef={lastMessageRef} nowMsgType={nowMsgType} />
-        <ChatFooter chatSocket={chatSocket} nowMsgTypeHandler={nowMsgTypeHandler} userList={userList} />
-      </div>
-    </div>
+    <ChatWrap>
+      {/* dialogue로 옮길것 */}
+      {/* <ChatStatus ref={el} /> */}
+      <ChatStatus>{nowMsgType}</ChatStatus>
+      <ChatBodyWrap><ChatBody messages={messages} typingStatus={typingStatus} lastMessageRef={lastMessageRef} nowMsgType={nowMsgType} /></ChatBodyWrap>
+
+      <ChatFooter chatSocket={chatSocket} nowMsgTypeHandler={nowMsgTypeHandler} userList={userList} />
+
+    </ChatWrap>
   )
 }
 
