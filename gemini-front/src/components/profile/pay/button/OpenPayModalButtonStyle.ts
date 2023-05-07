@@ -13,6 +13,7 @@ export const Button = styled.button`
   padding-right: 1.2rem;
   border-radius: 5px;
   height: 38%;
+  cursor: pointer; // 추가
 
   &:hover {
     background-color: #051320;
