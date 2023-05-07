@@ -3,6 +3,7 @@ package com.gemini.userservice.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ALARM")
@@ -17,14 +18,17 @@ public class Alarm {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "send_id")
-    private String sender;
-
     @Column(name = "memo")
-    private Long memo;
+    private String memo;
 
     @Column(name = "checked")
     private Boolean checked;
+
+    @Column(name = "category")
+    private Integer category;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")

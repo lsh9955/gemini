@@ -1,42 +1,39 @@
 package com.gemini.userservice.api;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.gemini.userservice.dto.response.ResponseAlarmDto;
+import com.gemini.userservice.entity.Alarm;
+import com.gemini.userservice.repository.AlarmRepository;
+import com.gemini.userservice.service.AlarmService;
 
 @RestController
-@RequestMapping("/alarm")
+@RequestMapping("/alarms")
 public class AlarmApiController {
 
-    // emitter 사용 전
-//    @GetMapping
-//    public void sse(final HttpServletResponse response) throws IOException, InterruptedException {
-//
-//        // 응답의 mine 타입을 text/event-stream 으로 설정 => MINE 타입: 서버에서 이벤트 스트립을 클라이언트에게 전송할 떄 사용되는 표준 타입
-//        response.setContentType("text/event-stream");
-//        response.setCharacterEncoding("UTF-8");
-//
-//        // 전송할 writer 객체 생성
-//        Writer writer = response.getWriter();
-//
-//        for (int i = 0; i < 20; i++) {
-//            // SSE 데이터를 작성하여 응답으로 전송
-//            writer.write("data: " + System.currentTimeMillis() + "\n\n");
-//            writer.flush(); // 꼭 flush 해주어야 한다.
-//            Thread.sleep(1000); // 1초 대기
-//        }
-//
-//        writer.close();
-//    }
-    @GetMapping
-    public SseEmitter streamSseMvc() {
+    @Autowired
+    private AlarmRepository alarmRepository;
+
+    @Autowired
+    private AlarmService alarmService;
+
+    // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
+    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter streamSseMvc(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-store");
+
         // SseEmitter 객체 생성
         SseEmitter emitter = new SseEmitter();
 
@@ -46,13 +43,25 @@ public class AlarmApiController {
         // ExecutorService에 작업을 제출하여 비동기적으로 SSE 이벤트 생성 및 전송
         sseMvcExecutor.execute(() -> {
             try {
-                for (int i = 0; i < 20; i++) {
-                    // SSE 이벤트를 생성하여 데이터를 설정
-                    SseEmitter.SseEventBuilder event = SseEmitter.event()
-                            .data(System.currentTimeMillis());
-                    // 생성된 이벤트를 SseEmitter로 전송
-                    emitter.send(event);
-                    Thread.sleep(1000);
+                while (true) {
+                    // AlarmRepository에서 최근 알림 데이터를 가져옴
+                    List<Alarm> alarms = alarmRepository.findTop20ByOrderByCreatedAtDesc();
+
+                    // 가져온 알림 데이터를 ResponseAlarmDto로 변환하여 SSE 이벤트로 전송
+                    for (Alarm alarm : alarms) {
+                        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
+                                .memo(alarm.getMemo())
+                                .checked(alarm.getChecked())
+                                .category(alarm.getCategory())
+                                .build();
+
+                        SseEmitter.SseEventBuilder event = SseEmitter.event()
+                                .data(responseAlarmDto);
+                        emitter.send(event);
+                    }
+
+                    // SSE 연결 유지
+                    Thread.sleep(5000);
                 }
             } catch (Exception ex) {
                 // 에러 발생 시 SseEmitter를 종료
@@ -62,5 +71,4 @@ public class AlarmApiController {
         // 완료된 SseEmitter 객체 반환
         return emitter;
     }
-
 }
