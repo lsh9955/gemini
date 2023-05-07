@@ -43,3 +43,10 @@ export const AlarmContent = styled.div<AlarmContentProps>`
   border-radius: 10px;
   background-color: ${({ idx }) => (idx % 2 === 0 ? "#ffffff" : "#E7EBEF")};
 `;
+
+export const NoAlarmContent = styled.div`
+  text-align: center;
+  font-size: 20px;
+  padding: 0.5rem;
+  border-radius: 10px;
+`;

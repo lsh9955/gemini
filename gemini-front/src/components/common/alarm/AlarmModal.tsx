@@ -6,6 +6,7 @@ import {
   ModalContainer,
   AlarmTitle,
   AlarmContent,
+  NoAlarmContent,
 } from "./AlarmModalStyle";
 
 interface Props {
@@ -34,11 +35,15 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
         <div aria-hidden onClick={(e) => e.stopPropagation()}>
           <ModalContainer>
             <AlarmTitle>알림</AlarmTitle>
-            {alarmMesseges.map((alarm, idx) => (
-              <AlarmContent key={alarm.id} idx={idx}>
-                {alarm.content}
-              </AlarmContent>
-            ))}
+            {alarmMesseges.length === 0 ? (
+              <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
+            ) : (
+              alarmMesseges.map((alarm, idx) => (
+                <AlarmContent key={alarm.id} idx={idx}>
+                  {alarm.content}
+                </AlarmContent>
+              ))
+            )}
           </ModalContainer>
         </div>
       </Overlay>
