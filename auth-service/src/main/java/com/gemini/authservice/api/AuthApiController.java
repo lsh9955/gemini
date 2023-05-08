@@ -46,7 +46,7 @@ public class AuthApiController {
 
 
     @PostMapping("/reissue") // test complete 😀
-    public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken, HttpServletResponse response) {
+    public ResponseEntity<?> refreshToken(@CookieValue(value = "Refresh-Token", required = false) String refreshToken, HttpServletResponse response) {
         System.out.println("token reisuue @@@@@@@@@@@@@@@");
         System.out.println(refreshToken);
         System.out.println(response);
