@@ -9,6 +9,7 @@ import SelectPairchild from "./pages/auth/SelectPairchild";
 import MyProfile from "./pages/profile/MyProfile";
 import AiImage from "./pages/ai_image/AiImage";
 import UserProfile from "./pages/profile/UserProfile";
+import UserGeminiDetail from "./components/geminiDetail/UserGeminiDetail";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/userProfile/:nickname" component={UserProfile} />
 
         <Route exact path="/aiImage" component={AiImage} />
+        <Route exact path="/geminidetail" component={UserGeminiDetail} />
 
         {/* ... */}
       </Switch>
