@@ -18,7 +18,7 @@ export const getUserProfile = async (
   const response: AxiosResponse<UserInfoDto> = await axios.get(url, {
     // headers: {
     //   Authorization: `Bearer ${accessToken}`,
-    // }, // 배포때 이걸로 다시 바꿔야함. 😀
+    // }, // 배포때 이걸로 다시 바꿔야함. 수정 필요 😀
     headers: {
       username: "google_12346",
     },
