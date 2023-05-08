@@ -16,4 +16,6 @@ public class UserInfoDto {
     private String profileBackground;
     private Integer star;
     private String username;
+
+    private String profileImgUrl;
 }
