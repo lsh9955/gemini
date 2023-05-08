@@ -27,10 +27,10 @@ public class UserInfo {
     private String nickname;
 
     @Column(name = "profile_background_url")
-    private String profileBackground;
+    private String profileBackgroundUrl;
 
     @Column(name = "profile_img_url")
-    private String profileImg;
+    private String profileImgUrl;
 
     @Column(name = "star", nullable = false)
     private Integer star;

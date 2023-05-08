@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
                 .username(userDto.getUsername())
                 .description(null)
                 .nickname(null)
-                .profileBackground(null)
+                .profileBackgroundUrl(null)
                 .star(10)
                 .build();
 
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
             userInfo.setNickname(requestDto.getNickname());
         }
         if (requestDto.getProfileBackground() != null) {
-            userInfo.setProfileBackground(requestDto.getProfileBackground());
+            userInfo.setProfileBackgroundUrl(requestDto.getProfileBackground());
         }
         System.out.println("userInfo result@@@@@@@@@@@@@@@@@@@@@@");
         System.out.println("userInfo:" + userInfo);
