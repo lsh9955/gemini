@@ -21,7 +21,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${api_gateway_url}:3306/gemini_user?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
     username: gemini
-    password: b106b106
+    password: starrail1@
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 10
@@ -52,7 +52,7 @@ spring:
   redis:
     host: mygemini.co.kr
     port: 6379
-    password: b106b106
+    password: starrail1@
 
 
   batch:
