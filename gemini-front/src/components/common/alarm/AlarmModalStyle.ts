@@ -19,7 +19,7 @@ export const Overlay = styled.div`
 
 export const ModalContainer = styled.div`
   position: fixed;
-  top: 30%;
+  top: 23%;
   left: 76%;
   transform: translate(-50%, -50%);
   width: 20%;
