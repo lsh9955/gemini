@@ -5,22 +5,12 @@ const arrowDownAnimation = keyframes`
     transform: translateY(0);
   }
   100% {
-    transform: translateY(17px);
+    transform: translateY(20px);
   }
-
-// 0% {
-//     transform: translateY(0);
-//   }
-//   50% {
-//     transform: translateY(10px);
-//   }
-//   100% {
-//     transform: translateY(0);
-//   }
 `;
 
 export const StyledArrowWrapper = styled.div`
-  //   position: absolute;
+  position: absolute;
   left: 50%;
   bottom: 20px;
   transform: translateX(-50%);
@@ -33,7 +23,6 @@ export const StyledArrowWrapper = styled.div`
 export const StyledAnimatedArrow = styled.div`
   opacity: 0.7;
   animation: ${arrowDownAnimation} 1.5s infinite ease-in-out;
-  //   color: white;
   z-index: 2;
 
   &:hover {

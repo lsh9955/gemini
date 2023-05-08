@@ -20,6 +20,13 @@ public class GalleryApiController {
 
     private final GalleryService galleryService;
 
+    @GetMapping("/total")
+    public  ResponseEntity<Long> getTotal() {
+
+        Long total = galleryService.getTotal();
+        return ResponseEntity.status(HttpStatus.OK).body(total);
+    }
+
     @GetMapping
     public ResponseEntity<?> getGalleryPage(@RequestParam Integer page, @RequestParam Integer size) {
 

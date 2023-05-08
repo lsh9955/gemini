@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 // import GeminiLogo from "../../assets/img/GeminiLogo.png";
 import GeminiLogo from "../../../assets/img/GeminiLogo.png";

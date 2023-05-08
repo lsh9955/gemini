@@ -6,13 +6,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersRequestDto {
+public class
+OrdersRequestDto {
     private Integer orderStar;
     private String merchantUid;
-    private String username;
 
-
-    public String getUsername() {
-        return username;
-    }
 }
