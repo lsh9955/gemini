@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-// import GeminiLogo from "../../assets/img/GeminiLogo.png";
 import Message from "../../../assets/img/Message.png";
 import Notification from "../../../assets/img/Notification.png";
 import {
@@ -12,7 +11,17 @@ import {
 } from "./HeaderTools.styles";
 import AlarmModal from "../alarm/AlarmModal";
 
-const HeaderTools: FC = () => {
+type Alarm = {
+  memo: string;
+  checked: boolean;
+  category: number;
+};
+
+interface AlarmProps {
+  alarmList: Alarm[];
+}
+
+const HeaderTools: FC<AlarmProps> = ({ alarmList }) => {
   const [showModal, setShowModal] = useState(false);
 
   const profileImgHandler = () => {
@@ -31,12 +40,12 @@ const HeaderTools: FC = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+  console.log(alarmList);
 
   return (
     <>
       <StyledHeaderTools>
-        <StyledProfileImage // 이 부분을 추가합니다.
-          //   src={ProfileImage}
+        <StyledProfileImage
           alt="ProfileImage"
           onClick={profileImgHandler}
         ></StyledProfileImage>
@@ -50,7 +59,7 @@ const HeaderTools: FC = () => {
           alt="NotificationImg"
           onClick={notificationImgHandler}
         ></StyledNotification>
-        {showModal && <AlarmModal onClose={closeModal} />}
+        {showModal && <AlarmModal alarmList={alarmList} onClose={closeModal} />}
       </StyledHeaderTools>
     </>
   );

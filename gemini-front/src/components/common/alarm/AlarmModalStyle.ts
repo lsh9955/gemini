@@ -18,14 +18,16 @@ export const Overlay = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  position: absolute;
-  top: 13%;
-  left: 77%;
+  position: fixed;
+  top: 30%;
+  left: 76%;
   transform: translate(-50%, -50%);
   width: 20%;
   z-index: 1000;
   border-radius: 10px;
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const AlarmTitle = styled.div`
@@ -38,9 +40,8 @@ export const AlarmTitle = styled.div`
 
 export const AlarmContent = styled.div<AlarmContentProps>`
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0.5rem;
-  border-radius: 10px;
   background-color: ${({ idx }) => (idx % 2 === 0 ? "#ffffff" : "#E7EBEF")};
 `;
 
@@ -48,5 +49,11 @@ export const NoAlarmContent = styled.div`
   text-align: center;
   font-size: 20px;
   padding: 0.5rem;
+  border-radius: 10px;
+`;
+
+export const AlarmContentWrapper = styled.div`
+  flex: 1;
+  overflow-y: auto;
   border-radius: 10px;
 `;
