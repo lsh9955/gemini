@@ -5,7 +5,7 @@ import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
 
-import MyPage from "./pages/profile/MyProfile";
+import Alarm from "./pages/main/Alarm";
 import SelectPairchild from "./pages/auth/SelectPairchild";
 import MyProfile from "./pages/profile/MyProfile";
 import AiImage from "./pages/ai_image/AiImage";
@@ -34,6 +34,7 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/userProfile/:nickname" component={UserProfile} />
 
         <Route exact path="/aiImage" component={AiImage} />
+        <Route exact path="/alarm" component={Alarm} />
 
         {/* ... */}
       </Switch>
