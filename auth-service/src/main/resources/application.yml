@@ -1,5 +1,3 @@
-api_gateway_url: localhost
-
 server:
   port: 8080
 
@@ -7,10 +5,11 @@ spring:
   application:
     name: auth-service
   profiles:
-    include: oauth
+    active: prod # yml setting that I want to use -> local/ prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${api_gateway_url}:3306/gemini?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+#    url: jdbc:mysql://mygemini.co.kr:3307/gemini_auth?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true # test위해 data만 배포로
     username: gemini
     password: b106b106
     hikari:
@@ -22,6 +21,7 @@ spring:
       driver-class-name: ${spring.datasource.driver-class-name}
       data-source-properties:
         rewriteBatchedStatements: true
+
 
   jpa:
     generate-ddl: false
@@ -40,8 +40,10 @@ spring:
         order_updates: true
         format_sql: true
 
+
+
 jwt:
-  secret: 'G1e2m2i3n6i7g8o9f4i1r2s3t4p5l6z7'
+  secret: 'G1e2m2i3n6i7g8o9f4i1r2s3t4p5l6z7uifjdohiosfjsf231391ghsicjafioasdasdasd2313151ajf'
   access-token-expiration: 7200000 # 2hours (2 * 60 * 60 * 1000 ms)
   refresh-token-expiration: 604800000 # 1week (7 * 24 * 60 * 60 * 1000 ms)
 
@@ -50,3 +52,10 @@ logging:
     org:
       springframework:
         security=DEBUG:
+
+# 다른 설정은 application-*.yml 파일에 위치함. 배포용이랑 로컬용 나눠놨음. -아래 설정은 META-INF의 custom 변수 설정으로 만들어 둠.
+custom:
+  react:
+    redirect_uri: http://localhost:3000/loginSuccess # 기본값 설정
+  springboot:
+    user_service_url: localhost:8081
