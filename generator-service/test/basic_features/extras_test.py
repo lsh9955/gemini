@@ -7,7 +7,7 @@ from modules.paths import script_path
 
 class TestExtrasWorking(unittest.TestCase):
     def setUp(self):
-        self.url_extras_single = "http://localhost:8000/ml_api/extra-single-image"
+        self.url_extras_single = "http://localhost:7860/sdapi/v1/extra-single-image"
         self.extras_single = {
             "resize_mode": 0,
             "show_extras_results": True,
@@ -31,7 +31,7 @@ class TestExtrasWorking(unittest.TestCase):
 
 class TestPngInfoWorking(unittest.TestCase):
     def setUp(self):
-        self.url_png_info = "http://localhost:8000/ml_api/extra-single-image"
+        self.url_png_info = "http://localhost:7860/sdapi/v1/extra-single-image"
         self.png_info = {
             "image": encode_pil_to_base64(Image.open(os.path.join(script_path, r"test/test_files/img2img_basic.png")))
         }
@@ -42,7 +42,7 @@ class TestPngInfoWorking(unittest.TestCase):
 
 class TestInterrogateWorking(unittest.TestCase):
     def setUp(self):
-        self.url_interrogate = "http://localhost:8000/ml_api/extra-single-image"
+        self.url_interrogate = "http://localhost:7860/sdapi/v1/extra-single-image"
         self.interrogate = {
             "image": encode_pil_to_base64(Image.open(os.path.join(script_path, r"test/test_files/img2img_basic.png"))),
             "model": "clip"

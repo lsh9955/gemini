@@ -10,7 +10,7 @@ def run_tests(proc, test_dir):
     start_time = time.time()
     while time.time()-start_time < timeout_threshold:
         try:
-            requests.head("http://localhost:8000/")
+            requests.head("http://localhost:7860/")
             break
         except requests.exceptions.ConnectionError:
             if proc.poll() is not None:
