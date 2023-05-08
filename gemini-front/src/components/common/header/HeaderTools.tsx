@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 // import GeminiLogo from "../../assets/img/GeminiLogo.png";
@@ -10,18 +10,26 @@ import {
   StyledMessage,
   StyledNotification,
 } from "./HeaderTools.styles";
+import AlarmModal from "../alarm/AlarmModal";
 
 const HeaderTools: FC = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const profileImgHandler = () => {
     // history.push("/");
   };
 
   const messageHandler = () => {
     // history.push("/");
+    setShowModal((prevState) => !prevState);
   };
 
   const notificationImgHandler = () => {
     // history.push("/");
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -42,6 +50,7 @@ const HeaderTools: FC = () => {
           alt="NotificationImg"
           onClick={notificationImgHandler}
         ></StyledNotification>
+        {showModal && <AlarmModal onClose={closeModal} />}
       </StyledHeaderTools>
     </>
   );
