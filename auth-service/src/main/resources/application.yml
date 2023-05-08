@@ -5,7 +5,7 @@ spring:
   application:
     name: auth-service
   profiles:
-    active: prod # yml setting that I want to use -> local/ prod
+    active: local # yml setting that I want to use -> local/ prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${api_gateway_url}:3306/gemini?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
