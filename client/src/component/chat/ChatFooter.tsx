@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
 import { io, Socket } from "socket.io-client";
 import Dialogue from "../dialogue/Dialogue";
 import PersonalMsgSelect from "./PersonalMsgSelect";
@@ -13,6 +13,7 @@ const ChatFooter = ({
   userList: Array<string>;
 }) => {
   const [message, setMessage] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [msType, setMsType] = useState("룸 채팅");
   const [sendTo, setSendTo] = useState("");
   const handleSendMessage = () => {
@@ -37,6 +38,30 @@ const ChatFooter = ({
   const sendtargetHandler = (targetUser: string) => {
     setSendTo(targetUser);
   };
+
+  const onKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      const start = e.currentTarget.selectionStart || 0;
+      const end = e.currentTarget.selectionEnd || 0;
+      setMessage((prevState) => {
+        return prevState.substring(0, start) + "\n" + prevState.substring(end);
+      });
+
+      setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.setSelectionRange(start + 1, start + 1);
+      }, 0);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
+      setMessage("");
+    }
+  };
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
   return (
     <>
       <ChatStatuButtonWrap>
@@ -86,7 +111,10 @@ const ChatFooter = ({
           placeholder="메세지를 입력해주세요"
           className="message"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          ref={inputRef}
+          onKeyDown={onKeyPress}
+          onChange={handleChange}
+          // onChange={(e) => setMessage(e.target.value)}
         />
       </ChatInputForm>
     </>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 export const DialogueMainWrap = styled.div`
   width: 100%;
-  height: 25%;
+  height: 35%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -41,13 +41,13 @@ export const ChatLine = styled.div`
   align-items: center;
 `;
 export const NextBtn = styled.img`
-  width: auto;
+  width: 7%;
   height: auto;
   cursor: pointer;
   padding: 0 2%;
 `;
 export const BeforeBtn = styled.img`
-  width: auto;
+  width: 7%;
   height: auto;
   transform: scaleX(-1);
   cursor: pointer;

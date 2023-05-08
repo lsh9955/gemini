@@ -8,6 +8,8 @@ import { ChatScreen, GameScreen, RoomWrap } from "./GameRoomStyle";
 
 import Dialogue from "../dialogue/Dialogue";
 import GroundMain from "../groundMain/GroundMain";
+import MusicPlayer from "../playAsset/MusicPlayer";
+import DiceRoller from "../playAsset/DiceRoller";
 
 const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const userN = localStorage.getItem("userInfo");
@@ -17,6 +19,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const [msg, setMsg] = useState<any>({});
   const [msgData, setMsgData] = useState<object[]>([]);
   const [gameMsg, setGameMsg] = useState<object[]>([]);
+  const [playTarget, setPlayTarget] = useState<string>("");
   useEffect(() => {
     // 현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
     chatSocket.emit("join", {
@@ -67,10 +70,15 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     setMsgData([...msgData, msg]);
     console.log(gameMsg, msg);
   }, [msg]);
+
+  const playHandler = (e: string) => {
+    setPlayTarget(e);
+  };
+
   return (
     <RoomWrap>
       <GameScreen>
-        <PlayBar />
+        <PlayBar playHandler={playHandler} />
         <GroundMain />
         <Dialogue gameMsg={gameMsg} />
       </GameScreen>
@@ -94,6 +102,8 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
       {/* {userList.map((v, i) => {
         return <div key={i}>{v}</div>;
       })} */}
+      <MusicPlayer playTarget={playTarget} playHandler={playHandler} />
+      <DiceRoller playTarget={playTarget} playHandler={playHandler} />
     </RoomWrap>
   );
 };
