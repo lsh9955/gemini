@@ -23,6 +23,7 @@ const LoginSuccess: FC = () => {
     if (userInfo.profileImgUrl) {
       history.push("/");
     } else {
+      alert("신규 회원이시군요! 캐릭터를 선택해주세요!");
       history.push("/selectPairchild");
     }
   };

@@ -20,7 +20,8 @@ const SelectPairchildComp: FC = () => {
   const [description, setDescription] = useState("");
   const [selectedCharacter, setSelectedCharacter] = useState("");
   const [characterUrls, setCharacterUrls] = useState<string[]>([]);
-
+  const CharacterProfileUrls = ["1", "2"]; // 진짜 아리에스, 아돌 프로필사진 url을 담을것임. 클릭하는 이미지랑 다르니까.
+  const [urlsToSendProfileImg, setUrlsToSendProfileImg] = useState<string>("");
   useEffect(() => {
     //일단 임시로 고정 url. adol이 안나옴. 이후에 axios로 get해서 가져오는걸로 변경.
     const tempUrls = [
@@ -31,20 +32,30 @@ const SelectPairchildComp: FC = () => {
   }, []);
 
   const handleSubmit = async () => {
+    console.log("제출");
+    console.log(nickname);
+    console.log(description);
+
+    console.log("선택했는지? 이 다음이 true여야.");
+    console.log(selectedCharacter);
+
+    console.log("보낼 url");
+    console.log(urlsToSendProfileImg);
     // 닉네임과 캐릭터 선택 여부 확인
     if (!validateNickname(nickname) || !selectedCharacter) {
       alert("닉네임과 캐릭터를 정확하게 선택해 주세요.");
       return;
     }
 
+    console.log("검증통과");
     // axiosInstanceWithAccessToken을 사용한 POST 요청
     try {
       const response = await axiosInstanceWithAccessToken.post(
-        "/user-service/select-pairchild",
+        "/user-service/profile/select-pairchild",
         {
           nickname,
           description,
-          profile_img_url: selectedCharacter,
+          profile_img_url: urlsToSendProfileImg,
         }
       );
 
@@ -60,7 +71,9 @@ const SelectPairchildComp: FC = () => {
 
   const validateNickname = (inputNickname: string) => {
     // 닉네임 정규표현식 검증 코드 작성
-    const regex = /^[가-힣A-Za-z0-9_]{2,15}$/;
+    const regex = /^[가-힣A-Za-z0-9_\s]{2,15}$/; // 한글, 알파벳, 숫자, _, 공백 허용 2~15글자
+    console.log("정규표현식 검증시작");
+    console.log(regex.test(inputNickname));
     return regex.test(inputNickname);
   };
 
@@ -94,37 +107,21 @@ const SelectPairchildComp: FC = () => {
             src={characterUrls[0]}
             alt="Aries"
             isSelected={selectedCharacter === characterUrls[0]}
-            onClick={() => setSelectedCharacter(characterUrls[0])}
+            onClick={() => {
+              setSelectedCharacter(characterUrls[0]);
+              setUrlsToSendProfileImg(CharacterProfileUrls[0]);
+            }}
           />
 
           <CharacterImage
             src={characterUrls[1]}
             alt="Adol"
             isSelected={selectedCharacter === characterUrls[1]}
-            onClick={() => setSelectedCharacter(characterUrls[1])}
+            onClick={() => {
+              setSelectedCharacter(characterUrls[1]);
+              setUrlsToSendProfileImg(CharacterProfileUrls[1]);
+            }}
           />
-          {/* <CharacterImage
-            backgroundImage={characterUrls[0]}
-            // alt="Aries"
-            isSelected={selectedCharacter === characterUrls[0]}
-            onClick={() => setSelectedCharacter(characterUrls[0])}
-          >
-            <Overlay
-              backgroundImage={characterUrls[0].replace(".png", "-mask.png")}
-              isSelected={selectedCharacter === characterUrls[0]}
-            />
-          </CharacterImage>
-          <CharacterImage
-            backgroundImage={characterUrls[1]}
-            // alt="Adol"
-            isSelected={selectedCharacter === characterUrls[1]}
-            onClick={() => setSelectedCharacter(characterUrls[1])}
-          >
-            <Overlay
-              backgroundImage={characterUrls[1].replace(".png", "-mask.png")}
-              isSelected={selectedCharacter === characterUrls[1]}
-            />
-          </CharacterImage> */}
         </CharacterContainer>
         <SubmitButton onClick={handleSubmit}>가입완료</SubmitButton>
       </SelectPairchildWrapper>

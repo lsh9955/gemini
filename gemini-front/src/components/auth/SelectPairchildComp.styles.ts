@@ -10,7 +10,7 @@ export const SelectPairchildWrapper = styled.div`
   padding-left: 11.3vw;
   padding-right: 11.3vw;
   width: 60vw;
-  height: ${selectPairChildWrapperHeight};
+  height: 77%;
   background-color: rgba(217, 217, 217, 0.3);
   display: flex;
   flex-direction: column;
@@ -70,7 +70,7 @@ export const TextArea = styled.textarea`
   width: 100%;
   padding: 8px;
   //   height: calc(${selectPairChildWrapperHeight} * 0.9); // 0.75에 0.9를 그냥 곱해버리네;
-  height: 195px;
+  height: 155px;
   border-radius: 10px;
   margin-bottom: 16px;
   color: white;
@@ -89,9 +89,9 @@ export const TextArea = styled.textarea`
 export const CharacterContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-bottom: 16px;
+  // margin-bottom: 16px;
   margin-top: 5%;
-  margin-bottom: 5%;
+  margin-bottom: 1.5%;
 `;
 
 // 원형으로 보여주기

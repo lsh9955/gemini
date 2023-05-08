@@ -67,7 +67,7 @@ public class UserInfoApiController {
             alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
 
             emitter.send(SseEmitter.event().name("COMPLETE").data("SUCCESS")); // success message
-        } catch (Exception e) {
+        } catch (IOException e) { // IOException 뿐만 아니라 InterruptedException도 처리해 주어야 함
             emitter.send(SseEmitter.event().name("ERROR").data(e.getMessage())); // error message
         } finally {
             emitter.complete(); // complete emitter
