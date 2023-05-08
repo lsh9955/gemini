@@ -5,12 +5,12 @@ const Alarm: React.FC = () => {
 
   useEffect(() => {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "http:// 192.168.0.71:8081/alarm");
+    xhr.open("GET", "http://172.30.1.39:8081/alarms");
     xhr.setRequestHeader("X-Username", "yyj");
     xhr.withCredentials = true;
     xhr.send();
 
-    const eventSource = new EventSource("http:// 192.168.0.71:8081/alarm");
+    const eventSource = new EventSource("http://172.30.1.39:8081/alarms");
     eventSource.onmessage = (event) => {
       const message = document.createElement("div");
       message.innerText = event.data;
