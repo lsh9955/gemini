@@ -44,9 +44,8 @@ public class UserInfoApiController {
         return ResponseEntity.status(201).body(updatedUserInfo);
     }
 
-
     @PostMapping // test complete 😀 exception for following myself needed, duplicated request also should be handled.
-    public ResponseEntity<Void> followUser(@RequestHeader("X-Username") String currentUsername, @RequestBody FollowRequestDto followRequestDto) {
+    public ResponseEntity<Void> followUser(@RequestHeader("X-Username") String currentUsername, @RequestBody FollowRequestDto followRequestDto) throws IOException, InterruptedException {
         System.out.println("follow test start@@@@@@@@@@@@@@@@@@@@");
 //        System.out.println(currentUsername);
 //        System.out.println(followRequestDto);
