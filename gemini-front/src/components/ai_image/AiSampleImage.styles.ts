@@ -43,6 +43,12 @@ export const ColorContainer = styled.div`
   margin: 1%;
   border: 1px solid;
   border-radius: 20px;
+  &:hover {
+    .ColorText {
+      display: block;
+      cursor: pointer;
+    }
+  }
 `;
 
 export const ColorText = styled.p`
@@ -50,8 +56,12 @@ export const ColorText = styled.p`
   top: 50%;
   left: 50%;
   font-size: 25px;
+  z-index: 2px;
   transform: translate(-50%, -50%);
   /* padding: 4px; */
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const HairColorImage = styled.img`
@@ -62,5 +72,26 @@ export const HairColorImage = styled.img`
   &:hover {
     opacity: 0.5;
     cursor: pointer;
+    .ColorText {
+      display: block;
+      cursor: pointer;
+    }
   }
+`;
+
+// 헤어스타일 이미지 컨테이너(이미지와 텍스트 묶음)
+export const HairContainer = styled.div`
+  position: relative;
+  width: 25%;
+  height: auto;
+  margin: 1%;
+  border: 1px solid;
+  border-radius: 20px;
+`;
+
+export const HairStyleImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transition: opacity 0.3s ease-in-out;
 `;
