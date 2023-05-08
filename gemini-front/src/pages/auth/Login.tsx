@@ -31,14 +31,16 @@ const Login: FC = () => {
         <LoginButtonWrapper>
           <StyledLink
             backgroundImage={GoogleLoginButtonImg}
-            href={"http://localhost:8080/oauth2/authorization/google"}
+            // href={"http://localhost:8080/oauth2/authorization/google"}
+            href={process.env.REACT_APP_GOOGLE_AUTH_URL}
           >
             {/* 구글로그인 테스트2 */}
           </StyledLink>
 
           <StyledLink
             backgroundImage={TwitterLoginButtonImg}
-            href="https://mygemini.co.kr/oauth2/authorization/twitter"
+            // href="https://mygemini.co.kr/oauth2/authorization/twitter"
+            href={process.env.REACT_APP_TWITTER_AUTH_URL}
           >
             {/* 트위터 로그인 테스트2 */}
           </StyledLink>
