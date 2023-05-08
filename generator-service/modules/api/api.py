@@ -9,7 +9,7 @@ from io import BytesIO
 from fastapi import APIRouter, Depends, FastAPI, Request, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.exceptions import HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.encoders import jsonable_encoder
 from secrets import compare_digest
 
@@ -35,6 +35,8 @@ from dotenv import load_dotenv
 import boto3
 import os
 from datetime import datetime
+import asyncio
+
 
 ### S3와 연동하기 위해서 AWS 키와 좌표를 받아옵니다.
 load_dotenv()
@@ -188,6 +190,8 @@ class Api:
         ### 직접 작성한 Sample API
         self.add_api_route("/ml_api/get_sample", self.getsampleapi, methods=["GET"], response_model=GetSampleResponse)
         self.add_api_route("/ml_api/makegemini", self.makegeminiapi, methods=["POST"], response_model=TextToGeminiResponse)
+        self.add_api_route("/ml_api/makepose", self.makeposeapi, methods=["POST"],
+                           response_model=TextToPoseResponse)
         self.add_api_route("/sdapi/v1/txt2img", self.text2imgapi, methods=["POST"], response_model=TextToImageResponse)
         self.add_api_route("/sdapi/v1/img2img", self.img2imgapi, methods=["POST"], response_model=ImageToImageResponse)
         # self.add_api_route("/sdapi/v1/extra-single-image", self.extras_single_image_api, methods=["POST"], response_model=ExtrasSingleImageResponse)
@@ -314,7 +318,7 @@ class Api:
             processed.images[0].save(image_data, format='PNG')
             image_data.seek(0)
             print("=============Request Start===============")
-            response = s3.upload_fileobj(image_data, BUCKET_NAME, object_name, ExtraArgs={'ContentType': content_type})
+            response = await s3.upload_fileobj(image_data, BUCKET_NAME, object_name, ExtraArgs={'ContentType': content_type})
             print("=============Request Done=============")
             print(f"response: {response}")
             url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
@@ -345,7 +349,8 @@ class Api:
         timestamp = now.strftime("%Y%m%d_%H%M%S%f")
         object_name = f"gemini/{timestamp}_{user_id}.png"
         url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
-        background_tasks.add_task(self.back_makegeminiapi, txt2geminireq, object_name)
+        asyncio.ensure_future(self.back_makegeminiapi(txt2geminireq, object_name))
+
         return {
             "status": 200,
             "parameters": {"url": url,

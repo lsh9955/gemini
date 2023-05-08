@@ -151,6 +151,11 @@ class TextToGeminiResponse(BaseModel):
     parameters: dict
     info: str
 
+class TextToPoseResponse(BaseModel):
+    user_id = str
+    parameters: dict
+    info: str
+
 class TextToImageResponse(BaseModel):
     images: List[str] = Field(default=None, title="Image", description="The generated image in base64 format.")
     parameters: dict

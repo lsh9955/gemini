@@ -33,3 +33,4 @@ psutil
 rich
 python-dotenv
 boto3
+asyncio
