@@ -7,7 +7,7 @@ export const GeminiDetialWrapper = styled.div`
   position: relative;
   z-index: 10;
   display: flex;
-  background-color: #d9d9d9;
+  background-color: #00000050;
 
   // &::after {
   //   content: "";
@@ -87,6 +87,7 @@ export const ToggleWrapper = styled.div`
   width: 100%;
   height: 15.5%;
   // margin-top: auto;
+  padding-left: 6%;
   justify-content: center;
   align-items: center;
   //
@@ -108,7 +109,7 @@ export const ToggleButtonContainer = styled.div<ToggleButtonProps>`
   // width: 50%;
   // height: 50%;
   border-radius: 15px;
-  background-color: ${(props) => (props.isOn ? "#4cd964" : "#d9d9d9")};
+  background-color: ${(props) => (props.isOn ? "#785EC3" : "#d9d9d9")};
   position: relative;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -134,7 +135,9 @@ export const NameInputWrapper = styled.div`
 `;
 
 export const FormLabel = styled.div`
+  display: block;
   color: white;
+  margin-bottom: 1%;
   white-space: nowrap; // 이 부분을 추가하세요
 `;
 
@@ -164,14 +167,111 @@ export const TextInput = styled.input`
   //
 `;
 
+export const TextInputDiv = styled.div`
+  // display: block;
+  // width: 82.5%;
+  width: 80%;
+  // height: 100%;
+  margin-left: 1.3rem;
+  //   padding: 8px;
+  margin-bottom: 16px;
+  color: white;
+  border: none;
+  border-bottom: 2px solid white;
+  background-color: transparent;
+  font-size: 0.9rem;
+  font-weight: bold;
+  &::placeholder {
+    color: white;
+    opacity: 0.5;
+    font-size: 0.7rem;
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom: 3px solid white;
+  }
+  //
+`;
+
+export const DescBlockWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 25%;
+  margin-bottom: 3%;
+`;
+
+export const TagBlockWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 33%;
+  margin-bottom: 3%;
+`;
+
+export const DescArea = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 3%;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  overflow-y: auto; // 스크롤바 추가
+
+  // 웹킷 기반 브라우저 (Chrome, Safari 등)용 스크롤바 스타일
+  &::-webkit-scrollbar {
+    width: 0; // 스크롤바 너비를 0으로 설정하여 숨김
+    background: transparent; // 스크롤바 배경을 투명하게 설정
+  }
+  //
+`;
+
 export const TagArea = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px;
+  border-bottom: 1vh solid white;
+  padding: 3%;
+  overflow-y: auto; // 스크롤바 추가
+
+  // 웹킷 기반 브라우저 (Chrome, Safari 등)용 스크롤바 스타일
+  &::-webkit-scrollbar {
+    width: 0; // 스크롤바 너비를 0으로 설정하여 숨김
+    background: transparent; // 스크롤바 배경을 투명하게 설정
+  }
   //
 `;
 
 export const Tags = styled.div`
+  width: auto;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: #c3cdd6;
+  font-size: 0.8rem;
+  padding: 2% 3% 2% 3%;
+  margin-right: 2%;
+  margin-bottom: 2%;
   //
 `;
 
+export const ButtonWrapper = styled.div`
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const GeminiInfoButton = styled.div`
+  border: 1px solid white;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  width: 85%;
+  padding: 3% 10% 3% 10%;
+  color: white;
+  display: flex;
+  justify-content: center;
+
   //
 `;
