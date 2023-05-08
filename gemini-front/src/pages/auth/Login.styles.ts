@@ -1,5 +1,35 @@
 import styled from "styled-components";
 import loginBg from "../../assets/img/LoginBg1.png";
+import TwitterLoginButtonImg from "../../assets/img/TwitterLoginButton.png";
+import GoogleLoginButtonImg from "../../assets/img/GoogleLoginButton.png";
+import GeminiLoginTitle from "../../assets/img/GeminiLoginTitle.png";
+
+export const LoginTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 15vh;
+  margin-bottom: 5%;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+`;
+
+export const LoginSubTitle = styled.div`
+  color: white;
+  // font-weight: extra-bold;
+  // font-weight: ;
+  font-size: 2rem;
+`;
+
+export const LoginTitle = styled.div`
+  background-image: url(${GeminiLoginTitle});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 6.5vh;
+  margin-bottom: 8%;
+`;
 
 export const LoginWrapper = styled.div`
   position: relative;
@@ -9,6 +39,7 @@ export const LoginWrapper = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -35,7 +66,24 @@ export const LoginWrapper = styled.div`
   //   }
 `;
 
-export const StyledLink = styled.a`
+interface StyledLinkProps {
+  backgroundImage: string;
+}
+
+export const LoginButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
+`;
+
+export const StyledLink = styled.a<StyledLinkProps>`
   z-index: 2;
   position: relative;
+  display: inline-block;
+  background-image: url(${(props) => props.backgroundImage});
+  background-size: cover;
+  width: 250px; // 이미지의 원래 너비와 높이에 맞게 조정
+  height: 50px; // 이미지의 원래 너비와 높이에 맞게 조정
+
+  margin-bottom: 10%;
 `;
