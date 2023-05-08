@@ -11,6 +11,7 @@ pipeline {
         CLIENT_IMAGE_TAG = "client"
         AUTH_SERVICE_IMAGE_TAG = "auth-service"
         USER_SERVICE_IMAGE_TAG = "user-service"
+		RANKING_SERVICE_IMAGE_TAG = "ranking-service"
 		DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
@@ -35,7 +36,7 @@ pipeline {
 					steps {
 						dir('gemini-front') {
 							sh 'npm install'
-							sh 'echo -e "REACT_APP_KAKAOPAY_IMP=\'${REACT_APP_KAKAOPAY_IMP}\'\nREACT_APP_API_OAUTH2_BASE_URL=\'${REACT_APP_API_OAUTH2_BASE_URL}\'\nREACT_APP_GOOGLE_AUTH_URL=\'${REACT_APP_GOOGLE_AUTH_URL}\'\nREACT_APP_TWITTER_AUTH_URL=\'${REACT_APP_TWITTER_AUTH_URL}\'\nREACT_APP_API_BASE_URL=\'${REACT_APP_API_BASE_URL}\'" > .env.local'
+							sh 'echo -e "REACT_APP_KAKAOPAY_IMP=\'${REACT_APP_KAKAOPAY_IMP}\'\nREACT_APP_API_OAUTH2_BASE_URL=\'${REACT_APP_API_OAUTH2_BASE_URL}\'\nREACT_APP_GOOGLE_AUTH_URL=\'${REACT_APP_GOOGLE_AUTH_URL}\'\nREACT_APP_TWITTER_AUTH_URL=\'${REACT_APP_TWITTER_AUTH_URL}\'\nREACT_APP_API_AUTH_BASE_URL=\'${REACT_APP_API_AUTH_BASE_URL}\'\nREACT_APP_API_USER_BASE_URL=\'${REACT_APP_API_USER_BASE_URL}\'\nREACT_APP_API_BASE_URL=\'${REACT_APP_API_BASE_URL}\'" > .env.local'
 							sh 'CI=false npm run build'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${CLIENT_IMAGE_TAG}'
@@ -104,6 +105,34 @@ pipeline {
 						}
 					}
 				}
+
+				stage('ranking-service build') {
+					when {
+						allOf {
+							expression {
+								currentBuild.result == null || currentBuild.result == 'SUCCESS'
+							}
+							changeset "ranking-service/**"
+						}
+					}
+					steps {
+						dir('ranking-service') {
+							sh 'chmod +x ./gradlew'
+							sh './gradlew clean build'
+							sh 'docker build -t ${DOCKER_REGISTRY}:${RANKING_SERVICE_IMAGE_TAG} .'
+							sh 'docker push ${DOCKER_REGISTRY}:${RANKING_SERVICE_IMAGE_TAG}'
+						}
+					}
+					post {
+						success {
+							echo 'ranking-service build succeeded'
+						}
+						failure {
+							echo 'ranking-service build failed'
+						}
+					}
+				}
+
 			}
         }
         stage('deploy') {
@@ -176,6 +205,30 @@ pipeline {
         				}
                     }
                 }
+
+				stage('replace ranking-service container') {
+                    when {
+                    	allOf {
+                      		expression {
+                        		currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                      		}
+                      		changeset "ranking-service/**"
+                    	}
+                  	}
+                    steps {
+						script {
+            				sshagent(credentials: ['ssh']) {
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${RANKING_SERVICE_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${RANKING_SERVICE_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 8083:8083 --name ${RANKING_SERVICE_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${RANKING_SERVICE_IMAGE_TAG}
+								"""
+            				}
+        				}
+                    }
+                }
+
             }
         }
   	}
