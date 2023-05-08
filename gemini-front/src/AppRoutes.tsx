@@ -5,7 +5,6 @@ import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
 
-import MyPage from "./pages/profile/MyProfile";
 import SelectPairchild from "./pages/auth/SelectPairchild";
 import MyProfile from "./pages/profile/MyProfile";
 import AiImage from "./pages/ai_image/AiImage";
@@ -25,6 +24,7 @@ const AppRoutes: React.FC = () => {
       {shouldShowHeader && <Header />}
       <Switch>
         <Route exact path="/" component={Main} />
+
         <Route exact path="/loginPage" component={Login} />
         <Route exact path="/loginSuccess" component={LoginSuccess} />
 

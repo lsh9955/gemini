@@ -108,7 +108,7 @@ export const Nickname = styled.div`
   //   height: ${myProfileContentWrapperHeight};
   //   background-color: #ffffff;
   color: white;
-  font-size: 2rem;
+  font-size: 1.5rem;
   //   margin-bottom: 2rem; // 뭐가 더 적절한지 수정필요😀
   margin-bottom: 3vh; // 간격 조정 필요할수도 있음.
 `;
@@ -116,7 +116,7 @@ export const Nickname = styled.div`
 export const Desc = styled.div`
   //   height: ${myProfileContentWrapperHeight};
   //   background-color: #ffffff;
-  font-size: 1.2rem;
+  font-size: 1rem;
   height: 9.2vh;
   width: 26vw;
   line-height: 1.5; // 원하는 줄 간격 비율로 조정하세요.
@@ -168,7 +168,7 @@ export const FollowingTextWrapper = styled.div`
 export const NumText = styled.div`
   //   background-color: #ffffff;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: black;
   line-height: 1.5; // 원하는 줄 간격 비율로 조정하세요.
 `;
@@ -202,7 +202,7 @@ export const MyProfileContentTitleWrapper = styled.div`
 
 export const MyProfileContentTitle = styled.div`
   //   height: ${myProfileContentWrapperHeight};
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   //   background-color: #ffffff99;
   margin-right: 2vw;
 `;

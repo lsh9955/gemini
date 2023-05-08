@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 // import GeminiLogo from "../../assets/img/GeminiLogo.png";
@@ -10,18 +10,34 @@ import {
   StyledMessage,
   StyledNotification,
 } from "./HeaderTools.styles";
+import AlarmModal from "../alarm/AlarmModal";
 
 const HeaderTools: FC = () => {
-  const profileImgHandler = () => {
+  const [showAlarmModal, setShowAlarmModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+
+  const showProfileModalHandler = () => {
+    // history.push("/");
+    setShowProfileModal((prevState) => !prevState);
+  };
+
+  const showMessageModalHandler = () => {
+    // history.push("/");
+    setShowAlarmModal((prevState) => !prevState);
+  };
+
+  const showNotificationModalHandler = () => {
+    setShowNotificationModal((prevState) => !prevState);
     // history.push("/");
   };
 
-  const messageHandler = () => {
-    // history.push("/");
+  const closeProfileModal = () => {
+    setShowAlarmModal(false);
   };
 
-  const notificationImgHandler = () => {
-    // history.push("/");
+  const closeAlarmModal = () => {
+    setShowAlarmModal(false);
   };
 
   return (
@@ -30,18 +46,20 @@ const HeaderTools: FC = () => {
         <StyledProfileImage // 이 부분을 추가합니다.
           //   src={ProfileImage}
           alt="ProfileImage"
-          onClick={profileImgHandler}
+          onClick={showProfileModalHandler}
         ></StyledProfileImage>
         <StyledMessage
           src={Message}
           alt="MessageImg"
-          onClick={messageHandler}
+          onClick={showMessageModalHandler}
         ></StyledMessage>
         <StyledNotification
           src={Notification}
           alt="NotificationImg"
-          onClick={notificationImgHandler}
+          onClick={showNotificationModalHandler}
         ></StyledNotification>
+        {showAlarmModal && <AlarmModal onClose={closeAlarmModal} />}
+        {showProfileModal && <AlarmModal onClose={closeProfileModal} />}
       </StyledHeaderTools>
     </>
   );

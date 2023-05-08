@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import OpenPayModalButton from "../../components/profile/pay/button/OpenPayModalButton";
-import PayButton from "../../components/profile/pay/modal/PayButton";
+import PayButton from "../../components/profile/pay/modal/PayModal";
 import {
   Desc,
   EditButton,
@@ -25,6 +25,8 @@ import {
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
 import axios from "axios";
 import { getInfScrollImgLength } from "./UserProfile";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
+import { async } from "q";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -38,7 +40,23 @@ const MyProfile: FC = () => {
   const [followingNum, setFollowingNum] = useState<number>(0);
   const [starPoint, setStarPoint] = useState<number>(10);
 
-  const getMyinfo = () => {};
+  const getMyinfo = async () => {
+    const res = await axiosInstanceWithAccessToken.get(
+      "/user-service/profile/login"
+    );
+    console.log("내정보");
+    console.log(res.data.description);
+    //     `description: "띄어쓰기 되지"
+    // nickname: "띄어쓰기 되나"
+    // profileBackground: null
+    // profileImgUrl: "2"
+    // star: 10000
+    // userPk: 9
+    // username: "google_12346"`
+    setNickname(res.data.nickname);
+    setDesc(res.data.description);
+    setStarPoint(res.data.star);
+  };
   useEffect(() => {
     getMyinfo();
   }, []);
@@ -124,7 +142,8 @@ const MyProfile: FC = () => {
                   별조각
                 </NumText>
               </FollowingTextWrapper>
-              <PayButton />
+              {/* <PayButton /> */}
+              <OpenPayModalButton />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>

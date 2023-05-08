@@ -31,5 +31,11 @@ spring:
         order_updates: true
         format_sql: true
 
+  redis:
+    host: mygemini.co.kr
+    port: 6379
+    password: b106b106
+
+
 server:
   port: 8081

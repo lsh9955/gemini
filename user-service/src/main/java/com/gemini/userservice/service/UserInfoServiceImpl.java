@@ -3,12 +3,14 @@ package com.gemini.userservice.service;
 import com.gemini.userservice.dto.GeminiDto;
 import com.gemini.userservice.dto.OtherUserProfileResponseDto;
 import com.gemini.userservice.dto.UserInfoDto;
+import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.FollowRepository;
 import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import com.gemini.userservice.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .userPk(userInfo.getUserPk())
                 .description(userInfo.getDescription())
                 .nickname(userInfo.getNickname())
-                .profileBackground(userInfo.getProfileBackground())
+                .profileBackground(userInfo.getProfileBackgroundUrl())
                 .star(userInfo.getStar())
                 .username(userInfo.getUsername())
                 .build();
@@ -51,6 +53,32 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
 
+    @Transactional
+    @Override
+    public UserInfoDto selectPairchild(String username, RequestSelectPairchildDto requestSelectPairchildDto) {
+        // 해당 사용자의 UserInfo 조회 (username으로 조회)
+        UserInfo userInfo = userInfoRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 필드 업데이트
+        userInfo.setNickname(requestSelectPairchildDto.getNickname());
+        userInfo.setDescription(requestSelectPairchildDto.getDescription());
+        userInfo.setProfileImgUrl(requestSelectPairchildDto.getProfile_img_url());
+
+        // 변경 사항 저장
+        UserInfo updatedUserInfo = userInfoRepository.save(userInfo);
+
+        // UserInfoDto로 변환
+        return UserInfoDto.builder()
+                .userPk(updatedUserInfo.getUserPk())
+                .nickname(updatedUserInfo.getNickname())
+                .description(updatedUserInfo.getDescription())
+                .profileBackground(updatedUserInfo.getProfileBackgroundUrl())
+                .star(updatedUserInfo.getStar())
+                .username(updatedUserInfo.getUsername())
+                .profileImgUrl(updatedUserInfo.getProfileImgUrl())
+                .build();
+    }
+
     @Override
     public OtherUserProfileResponseDto getOtherUserProfile(String nickname) {
 
@@ -62,7 +90,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<GeminiDto> geminiDtos = publicGeminis.stream()
                 .map(gemini -> GeminiDto.builder()
                         .geminiPk(gemini.getId())
-                        .image(gemini.getImage())
+                        .image(gemini.getImageUrl())
                         .userPk(gemini.getUserInfo().getUserPk())
                         .build())
                 .collect(Collectors.toList());
@@ -95,7 +123,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .userPk(userInfo.getUserPk())
                 .description(userInfo.getDescription())
                 .nickname(userInfo.getNickname())
-                .profileBackground(userInfo.getProfileBackground())
+                .profileBackground(userInfo.getProfileBackgroundUrl())
+                .profileImgUrl(userInfo.getProfileImgUrl())
                 .star(userInfo.getStar())
                 .username(userInfo.getUsername())
                 .build();

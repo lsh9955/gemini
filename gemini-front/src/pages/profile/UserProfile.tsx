@@ -20,10 +20,12 @@ import {
   Nickname,
   NumText,
 } from "./UserProfile.styles";
-import PayButton from "../../components/profile/pay/modal/PayButton";
+import PayButton from "../../components/profile/pay/modal/PayModal";
 import FollowButton from "../../components/profile/userprofile/FollowButton";
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
 import axios from "axios";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
+import { async } from "q";
 
 type UserProfileParams = {
   nickname: string;
@@ -45,6 +47,22 @@ const UserProfile: FC = () => {
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
   const [totalGallery, setTotalGallery] = useState<number>(10);
+
+  const fetchUserInfo = async () => {
+    const res = await axiosInstanceWithAccessToken.get(
+      `/user-service/profile/${nickname}`
+    ); // 주소 수정 필요 😀
+    console.log("가져온 다른 유저의 데이터");
+    console.log(res.data);
+    setFollowerNum(res.data.follower);
+    setFollowingNum(res.data.following);
+    setTotalGallery(res.data.geminis.length);
+    setDesc(res.data.description);
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   // for infinite scroll 😀
   const dummyImgs = [
