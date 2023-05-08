@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const AiWrapper = styled.div`
   width: 70%;
   height: auto; // auto로 바꿔줘
-  margin-top: 3%;
+  margin-top: 2%;
   margin-left: 15%;
   margin-right: 15%;
   /* border: 1px solid; */
@@ -38,10 +38,19 @@ export const AiSampleWrapper = styled.div`
 // 실제 이미지 생성에 필요한 박스
 export const AiSampleBox = styled.div`
   width: 100%;
-  height: 90%;
+  height: auto;
   margin-top: 1vh;
   border: 1px solid;
   border-radius: 10px;
+`;
+
+// 요소가 아무것도 없을 때 보여지는 박스
+export const NoneSampleBox = styled.div`
+  width: 100%;
+  height: 72vh;
+  /* margin-top: 1vh; */
+  /* border: 1px solid; */
+  /* border-radius: 10px; */
 `;
 
 // 이미지 생성에 필요한 요소 선택지 공간

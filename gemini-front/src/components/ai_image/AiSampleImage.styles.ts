@@ -5,11 +5,12 @@ export const GenreSampleImageBox = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 export const GenreSampleImage = styled.img`
-  width: 100%;
-  height: 18vh;
+  width: 85%;
+  height: auto;
   padding: 1%;
   border-radius: 20px;
 
@@ -20,8 +21,8 @@ export const GenreSampleImage = styled.img`
 `;
 
 export const GenreSampleImageLock = styled.img`
-  width: 100%;
-  height: 18vh;
+  width: 85%;
+  height: auto;
   padding: 1%;
   border-radius: 20px;
 `;
@@ -79,14 +80,26 @@ export const HairColorImage = styled.img`
   }
 `;
 
+// 헤어스타일 최상단 박스
+export const HairStyleBox = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+`;
+
 // 헤어스타일 이미지 컨테이너(이미지와 텍스트 묶음)
 export const HairContainer = styled.div`
   position: relative;
-  width: 25%;
+  width: 23%;
   height: auto;
   margin: 1%;
   border: 1px solid;
   border-radius: 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const HairStyleImage = styled.img`
@@ -94,4 +107,8 @@ export const HairStyleImage = styled.img`
   height: 100%;
   border-radius: 20px;
   transition: opacity 0.3s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
 `;

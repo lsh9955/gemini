@@ -11,9 +11,13 @@ import {
   AiSelectTitle,
   AiCreateButton,
   AiSampleBox,
+  NoneSampleBox,
 } from "./AiImage.styles";
 
 const AiImage: FC = () => {
+  // 요소가 아무것도 없을 때 빈 박스를 보여줌
+  const [showNoneBox, setShowNoneBox] = useState(true);
+
   // 장르 변수(axios할 때 값으로 넘겨줄 수 있음)
   const [genre, setGenre] = useState("");
 
@@ -22,6 +26,7 @@ const AiImage: FC = () => {
 
   // GenreSelectBox 클릭 시 GenreImage 컴포넌트 보이게 설정
   const handleGenreSelectBoxClick = () => {
+    setShowNoneBox(false);
     setShowColor(false);
     setShowGenreImage(true);
     setShowHairStyle(false);
@@ -83,6 +88,7 @@ const AiImage: FC = () => {
 
   // 헤어 컬러 옵션 박스 선택시에 샘플 컬러가 보이게 함
   const handleHairColorSelectBoxClick = () => {
+    setShowNoneBox(false);
     setShowGenreImage(false);
     setShowColor(true);
     setShowHairStyle(false);
@@ -90,6 +96,7 @@ const AiImage: FC = () => {
   };
 
   const handleEyeColorSelectBoxClick = () => {
+    setShowNoneBox(false);
     setShowGenreImage(false);
     setShowColor(true);
     setShowHairStyle(false);
@@ -98,11 +105,30 @@ const AiImage: FC = () => {
 
   // 헤어 스타일 컴포넌트 보이기/숨기기 상태값
   const [showHairStyle, setShowHairStyle] = useState(false);
+  // 프롬프트 헤어스타일
+  const [hairStyle, setHairStyle] = useState("");
+  // 헤어 길이
+  const [hairLength, setHairLength] = useState("");
+  // 헤어스타일 한국어
+  const [hairStyleKorean, setHairStyleKorean] =
+    useState("머리 스타일을 선택해주세요");
 
   const handleHairStyleSelectBoxClick = () => {
+    setShowNoneBox(false);
     setShowGenreImage(false);
     setShowColor(false);
     setShowHairStyle(true);
+  };
+
+  const handleHairStyle = (hairStyle: {
+    name: string;
+    koreanName: string;
+    hairlength: string;
+    hairstyle: string;
+  }) => {
+    setHairStyle(hairStyle.hairstyle);
+    setHairLength(hairStyle.hairlength);
+    setHairStyleKorean(hairStyle.koreanName);
   };
 
   return (
@@ -126,18 +152,19 @@ const AiImage: FC = () => {
 
           <AiSelectTitle>머리 스타일</AiSelectTitle>
           <GenreSelectBox onClick={handleHairStyleSelectBoxClick}>
-            <p>머리 스타일을 선택해주세요</p>
+            <p>{hairStyleKorean}</p>
           </GenreSelectBox>
         </AiSelectWrapper>
 
         <AiSampleWrapper>
           <AiCreateButton>제미니 생성하기</AiCreateButton>
           <AiSampleBox>
+            {showNoneBox && <NoneSampleBox />}
             {showGenreImage && <GenreImage handleGenre={handleGenre} />}
             {showColor && (
               <ColorSelect parentId={parentId} handleColor={handleColor} />
             )}
-            {showHairStyle && <HairStyle />}
+            {showHairStyle && <HairStyle handleHairStyle={handleHairStyle} />}
           </AiSampleBox>
         </AiSampleWrapper>
       </AiWrapper>

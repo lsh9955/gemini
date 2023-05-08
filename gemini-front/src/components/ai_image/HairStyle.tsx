@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import {
-  HairColorBox,
+  HairStyleBox,
   HairContainer,
   HairStyleImage,
 } from "./AiSampleImage.styles";
@@ -97,16 +97,36 @@ const hairStyles: HairStyle[] = [
   },
 ];
 
-const HairStyle: FC = () => {
+interface Props {
+  handleHairStyle: (HairStyle: {
+    name: string;
+    koreanName: string;
+    hairlength: string;
+    hairstyle: string;
+  }) => void;
+}
+
+const HairStyle: FC<Props> = ({ handleHairStyle }) => {
+  const handleHairStyleClick = (hairStyle: HairStyle) => {
+    handleHairStyle({
+      name: hairStyle.name,
+      koreanName: hairStyle.koreanName,
+      hairlength: hairStyle.hairlength,
+      hairstyle: hairStyle.hairstyle,
+    });
+  };
   return (
     <>
-      <HairColorBox>
+      <HairStyleBox>
         {hairStyles.map((hairStyle) => (
-          <HairContainer key={hairStyle.name}>
+          <HairContainer
+            key={hairStyle.name}
+            onClick={() => handleHairStyleClick(hairStyle)}
+          >
             <HairStyleImage src={hairStyle.image} alt={hairStyle.name} />
           </HairContainer>
         ))}
-      </HairColorBox>
+      </HairStyleBox>
     </>
   );
 };
