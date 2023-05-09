@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ALARM")
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +30,9 @@ public class Alarm {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "nickname")
+    private String nickname;
 
     @ManyToOne
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")

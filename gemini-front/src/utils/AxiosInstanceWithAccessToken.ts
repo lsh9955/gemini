@@ -14,6 +14,7 @@ axiosInstanceWithAccessToken.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
     // config.headers.X-username = "google_12346"; // 테스트용. 수정필요 😀
+    //
   }
   return config;
 });
