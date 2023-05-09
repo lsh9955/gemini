@@ -1,4 +1,9 @@
 import React, { FC } from "react";
+import {
+  HairStyleBox,
+  HairContainer,
+  HairStyleImage,
+} from "./AiSampleImage.styles";
 
 import AngryFace from "../../assets/img/ai/emotion/AngryFace.png";
 import BrightSmileFace from "../../assets/img/ai/emotion/BrightSmileFace.png";
@@ -64,8 +69,36 @@ const emotions: Emotion[] = [
   },
 ];
 
-const Emotion: FC = () => {
-  return <div></div>;
+interface Props {
+  handleEmotion: (Emotion: {
+    name: string;
+    image: string;
+    koreanName: string;
+  }) => void;
+}
+
+const Emotion: FC<Props> = ({ handleEmotion }) => {
+  const handleEmotionClick = (emotion: Emotion) => {
+    handleEmotion({
+      name: emotion.name,
+      image: emotion.image,
+      koreanName: emotion.koreanName,
+    });
+  };
+  return (
+    <>
+      <HairStyleBox>
+        {emotions.map((emotion) => (
+          <HairContainer
+            key={emotion.name}
+            onClick={() => handleEmotionClick(emotion)}
+          >
+            <HairStyleImage src={emotion.image} alt={emotion.name} />
+          </HairContainer>
+        ))}
+      </HairStyleBox>
+    </>
+  );
 };
 
 export default Emotion;
