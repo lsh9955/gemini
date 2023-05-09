@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { Component, FC, useEffect, useRef, useState } from "react";
 import {
   ButtonWrapper,
   DescArea,
@@ -27,8 +27,16 @@ import {
   ToggleWrapper,
 } from "./UserGeminiDetail.styles";
 import { LinkImg } from "./MyGeminiDetail.styles";
+// import * as LottiePlayer from "@lottiefiles/lottie-player";
+import { Player, Controls } from "@lottiefiles/react-lottie-player";
+import { FiHeart } from "react-icons/fi";
+import { AiFillHeart } from "react-icons/ai";
+import { FaHeart } from "react-icons/fa";
+import HeartAnimation from "../../assets/animation-effect/HeartAnimation.json";
+import { useHistory } from "react-router";
 
 const UserGeminiDetail: FC = () => {
+  const history = useHistory();
   const [isOn, setIsOn] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
@@ -66,17 +74,58 @@ const UserGeminiDetail: FC = () => {
     // setTagContents(res); // 이걸 바탕으로..
   }, []);
 
+  // ❤ 하트 세번째시도
+  const [animationVisible, setAnimationVisible] = useState(false);
+  const lottieRef = useRef<Player | null>(null);
+  const handleComponentClick = () => {
+    if (!isLike) {
+      setIsLike(!isLike);
+      if (lottieRef.current) {
+        setAnimationVisible(true);
+        lottieRef.current.play();
+      }
+    } else {
+      setIsLike(!isLike);
+    }
+  };
+  const onAnimationComplete = () => {
+    setAnimationVisible(false);
+  };
+
+  // 현재 like여부에 따라 하트 채워지고.. 달라짐.
+  const [isLike, setIsLike] = useState(false);
+
   return (
     <>
       <GeminiDetialWrapper>
+        <Player
+          ref={lottieRef}
+          src={HeartAnimation}
+          background="transparent"
+          speed={1.1} // 속도 조정 가능
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            display: animationVisible ? "block" : "none",
+          }}
+          autoplay={false}
+          loop={false}
+          onEvent={(event) => {
+            if (event === "complete") onAnimationComplete();
+          }}
+        />
+
         <GeminiDetailImgWrapper backgroundImage={geminiImg}>
           <LikeNicknameWrapper>
-            <ProfileWrapper>
+            <ProfileWrapper
+              onClick={() => history.push(`/userprofile/${userNickname}`)}
+            >
               <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
               <Nickname>{userNickname}</Nickname>
             </ProfileWrapper>
-            <LikeWrapper>
-              <HeartIcon>❤️</HeartIcon>
+            <LikeWrapper onClick={handleComponentClick}>
+              <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
               <LikeCount>{likeCount}개의 좋아요</LikeCount>
             </LikeWrapper>
           </LikeNicknameWrapper>
@@ -91,14 +140,7 @@ const UserGeminiDetail: FC = () => {
           </ToggleWrapper>
           <NameInputWrapper>
             <FormLabel>이름</FormLabel>
-            <TextInputDiv
-            // type="text"
-            // id="nickname"
-            // value={nickname}
-            // onChange={(e) => setNickname(e.target.value)}
-            >
-              {geminiName}
-            </TextInputDiv>
+            <TextInputDiv>{geminiName}</TextInputDiv>
           </NameInputWrapper>
           <DescBlockWrapper hideToggle={true}>
             <FormLabel>소개</FormLabel>
@@ -107,15 +149,6 @@ const UserGeminiDetail: FC = () => {
           <TagBlockWrapper hideToggle={true}>
             <FormLabel>키워드</FormLabel>
             <TagArea>
-              {/* <Tags>화이팅</Tags>
-              <Tags>좀만 더 힘내자</Tags>
-              <Tags>조금 더 다듬어봤다.</Tags>
-              <Tags>이거 기반으로 세쌍둥이 컴포넌트 ㄱㄱ</Tags>
-              <Tags>태그가</Tags>
-              <Tags>스크롤바 넣고 hidden으로 숨김</Tags>
-              <Tags>레이아웃 무너집니까?</Tags>
-              <Tags>레이아웃 무너집니까?</Tags>
-              <Tags>응 예외처리하세요</Tags> */}
               {tagContents.map((tag, index) => (
                 <Tags key={index}>{tag}</Tags>
               ))}

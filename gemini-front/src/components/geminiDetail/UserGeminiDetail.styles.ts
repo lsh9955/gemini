@@ -55,14 +55,26 @@ export const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
-  // display: flex;
-  align-items: center;
+  align-items: center; // 이미지를 수직으로 중앙에 배치합니다.
+  cursor: pointer;
 `;
 
 // 😶😶😶 여기서부터 해야됨.
+// export const ProfileImg = styled.div<{ backgroundImage: string }>`
+//   width: 10%;
+//   height: 55%;
+//   border-radius: 50%;
+//   margin-right: 10px;
+//   background-image: url(${(props) => props.backgroundImage});
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+// `;
+
 export const ProfileImg = styled.div<{ backgroundImage: string }>`
-  width: 10%;
-  height: 50%;
+  width: 10%; // 가로 크기를 조정합니다.
+  height: 55%; // 세로 크기를 조정합니다.
+  margin-bottom: 1%;
   border-radius: 50%;
   margin-right: 10px;
   background-image: url(${(props) => props.backgroundImage});
@@ -81,6 +93,7 @@ export const LikeWrapper = styled.div`
   // align-items: center;
   flex-direction: row;
   padding-bottom: 3%;
+  cursor: pointer;
 `;
 
 // 하트 봐야됨. 수정 필요 😶
