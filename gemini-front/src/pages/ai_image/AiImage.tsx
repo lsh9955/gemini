@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import GenreImage from "../../components/ai_image/GenreImage";
 import ColorSelect from "../../components/ai_image/ColorSelect";
 import HairStyle from "../../components/ai_image/HairStyle";
+import Preset from "../../components/ai_image/Preset";
 
 import {
   AiWrapper,
@@ -28,8 +29,9 @@ const AiImage: FC = () => {
   const handleGenreSelectBoxClick = () => {
     setShowNoneBox(false);
     setShowColor(false);
-    setShowGenreImage(true);
     setShowHairStyle(false);
+    setShowPreset(false);
+    setShowGenreImage(true);
   };
 
   const handleGenre = (genre: string) => {
@@ -90,16 +92,18 @@ const AiImage: FC = () => {
   const handleHairColorSelectBoxClick = () => {
     setShowNoneBox(false);
     setShowGenreImage(false);
-    setShowColor(true);
+    setShowPreset(false);
     setShowHairStyle(false);
+    setShowColor(true);
     setParentId("hair");
   };
 
   const handleEyeColorSelectBoxClick = () => {
     setShowNoneBox(false);
     setShowGenreImage(false);
-    setShowColor(true);
+    setShowPreset(false);
     setShowHairStyle(false);
+    setShowColor(true);
     setParentId("eye");
   };
 
@@ -117,6 +121,7 @@ const AiImage: FC = () => {
     setShowNoneBox(false);
     setShowGenreImage(false);
     setShowColor(false);
+    setShowPreset(false);
     setShowHairStyle(true);
   };
 
@@ -131,6 +136,26 @@ const AiImage: FC = () => {
     setHairStyleKorean(hairStyle.koreanName);
   };
 
+  /////////////////////////////////////////////////////////////////////
+
+  // 프리셋 컴포넌트 보이기/숨기기 상태값
+  const [showPreset, setShowPreset] = useState(false);
+  const [preset, setPreset] = useState("");
+  const [presetKorean, setPresetKorean] = useState("프리셋을 선택해주세요");
+
+  const handlePresetSelectBoxClick = () => {
+    setShowNoneBox(false);
+    setShowGenreImage(false);
+    setShowColor(false);
+    setShowHairStyle(false);
+    setShowPreset(true);
+  };
+
+  const handlepreset = (preset: { name: string; koreanName: string }) => {
+    setPresetKorean(preset.koreanName);
+    setPreset(Preset.name);
+  };
+
   return (
     <>
       <AiWrapper>
@@ -138,6 +163,11 @@ const AiImage: FC = () => {
           <AiSelectTitle>장르</AiSelectTitle>
           <GenreSelectBox onClick={handleGenreSelectBoxClick}>
             <p>{selectBoxText}</p>
+          </GenreSelectBox>
+
+          <AiSelectTitle>프리셋</AiSelectTitle>
+          <GenreSelectBox onClick={handlePresetSelectBoxClick}>
+            <p>{presetKorean}</p>
           </GenreSelectBox>
 
           <AiSelectTitle>머리카락 색상</AiSelectTitle>
@@ -165,6 +195,7 @@ const AiImage: FC = () => {
               <ColorSelect parentId={parentId} handleColor={handleColor} />
             )}
             {showHairStyle && <HairStyle handleHairStyle={handleHairStyle} />}
+            {showPreset && <Preset handlePreset={handlepreset} />}
           </AiSampleBox>
         </AiSampleWrapper>
       </AiWrapper>
