@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-// GeminiDetialWrapper
+// GeminiDetialWrapper 😶 배경 수정할수도 있음.
 export const GeminiDetialWrapper = styled.div`
   aspect-ratio: 3 / 2;
   width: 50vw;
   position: relative;
   z-index: 10;
   display: flex;
-  background-color: #00000050;
+  background-color: #00000099;
 
   // &::after {
   //   content: "";
@@ -41,32 +41,62 @@ export const LikeNicknameWrapper = styled.div`
   margin-top: auto;
   display: flex;
   flex-direction: column;
+  padding-left: 5%;
+  padding-right: 3%;
 `;
 
-export const LinkProfileWrapper = styled.div`
+export const LinkProfileWrapper = styled.div<ToggleWrapperProps>`
+  display: flex;
+  flex-direction: ${(props) => (props.hideToggle ? "row" : "row-reverse")};
+  height: 100%;
+`;
+
+export const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  height: 100%;
+  // display: flex;
+  align-items: center;
 `;
 
-export const ProfileImg = styled.div`
-  //
+// 😶😶😶 여기서부터 해야됨.
+export const ProfileImg = styled.div<{ backgroundImage: string }>`
+  width: 10%;
+  height: 50%;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-image: url(${(props) => props.backgroundImage});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 export const Nickname = styled.div`
-  //
+  font-size: 0.9rem;
+  color: white;
 `;
 
 export const LikeWrapper = styled.div`
   display: flex;
+  // align-items: center;
   flex-direction: row;
+  padding-bottom: 3%;
 `;
 
-export const Heart = styled.div`
-  //
+// 하트 봐야됨. 수정 필요 😶
+export const HeartIcon = styled.div`
+  // color: black;
+  color: red;
+
+  font-size: 1.2rem;
+  // 원하는 스타일을 추가하세요
 `;
 
-export const LikeContent = styled.div`
-  //
+export const LikeCount = styled.div`
+  color: white;
+  font-size: 1rem;
+  margin-left: 10px;
+  // 원하는 스타일을 추가하세요
 `;
 
 // 여기까지 왼쪽 아래부터 오른쪽 😀
@@ -81,11 +111,16 @@ export const GeminiDetialInfoWrapper = styled.div`
   //
 `;
 
-export const ToggleWrapper = styled.div`
+interface ToggleWrapperProps {
+  hideToggle?: boolean;
+}
+
+export const ToggleWrapper = styled.div<ToggleWrapperProps>`
+  visibility: ${(props) => (props.hideToggle ? "hidden" : "visible")};
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 15.5%;
+  height: ${(props) => (props.hideToggle ? "10%" : "14%")};
   // margin-top: auto;
   padding-left: 6%;
   justify-content: center;
@@ -167,13 +202,42 @@ export const TextInput = styled.input`
   //
 `;
 
+// export const TextInputDiv = styled.div`
+//   // display: block;
+//   // width: 82.5%;
+//   width: 80%;
+//   // height: 100%;
+//   margin-left: 1.3rem;
+//   //   padding: 8px;
+//   margin-top: auto;
+//   margin-bottom: 16px;
+//   color: white;
+//   border: none;
+//   border-bottom: 2px solid white;
+//   background-color: transparent;
+//   font-size: 0.9rem;
+//   font-weight: bold;
+//   &::placeholder {
+//     color: white;
+//     opacity: 0.5;
+//     font-size: 0.7rem;
+//   }
+
+//   &:focus {
+//     outline: none;
+//     border-bottom: 3px solid white;
+//   }
+//   //
+// `;
+
 export const TextInputDiv = styled.div`
-  // display: block;
-  // width: 82.5%;
   width: 80%;
-  // height: 100%;
+  // height: 40px; // Add a fixed height
+  height: 60%; // Add a fixed height
+  display: flex; // Set display to flex
+  align-items: center; // Vertically align the content
   margin-left: 1.3rem;
-  //   padding: 8px;
+  margin-top: auto;
   margin-bottom: 16px;
   color: white;
   border: none;
@@ -181,6 +245,7 @@ export const TextInputDiv = styled.div`
   background-color: transparent;
   font-size: 0.9rem;
   font-weight: bold;
+
   &::placeholder {
     color: white;
     opacity: 0.5;
@@ -191,21 +256,20 @@ export const TextInputDiv = styled.div`
     outline: none;
     border-bottom: 3px solid white;
   }
-  //
 `;
 
-export const DescBlockWrapper = styled.div`
+export const DescBlockWrapper = styled.div<ToggleWrapperProps>`
   display: flex;
   flex-direction: column;
   height: 25%;
-  margin-bottom: 3%;
+  margin-bottom: ${(props) => (props.hideToggle ? "5%" : "3%")};
 `;
 
-export const TagBlockWrapper = styled.div`
+export const TagBlockWrapper = styled.div<ToggleWrapperProps>`
   display: flex;
   flex-direction: column;
-  height: 33%;
-  margin-bottom: 3%;
+  height: 30%;
+  margin-bottom: ${(props) => (props.hideToggle ? "5%" : "3%")};
 `;
 
 export const DescArea = styled.div`
@@ -272,6 +336,16 @@ export const GeminiInfoButton = styled.div`
   color: white;
   display: flex;
   justify-content: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 
-  //
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
 `;
