@@ -112,3 +112,16 @@ export const HairStyleImage = styled.img`
     opacity: 0.5;
   }
 `;
+
+// 성별 이미지 컨테이너
+export const GenderContainer = styled.div`
+  position: relative;
+  width: 46%;
+  height: auto;
+  margin: 2%;
+  border: 1px solid;
+  border-radius: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;

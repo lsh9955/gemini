@@ -3,6 +3,7 @@ import GenreImage from "../../components/ai_image/GenreImage";
 import ColorSelect from "../../components/ai_image/ColorSelect";
 import HairStyle from "../../components/ai_image/HairStyle";
 import Preset from "../../components/ai_image/Preset";
+import Gender from "../../components/ai_image/Gender";
 
 import {
   AiWrapper,
@@ -31,6 +32,7 @@ const AiImage: FC = () => {
     setShowColor(false);
     setShowHairStyle(false);
     setShowPreset(false);
+    setShowGender(false);
     setShowGenreImage(true);
   };
 
@@ -94,6 +96,7 @@ const AiImage: FC = () => {
     setShowGenreImage(false);
     setShowPreset(false);
     setShowHairStyle(false);
+    setShowGender(false);
     setShowColor(true);
     setParentId("hair");
   };
@@ -103,6 +106,7 @@ const AiImage: FC = () => {
     setShowGenreImage(false);
     setShowPreset(false);
     setShowHairStyle(false);
+    setShowGender(false);
     setShowColor(true);
     setParentId("eye");
   };
@@ -122,6 +126,7 @@ const AiImage: FC = () => {
     setShowGenreImage(false);
     setShowColor(false);
     setShowPreset(false);
+    setShowGender(false);
     setShowHairStyle(true);
   };
 
@@ -148,12 +153,33 @@ const AiImage: FC = () => {
     setShowGenreImage(false);
     setShowColor(false);
     setShowHairStyle(false);
+    setShowGender(false);
     setShowPreset(true);
   };
 
-  const handlepreset = (preset: { name: string; koreanName: string }) => {
+  const handlePreset = (preset: { name: string; koreanName: string }) => {
     setPresetKorean(preset.koreanName);
     setPreset(Preset.name);
+  };
+
+  /////////////////////////////////////////////////////////////////////
+
+  const [showGender, setShowGender] = useState(false);
+  const [gender, setGender] = useState("");
+  const [genderKorean, setGenderKorean] = useState("성별을 선택해주세요");
+
+  const handleGenderSelectBoxClick = () => {
+    setShowNoneBox(false);
+    setShowGenreImage(false);
+    setShowColor(false);
+    setShowHairStyle(false);
+    setShowPreset(false);
+    setShowGender(true);
+  };
+
+  const handleGender = (gender: { name: string; koreanName: string }) => {
+    setGenderKorean(gender.koreanName);
+    setGender(gender.name);
   };
 
   return (
@@ -168,6 +194,11 @@ const AiImage: FC = () => {
           <AiSelectTitle>프리셋</AiSelectTitle>
           <GenreSelectBox onClick={handlePresetSelectBoxClick}>
             <p>{presetKorean}</p>
+          </GenreSelectBox>
+
+          <AiSelectTitle>성별</AiSelectTitle>
+          <GenreSelectBox onClick={handleGenderSelectBoxClick}>
+            <p>{genderKorean}</p>
           </GenreSelectBox>
 
           <AiSelectTitle>머리카락 색상</AiSelectTitle>
@@ -195,7 +226,8 @@ const AiImage: FC = () => {
               <ColorSelect parentId={parentId} handleColor={handleColor} />
             )}
             {showHairStyle && <HairStyle handleHairStyle={handleHairStyle} />}
-            {showPreset && <Preset handlePreset={handlepreset} />}
+            {showPreset && <Preset handlePreset={handlePreset} />}
+            {showGender && <Gender handleGender={handleGender} />}
           </AiSampleBox>
         </AiSampleWrapper>
       </AiWrapper>
