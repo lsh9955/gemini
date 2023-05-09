@@ -1,5 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import GenreImage from "../../components/ai_image/GenreImage";
+import ColorSelect from "../../components/ai_image/ColorSelect";
+import HairStyle from "../../components/ai_image/HairStyle";
+
 import {
   AiWrapper,
   AiSelectWrapper,
@@ -11,16 +14,18 @@ import {
 } from "./AiImage.styles";
 
 const AiImage: FC = () => {
+  // 장르 변수(axios할 때 값으로 넘겨줄 수 있음)
+  const [genre, setGenre] = useState("");
+
   // GenreImage 컴포넌트 보이기/숨기기 상태값
   const [showGenreImage, setShowGenreImage] = useState(false);
 
   // GenreSelectBox 클릭 시 GenreImage 컴포넌트 보이게 설정
   const handleGenreSelectBoxClick = () => {
+    setShowColor(false);
     setShowGenreImage(true);
+    setShowHairStyle(false);
   };
-
-  // 장르 변수
-  const [genre, setGenre] = useState("");
 
   const handleGenre = (genre: string) => {
     setGenre(genre);
@@ -42,6 +47,64 @@ const AiImage: FC = () => {
     }
   }, [genre]);
 
+  /////////////////////////////////////////////////////////////////////
+
+  const [parentId, setParentId] = useState("");
+  // 헤어
+  // 헤어컬러 변수(axios할 때 값으로 넘겨줄 수 있음)
+  const [hairColor, setHairColor] = useState("");
+  const [harirColorKorean, setHairColorKorean] =
+    useState("머리카락 색상을 선택해주세요");
+
+  // 눈
+  // 눈동자컬러 변수(axios할 때 값으로 넘겨줄 수 있음)
+  const [eyeColor, setEyeColor] = useState("");
+  const [eyeColorKorean, setEyeColorKorean] =
+    useState("눈동자 색상을 선택해주세요");
+
+  // 자식 컴포에서 보내주는 컬러값을 받을 수 있음
+  const handleColor = (
+    color: { name: string; koreanName: string },
+    parentId: string
+  ) => {
+    if (parentId === "hair") {
+      setHairColor(color.name);
+      setHairColorKorean(color.koreanName);
+      console.log("머리카락 색 전달");
+    } else if (parentId === "eye") {
+      setEyeColor(color.name);
+      setEyeColorKorean(color.koreanName);
+      console.log("눈동자 색 전달");
+    }
+  };
+
+  // 헤어 컬러 컴포넌트 보이기/숨기기 상태값
+  const [showColor, setShowColor] = useState(false);
+
+  // 헤어 컬러 옵션 박스 선택시에 샘플 컬러가 보이게 함
+  const handleHairColorSelectBoxClick = () => {
+    setShowGenreImage(false);
+    setShowColor(true);
+    setShowHairStyle(false);
+    setParentId("hair");
+  };
+
+  const handleEyeColorSelectBoxClick = () => {
+    setShowGenreImage(false);
+    setShowColor(true);
+    setShowHairStyle(false);
+    setParentId("eye");
+  };
+
+  // 헤어 스타일 컴포넌트 보이기/숨기기 상태값
+  const [showHairStyle, setShowHairStyle] = useState(false);
+
+  const handleHairStyleSelectBoxClick = () => {
+    setShowGenreImage(false);
+    setShowColor(false);
+    setShowHairStyle(true);
+  };
+
   return (
     <>
       <AiWrapper>
@@ -50,11 +113,31 @@ const AiImage: FC = () => {
           <GenreSelectBox onClick={handleGenreSelectBoxClick}>
             <p>{selectBoxText}</p>
           </GenreSelectBox>
+
+          <AiSelectTitle>머리카락 색상</AiSelectTitle>
+          <GenreSelectBox onClick={handleHairColorSelectBoxClick}>
+            <p>{harirColorKorean}</p>
+          </GenreSelectBox>
+
+          <AiSelectTitle>눈동자 색상</AiSelectTitle>
+          <GenreSelectBox onClick={handleEyeColorSelectBoxClick}>
+            <p>{eyeColorKorean}</p>
+          </GenreSelectBox>
+
+          <AiSelectTitle>머리 스타일</AiSelectTitle>
+          <GenreSelectBox onClick={handleHairStyleSelectBoxClick}>
+            <p>머리 스타일을 선택해주세요</p>
+          </GenreSelectBox>
         </AiSelectWrapper>
+
         <AiSampleWrapper>
           <AiCreateButton>제미니 생성하기</AiCreateButton>
           <AiSampleBox>
             {showGenreImage && <GenreImage handleGenre={handleGenre} />}
+            {showColor && (
+              <ColorSelect parentId={parentId} handleColor={handleColor} />
+            )}
+            {showHairStyle && <HairStyle />}
           </AiSampleBox>
         </AiSampleWrapper>
       </AiWrapper>
