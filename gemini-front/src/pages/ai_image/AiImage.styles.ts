@@ -7,7 +7,7 @@ export const AiWrapper = styled.div`
   margin-top: 3%;
   margin-left: 15%;
   margin-right: 15%;
-  border: 1px solid;
+  /* border: 1px solid; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -38,7 +38,7 @@ export const AiSampleWrapper = styled.div`
 // 실제 이미지 생성에 필요한 박스
 export const AiSampleBox = styled.div`
   width: 100%;
-  height: 72vh;
+  height: 90%;
   margin-top: 1vh;
   border: 1px solid;
   border-radius: 10px;
@@ -58,7 +58,8 @@ export const AiSelectTitle = styled.p`
   width: 100%;
   height: 5%;
   margin-left: 3%;
-  margin-bottom: 2%;
+  margin-bottom: 1%;
+  padding-top: 2%;
 `;
 
 // 장르 선택할 수 있는 박스
