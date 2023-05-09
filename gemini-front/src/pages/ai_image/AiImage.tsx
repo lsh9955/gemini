@@ -5,8 +5,10 @@ import HairStyle from "../../components/ai_image/HairStyle";
 import Preset from "../../components/ai_image/Preset";
 import Gender from "../../components/ai_image/Gender";
 import Emotion from "../../components/ai_image/Emotion";
+import Costume from "../../components/ai_image/Costume";
 
 import {
+  Background,
   AiWrapper,
   AiSelectWrapper,
   AiSampleWrapper,
@@ -35,6 +37,7 @@ const AiImage: FC = () => {
     setShowPreset(false);
     setShowGender(false);
     setShowEmotion(false);
+    setShowCostume(false);
     setShowGenreImage(true);
   };
 
@@ -100,6 +103,7 @@ const AiImage: FC = () => {
     setShowHairStyle(false);
     setShowGender(false);
     setShowEmotion(false);
+    setShowCostume(false);
     setShowColor(true);
     setParentId("hair");
   };
@@ -111,6 +115,7 @@ const AiImage: FC = () => {
     setShowHairStyle(false);
     setShowGender(false);
     setShowEmotion(false);
+    setShowCostume(false);
     setShowColor(true);
     setParentId("eye");
   };
@@ -132,6 +137,7 @@ const AiImage: FC = () => {
     setShowPreset(false);
     setShowGender(false);
     setShowEmotion(false);
+    setShowCostume(false);
     setShowHairStyle(true);
   };
 
@@ -160,6 +166,7 @@ const AiImage: FC = () => {
     setShowHairStyle(false);
     setShowGender(false);
     setShowEmotion(false);
+    setShowCostume(false);
     setShowPreset(true);
   };
 
@@ -181,6 +188,7 @@ const AiImage: FC = () => {
     setShowHairStyle(false);
     setShowPreset(false);
     setShowEmotion(false);
+    setShowCostume(false);
     setShowGender(true);
   };
 
@@ -202,6 +210,7 @@ const AiImage: FC = () => {
     setShowHairStyle(false);
     setShowPreset(false);
     setShowGender(false);
+    setShowCostume(false);
     setShowEmotion(true);
   };
 
@@ -210,8 +219,30 @@ const AiImage: FC = () => {
     setEmotionKorean(emotion.koreanName);
   };
 
+  /////////////////////////////////////////////////////////////////////
+
+  const [showCostume, setShowCostume] = useState(false);
+  const [costume, setCostume] = useState("");
+  const [costumeKorean, setCostumeKorean] = useState("의상을 선택해주세요");
+
+  const handleCostumeSelectBoxClick = () => {
+    setShowNoneBox(false);
+    setShowGenreImage(false);
+    setShowColor(false);
+    setShowHairStyle(false);
+    setShowPreset(false);
+    setShowGender(false);
+    setShowEmotion(false);
+    setShowCostume(true);
+  };
+
+  const handleCostume = (costume: { name: string; koreanName: string }) => {
+    setCostume(costume.name);
+    setCostumeKorean(costume.koreanName);
+  };
+
   return (
-    <>
+    <Background>
       <AiWrapper>
         <AiSelectWrapper>
           <AiSelectTitle>장르</AiSelectTitle>
@@ -248,6 +279,11 @@ const AiImage: FC = () => {
           <GenreSelectBox onClick={handleEmotionSelectBoxClick}>
             <p>{emotionKorean}</p>
           </GenreSelectBox>
+
+          <AiSelectTitle>의상</AiSelectTitle>
+          <GenreSelectBox onClick={handleCostumeSelectBoxClick}>
+            <p>{costumeKorean}</p>
+          </GenreSelectBox>
         </AiSelectWrapper>
 
         <AiSampleWrapper>
@@ -262,10 +298,11 @@ const AiImage: FC = () => {
             {showPreset && <Preset handlePreset={handlePreset} />}
             {showGender && <Gender handleGender={handleGender} />}
             {showEmotion && <Emotion handleEmotion={handleEmotion} />}
+            {showCostume && <Costume handleCostume={handleCostume} />}
           </AiSampleBox>
         </AiSampleWrapper>
       </AiWrapper>
-    </>
+    </Background>
   );
 };
 

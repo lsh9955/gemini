@@ -125,3 +125,16 @@ export const GenderContainer = styled.div`
     cursor: pointer;
   }
 `;
+
+// 성별 이미지 컨테이너
+export const CostumeContainer = styled.div`
+  position: relative;
+  width: 30%;
+  height: auto;
+  margin: 1.5%;
+  border: 1px solid;
+  border-radius: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
