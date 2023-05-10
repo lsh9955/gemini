@@ -30,7 +30,15 @@ import {
   LinkImg,
 } from "./MyGeminiDetail.styles";
 
-const MyGeminiDetail: FC = () => {
+interface MyGeminiDetailProps {
+  closeModal: () => void;
+  selectedImagePk: number | null;
+}
+
+const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
+  closeModal,
+  selectedImagePk,
+}) => {
   const [isOn, setIsOn] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
@@ -103,15 +111,6 @@ const MyGeminiDetail: FC = () => {
           <TagBlockWrapper>
             <FormLabel>키워드</FormLabel>
             <TagArea>
-              {/* <Tags>화이팅</Tags>
-              <Tags>좀만 더 힘내자</Tags>
-              <Tags>조금 더 다듬어봤다.</Tags>
-              <Tags>이거 기반으로 세쌍둥이 컴포넌트 ㄱㄱ</Tags>
-              <Tags>태그가</Tags>
-              <Tags>스크롤바 넣고 hidden으로 숨김</Tags>
-              <Tags>레이아웃 무너집니까?</Tags>
-              <Tags>레이아웃 무너집니까?</Tags>
-              <Tags>응 예외처리하세요</Tags> */}
               {tagContents.map((tag, index) => (
                 <Tags key={index}>{tag}</Tags>
               ))}

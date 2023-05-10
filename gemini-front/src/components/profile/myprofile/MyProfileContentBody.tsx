@@ -7,24 +7,41 @@ import {
 } from "./MyProfileContentBody.styles";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+// interface ImageProps {
+//   imageUrl: string;
+// }
 interface ImageProps {
   imageUrl: string;
+  pk: number;
+  onClick: () => void;
 }
 
-const Image: FC<ImageProps> = ({ imageUrl }) => {
-  return <ImageWrapper style={{ backgroundImage: `url(${imageUrl})` }} />;
+// const Image: FC<ImageProps> = ({ imageUrl }) => {
+//   return <ImageWrapper style={{ backgroundImage: `url(${imageUrl})` }} />;
+// };
+const Image: FC<ImageProps> = ({ imageUrl, pk, onClick }) => {
+  return (
+    <ImageWrapper
+      style={{ backgroundImage: `url(${imageUrl})` }}
+      onClick={onClick}
+    />
+  );
 };
 
 interface MyProfileContentBodyProps {
-  images: string[];
+  images: { url: string; pk: number }[];
   hasMore: boolean;
   loadMoreImages: () => void;
+
+  // for modal 😀
+  onImageClick: (pk: number) => void;
 }
 
 const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
   images,
   hasMore,
   loadMoreImages,
+  onImageClick,
 }) => {
   return (
     // <InfiniteScrollWrapper>
@@ -41,8 +58,14 @@ const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
       }
     >
       <StyledMyProfileContentBody>
-        {images.map((imageUrl, index) => (
-          <Image key={index} imageUrl={imageUrl} />
+        {images.map((image, index) => (
+          <Image
+            key={index}
+            // imageUrl={imageUrl}
+            imageUrl={image.url}
+            pk={image.pk} // 이미지 객체에 pk가 포함되어 있다고 가정합니다.
+            onClick={() => onImageClick(image.pk)}
+          />
         ))}
       </StyledMyProfileContentBody>
     </InfiniteScroll>
