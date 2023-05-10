@@ -17,20 +17,21 @@ type Alarm = {
 
 interface Props {
   onClose: () => void;
-  initialAlarmList: Alarm[];
+  alarmList: Alarm[];
 }
 
-const AlarmModal: React.FC<Props> = ({ onClose, initialAlarmList }) => {
-  const [alarmList, setAlarmList] = useState(initialAlarmList);
+const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
+  // const alarmList;
 
-  const updateAlarmList = (newAlarm: Alarm) => {
-    // 알림 id가 이미 리스트에 존재하는 경우에는 업데이트를 하지 않습니다.
-    if (alarmList.some((alarm) => alarm.alarmId === newAlarm.alarmId)) {
-      return;
-    } else {
-      setAlarmList((prevAlarmList) => [...prevAlarmList, newAlarm]);
-    }
-  };
+  // const updateAlarmList = (newAlarm: Alarm) => {
+  //   // 알림 id가 이미 리스트에 존재하는 경우에는 업데이트를 하지 않습니다.
+  //   if (initialAlarmList.find((alarm) => alarm.alarmId === newAlarm.alarmId)) {
+  //     return;
+  //   } else {
+  //     setAlarmList((prevAlarmList) => [...prevAlarmList, newAlarm]);
+  //   }
+  // };
+  // console.log(alarmList);
   console.log(alarmList);
 
   return (

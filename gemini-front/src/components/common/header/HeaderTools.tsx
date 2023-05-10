@@ -64,7 +64,7 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
           onClick={showNotificationModalHandler}
         ></StyledNotification>
         {showAlarmModal && (
-          <AlarmModal initialAlarmList={alarmList} onClose={closeAlarmModal} />
+          <AlarmModal alarmList={alarmList} onClose={closeAlarmModal} />
         )}
 
         {/* {showProfileModal && <AlarmModal onClose={closeProfileModal} />} */}
