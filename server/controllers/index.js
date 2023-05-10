@@ -48,7 +48,8 @@ exports.createRoom = async (req, res, next) => {
     //const io = req.app.get("io");
     // io.emit("newRoom", newRoom);
 
-    res.redirect(`http://localhost:3000/room/${newRoom._id}`);
+    //res.redirect(`http://localhost:3000/room/${newRoom._id}`);
+    res.redirect(`https://mygemini.co.kr/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
     next(error);
@@ -61,7 +62,10 @@ exports.enterRoom = async (req, res, next) => {
     //비밀번호 방인 경우
     if (willupdateRoom.password) {
     } else {
-      await Room.updateOne({ _id: req.params.id }, { $set: { usernum: willupdateRoom.usernum + 1 } });
+      await Room.updateOne(
+        { _id: req.params.id },
+        { $set: { usernum: willupdateRoom.usernum + 1 } }
+      );
     }
   } catch (error) {
     console.error(error);

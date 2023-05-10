@@ -81,7 +81,8 @@ module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, {
     path: "/socket.io",
     cors: {
-      origin: "http://localhost:3000",
+      //origin: "http://localhost:3000",
+      origin: "https://mygemini.co.kr",
     },
     transports: ["websocket"],
   });
