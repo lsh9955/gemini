@@ -32,7 +32,33 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
   //   }
   // };
   // console.log(alarmList);
-  console.log(alarmList);
+  // console.log(alarmList);
+  const alarmMesseges = [
+    {
+      id: 1,
+      content: "Alarm1",
+    },
+    {
+      id: 2,
+      content: "Alarm2",
+    },
+    {
+      id: 3,
+      content: "Alarm3",
+    },
+    {
+      id: 4,
+      content: "Alarm4",
+    },
+    {
+      id: 5,
+      content: "Alarm5",
+    },
+    {
+      id: 6,
+      content: "Alarm6",
+    },
+  ];
 
   return (
     <>
@@ -40,19 +66,18 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         <div aria-hidden onClick={(e) => e.stopPropagation()}>
           <ModalContainer>
             <AlarmTitle>알림</AlarmTitle>
-
             <AlarmContentWrapper
               style={{
                 maxHeight: "25vh",
                 overflowY: alarmList.length >= 6 ? "auto" : "visible",
               }}
             >
-              {alarmList.length === 0 ? (
+              {alarmMesseges.length === 0 ? (
                 <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
               ) : (
-                alarmList.map((alarm, idx) => (
-                  <AlarmContent key={idx} idx={idx}>
-                    {alarm.memo}
+                alarmMesseges.map((alarm, idx) => (
+                  <AlarmContent key={alarm.id} idx={alarm.id}>
+                    {alarm.content}
                   </AlarmContent>
                 ))
               )}

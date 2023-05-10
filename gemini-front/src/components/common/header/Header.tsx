@@ -14,45 +14,54 @@ type Alarm = {
 const Header: FC = () => {
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
 
-  useEffect(() => {
-    // const xhr = new XMLHttpRequest();
-    // xhr.open("GET", "http://192.168.31.221:8081/alarms");
-    // xhr.setRequestHeader("nickname", "yeji");
-    // xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
-    // xhr.withCredentials = true;
-    // xhr.send();
+  // useEffect(() => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open("GET", "http://192.168.31.221:8081/alarms");
+  //   xhr.setRequestHeader("nickname", "yeji");
+  //   xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
+  //   xhr.withCredentials = true;
+  //   xhr.send();
 
-    // 나중에 이렇게 보낼거임
-    // xhr.setRequestHeader("X-Access-Token", "your-access-token");
-    // xhr.setRequestHeader("X-Nickname", "your-nickname");
+  //   // 나중에 이렇게 보낼거임
+  //   // xhr.setRequestHeader("X-Access-Token", "your-access-token");
+  //   // xhr.setRequestHeader("X-Nickname", "your-nickname");
 
-    const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
-    const eventSource = new EventSource(url, {
-      withCredentials: true,
-    });
+  //   const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
+  //   const eventSource = new EventSource(url, {
+  //     withCredentials: true,
+  //   });
 
-    eventSource.onmessage = async (event) => {
-      const alarm = await JSON.parse(event.data);
-      console.log(alarm);
-      setAlarmList((prv: any) => [...prv, alarm]);
-    };
-    axios
-      .get(url, {
-        responseType: "stream",
-        withCredentials: true,
-        headers: {
-          "Content-Type": "text/event-stream",
-          Accept: "text/event-stream",
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  });
-  console.log(alarmList);
+  //   eventSource.onmessage = async (event) => {
+  //     const alarm = await JSON.parse(event.data);
+  //     setAlarmList((prev: any) => [...prev, alarm]);
+  //     // console.log(alarm);
+  //     // let newAlarm = [...alarmList, alarm];
+  //     // newAlarm.map((v: any) => {
+  //     //   return JSON.stringify(v);
+  //     // });
+  //     // newAlarm = Array.from(new Set(newAlarm.slice()));
+  //     // newAlarm.map((v: any) => {
+  //     //   return JSON.parse(v);
+  //     // });
+  //     // setAlarmList(newAlarm);
+  //   };
+  //   axios
+  //     .get(url, {
+  //       responseType: "stream",
+  //       withCredentials: true,
+  //       headers: {
+  //         "Content-Type": "text/event-stream",
+  //         Accept: "text/event-stream",
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // setAlarmList((prv: any) => [...prv, response]);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // });
+  // console.log(alarmList);
   //     const nowAlarm = alarmList.slice();
   //     nowAlarm.map((v: any) => {
   //       return JSON.stringify(v);

@@ -19,18 +19,44 @@ export const Overlay = styled.div`
 
 export const ModalContainer = styled.div`
   position: fixed;
-  top: 30%;
+  top: 0;
   left: 76%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   width: 20%;
   z-index: 1000;
   border-radius: 10px;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  top: auto;
+  max-height: 40vh; /* AlarmContentWrapper의 최대 높이 */
+  overflow-y: auto; /* 내용이 AlarmContentWrapper 크기를 초과할 경우 스크롤바 생성 */
+
+  /* 커스텀 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #e7ebef;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #ffffff;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 `;
 
-export const AlarmTitle = styled.div``;
+export const AlarmTitle = styled.div`
+  border-bottom: #efebf0 solid 1px;
+  text-align: center;
+  font-size: 20px;
+  padding: 0.5rem;
+`;
 
 export const AlarmContent = styled.div<AlarmContentProps>`
   text-align: center;
@@ -40,8 +66,6 @@ export const AlarmContent = styled.div<AlarmContentProps>`
 `;
 
 export const AlarmContentWrapper = styled.div`
-  flex: 1;
-  overflow-y: auto;
   border-radius: 10px;
 `;
 
