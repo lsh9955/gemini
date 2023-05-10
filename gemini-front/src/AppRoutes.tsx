@@ -19,7 +19,7 @@ import GameRoom from "./components/trpg/game/GameRoom";
 
 import io, { Socket } from "socket.io-client";
 //socket 연결
-const chatSocket = io("http://localhost:5000", {
+const chatSocket = io("http://localhost:5000/socket", {
   transports: ["websocket"],
 });
 
