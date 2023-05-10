@@ -27,6 +27,9 @@ import axios from "axios";
 import { getInfScrollImgLength } from "./UserProfile";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { async } from "q";
+import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
+import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
+import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -63,17 +66,19 @@ const MyProfile: FC = () => {
 
   // for infinite scroll 😀
   const dummyImgs = [
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
+    { url: "http://placeimg.com/150/200/tech", pk: 1 },
+    { url: "http://placeimg.com/150/200/tech", pk: 2 },
+    { url: "http://placeimg.com/150/200/tech", pk: 3 },
+    { url: "http://placeimg.com/150/200/tech", pk: 4 },
+    { url: "http://placeimg.com/150/200/tech", pk: 5 },
+    // ...
   ];
-  const [images, setImages] = useState<string[]>([...dummyImgs]);
+  interface ImageData {
+    url: string;
+    pk: number;
+  }
+
+  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const infScrollImgLength = getInfScrollImgLength(images.length);
@@ -109,6 +114,19 @@ const MyProfile: FC = () => {
   }, [loadMoreImages]);
   // for infinite scroll 😀
 
+  // for Modal component 😀
+  const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleImageClick = (pk: number) => {
+    setSelectedImagePk(pk);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  // for Modal component 😀
   return (
     <>
       <MyProfileWrapper minHeight={minHeight}>
@@ -159,7 +177,17 @@ const MyProfile: FC = () => {
               images={images}
               hasMore={hasMore}
               loadMoreImages={loadMoreImages}
+              onImageClick={handleImageClick} // 이 부분을 추가하세요.
             />
+            {isModalOpen && (
+              <>
+                <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
+                <MyGeminiDetail
+                  closeModal={closeModal}
+                  selectedImagePk={selectedImagePk}
+                />
+              </>
+            )}
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>

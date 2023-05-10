@@ -1,15 +1,30 @@
 import styled from "styled-components";
 
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999; // GeminiDetialWrapper의 z-index보다 낮게 설정하세요.
+`;
+
 // GeminiDetialWrapper 😶 배경 수정할수도 있음.
 export const GeminiDetialWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; // 이 값을 더 높게 설정하세요.
+
   aspect-ratio: 3 / 2;
   width: 50vw;
-  position: relative;
-  z-index: 10;
   display: flex;
   background-color: #00000099;
 
-  // &::after {
+  // 백드롭 스타일 추가
+  // &::before {
   //   content: "";
   //   position: fixed;
   //   top: 0;
@@ -17,7 +32,7 @@ export const GeminiDetialWrapper = styled.div`
   //   right: 0;
   //   bottom: 0;
   //   background-color: rgba(0, 0, 0, 0.5);
-  //   z-index: -1;
+  //   z-index: 1;
   // }
 `;
 
