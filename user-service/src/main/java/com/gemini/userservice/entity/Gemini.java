@@ -28,6 +28,7 @@ public class Gemini {
     @Column(name = "description", nullable = false)
     private String description;
 
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
