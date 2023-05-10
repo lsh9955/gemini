@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Message from "../../../assets/img/Message.png";
 import Notification from "../../../assets/img/Notification.png";
+import Adol1by1Dummy from "../../../assets/img/Adol1by1Dummy.png";
 import {
   StyledHeaderTools,
   StyledProfileImage,
@@ -9,6 +10,7 @@ import {
   StyledMessage,
 } from "./HeaderTools.styles";
 import AlarmModal from "../alarm/AlarmModal";
+import ProfileModal from "./profileImage/ProfileModal";
 
 type Alarm = {
   alarmId: number;
@@ -27,10 +29,12 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
   const showProfileModalHandler = () => {
+    setShowAlarmModal(false);
     setShowProfileModal((prevState) => !prevState);
   };
 
   const showMessageModalHandler = () => {
+    setShowProfileModal(false);
     setShowAlarmModal((prevState) => !prevState);
   };
 
@@ -50,6 +54,7 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
     <>
       <StyledHeaderTools>
         <StyledProfileImage
+          src={Adol1by1Dummy}
           alt="ProfileImage"
           onClick={showProfileModalHandler}
         ></StyledProfileImage>
@@ -66,6 +71,7 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
         {showAlarmModal && (
           <AlarmModal alarmList={alarmList} onClose={closeAlarmModal} />
         )}
+        {showProfileModal && <ProfileModal onClose={closeProfileModal} />}
 
         {/* {showProfileModal && <AlarmModal onClose={closeProfileModal} />} */}
       </StyledHeaderTools>
