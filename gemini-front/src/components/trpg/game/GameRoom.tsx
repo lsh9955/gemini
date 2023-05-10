@@ -41,7 +41,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://localhost:5000/room");
+        const getRoomInfo = await axios.get("http://localhost:5000/node/room");
         const nowURL = new URL(window.location.href).pathname.split("/").at(-1);
 
         setUserList(

@@ -13,7 +13,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [rooms, setRooms] = useState<string[]>([]);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get("http://localhost:5000/room");
+      const getRoomInfo = await axios.get("http://localhost:5000/node/room");
       setRooms(
         getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
@@ -26,13 +26,13 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://localhost:5000/room");
+        const getRoomInfo = await axios.get("http://localhost:5000/node/room");
         setRooms(
           getRoomInfo.data.room.map((v: any, i: any) => {
             return JSON.stringify(v);
           })
         );
-      }
+      };
       res();
     });
 
