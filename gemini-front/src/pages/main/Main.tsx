@@ -1,7 +1,14 @@
 // import LoginInput from '../../Components/Auth/LoginInput';
 // import GoBackPage from '../../Components/Menu/goBackPage';
 // import { Head, BannerLine, Title } from '../../styles/Menu/NavStyle';
-import React, { FC, useEffect } from "react";
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useRef,
+  forwardRef,
+  MutableRefObject,
+} from "react";
 import { useHistory } from "react-router-dom";
 import {
   LeftComponent,
@@ -11,9 +18,12 @@ import {
 } from "./Main.styles";
 import AnimatedArrow from "../../components/main/AnimatedArrow";
 import Gallery from "../../components/main/Gallery";
+import { useStore } from "react-redux";
 
-const Main: FC = () => {
+const Main: React.FC = () => {
   const history = useHistory();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const accessToken = window.localStorage.getItem("accessToken");
   console.log(`accessToken:${accessToken}`);
 
@@ -23,19 +33,36 @@ const Main: FC = () => {
       history.push("/loginPage");
     }
   }, []);
+  const hoverMessage = [
+    `AI로 나만의\n 캐릭터 만들기`,
+    "나만의 캐릭터로\nTRPG하러가기",
+  ];
+
+  const scroll = (targetRef: any) => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
+      <MiddleBox
+        onClick={() => {
+          scroll(scrollRef);
+        }}
+      >
+        <AnimatedArrow />
+      </MiddleBox>
       <MainWrapper>
-        <LeftComponent to="/aiImage"></LeftComponent>
+        <LeftComponent to="/aiImage">
+          <div>{hoverMessage[0]}</div>
+        </LeftComponent>
         <RightComponent to="/">
-          <AnimatedArrow></AnimatedArrow>
+          <div>{hoverMessage[1]}</div>
         </RightComponent>
       </MainWrapper>
-      <MiddleBox>
-        <AnimatedArrow></AnimatedArrow>
-      </MiddleBox>
-      <Gallery></Gallery>
+
+      <Gallery ref={scrollRef} />
     </>
   );
 };
