@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
 import {
@@ -6,7 +6,7 @@ import {
   StyledAnimatedArrow,
 } from "./AnimatedArrow.styles";
 
-const AnimatedArrow: FC = () => {
+const AnimatedArrow = () => {
   return (
     <>
       <StyledArrowWrapper>
