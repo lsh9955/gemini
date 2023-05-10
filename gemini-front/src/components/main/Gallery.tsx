@@ -1,13 +1,31 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  MutableRefObject,
+  forwardRef,
+} from "react";
 import axios from "axios";
-import { GalleryWrapper, GalleryItem, GalleryTitle } from "./Gallery.styles";
+import {
+  GalleryWrapper,
+  GalleryItem,
+  GalleryTitle,
+  GalleryTitleName,
+  EmptyBlock,
+  GalleryWrap,
+  ContentWrap,
+  ImgWrap,
+} from "./Gallery.styles";
 
 interface Image {
   galleryNo: number;
   imageUrl: string;
 }
+interface GalleryProps {
+  // 다른 속성들...
+  ref: MutableRefObject<any>;
+}
 
-const Gallery: FC = () => {
+const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   const [page, setPage] = useState<number>(0);
   const GALLERY_PAGE_SIZE = 5;
   const [images, setImages] = useState<Image[]>([]);
@@ -15,6 +33,12 @@ const Gallery: FC = () => {
   const headers = {
     "X-Username": "gemini",
   };
+  //임시 이미지 요소들(나중에 제거할 것)
+  const imgArr = [
+    "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/pic3.png?alt=media&token=e7075843-674e-4c06-94c8-0db5052cdfbc",
+    "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/pic2.png?alt=media&token=33b1f0ea-4e7d-4519-8064-33b1dfc4b2e5",
+    "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/pic1.png?alt=media&token=f619b034-5f69-42cb-904f-c3c2304e8556",
+  ];
 
   // 전체 이미지 불러오기
   useEffect(() => {
@@ -82,17 +106,52 @@ const Gallery: FC = () => {
   }, []);
 
   return (
-    <>
-      <GalleryTitle>전체 둘러보기 {totalGallery}개의 이미지</GalleryTitle>
-      <GalleryWrapper>
+    <GalleryWrap>
+      {/* <GalleryTitle ref={ref}>
+        전체 둘러보기 {totalGallery}개의 이미지
+      </GalleryTitle> */}
+      <ContentWrap>
+        <GalleryTitleName ref={ref}>주간 TOP 5</GalleryTitleName>
+        <ImgWrap>
+          {Array(5)
+            .fill("")
+            .map(() => {
+              return (
+                <img src={imgArr[Math.floor(Math.random() * 3)]} alt="이미지" />
+              );
+            })}
+        </ImgWrap>
+        <GalleryTitleName>월간 TOP 5</GalleryTitleName>
+        <ImgWrap>
+          {Array(5)
+            .fill("")
+            .map(() => {
+              return (
+                <img src={imgArr[Math.floor(Math.random() * 3)]} alt="이미지" />
+              );
+            })}
+        </ImgWrap>
+        <GalleryTitleName>전체 둘러보기 120개의 이미지</GalleryTitleName>
+        <ImgWrap>
+          {Array(5)
+            .fill("")
+            .map(() => {
+              return (
+                <img src={imgArr[Math.floor(Math.random() * 3)]} alt="이미지" />
+              );
+            })}
+        </ImgWrap>
+        {/* <GalleryWrapper>
         {images.map((image: Image) => (
           <div key={image.galleryNo}>
             <GalleryItem src={image.imageUrl} />
           </div>
         ))}
-      </GalleryWrapper>
-    </>
+      </GalleryWrapper> */}
+        <EmptyBlock></EmptyBlock>
+      </ContentWrap>
+    </GalleryWrap>
   );
-};
+});
 
 export default Gallery;
