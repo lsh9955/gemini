@@ -3,6 +3,7 @@ const Chat = require("../schemas/chat");
 const { removeRoom: removeRoomService } = require("../services");
 const redis = require("redis");
 const bcrypt = require("bcrypt");
+const BASE_URL = require("../urlconfig");
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
@@ -48,7 +49,7 @@ exports.createRoom = async (req, res, next) => {
     //const io = req.app.get("io");
     // io.emit("newRoom", newRoom);
 
-    res.redirect(`http://mygemini.co.kr/room/${newRoom._id}`);
+    res.redirect(`${BASE_URL}/room/${newRoom._id}`);
     // res.redirect(`https://mygemini.co.kr/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);

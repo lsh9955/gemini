@@ -20,13 +20,13 @@ const redisClient = redis.createClient({
 const webSocket = require("./socket");
 
 const connect = require("./schemas");
-
+const BASE_URL = require("./urlconfig");
 const app = express();
 const http = require("http").Server(app);
 const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
-  origin: "http://mygemini.co.kr",
+  origin: `${BASE_URL}`,
   // origin: "https://mygemini.co.kr",
   credentials: true,
 };

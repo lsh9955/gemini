@@ -3,6 +3,7 @@ const { removeRoom } = require("./services");
 const Room = require("./schemas/room");
 const Chat = require("./schemas/chat");
 const cors = require("cors");
+const BASE_URL = require("./urlconfig");
 const redis = require("redis");
 const client = redis.createClient({
   url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/0`,
@@ -81,7 +82,7 @@ module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, {
     path: "/socket",
     cors: {
-      origin: "http://mygemini.co.kr",
+      origin: `${BASE_URL}`,
     },
     transports: ["websocket", "polling"],
     allowEIO3: true,
