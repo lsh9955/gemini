@@ -26,6 +26,7 @@ import MyProfileContentBody from "../../components/profile/myprofile/MyProfileCo
 import axios from "axios";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { async } from "q";
+import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
 
 type UserProfileParams = {
   nickname: string;
@@ -65,23 +66,21 @@ const UserProfile: FC = () => {
   }, []);
 
   // for infinite scroll 😀
-  const dummyImgs = [
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-  ];
 
-  const [images, setImages] = useState<string[]>([...dummyImgs]);
+  const dummyImgs = [
+    { url: "http://placeimg.com/150/200/tech", pk: 1 },
+    { url: "http://placeimg.com/150/200/tech", pk: 2 },
+    { url: "http://placeimg.com/150/200/tech", pk: 3 },
+    { url: "http://placeimg.com/150/200/tech", pk: 4 },
+    { url: "http://placeimg.com/150/200/tech", pk: 5 },
+    // ...
+  ];
+  interface ImageData {
+    url: string;
+    pk: number;
+  }
+
+  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
@@ -117,6 +116,20 @@ const UserProfile: FC = () => {
     loadMoreImages();
   }, [loadMoreImages]);
   // for infinite scroll 😀
+
+  // for model component 😉
+  const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleImageClick = (pk: number) => {
+    setSelectedImagePk(pk);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  // for model component 😉
 
   return (
     <>
@@ -165,10 +178,17 @@ const UserProfile: FC = () => {
               images={images}
               hasMore={hasMore}
               loadMoreImages={loadMoreImages}
+              onImageClick={handleImageClick} // 이 부분을 추가하세요.
             />
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>
+      {isModalOpen && (
+        <UserGeminiDetail
+          closeModal={closeModal}
+          selectedImagePk={selectedImagePk}
+        />
+      )}
     </>
   );
 };

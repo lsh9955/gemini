@@ -27,15 +27,23 @@ import {
   ToggleWrapper,
 } from "./UserGeminiDetail.styles";
 import { LinkImg } from "./MyGeminiDetail.styles";
-// import * as LottiePlayer from "@lottiefiles/lottie-player";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
 import { FiHeart } from "react-icons/fi";
 import { AiFillHeart } from "react-icons/ai";
 import { FaHeart } from "react-icons/fa";
 import HeartAnimation from "../../assets/animation-effect/HeartAnimation.json";
 import { useHistory } from "react-router";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
-const UserGeminiDetail: FC = () => {
+interface UserGeminiDetailProps {
+  closeModal: () => void;
+  selectedImagePk: number | null;
+}
+
+const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
+  closeModal,
+  selectedImagePk,
+}) => {
   const history = useHistory();
   const [isOn, setIsOn] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
@@ -64,7 +72,8 @@ const UserGeminiDetail: FC = () => {
   };
 
   useEffect(() => {
-    const fetchTags = async () => {
+    const fetchGeminiInfo = async () => {
+      const res = axiosInstanceWithAccessToken.get(`/user-service/gallery/{}`); // 수정 필요😀
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
       // setTagContents(data.tags); // Set the state with the fetched tags
@@ -72,6 +81,7 @@ const UserGeminiDetail: FC = () => {
       // setGeminiImg(data.imgUrl)
     };
     // setTagContents(res); // 이걸 바탕으로..
+    fetchGeminiInfo();
   }, []);
 
   // ❤ 하트 세번째시도

@@ -2,10 +2,14 @@ import styled from "styled-components";
 
 // GeminiDetialWrapper 😶 배경 수정할수도 있음.
 export const GeminiDetialWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; // 이 값을 더 높게 설정하세요.
+
   aspect-ratio: 3 / 2;
   width: 50vw;
-  position: relative;
-  z-index: 10;
   display: flex;
   background-color: #00000099;
 
