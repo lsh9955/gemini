@@ -8,12 +8,14 @@ import {
   RoomUserNum,
   RoomWrap,
 } from "./RoomListStyle";
+import CreateRoomModal from "./CreateRoomModal";
 
 const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [rooms, setRooms] = useState<string[]>([]);
+  const [modal, setModal] = useState<boolean>(false);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get("http://localhost:5000/node/room");
+      const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
       setRooms(
         getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
@@ -23,10 +25,10 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     res();
   }, []);
   useEffect(() => {
-    chatSocket.on("allroomchange", (data: any) => {
+    chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://localhost:5000/node/room");
+        const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
         setRooms(
           getRoomInfo.data.room.map((v: any, i: any) => {
             return JSON.stringify(v);
@@ -37,16 +39,26 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     });
 
     return () => {
-      chatSocket.off("allroomchange");
+      chatSocket?.off("allroomchange");
     };
   }, []);
+  const closeModal = () => {
+    setModal(false);
+  };
 
   //비밀번호가 필요한 경우 추가할 것
 
   return (
     <RoomListWrap>
       <h1>TRPG</h1>
-      <a href="/test">방 생성하기</a>
+      <button
+        onClick={() => {
+          setModal(!modal);
+        }}
+      >
+        방 생성하기
+      </button>
+      <CreateRoomModal modal={modal} closeModal={closeModal} />
       <div>
         {rooms.map((v: any, i) => {
           return (

@@ -14,16 +14,11 @@ import MyGeminiDetail from "./components/geminiDetail/MyGeminiDetail";
 import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
 import RoomList from "./components/trpg/roomList/RoomList";
-import CreateRoomModal from "./components/trpg/roomList/CreateRoomModal";
 import GameRoom from "./components/trpg/game/GameRoom";
 
-import io, { Socket } from "socket.io-client";
-//socket 연결
-const chatSocket = io("http://localhost:5000/socket", {
-  transports: ["websocket"],
-});
+import { Socket } from "socket.io-client";
 
-const AppRoutes: React.FC = () => {
+const AppRoutes = ({ chatSocket }: { chatSocket: Socket }) => {
   const location = useLocation();
   const pathsWithoutHeader = [
     "/loginPage",
@@ -54,7 +49,6 @@ const AppRoutes: React.FC = () => {
           exact
           render={() => <RoomList chatSocket={chatSocket} />}
         />
-        <Route path="/test" exact render={() => <CreateRoomModal />} />
         <Route
           path="/room/:id"
           render={() => <GameRoom chatSocket={chatSocket} />}
