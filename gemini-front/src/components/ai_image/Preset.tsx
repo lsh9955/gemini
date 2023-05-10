@@ -1,9 +1,5 @@
 import React, { FC } from "react";
-import {
-  HairStyleBox,
-  HairContainer,
-  HairStyleImage,
-} from "./AiSampleImage.styles";
+import { PresetBox, PresetContainer, PresetImage } from "./Preset.style";
 
 import Ari from "../../assets/img/ai/preset/Ari.png";
 import Elric from "../../assets/img/ai/preset/Elric.png";
@@ -59,16 +55,16 @@ const Preset: FC<Props> = ({ handlePreset }) => {
   };
   return (
     <>
-      <HairStyleBox>
+      <PresetBox>
         {presets.map((preset) => (
-          <HairContainer
+          <PresetContainer
             key={preset.name}
             onClick={() => handlePresetClick(preset)}
           >
-            <HairStyleImage src={preset.image} alt={preset.name} />
-          </HairContainer>
+            <PresetImage src={preset.image} alt={preset.name} />
+          </PresetContainer>
         ))}
-      </HairStyleBox>
+      </PresetBox>
     </>
   );
 };

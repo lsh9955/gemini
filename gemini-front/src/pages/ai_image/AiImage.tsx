@@ -288,6 +288,7 @@ const AiImage: FC = () => {
 
         <AiSampleWrapper>
           <AiCreateButton>제미니 생성하기</AiCreateButton>
+
           <AiSampleBox>
             {showNoneBox && <NoneSampleBox />}
             {showGenreImage && <GenreImage handleGenre={handleGenre} />}

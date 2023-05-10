@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   HairStyleBox,
-  HairContainer,
+  HairStyleContainer,
   HairStyleImage,
-} from "./AiSampleImage.styles";
+} from "./HairStyle.style";
 
 import LongCur from "../../assets/img/ai/hair/LongCur.png";
 import LongLowTwintail from "../../assets/img/ai/hair/LongLowTwintail.png";
@@ -107,6 +107,7 @@ interface Props {
 }
 
 const HairStyle: FC<Props> = ({ handleHairStyle }) => {
+  const [clickHairStyle, setClickHairStyle] = useState<string>("");
   const handleHairStyleClick = (hairStyle: HairStyle) => {
     handleHairStyle({
       name: hairStyle.name,
@@ -114,17 +115,19 @@ const HairStyle: FC<Props> = ({ handleHairStyle }) => {
       hairlength: hairStyle.hairlength,
       hairstyle: hairStyle.hairstyle,
     });
+    setClickHairStyle(hairStyle.name);
   };
+
   return (
     <>
       <HairStyleBox>
         {hairStyles.map((hairStyle) => (
-          <HairContainer
+          <HairStyleContainer
             key={hairStyle.name}
             onClick={() => handleHairStyleClick(hairStyle)}
           >
             <HairStyleImage src={hairStyle.image} alt={hairStyle.name} />
-          </HairContainer>
+          </HairStyleContainer>
         ))}
       </HairStyleBox>
     </>

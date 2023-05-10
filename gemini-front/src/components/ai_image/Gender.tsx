@@ -1,9 +1,5 @@
 import React, { FC } from "react";
-import {
-  HairStyleBox,
-  GenderContainer,
-  HairStyleImage,
-} from "./AiSampleImage.styles";
+import { GenderBox, GenderContainer, GenderImage } from "./Gender.style";
 
 import Female from "../../assets/img/ai/gender/Female.png";
 import Male from "../../assets/img/ai/gender/Male.png";
@@ -37,16 +33,16 @@ const Gender: FC<Props> = ({ handleGender }) => {
   };
   return (
     <>
-      <HairStyleBox>
+      <GenderBox>
         {genders.map((gender) => (
           <GenderContainer
             key={gender.name}
             onClick={() => handleGenderClick(gender)}
           >
-            <HairStyleImage src={gender.image} alt={gender.name} />
+            <GenderImage src={gender.image} alt={gender.name} />
           </GenderContainer>
         ))}
-      </HairStyleBox>
+      </GenderBox>
     </>
   );
 };

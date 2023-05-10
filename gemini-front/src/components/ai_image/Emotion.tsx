@@ -1,9 +1,5 @@
 import React, { FC } from "react";
-import {
-  HairStyleBox,
-  HairContainer,
-  HairStyleImage,
-} from "./AiSampleImage.styles";
+import { EmotionBox, EmotionContainer, EmotionImage } from "./Emotion.styles";
 
 import AngryFace from "../../assets/img/ai/emotion/AngryFace.png";
 import BrightSmileFace from "../../assets/img/ai/emotion/BrightSmileFace.png";
@@ -87,16 +83,16 @@ const Emotion: FC<Props> = ({ handleEmotion }) => {
   };
   return (
     <>
-      <HairStyleBox>
+      <EmotionBox>
         {emotions.map((emotion) => (
-          <HairContainer
+          <EmotionContainer
             key={emotion.name}
             onClick={() => handleEmotionClick(emotion)}
           >
-            <HairStyleImage src={emotion.image} alt={emotion.name} />
-          </HairContainer>
+            <EmotionImage src={emotion.image} alt={emotion.name} />
+          </EmotionContainer>
         ))}
-      </HairStyleBox>
+      </EmotionBox>
     </>
   );
 };

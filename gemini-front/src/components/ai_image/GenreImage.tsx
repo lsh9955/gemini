@@ -3,7 +3,7 @@ import {
   GenreSampleImageBox,
   GenreSampleImage,
   GenreSampleImageLock,
-} from "./AiSampleImage.styles";
+} from "./GenreImage.style";
 import BoyManga from "../../assets/img/ai/BoyManga.png";
 import GameGraphic from "../../assets/img/ai/GameGraphic.png";
 import Illustration from "../../assets/img/ai/Illustration.png";

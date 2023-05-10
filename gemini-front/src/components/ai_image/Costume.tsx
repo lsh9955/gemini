@@ -1,9 +1,5 @@
 import React, { FC } from "react";
-import {
-  HairStyleBox,
-  CostumeContainer,
-  HairStyleImage,
-} from "./AiSampleImage.styles";
+import { CostumeBox, CostumeContainer, CostumeImage } from "./Costume.styles";
 
 import Hanbok from "../../assets/img/ai/costume/Hanbok.png";
 import Kimono from "../../assets/img/ai/costume/Kimono.png";
@@ -43,16 +39,16 @@ const Costume: FC<Props> = ({ handleCostume }) => {
   };
   return (
     <>
-      <HairStyleBox>
+      <CostumeBox>
         {costumes.map((costume) => (
           <CostumeContainer
             key={costume.name}
             onClick={() => handleCostumeClick(costume)}
           >
-            <HairStyleImage src={costume.image} alt={costume.name} />
+            <CostumeImage src={costume.image} alt={costume.name} />
           </CostumeContainer>
         ))}
-      </HairStyleBox>
+      </CostumeBox>
     </>
   );
 };
