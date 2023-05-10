@@ -9,8 +9,16 @@ import SelectPairchild from "./pages/auth/SelectPairchild";
 import MyProfile from "./pages/profile/MyProfile";
 import AiImage from "./pages/ai_image/AiImage";
 import UserProfile from "./pages/profile/UserProfile";
+import UserGeminiDetail from "./components/geminiDetail/UserGeminiDetail";
+import MyGeminiDetail from "./components/geminiDetail/MyGeminiDetail";
+import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
-const AppRoutes: React.FC = () => {
+import RoomList from "./components/trpg/roomList/RoomList";
+import GameRoom from "./components/trpg/game/GameRoom";
+
+import { Socket } from "socket.io-client";
+
+const AppRoutes = ({ chatSocket }: { chatSocket: Socket }) => {
   const location = useLocation();
   const pathsWithoutHeader = [
     "/loginPage",
@@ -33,7 +41,18 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/userProfile/:nickname" component={UserProfile} />
 
         <Route exact path="/aiImage" component={AiImage} />
-
+        <Route exact path="/geminidetail-user" component={UserGeminiDetail} />
+        <Route exact path="/geminidetail-my" component={MyGeminiDetail} />
+        <Route exact path="/geminidetail-new" component={NewGeminiDetail} />
+        <Route
+          path="/room"
+          exact
+          render={() => <RoomList chatSocket={chatSocket} />}
+        />
+        <Route
+          path="/room/:id"
+          render={() => <GameRoom chatSocket={chatSocket} />}
+        />
         {/* ... */}
       </Switch>
     </>
