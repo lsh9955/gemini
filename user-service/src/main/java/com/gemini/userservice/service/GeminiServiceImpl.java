@@ -1,11 +1,13 @@
 package com.gemini.userservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gemini.userservice.dto.GenerateGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseTagDto;
 import com.gemini.userservice.entity.Tag;
 import com.gemini.userservice.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 @RequiredArgsConstructor
 public class GeminiServiceImpl implements GeminiService{
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private final TagRepository tagRepository;
 
@@ -26,6 +31,8 @@ public class GeminiServiceImpl implements GeminiService{
         ResponseTagDto responseTagDto = new ResponseTagDto(tag);
         return responseTagDto;
     }
+
+
 
     @Override
     public String generateGemini(RequestGenerateGeminiDto requestGenerateGeminiDto, String username) {

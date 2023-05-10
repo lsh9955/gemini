@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Background {
+public class MongoBackground {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

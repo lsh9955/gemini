@@ -1,8 +1,10 @@
 package com.gemini.userservice.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class GenerateGeminiDto {
 
     private String prompt;
@@ -16,6 +18,7 @@ public class GenerateGeminiDto {
     private Integer height;
 
     private String username;
+
 
     public GenerateGeminiDto(String prompt, String username){
 
