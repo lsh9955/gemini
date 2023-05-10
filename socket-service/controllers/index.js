@@ -2,7 +2,6 @@ const Room = require("../schemas/room");
 const Chat = require("../schemas/chat");
 const { removeRoom: removeRoomService } = require("../services");
 const redis = require("redis");
-const bcrypt = require("bcrypt");
 const BASE_URL = require("../urlconfig");
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
@@ -31,14 +30,13 @@ const userPicList = [
 ];
 
 exports.createRoom = async (req, res, next) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
   try {
     const newRoom = await Room.create({
       title: req.body.title,
       max: req.body.max,
       concept: req.body.concept,
       owner: req.body.userId,
-      password: hashedPassword,
+      password: req.body.password,
       users: req.body.userId,
       userArr: [],
       usernum: 0,
