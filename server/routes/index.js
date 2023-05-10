@@ -3,7 +3,15 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const { renderMain, renderRoom, createRoom, enterRoom, removeRoom, sendChat, sendPic } = require("../controllers");
+const {
+  renderMain,
+  renderRoom,
+  createRoom,
+  enterRoom,
+  removeRoom,
+  sendChat,
+  sendPic,
+} = require("../controllers");
 
 const router = express.Router();
 

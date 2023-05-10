@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import defaultBgImg from "../../assets/img/defaultBgImg.jpg";
+import defaultBgImg from "../../../assets/img/defaultBgImg.jpg";
 export const RoomWrap = styled.div`
   width: 100%;
   height: 100%;

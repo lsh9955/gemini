@@ -9,7 +9,7 @@ import {
 } from "./DialogueStyle";
 import Typed from "typed.js";
 import { io, Socket } from "socket.io-client";
-import nextButton from "../../assets/img/nextButton.svg";
+import nextButton from "../../../assets/img/nextButton.svg";
 
 const Dialogue = ({ gameMsg }: { gameMsg: any }) => {
   const [nowTxtPage, setNowTxtPage] = useState<number>(0);

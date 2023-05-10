@@ -26,8 +26,8 @@ const http = require("http").Server(app);
 const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
-  // origin: "http://localhost:3000",
-  origin: "https://mygemini.co.kr",
+  origin: "http://mygemini.co.kr",
+  // origin: "https://mygemini.co.kr",
   credentials: true,
 };
 app.use(cors(corsOpt));
@@ -62,7 +62,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 const indexRouter = require("./routes");
-app.use("/", indexRouter);
+app.use("/node/", indexRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

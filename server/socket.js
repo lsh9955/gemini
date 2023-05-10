@@ -79,14 +79,15 @@ const findUserName = async (socket) => {
 
 module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, {
-    path: "/socket.io",
+    path: "/socket",
     cors: {
-      //origin: "http://localhost:3000",
-      origin: "https://mygemini.co.kr",
+      origin: "http://mygemini.co.kr",
     },
-    transports: ["websocket"],
+    transports: ["websocket", "polling"],
+    allowEIO3: true,
   });
   app.set("io", io);
+
   io.on("connection", (socket) => {
     console.log("chat 네임스페이스에 접속");
     const clientSocket = io.sockets;
