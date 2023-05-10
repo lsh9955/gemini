@@ -5,7 +5,7 @@ import ChatPage from "../chat/ChatPage";
 import GetPicture from "../playAsset/GetPicture";
 import PlayBar from "../playAsset/PlayBar";
 import { ChatScreen, GameScreen, RoomWrap } from "./GameRoomStyle";
-
+import { BASE_URL } from "../config";
 import Dialogue from "../dialogue/Dialogue";
 import GroundMain from "../groundMain/GroundMain";
 import MusicPlayer from "../playAsset/MusicPlayer";
@@ -41,7 +41,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
+        const getRoomInfo = await axios.get(`${BASE_URL}/room`);
         const nowURL = new URL(window.location.href).pathname.split("/").at(-1);
 
         setUserList(

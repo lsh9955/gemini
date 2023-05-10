@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { BASE_URL } from "../config";
 
 const style = {
   position: "absolute",
@@ -51,7 +52,7 @@ const CreateRoomModal = ({
         <Box sx={style}>
           <>
             <div>채팅방 생성</div>
-            <form action="http://mygemini.co.kr/node/room" method="post">
+            <form action={`${BASE_URL}/room`} method="post">
               <div>
                 <input type="text" name="title" placeholder="방 제목" />
               </div>

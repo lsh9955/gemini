@@ -8,6 +8,7 @@ import {
   RoomUserNum,
   RoomWrap,
 } from "./RoomListStyle";
+import { BASE_URL } from "../config";
 import CreateRoomModal from "./CreateRoomModal";
 
 const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
@@ -15,7 +16,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [modal, setModal] = useState<boolean>(false);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
+      const getRoomInfo = await axios.get(`${BASE_URL}/room`);
       setRooms(
         getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
@@ -28,7 +29,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
+        const getRoomInfo = await axios.get(`${BASE_URL}/room`);
         setRooms(
           getRoomInfo.data.room.map((v: any, i: any) => {
             return JSON.stringify(v);
