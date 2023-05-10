@@ -16,13 +16,22 @@ const style = {
   p: 4,
 };
 
-const CreateRoomModal = () => {
-  const [open, setOpen] = useState(true);
-  //   useEffect(() => {
-  //     setOpen(true);
-  //   }, [handleOpen]);
+const CreateRoomModal = ({
+  modal,
+  closeModal,
+}: {
+  modal: any;
+  closeModal: any;
+}) => {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setOpen(modal);
+  }, [modal]);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    closeModal();
+  };
   let myString: string | null = localStorage.getItem("userInfo");
   let userId: string | number | readonly string[] | undefined =
     myString ?? undefined;
@@ -42,7 +51,7 @@ const CreateRoomModal = () => {
         <Box sx={style}>
           <>
             <div>채팅방 생성</div>
-            <form action="http://localhost:5000/node/room" method="post">
+            <form action="http://mygemini.co.kr/node/room" method="post">
               <div>
                 <input type="text" name="title" placeholder="방 제목" />
               </div>
