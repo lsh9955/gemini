@@ -18,6 +18,7 @@ import {
   AiSampleBox,
   NoneSampleBox,
 } from "./AiImage.styles";
+import MakeGeminiModal from "../../components/ai_image/modal/MakeGeminiModal";
 
 const AiImage: FC = () => {
   // 요소가 아무것도 없을 때 빈 박스를 보여줌
@@ -241,6 +242,17 @@ const AiImage: FC = () => {
     setCostumeKorean(costume.koreanName);
   };
 
+  // gemini 생성 모달
+  const [showGeminiModal, setShowGeminiModal] = useState(false);
+
+  const openGeminiModal = () => {
+    setShowGeminiModal(true);
+  };
+
+  const closeGeminiModal = () => {
+    setShowGeminiModal(false);
+  };
+
   return (
     <Background>
       <AiWrapper>
@@ -287,7 +299,10 @@ const AiImage: FC = () => {
         </AiSelectWrapper>
 
         <AiSampleWrapper>
-          <AiCreateButton>제미니 생성하기</AiCreateButton>
+          <AiCreateButton onClick={openGeminiModal}>
+            제미니 생성하기
+          </AiCreateButton>
+          {showGeminiModal && <MakeGeminiModal onClose={closeGeminiModal} />}
 
           <AiSampleBox>
             {showNoneBox && <NoneSampleBox />}

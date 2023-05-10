@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseAlarmDto {
 
+    private Long alarmId;
+    private String nickname;
     private String memo;
     private Boolean checked;
     private Integer category;
+    private Long latestAlarmId;
 }
