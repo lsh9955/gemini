@@ -1,10 +1,12 @@
 const express = require("express");
 
+const https = require('https');
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const dotenv = require("dotenv");
+const fs = require( 'fs' );
 //redis 설정
 
 const redis = require("redis");
@@ -76,8 +78,13 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
 });
 
-const server = app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트 연결 체크 정상");
-});
+const server = https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/mygemini.co.kr/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/mygemini.co.kr/cert.pem'),     
+  ca: fs.readFileSync('/etc/letsencrypt/live/mygemini.co.kr/chain.pem'),     
+  requestCert: false,     
+  rejectUnauthorized: false },app); 
+
+server.listen(5000);
 
 webSocket(server, app, sessionMiddleware);
