@@ -29,6 +29,7 @@ import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessTok
 import { async } from "q";
 import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
 import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
+import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -179,10 +180,13 @@ const MyProfile: FC = () => {
               onImageClick={handleImageClick} // 이 부분을 추가하세요.
             />
             {isModalOpen && (
-              <MyGeminiDetail
-                closeModal={closeModal}
-                selectedImagePk={selectedImagePk}
-              />
+              <>
+                <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
+                <MyGeminiDetail
+                  closeModal={closeModal}
+                  selectedImagePk={selectedImagePk}
+                />
+              </>
             )}
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>

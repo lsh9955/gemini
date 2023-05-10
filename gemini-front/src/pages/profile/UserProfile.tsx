@@ -27,6 +27,7 @@ import axios from "axios";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { async } from "q";
 import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
+import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 
 type UserProfileParams = {
   nickname: string;
@@ -184,10 +185,13 @@ const UserProfile: FC = () => {
         </MyProfileContentWrapper>
       </MyProfileWrapper>
       {isModalOpen && (
-        <UserGeminiDetail
-          closeModal={closeModal}
-          selectedImagePk={selectedImagePk}
-        />
+        <>
+          <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
+          <UserGeminiDetail
+            closeModal={closeModal}
+            selectedImagePk={selectedImagePk}
+          />
+        </>
       )}
     </>
   );
