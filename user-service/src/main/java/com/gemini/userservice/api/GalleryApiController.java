@@ -88,4 +88,12 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(res); // 좋아요 취소 후, body에 결과좋아요 개수 반환
     }
 
+//    @GetMapping("/getpage/my")
+//
+//
+//    @GetMapping("/getPage/my")
+//
+//
+//    @GetMapping("/getPage/my")
+
 }
