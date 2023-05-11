@@ -18,5 +18,5 @@ public interface GalleryService {
 
     String likeGallery(String username, Long galleryNo);
 
-    String cancelGallery(String username, Long galleryNo);
+    String cancelGalleryLike(String username, Long galleryNo);
 }

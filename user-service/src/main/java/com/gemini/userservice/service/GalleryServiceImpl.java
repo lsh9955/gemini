@@ -138,10 +138,11 @@ public class GalleryServiceImpl implements GalleryService{
         gallery.updateLikes(dailyLikes + 1, weeklyLikes + 1);
         geminiRepository.save(gemini);
         galleryRepository.save(gallery);
-        return "success";
+
+        return String.valueOf(totalLikes + 1); // 좋아요 성공하면, 전체 좋아요 개수를 다시 반환해줌.
     }
 
-    public String cancelGallery(String username, Long galleryNo) {
+    public String cancelGalleryLike(String username, Long galleryNo) {
 
         Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
         Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
@@ -156,7 +157,7 @@ public class GalleryServiceImpl implements GalleryService{
             gallery.updateLikes(dailyLikes - 1, weeklyLikes - 1);
             geminiRepository.save(gemini);
             galleryRepository.save(gallery);
-            return "success";
+            return String.valueOf(totalLikes + 1);
         }
         return "fail";
     }
