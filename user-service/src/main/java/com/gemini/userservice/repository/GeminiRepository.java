@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface GeminiRepository extends JpaRepository<Gemini, Long>, CustomGeminiRepository {
 
+    Gemini findByGeminiNo(Long id);
+
     List<Gemini> findByUserInfo(UserInfo userInfo);
 
 }

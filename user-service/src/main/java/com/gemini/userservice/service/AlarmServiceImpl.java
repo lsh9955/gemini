@@ -3,8 +3,10 @@ package com.gemini.userservice.service;
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.entity.Alarm;
+import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.AlarmRepository;
+import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class AlarmServiceImpl implements AlarmService {
 
     // SSE 클라이언트를 저장하는 리스트
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    @Autowired
+    private GeminiRepository geminiRepository;
 
     @Override
     public ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter) {
@@ -67,5 +71,15 @@ public class AlarmServiceImpl implements AlarmService {
 
         return responseAlarmDto;
     }
+
+    public String contractGemini(String username, Long geminiNo) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        if(userInfo.isPresent()) {
+            UserInfo user = userInfo.get();
+            Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
+        }
+        return null;
     }
+}
 
