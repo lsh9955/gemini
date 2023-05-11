@@ -1,41 +1,70 @@
 package com.gemini.userservice.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gemini.userservice.dto.GenerateGeminiDto;
+import com.gemini.userservice.dto.TagDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
+import com.gemini.userservice.dto.response.ResponseGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseTagDto;
+import com.gemini.userservice.entity.Category;
 import com.gemini.userservice.entity.Tag;
+import com.gemini.userservice.entity.UserInfo;
+import com.gemini.userservice.repository.CategoryRepository;
 import com.gemini.userservice.repository.TagRepository;
+import com.gemini.userservice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.core.env.Environment;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class GeminiServiceImpl implements GeminiService{
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     private final TagRepository tagRepository;
 
-    private final WebClient webClient;
+    private final RestTemplate restTemplate;
+
+    private final Environment env;
+
+    private final UserInfoRepository userInfoRepository;
+
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public ResponseTagDto getTag(Long tagId) {
+    public ResponseTagDto getTag(Long categoryNo) {
 
-        Tag tag = tagRepository.findByTagNo(tagId);
-        ResponseTagDto responseTagDto = new ResponseTagDto(tag);
+        Category category = categoryRepository.findByCategoryNo(categoryNo);
+        Set<Tag> tags = category.getTags();
+        List<TagDto> temp = new ArrayList<>();
+        for(Tag tag: tags) {
+            TagDto tagDto = new TagDto(tag);
+            temp.add(tagDto);
+        }
+        ResponseTagDto responseTagDto = new ResponseTagDto(temp);
         return responseTagDto;
     }
 
+    @Override
+    public Integer getStar(String username) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        Integer star = 0;
+        if (userInfo.isPresent()) {
+            UserInfo user = userInfo.get();
+            star = user.getStar();
+        }
+        return star;
+    }
 
 
     @Override
-    public String generateGemini(RequestGenerateGeminiDto requestGenerateGeminiDto, String username) {
+    public ResponseGenerateGeminiDto generateGemini(RequestGenerateGeminiDto requestGenerateGeminiDto, String username) {
 
         String defaultPrompt = "(illustration:1.3),(portrait:1.3),(best quality),(masterpiece),(high resolution),perfect anatomy,perfect_finger,hyper detail,high quality, super detail,(finely detailed beautiful eyes and detailed face),ultra detailed cloths,";
         for (Long tagId : requestGenerateGeminiDto.getTagIds()) {
@@ -43,22 +72,23 @@ public class GeminiServiceImpl implements GeminiService{
             defaultPrompt = defaultPrompt + tag.getPrompt() + ",";
         }
         GenerateGeminiDto generateGeminiDto = new GenerateGeminiDto(defaultPrompt, username);
-        String url = "http://127.0.0.1:7860/ml_api/makegemini";
-        String res = webClient.post()
-                    .uri(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(generateGeminiDto)
-                    .exchangeToMono(response -> {
-                        HttpStatus statusCode = response.statusCode();
-                        System.out.println("응답 코드: " + statusCode);
-
-                        // 혹시 모르니 응답 본문도 출력
-                        return response.bodyToMono(String.class)
-                                .doOnNext(responseBody -> System.out.println("응답 본문: " + responseBody))
-                                .thenReturn(statusCode.toString());
-                    })
-                    .block();
-        return res;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String sdUrl = String.format(env.getProperty("sd.url")) + "/makegemini";
+        HttpEntity<GenerateGeminiDto> request = new HttpEntity<>(generateGeminiDto, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(sdUrl, request, String.class);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+            if (userInfo.isPresent()) {
+                UserInfo user = userInfo.get();
+                Integer star = user.getStar() - 1;
+                user.updateStar(star);
+                userInfoRepository.save(user);
+                ResponseGenerateGeminiDto responseGenerateGeminiDto = new ResponseGenerateGeminiDto(star);
+                return responseGenerateGeminiDto;
+            }
+        }
+        return null;
         }
 
 }

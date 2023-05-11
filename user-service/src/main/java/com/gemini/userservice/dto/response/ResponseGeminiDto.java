@@ -22,7 +22,7 @@ public class ResponseGeminiDto {
     public ResponseGeminiDto(Tag tag){
 
         this.name = tag.getName();
-        this.image = tag.getImage();
+        this.image = tag.getImageUrl();
         this.prompt = tag.getPrompt();
     }
 }

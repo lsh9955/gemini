@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface AlarmService {
     ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter);
+
+    String contractGemini(String username, Long geminiNo);
 }

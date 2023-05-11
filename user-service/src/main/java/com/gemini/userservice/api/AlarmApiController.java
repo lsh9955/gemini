@@ -2,16 +2,17 @@ package com.gemini.userservice.api;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
@@ -70,5 +71,17 @@ public class AlarmApiController {
         });
         // 완료된 SseEmitter 객체 반환
         return emitter;
+    }
+
+    @PostMapping("/gemini")
+    public ResponseEntity<?> contractGemini(@RequestHeader("X-Username") String username,
+                                           @RequestBody Map<String, Long> geminiMap) {
+
+        Long geminiNo = geminiMap.get("gemini_no");
+        String res = alarmService.contractGemini(username, geminiNo);
+        if (res == "fail") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }
