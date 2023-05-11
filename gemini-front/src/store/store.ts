@@ -27,4 +27,6 @@ const store = configureStore({
     }),
 });
 
+export type AppStore = ReturnType<typeof reducers>;
+
 export default store;

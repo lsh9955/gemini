@@ -23,6 +23,7 @@ import {
 import PayButton from "../../components/profile/pay/modal/PayModal";
 import FollowButton from "../../components/profile/userprofile/FollowButton";
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
+import AriesDummyProfile from "../../assets/img/AriesDummyProfile.png";
 import axios from "axios";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { async } from "q";
@@ -139,7 +140,7 @@ const UserProfile: FC = () => {
           <MyBgImg></MyBgImg>
           <MyInfoSpace></MyInfoSpace>
           <MyInfoContentWrapper>
-            <MyProfileImg></MyProfileImg>
+            <MyProfileImg imgUrl={AriesDummyProfile}></MyProfileImg>
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
