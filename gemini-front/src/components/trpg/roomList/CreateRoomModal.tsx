@@ -3,18 +3,28 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { useSelector } from "react-redux";
 import { BASE_URL } from "../config";
+import {
+  CreateWrap,
+  DetailTitle,
+  MakeRoombtn,
+  ModalForm,
+  ModalTransparent,
+  PasswordInput,
+  RoomKeySelectBtn,
+  SelectBtn,
+} from "./CreateRoomModalStyle";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "none",
   boxShadow: 24,
-  p: 4,
 };
 
 const CreateRoomModal = ({
@@ -25,6 +35,8 @@ const CreateRoomModal = ({
   closeModal: any;
 }) => {
   const [open, setOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const userSeq = useSelector((state: any) => state.user);
   useEffect(() => {
     setOpen(modal);
   }, [modal]);
@@ -50,24 +62,62 @@ const CreateRoomModal = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <>
-            <div>채팅방 생성</div>
-            <form action={`${BASE_URL}/node/room`} method="post">
+          <CreateWrap>
+            <ModalForm action={`${BASE_URL}/node/room`} method="post">
               <div>
-                <input type="text" name="title" placeholder="방 제목" />
+                <DetailTitle>방 제목</DetailTitle>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="방 제목을 적어주세요"
+                />
               </div>
               <div>
-                <input type="text" name="concept" placeholder="컨셉 설명" />
+                <DetailTitle>컨셉</DetailTitle>
+                <input
+                  type="text"
+                  name="concept"
+                  placeholder="컨셉을 설명해주세요"
+                />
               </div>
+              <SelectBtn>
+                <RoomKeySelectBtn
+                  onClick={() => {
+                    setPasswordOpen(false);
+                  }}
+                  passwordOpen={passwordOpen}
+                >
+                  공개방
+                </RoomKeySelectBtn>
+                <RoomKeySelectBtn
+                  onClick={() => {
+                    setPasswordOpen(true);
+                  }}
+                  passwordOpen={!passwordOpen}
+                >
+                  비밀방
+                </RoomKeySelectBtn>
+              </SelectBtn>
               <div>
-                <input type="password" name="password" placeholder="비밀번호" />
+                {passwordOpen && (
+                  <PasswordInput
+                    type="password"
+                    name="password"
+                    placeholder="비밀번호"
+                  />
+                )}
               </div>
-              <input value={userId} name="userId" />
+              <input value={userSeq.nickname} name="userId" />
               <div>
-                <input type="submit" onSubmit={submitHandler} />
+                <MakeRoombtn
+                  type="submit"
+                  onSubmit={submitHandler}
+                  value={"방 생성"}
+                />
               </div>
-            </form>
-          </>
+            </ModalForm>
+            <ModalTransparent />
+          </CreateWrap>
         </Box>
       </Modal>
     </div>

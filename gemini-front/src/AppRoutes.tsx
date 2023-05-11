@@ -13,12 +13,9 @@ import UserGeminiDetail from "./components/geminiDetail/UserGeminiDetail";
 import MyGeminiDetail from "./components/geminiDetail/MyGeminiDetail";
 import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
-import RoomList from "./components/trpg/roomList/RoomList";
-import GameRoom from "./components/trpg/game/GameRoom";
+import SocketMain from "./components/trpg/SocketMain";
 
-import { Socket } from "socket.io-client";
-
-const AppRoutes = ({ chatSocket }: { chatSocket: Socket }) => {
+const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
     "/loginPage",
@@ -44,15 +41,7 @@ const AppRoutes = ({ chatSocket }: { chatSocket: Socket }) => {
         <Route exact path="/geminidetail-user" component={UserGeminiDetail} />
         <Route exact path="/geminidetail-my" component={MyGeminiDetail} />
         <Route exact path="/geminidetail-new" component={NewGeminiDetail} />
-        <Route
-          path="/room"
-          exact
-          render={() => <RoomList chatSocket={chatSocket} />}
-        />
-        <Route
-          path="/room/:id"
-          render={() => <GameRoom chatSocket={chatSocket} />}
-        />
+        <Route path="/room" component={SocketMain} />
         {/* ... */}
       </Switch>
     </>

@@ -61,7 +61,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
             setModal(!modal);
           }}
         >
-          방 생성하기
+          생성하기
         </button>
       </TitleWrap>
       <CreateRoomModal modal={modal} closeModal={closeModal} />

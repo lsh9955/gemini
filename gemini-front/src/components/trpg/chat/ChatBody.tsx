@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 
 const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
   const history = useHistory();
+  const userSeq = useSelector((state: any) => state.user);
 
   return (
     <>
@@ -18,6 +20,7 @@ const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
           .map((message: any) =>
             message.name === localStorage.getItem("userInfo") ? (
               <div className="message__chats" key={message.id}>
+                <img src={userSeq.profileImgUrl} alt="채팅유저이미지" />
                 <p className="sender__name">{message.name}(나)</p>
                 <div className="message__sender">
                   <p>{message.text}</p>

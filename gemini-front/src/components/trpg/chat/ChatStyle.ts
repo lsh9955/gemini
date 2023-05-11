@@ -14,7 +14,6 @@ export const ChatBodyWrap = styled.div`
 `;
 export const ChatStatuButtonWrap = styled.div`
   display: flex;
-
   line-height: 39px;
   width: 100%;
   height: 5%;
@@ -30,7 +29,9 @@ export const ChatStatuButtonWrap = styled.div`
     font-style: normal;
     font-weight: 700;
     color: #ffffff;
+    background-color: transparent;
     font-size: 120%;
+    border: none;
   }
 `;
 export const ChatInputWrap = styled.div`
@@ -41,6 +42,7 @@ export const ChatInputWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
+  cursor: pointer;
   & > div {
     font-family: "Inter";
     font-style: normal;
@@ -54,6 +56,9 @@ export const ChatInputWrap = styled.div`
     font-weight: 700;
     color: #ffffff;
     font-size: 100%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
   }
 `;
 export const ChatInputForm = styled.div`
