@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import GenreImage from "../../components/ai_image/GenreImage";
 import ColorSelect from "../../components/ai_image/ColorSelect";
 import HairStyle from "../../components/ai_image/HairStyle";
@@ -19,6 +20,7 @@ import {
   NoneSampleBox,
 } from "./AiImage.styles";
 import MakeGeminiModal from "../../components/ai_image/modal/MakeGeminiModal";
+import NeedStarModal from "../../components/ai_image/modal/NeedStarModal";
 
 const AiImage: FC = () => {
   // 요소가 아무것도 없을 때 빈 박스를 보여줌
@@ -242,15 +244,29 @@ const AiImage: FC = () => {
     setCostumeKorean(costume.koreanName);
   };
 
-  // gemini 생성 모달
+  // 별 개수에 따라서 다르게 모달이 뜸
   const [showGeminiModal, setShowGeminiModal] = useState(false);
+  const [showNeedStarModal, setShowNeedStarModal] = useState(false);
+
+  //   const star = useSelector((state: UserState) => state.user.star);
+  const star: number = 1;
 
   const openGeminiModal = () => {
-    setShowGeminiModal(true);
+    if (star === 0) {
+      setShowGeminiModal(false);
+      setShowNeedStarModal(true);
+    } else {
+      setShowNeedStarModal(false);
+      setShowGeminiModal(true);
+    }
   };
 
   const closeGeminiModal = () => {
     setShowGeminiModal(false);
+  };
+
+  const closeNeedStarModal = () => {
+    setShowNeedStarModal(false);
   };
 
   return (
@@ -302,6 +318,7 @@ const AiImage: FC = () => {
           <AiCreateButton onClick={openGeminiModal}>
             제미니 생성하기
           </AiCreateButton>
+          {showNeedStarModal && <NeedStarModal onClose={closeNeedStarModal} />}
           {showGeminiModal && <MakeGeminiModal onClose={closeGeminiModal} />}
 
           <AiSampleBox>

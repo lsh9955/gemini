@@ -14,7 +14,6 @@ import {
   ModalTitle,
   First,
 } from "./ModalStyle";
-import NeedStarModal from "../modal/NeedStarModal";
 import SuccessGeminiModal from "../modal/SuccessGeminiModal";
 
 export interface Props {
@@ -28,18 +27,11 @@ type UserState = {
 };
 
 const MakeGeminiModal: React.FC<Props> = ({ onClose }) => {
-  //   const star = useSelector((state: UserState) => state.user.star);
-  const star: number = 0;
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
 
-  const handleConfirmClick = () => {
-    if (star === 0) {
-      setCurrentModal(<NeedStarModal onClose={onClose} />);
-      //   onClose();
-    } else {
-      setCurrentModal(<SuccessGeminiModal onClose={onClose} />);
-      //   onClose();
-    }
+  // 여기서 axios가 성공했을 때 successgeminimodal로 보내기
+  const MakeGeminiHandler = () => {
+    setCurrentModal(<SuccessGeminiModal onClose={onClose} />);
   };
 
   return (
@@ -54,7 +46,7 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose }) => {
                   <div>결제하시겠어요?</div>
                 </ModalTitle>
                 <Interval>
-                  <ConfirmButton onClick={handleConfirmClick}>
+                  <ConfirmButton onClick={MakeGeminiHandler}>
                     확인
                   </ConfirmButton>
                   <CancelButton onClick={onClose}>취소</CancelButton>
