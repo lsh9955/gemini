@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { AppStore } from "../../store/store";
 import GenreImage from "../../components/ai_image/GenreImage";
 import ColorSelect from "../../components/ai_image/ColorSelect";
 import HairStyle from "../../components/ai_image/HairStyle";
@@ -248,8 +249,7 @@ const AiImage: FC = () => {
   const [showGeminiModal, setShowGeminiModal] = useState(false);
   const [showNeedStarModal, setShowNeedStarModal] = useState(false);
 
-  //   const star = useSelector((state: UserState) => state.user.star);
-  const star: number = 1;
+  const star = useSelector((state: AppStore) => state.user.star);
 
   const openGeminiModal = () => {
     if (star === 0) {
