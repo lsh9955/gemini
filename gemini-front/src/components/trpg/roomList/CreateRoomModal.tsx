@@ -37,6 +37,7 @@ const CreateRoomModal = ({
   const [open, setOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const userSeq = useSelector((state: any) => state.user);
+  console.log(userSeq);
   useEffect(() => {
     setOpen(modal);
   }, [modal]);
@@ -45,9 +46,7 @@ const CreateRoomModal = ({
     setOpen(false);
     closeModal();
   };
-  let myString: string | null = localStorage.getItem("userInfo");
-  let userId: string | number | readonly string[] | undefined =
-    myString ?? undefined;
+
   const submitHandler = (e: any) => {
     e.preventDefault();
     console.log(e);

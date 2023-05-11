@@ -10,9 +10,11 @@ import Dialogue from "../dialogue/Dialogue";
 import GroundMain from "../groundMain/GroundMain";
 import MusicPlayer from "../playAsset/MusicPlayer";
 import DiceRoller from "../playAsset/DiceRoller";
+import { useSelector } from "react-redux";
 
 const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
-  const userN = localStorage.getItem("userInfo");
+  const userSeq = useSelector((state: any) => state.user);
+  const userN = userSeq.nickname;
   const [userList, setUserList] = useState<Array<string>>([]);
   const [chatList, setChatList] = useState<string[]>([]);
   const [createPicList, setCreatePicList] = useState<string[]>([]);
