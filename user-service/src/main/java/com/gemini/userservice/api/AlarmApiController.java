@@ -3,6 +3,7 @@ package com.gemini.userservice.api;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,7 +45,7 @@ public class AlarmApiController {
         // ExecutorService 객체 생성
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
 
-        Long latestAlarm = alarmRepository.findTopByOrderByIdDesc().getId();
+        Long latestAlarm = alarmRepository.findTopByOrderByAlarmIdDesc().getAlarmId();
 
         final String finalNickname = nickname;
 
@@ -60,7 +61,7 @@ public class AlarmApiController {
                         alarmList.forEach(alarm -> {
                             try {
                                 ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                                        .alarmId(alarm.getId())
+                                        .alarmId(alarm.getAlarmId())
                                         .latestAlarmId(latestAlarm)
                                         .memo(alarm.getMemo())
                                         .checked(alarm.getChecked())

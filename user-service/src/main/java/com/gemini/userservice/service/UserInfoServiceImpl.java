@@ -90,7 +90,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         List<GeminiDto> geminiDtos = publicGeminis.stream()
                 .map(gemini -> GeminiDto.builder()
-                        .geminiPk(gemini.getId())
+                        .geminiPk(gemini.getGeminiNo())
                         .image(gemini.getImageUrl())
                         .userPk(gemini.getUserInfo().getUserPk())
                         .build())
