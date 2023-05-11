@@ -52,7 +52,7 @@ const CreateRoomModal = ({
         <Box sx={style}>
           <>
             <div>채팅방 생성</div>
-            <form action={`${BASE_URL}/room`} method="post">
+            <form action={`${BASE_URL}/node/room`} method="post">
               <div>
                 <input type="text" name="title" placeholder="방 제목" />
               </div>
