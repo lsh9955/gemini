@@ -49,6 +49,8 @@ public class Gemini {
     @JoinColumn(name = "gallery_no")
     private Gallery gallery;
 
+
+
     public void updateLikes(Integer totalLike) {
         this.totalLike = totalLike;
     }
