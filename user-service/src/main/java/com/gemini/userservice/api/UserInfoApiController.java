@@ -6,6 +6,7 @@ import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
+import com.gemini.userservice.dto.response.ResponseFollowCountDto;
 import com.gemini.userservice.dto.response.ResponseOrdersDto;
 import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.EmitterService;
@@ -117,11 +118,11 @@ public class UserInfoApiController {
         return ResponseEntity.ok("success");
     }
 
-//    @PostMapping("/checkNickname")
-//    public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
-//        boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
-//        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).build());
-//    }
+    @GetMapping("/followcount/{nickname}")
+    public ResponseEntity<ResponseFollowCountDto> getFollowCounts(@PathVariable String nickname) {
+        ResponseFollowCountDto followCountDTO = userInfoService.getFollowCounts(nickname);
+        return ResponseEntity.ok(followCountDTO);
+    }
 
 
     @PostMapping("/checkNickname") // test complete 😀
