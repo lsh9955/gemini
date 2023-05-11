@@ -15,6 +15,7 @@ import {
 } from "./ModalStyle";
 import PayModal from "../../profile/pay/modal/PayModal";
 import { Props as ParentProps } from "../modal/MakeGeminiModal";
+import NeedPayModal from "./NeedPayModal";
 
 interface NeedStarModalProps extends ParentProps {
   onClose: () => void;
@@ -23,7 +24,7 @@ interface NeedStarModalProps extends ParentProps {
 const NeedStarModal: React.FC<NeedStarModalProps> = ({ onClose }) => {
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
   const PayStar = () => {
-    setCurrentModal(<PayModal onClose={onClose} />);
+    setCurrentModal(<NeedPayModal onClose={onClose} />);
   };
 
   return (
