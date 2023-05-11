@@ -10,6 +10,11 @@ public interface GalleryService {
 
     ResponseGalleryPageDto getGalleryPage(Integer page, Integer size);
 
+
+    ResponseGalleryPageDto getMyGalleryPage(String username, Integer page, Integer size); // 😀 내 갤러리
+
+    ResponseGalleryPageDto getUserGalleryPage(String nickname, Integer page, Integer size); // 😀 유저 갤러리
+
     ResponseGalleryRankingDto getDailyGallery();
 
     ResponseGalleryRankingDto getWeeklyGallery();

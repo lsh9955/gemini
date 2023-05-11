@@ -88,12 +88,33 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(res); // 좋아요 취소 후, body에 결과좋아요 개수 반환
     }
 
-//    @GetMapping("/getpage/my")
+    @GetMapping("/mygeminis") // fetching my geminis
+    public ResponseEntity<?> getMyGalleryPage(@RequestHeader("X-Username") String username, @RequestParam Integer page, @RequestParam Integer size) {
+    /*
+    1. header에 담긴 username으로 userInfo탐색
+    2. Gemini repository에서 다 가져오기
+    3. 원하는만큼 뱉어서 Dto에 제공
+
+     */
+        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getGalleryPage(page, size);
+        if (responseGalleryPageDto.getGalleryPage() == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
+    }
 //
 //
-//    @GetMapping("/getPage/my")
-//
-//
-//    @GetMapping("/getPage/my")
+    @GetMapping("/usergeminis")
+    public ResponseEntity<?> getUserGalleryPage(@RequestParam String nickname, @RequestParam Integer page, @RequestParam Integer size) {
+        /*
+
+
+         */
+        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getGalleryPage(page, size);
+        if (responseGalleryPageDto.getGalleryPage() == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
+    }
 
 }
