@@ -94,9 +94,8 @@ public class GalleryApiController {
     1. header에 담긴 username으로 userInfo탐색
     2. Gemini repository에서 다 가져오기
     3. 원하는만큼 뱉어서 Dto에 제공
-
      */
-        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getGalleryPage(page, size);
+        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getMyGalleryPage(username, page, size);
         if (responseGalleryPageDto.getGalleryPage() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
         }
@@ -108,9 +107,8 @@ public class GalleryApiController {
     public ResponseEntity<?> getUserGalleryPage(@RequestParam String nickname, @RequestParam Integer page, @RequestParam Integer size) {
         /*
 
-
          */
-        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getGalleryPage(page, size);
+        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getUserGalleryPage(nickname, page, size);
         if (responseGalleryPageDto.getGalleryPage() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
         }
