@@ -38,6 +38,9 @@ public class Gemini {
     @Column(name = "total_like", nullable = false)
     private Integer totalLike;
 
+    @Column(name = "seed", nullable = false)
+    private Long seed;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
     private UserInfo userInfo;
@@ -54,5 +57,9 @@ public class Gemini {
 
     public void updateLikes(Integer totalLike) {
         this.totalLike = totalLike;
+    }
+
+    public void contract(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

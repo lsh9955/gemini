@@ -1,6 +1,7 @@
 package com.gemini.userservice.api;
 
 
+import com.gemini.userservice.dto.request.RequestCompleteGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseTagDto;
@@ -47,7 +48,7 @@ public class GeminiApiController {
 //    @PostMapping("/complete")
 //    public ResponseEntity<?> completeGemini(@RequestBody RequestCompleteGeminiDto requestCompleteGeminiDto) {
 //
-//        String res = geminiService.completeGemini(requestGenerateGeminiDto);
+//        String res = geminiService.completeGemini(requestCompleteGeminiDto);
 //        return ResponseEntity.status(HttpStatus.OK).body(res);
 //    }
 }
