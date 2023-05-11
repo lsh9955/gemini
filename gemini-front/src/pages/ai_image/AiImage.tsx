@@ -1,4 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
+import axios from "axios";
+
 import { useSelector } from "react-redux";
 import GenreImage from "../../components/ai_image/GenreImage";
 import ColorSelect from "../../components/ai_image/ColorSelect";
@@ -249,16 +251,29 @@ const AiImage: FC = () => {
   const [showNeedStarModal, setShowNeedStarModal] = useState(false);
 
   //   const star = useSelector((state: UserState) => state.user.star);
-  const star: number = 1;
+  const [star, setStar] = useState(0);
 
+  const headers = {
+    "X-Username": "google_109918724409380589068",
+  };
   const openGeminiModal = () => {
-    if (star === 0) {
-      setShowGeminiModal(false);
-      setShowNeedStarModal(true);
-    } else {
-      setShowNeedStarModal(false);
-      setShowGeminiModal(true);
-    }
+    axios
+      .get("http://192.168.31.73:8081/user-service/gemini", {
+        headers,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data === 0) {
+          setShowGeminiModal(false);
+          setShowNeedStarModal(true);
+        } else {
+          setShowNeedStarModal(false);
+          setShowGeminiModal(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const closeGeminiModal = () => {
