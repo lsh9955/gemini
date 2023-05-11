@@ -6,6 +6,7 @@ import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
+import com.gemini.userservice.dto.response.ResponseFollowCountDto;
 import com.gemini.userservice.dto.response.ResponseOrdersDto;
 import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.EmitterService;
@@ -57,8 +58,9 @@ public class UserInfoApiController {
             userService.followUser(currentUsername, followRequestDto);
             //알람 메세지를 만들기 위해 FollowAlarmDto에 넣어준다.
             FollowAlarmDto followAlarmDto = new FollowAlarmDto();
-            //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!!
-            followAlarmDto.setGetAlarmPk(followRequestDto.getUserPk());
+            //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!! (팔로우를 보내는 사람의 닉네임을 저장한다)
+//            followAlarmDto.setGetAlarmPk(followRequestDto.getNickname()); // revised 😀 얘는 무시하셈.
+            followAlarmDto.setGetAlarmNickName(followRequestDto.getNickname()); // nickname도 고유한거라서 닉네임을 보내준다. 😥 이게 진짜에요.
             //알람을 보내는 사람 => 팔로우 한 사람
             followAlarmDto.setSendAlarmUserName(currentUsername);
 
@@ -116,11 +118,11 @@ public class UserInfoApiController {
         return ResponseEntity.ok("success");
     }
 
-//    @PostMapping("/checkNickname")
-//    public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
-//        boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
-//        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).build());
-//    }
+    @GetMapping("/followcount/{nickname}")
+    public ResponseEntity<ResponseFollowCountDto> getFollowCounts(@PathVariable String nickname) {
+        ResponseFollowCountDto followCountDTO = userInfoService.getFollowCounts(nickname);
+        return ResponseEntity.ok(followCountDTO);
+    }
 
 
     @PostMapping("/checkNickname") // test complete 😀

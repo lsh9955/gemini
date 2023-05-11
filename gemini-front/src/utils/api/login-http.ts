@@ -16,12 +16,12 @@ export const getUserProfile = async (
 ): Promise<UserInfoDto> => {
   const url = `${process.env.REACT_APP_API_USER_BASE_URL}/user-service/profile/login`;
   const response: AxiosResponse<UserInfoDto> = await axios.get(url, {
-    // headers: {
-    //   Authorization: `Bearer ${accessToken}`,
-    // }, // 배포때 이걸로 다시 바꿔야함. 수정 필요 😀
     headers: {
-      username: "google_12346",
-    },
+      Authorization: `Bearer ${accessToken}`,
+    }, // 배포때 이걸로 다시 바꿔야함. 수정 필요 😀
+    // headers: {
+    //   username: "google_12346",
+    // },
     withCredentials: true,
   });
 

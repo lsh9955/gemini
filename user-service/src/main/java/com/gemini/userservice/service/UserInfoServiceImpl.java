@@ -4,6 +4,7 @@ import com.gemini.userservice.dto.GeminiDto;
 import com.gemini.userservice.dto.OtherUserProfileResponseDto;
 import com.gemini.userservice.dto.UserInfoDto;
 import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
+import com.gemini.userservice.dto.response.ResponseFollowCountDto;
 import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.FollowRepository;
@@ -128,5 +129,14 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .star(userInfo.getStar())
                 .username(userInfo.getUsername())
                 .build();
+    }
+
+
+    @Override
+    public ResponseFollowCountDto getFollowCounts(String nickname) {
+        UserInfo userInfo = userInfoRepository.findByNickname(nickname).orElseThrow(() -> new RuntimeException("User not found"));
+        long followersCount = followRepository.countByFollowing(userInfo);
+        long followingsCount = followRepository.countByFollower(userInfo);
+        return new ResponseFollowCountDto(followersCount, followingsCount);
     }
 }

@@ -10,5 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FollowRequestDto {
-    private Long userPk;
+
+    // if pk needed, revise it. 😶
+    //    private Long userPk;
+    private String nickname;
+
 }

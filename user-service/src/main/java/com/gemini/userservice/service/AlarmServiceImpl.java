@@ -34,17 +34,19 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter) {
-        // 인코딩 한 메세지 넣기
-        String message = alarmDto.getSendAlarmUserName() + "님이 회원님을 팔로우 했습니다.";
-        String encodedMessage = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-        System.out.println(encodedMessage);
-
 
         // 회원정보 찾아오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(username);
 
         UserInfo userInfo = userInfo2.get();
+
+        // 인코딩 한 메세지 넣기
+        String message = userInfo.getNickname() + "님이 회원님을 팔로우 했습니다.";
+        String encodedMessage = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+
+
         Alarm alarm = Alarm.builder()
+                .nickname(alarmDto.getGetAlarmNickName())
                 .memo(encodedMessage)
                 .userInfo(userInfo)
                 .category(1)
