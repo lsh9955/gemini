@@ -19,8 +19,8 @@ public class Gemini {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    @Column(name = "gemini_no", unique = true, nullable = false)
+    private Long geminiNo;
 
     @Column(name = "name", nullable = false)
     private String name;

@@ -16,8 +16,8 @@ public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "alarm_id")
+    private Long alarmId;
 
     @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
