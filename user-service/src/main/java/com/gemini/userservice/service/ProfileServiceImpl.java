@@ -36,7 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
         List<Gemini> geminis = geminiRepository.findByUserInfo(userInfo);
         List<GeminiDto> geminiDtoList = geminis.stream()
                 .map(gemini -> GeminiDto.builder()
-                        .geminiPk(gemini.getId())
+                        .geminiPk(gemini.getGeminiNo())
                         .image(gemini.getImageUrl())
                         .userPk(gemini.getUserInfo().getUserPk())
                         .build())
