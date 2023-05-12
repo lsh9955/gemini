@@ -73,6 +73,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   const [monthlyTop5, setMonthlyTop5] = useState<ImageData[]>([...dummyImgs]);
 
   useEffect(() => {
+    console.log("일간, 주간 갤러리 요청");
     const dailyRes = axiosInstanceWithAccessToken.get(
       "/user-service/gallery/daily"
     );
@@ -96,6 +97,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   // 무한스크롤 불러오기
   const loadMoreImages = useCallback(async () => {
     try {
+      console.log("무한스크롤 요청 /user-service/gallery");
       const response = await axiosInstanceWithAccessToken.get(
         "/user-service/gallery",
         {
