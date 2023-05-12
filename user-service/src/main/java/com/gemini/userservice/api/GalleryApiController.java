@@ -69,23 +69,50 @@ public class GalleryApiController {
     public ResponseEntity<String> likeGallery(@RequestHeader("X-Username") String username,
                                                                 @RequestBody Map<String, Long> galleryMap) {
 
-        Long galleryNo = galleryMap.get("gallery_no");
+        Long galleryNo = galleryMap.get("gallery_no"); // body에 gallery_no:1 형식으로 JSON을 보내야.
         String res = galleryService.likeGallery(username, galleryNo);
         if (res == "fail") {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(res); // body에 결과좋아요 개수 반환
     }
 
     @DeleteMapping("/{galleryNo}")
-    public ResponseEntity<String> cancelGallery(@RequestHeader("X-Username") String username,
+    public ResponseEntity<String> cancelGalleryLike(@RequestHeader("X-Username") String username,
                                                                 @PathVariable("galleryNo") Long galleryNo) {
 
-        String res = galleryService.cancelGallery(username, galleryNo);
+        String res = galleryService.cancelGalleryLike(username, galleryNo);
         if (res == "fail") {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(res); // 좋아요 취소 후, body에 결과좋아요 개수 반환
+    }
+
+    @GetMapping("/mygeminis") // fetching my geminis
+    public ResponseEntity<?> getMyGalleryPage(@RequestHeader("X-Username") String username, @RequestParam Integer page, @RequestParam Integer size) {
+    /*
+    1. header에 담긴 username으로 userInfo탐색
+    2. Gemini repository에서 다 가져오기
+    3. 원하는만큼 뱉어서 Dto에 제공
+     */
+        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getMyGalleryPage(username, page, size);
+        if (responseGalleryPageDto.getGalleryPage() == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
+    }
+//
+//
+    @GetMapping("/usergeminis")
+    public ResponseEntity<?> getUserGalleryPage(@RequestParam String nickname, @RequestParam Integer page, @RequestParam Integer size) {
+        /*
+
+         */
+        ResponseGalleryPageDto responseGalleryPageDto = galleryService.getUserGalleryPage(nickname, page, size);
+        if (responseGalleryPageDto.getGalleryPage() == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
     }
 
 }

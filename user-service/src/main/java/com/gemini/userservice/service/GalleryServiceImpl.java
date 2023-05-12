@@ -76,6 +76,90 @@ public class GalleryServiceImpl implements GalleryService{
         return responseGalleryPageDto;
     }
 
+
+
+    public ResponseGalleryPageDto getMyGalleryPage(String username, Integer page, Integer size) {
+        Optional<UserInfo> optionalUserInfo = userInfoRepository.findByUsername(username);
+        if (!optionalUserInfo.isPresent()) {
+            // 사용자가 존재하지 않는 경우 처리
+            // 예: 예외를 던지거나 빈 ResponseGalleryPageDto를 반환
+        }
+        UserInfo userInfo = optionalUserInfo.get();
+
+        List<Gallery> galleries = galleryRepository.findByGemini_UserInfo(userInfo);
+
+        // 위에서 사용했던 로직을 재사용
+        if (galleries.size() > 0) {
+            if (galleries.size() < size) {
+                size = galleries.size();
+            }
+            Pageable pageable = PageRequest.of(page, size);
+            int start = (int)pageable.getOffset();
+            if (start + 1 > galleries.size()) {
+                ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
+                return responseGalleryPageDto;
+            }
+            List<GalleryDto> galleryDtos = new ArrayList<>();
+            for (int i = start; i < start + size; i++) {
+                if (galleries.size() < i + 1) {
+                    break;
+                }
+                Gallery gallery = galleries.get(i);
+
+                GalleryDto galleryDto = new GalleryDto(gallery, gallery.getGemini());
+                galleryDtos.add(galleryDto);
+            }
+            Page<GalleryDto> galleryPage = new PageImpl<>(galleryDtos, pageable, galleries.size());
+            ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto(galleryPage);
+            return responseGalleryPageDto;
+        }
+        ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
+        return responseGalleryPageDto;
+    }
+
+
+
+    public ResponseGalleryPageDto getUserGalleryPage(String nickname, Integer page, Integer size) {
+        Optional<UserInfo> optionalUserInfo = userInfoRepository.findByNickname(nickname);
+        if (!optionalUserInfo.isPresent()) {
+            // 사용자가 존재하지 않는 경우 처리
+            // 예: 예외를 던지거나 빈 ResponseGalleryPageDto를 반환
+        }
+        UserInfo userInfo = optionalUserInfo.get();
+//        List<Gallery> galleries = galleryRepository.findByGemini_UserInfoAndGemini_IsPublic(userInfo, true);
+        List<Gallery> galleries = galleryRepository.findPublicGalleriesByUserInfo(userInfo);
+
+
+        // 위에서 사용했던 로직을 재사용
+        if (galleries.size() > 0) {
+            if (galleries.size() < size) {
+                size = galleries.size();
+            }
+            Pageable pageable = PageRequest.of(page, size);
+            int start = (int)pageable.getOffset();
+            if (start + 1 > galleries.size()) {
+                ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
+                return responseGalleryPageDto;
+            }
+            List<GalleryDto> galleryDtos = new ArrayList<>();
+            for (int i = start; i < start + size; i++) {
+                if (galleries.size() < i + 1) {
+                    break;
+                }
+                Gallery gallery = galleries.get(i);
+
+                GalleryDto galleryDto = new GalleryDto(gallery, gallery.getGemini());
+                galleryDtos.add(galleryDto);
+            }
+            Page<GalleryDto> galleryPage = new PageImpl<>(galleryDtos, pageable, galleries.size());
+            ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto(galleryPage);
+            return responseGalleryPageDto;
+        }
+        ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
+        return responseGalleryPageDto;
+    }
+
+
     public ResponseGalleryRankingDto getDailyGallery() {
 
         ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
@@ -138,10 +222,11 @@ public class GalleryServiceImpl implements GalleryService{
         gallery.updateLikes(dailyLikes + 1, weeklyLikes + 1);
         geminiRepository.save(gemini);
         galleryRepository.save(gallery);
-        return "success";
+
+        return String.valueOf(totalLikes + 1); // 좋아요 성공하면, 전체 좋아요 개수를 다시 반환해줌.
     }
 
-    public String cancelGallery(String username, Long galleryNo) {
+    public String cancelGalleryLike(String username, Long galleryNo) {
 
         Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
         Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
@@ -156,7 +241,7 @@ public class GalleryServiceImpl implements GalleryService{
             gallery.updateLikes(dailyLikes - 1, weeklyLikes - 1);
             geminiRepository.save(gemini);
             galleryRepository.save(gallery);
-            return "success";
+            return String.valueOf(totalLikes + 1);
         }
         return "fail";
     }
