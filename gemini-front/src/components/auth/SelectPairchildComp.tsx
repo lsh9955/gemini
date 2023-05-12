@@ -21,8 +21,8 @@ const SelectPairchildComp: FC = () => {
   const [selectedCharacter, setSelectedCharacter] = useState("");
   const [characterUrls, setCharacterUrls] = useState<string[]>([]);
   const CharacterProfileUrls = [
-    "https://mygemini.s3.amazonaws.com/gemini/odri.png",
-    "https://mygemini.s3.amazonaws.com/gemini/adol.png",
+    "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+    "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/adol.png",
   ]; // 진짜 아리에스, 아돌 프로필사진 url을 담을것임. 클릭하는 이미지랑 다르니까.
   const [urlsToSendProfileImg, setUrlsToSendProfileImg] = useState<string>("");
   useEffect(() => {
