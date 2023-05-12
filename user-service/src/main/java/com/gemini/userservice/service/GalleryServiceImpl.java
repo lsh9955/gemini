@@ -157,7 +157,7 @@ public class GalleryServiceImpl implements GalleryService{
             gallery.updateLikes(dailyLikes - 1, weeklyLikes - 1);
             geminiRepository.save(gemini);
             galleryRepository.save(gallery);
-            return String.valueOf(totalLikes + 1);
+            return String.valueOf(totalLikes - 1);
         }
         return "fail";
     }
