@@ -58,9 +58,15 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
   return (
     <>
       <StyledHeaderTools>
-        {reduxProfileImage && (
+        {reduxProfileImage ? (
           <StyledProfileImage
             src={reduxProfileImage}
+            alt="ProfileImage"
+            onClick={showProfileModalHandler}
+          />
+        ) : (
+          <StyledProfileImage
+            src={Adol1by1Dummy}
             alt="ProfileImage"
             onClick={showProfileModalHandler}
           />
