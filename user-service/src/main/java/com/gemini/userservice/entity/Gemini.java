@@ -19,14 +19,15 @@ public class Gemini {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    @Column(name = "gemini_no", unique = true, nullable = false)
+    private Long geminiNo;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description", nullable = false)
     private String description;
+
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
@@ -36,6 +37,9 @@ public class Gemini {
 
     @Column(name = "total_like", nullable = false)
     private Integer totalLike;
+
+    @Column(name = "seed", nullable = false)
+    private Long seed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
@@ -49,7 +53,13 @@ public class Gemini {
     @JoinColumn(name = "gallery_no")
     private Gallery gallery;
 
+
+
     public void updateLikes(Integer totalLike) {
         this.totalLike = totalLike;
+    }
+
+    public void contract(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }
