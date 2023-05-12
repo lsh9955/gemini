@@ -57,7 +57,7 @@ const Main: React.FC = () => {
         <LeftComponent to="/aiImage">
           <div>{hoverMessage[0]}</div>
         </LeftComponent>
-        <RightComponent to="/">
+        <RightComponent to="/room">
           <div>{hoverMessage[1]}</div>
         </RightComponent>
       </MainWrapper>
