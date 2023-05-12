@@ -8,5 +8,7 @@ public class RequestCompleteGeminiDto {
 
     private String imgUrl;
 
-    private List<String> prompts;
+    private List<Long> tagIds;
+
+    private Long seed;
 }

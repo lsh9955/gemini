@@ -78,6 +78,9 @@ public class AlarmServiceImpl implements AlarmService {
         if(userInfo.isPresent()) {
             UserInfo user = userInfo.get();
             Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
+            gemini.contract(user);
+            geminiRepository.save(gemini);
+            return "success";
         }
         return null;
     }
