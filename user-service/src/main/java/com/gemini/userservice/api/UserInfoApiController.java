@@ -2,6 +2,7 @@ package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.*;
 
+import com.gemini.userservice.dto.request.RequestNicknameDto;
 import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
@@ -118,11 +119,12 @@ public class UserInfoApiController {
         return ResponseEntity.ok("success");
     }
 
-    @GetMapping("/followcount/{nickname}")
-    public ResponseEntity<ResponseFollowCountDto> getFollowCounts(@PathVariable String nickname) {
-        ResponseFollowCountDto followCountDTO = userInfoService.getFollowCounts(nickname);
+    @PostMapping("/followcount")
+    public ResponseEntity<ResponseFollowCountDto> getFollowCounts(@RequestBody RequestNicknameDto requestNicknameDto) {
+        ResponseFollowCountDto followCountDTO = userInfoService.getFollowCounts(requestNicknameDto.getNickname());
         return ResponseEntity.ok(followCountDTO);
     }
+
 
 
     @PostMapping("/checkNickname") // test complete 😀
