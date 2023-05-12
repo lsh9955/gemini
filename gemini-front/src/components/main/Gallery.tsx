@@ -20,6 +20,9 @@ import {
 import MyProfileContentBody from "../profile/myprofile/MyProfileContentBody";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { ImageWrapper } from "../profile/myprofile/MyProfileContentBody.styles";
+import { Backdrop } from "../geminiDetail/UserGeminiDetail.styles";
+import UserGeminiDetail from "../geminiDetail/UserGeminiDetail";
+import { number } from "yargs";
 
 interface Image {
   galleryNo: number;
@@ -33,6 +36,11 @@ interface GalleryProps {
 interface ImageData {
   imageUrl: string;
   geminiPk: number;
+}
+
+interface ImageData2 {
+  imageUrl: string;
+  galleryNo: number;
 }
 
 const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
@@ -64,6 +72,20 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   const [weeklyTop5, setWeeklyTop5] = useState<ImageData[]>([...dummyImgs]);
   const [monthlyTop5, setMonthlyTop5] = useState<ImageData[]>([...dummyImgs]);
 
+  useEffect(() => {
+    const dailyRes = axiosInstanceWithAccessToken.get(
+      "/user-service/gallery/daily"
+    );
+    const weeklyRes = axiosInstanceWithAccessToken.get(
+      "/user-service/gallery/weekly"
+    );
+
+    // Dto 보니까 아래처럼 들어와서 바꿔야함.
+    // interface ImageData2 {
+    //   imageUrl: string;
+    //   galleryNo: number;
+    // }
+  }, []);
   // 무한스크롤 😀
 
   const handleImageClick = (pk: number) => {
@@ -144,6 +166,20 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     onClick: () => void;
   }
 
+  // for model component 😉 commented out below are already exist
+  // const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // const handleImageClick = (pk: number) => {
+  //   setSelectedImagePk(pk);
+  //   setIsModalOpen(true);
+  // };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  // for model component 😉
+
   return (
     <GalleryWrap>
       {/* <GalleryTitle ref={ref}>
@@ -157,6 +193,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
               key={index}
               imageUrl={imageData.imageUrl}
               geminiPk={imageData.geminiPk}
+              onClick={() => handleImageClick(imageData.geminiPk)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
@@ -167,6 +204,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
               key={index}
               imageUrl={imageData.imageUrl}
               geminiPk={imageData.geminiPk}
+              onClick={() => handleImageClick(imageData.geminiPk)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
@@ -182,6 +220,15 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
 
         <EmptyBlock></EmptyBlock>
       </ContentWrap>
+      {isModalOpen && (
+        <>
+          <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
+          <UserGeminiDetail
+            closeModal={closeModal}
+            selectedImagePk={selectedImagePk}
+          />
+        </>
+      )}
     </GalleryWrap>
   );
 });
