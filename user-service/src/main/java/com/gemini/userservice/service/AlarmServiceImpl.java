@@ -1,6 +1,7 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
+import com.gemini.userservice.dto.Alarm.GeminiAlarmDto;
 import com.gemini.userservice.dto.Alarm.LikeAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.entity.Alarm;
@@ -86,7 +87,6 @@ public class AlarmServiceImpl implements AlarmService {
 
 
     @Override
-
     public ResponseAlarmDto createLikeAlarm(String username, LikeAlarmDto likeAlarmDto, SseEmitter emitter) {
 
 
@@ -144,6 +144,50 @@ public class AlarmServiceImpl implements AlarmService {
         return responseAlarmDto;
 
     }
+
+    @Override
+    public ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto, SseEmitter emitter) {
+
+        // 닉네임 정보 가져오기
+        Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(geminiAlarmDto.getUsername());
+        UserInfo userInfo = userInfo2.get();
+        String nickname = userInfo.getNickname();
+        geminiAlarmDto.setNickname(nickname);
+
+        // 인코딩한 메세지 넣기
+        String messege = "Gemini 소환이 완료되었습니다.";
+        String encodedMessage = new String(messege.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+
+        // 알람 엔티티 채우기
+        Alarm alarm = Alarm.builder()
+                .memo(encodedMessage)
+                .geminiNo(geminiAlarmDto.getGeminiNo())
+                .userInfo(userInfo)
+                .category(3)
+                .checked(false)
+                .nickname(nickname)
+                .build();
+        alarmRepository.save(alarm);
+
+        // 새로운 알람 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
+        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
+                .memo(encodedMessage)
+                .build();
+
+        for (SseEmitter sseEmitter : emitters) {
+            try {
+                sseEmitter.send(responseAlarmDto);
+            } catch (IOException ex) {
+                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
+                emitters.remove(emitter);
+            }
+
+        }
+
+        return responseAlarmDto;
+
+    }
+
 
     @Override
     public String contractGemini(String username, Long geminiNo) {
