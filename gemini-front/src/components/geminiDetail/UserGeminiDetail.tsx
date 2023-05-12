@@ -155,7 +155,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                 if (event === "complete") onAnimationComplete();
               }}
             />
-            )
+            {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
             <GeminiDetailImgWrapper backgroundImage={geminiImg}>
               <LikeNicknameWrapper>
                 <ProfileWrapper
