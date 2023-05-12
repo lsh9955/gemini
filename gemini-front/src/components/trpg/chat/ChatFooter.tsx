@@ -2,6 +2,7 @@ import React, { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
 import { io, Socket } from "socket.io-client";
 import Dialogue from "../dialogue/Dialogue";
 import PersonalMsgSelect from "./PersonalMsgSelect";
+import { useSelector } from "react-redux";
 import { ChatInputForm, ChatInputWrap, ChatStatuButtonWrap } from "./ChatStyle";
 const ChatFooter = ({
   nowMsgTypeHandler,
@@ -17,16 +18,17 @@ const ChatFooter = ({
   const [msType, setMsType] = useState("룸 채팅");
   const [sendTo, setSendTo] = useState("");
   const handleSendMessage = () => {
-    if (message.trim() && localStorage.getItem("userInfo")) {
+    if (message.trim() && userSeq.nickname) {
       chatSocket?.emit("message", {
         //추후 유저 이미지도 추가할것
         text: message,
-        name: localStorage.getItem("userInfo"),
+        name: userSeq.nickname,
         time: Date.now(),
         socketID: chatSocket?.id,
         //룸(게임만을 위한) 채팅, 정보 채팅, 잡담, 개인채팅에 따라 유형을 나눔
         type: msType,
         sendtarget: sendTo,
+        userImg: userSeq.profileImgUrl,
       });
     }
     setMessage("");
@@ -38,7 +40,7 @@ const ChatFooter = ({
   const sendtargetHandler = (targetUser: string) => {
     setSendTo(targetUser);
   };
-
+  const userSeq = useSelector((state: any) => state.user);
   const onKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
@@ -95,7 +97,7 @@ const ChatFooter = ({
         </button>
       </ChatStatuButtonWrap>
       <ChatInputWrap>
-        <div>내 이름 : {localStorage.getItem("userInfo")}</div>
+        <div>내 이름 : {userSeq.nickname}</div>
         <div>
           {msType === "개인채팅" && (
             <PersonalMsgSelect

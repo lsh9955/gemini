@@ -33,6 +33,7 @@ import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
 import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
 import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 import { AppStore } from "../../store/store";
+import MyProfileContentBodyR from "../../components/profile/myprofile/MyProfileContentBodyR";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -84,19 +85,28 @@ const MyProfile: FC = () => {
 
   // for infinite scroll 😀
   const dummyImgs = [
-    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 1 },
-    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 2 },
-    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 3 },
-    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 4 },
-    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 5 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 1, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 2, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },
     // ...
   ];
+
   interface ImageData {
     imageUrl: string;
     geminiPk: number;
   }
 
-  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
+  interface ImageDataMine {
+    geminiPk: number;
+    image: string;
+    userPk: number;
+    // imageUrl: string;
+    // geminiPk: number;
+  }
+
+  const [images, setImages] = useState<ImageDataMine[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const infScrollImgLength = getInfScrollImgLength(images.length);
@@ -119,6 +129,21 @@ const MyProfile: FC = () => {
           (item: any) => item.imageUrl
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
+        // setImages((prevImages) => [
+        //   ...prevImages.map(
+        //     (item: ImageDataMine): ImageData => ({
+        //       imageUrl: item.image,
+        //       geminiPk: item.geminiPk,
+        //     })
+        //   ),
+        //   ...newImages.map(
+        //     (item: ImageDataMine): ImageData => ({
+        //       imageUrl: item.image,
+        //       geminiPk: item.geminiPk,
+        //     })
+        //   ),
+        // ]);
+
         setPage((prevPage) => prevPage + 1);
         setHasMore(newImages.length > 0);
       } else {
@@ -196,7 +221,7 @@ const MyProfile: FC = () => {
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
-            <MyProfileContentBody
+            <MyProfileContentBodyR
               images={images}
               hasMore={hasMore}
               loadMoreImages={loadMoreImages}

@@ -6,27 +6,10 @@ import { logoutAccount } from "./store/UserSlice";
 import { logout } from "./store/Cookie";
 import axios from "axios";
 import AppRoutes from "./AppRoutes";
-import { io } from "socket.io-client";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-
-  //socket 연결
-  const [chatSocket, setChatSocket] = useState<any>(null);
-  useEffect(() => {
-    const sockConnect = io("https://mygemini.co.kr:443", {
-      path: "/socket",
-      transports: ["websocket", "polling"],
-      secure: true,
-    });
-    setChatSocket(sockConnect);
-    console.log("소켓 생성이 됩니까?");
-    console.log(sockConnect);
-    return () => {
-      sockConnect.disconnect();
-    };
-  }, []);
 
   // const handleResize = () => {
   //   const vh = window.innerHeight * 0.01;
@@ -59,7 +42,7 @@ const App: React.FC = () => {
           scrollbar-width: none; /* Firefox */
         }
       `}</style>
-      <AppRoutes chatSocket={chatSocket} />
+      <AppRoutes />
     </BrowserRouter>
   );
 };

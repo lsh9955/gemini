@@ -138,7 +138,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
       <FlipContainer isFlipped={isFlipped}>
         {!isFlipped && (
           <Flipper isFront={true}>
-            <Player
+            {/* <Player
               ref={lottieRef}
               src={HeartAnimation}
               background="transparent"
@@ -154,7 +154,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
               onEvent={(event) => {
                 if (event === "complete") onAnimationComplete();
               }}
-            />
+            /> */}
             {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
             <GeminiDetailImgWrapper backgroundImage={geminiImg}>
               <LikeNicknameWrapper>
