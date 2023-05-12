@@ -3,13 +3,8 @@ package com.gemini.userservice.service;
 import com.gemini.userservice.dto.GalleryDto;
 import com.gemini.userservice.dto.GeminiDto;
 import com.gemini.userservice.dto.ProfileResponseDto;
-import com.gemini.userservice.dto.response.ResponseGalleryDetailDto;
-import com.gemini.userservice.dto.response.ResponseGalleryPageDto;
-import com.gemini.userservice.dto.response.ResponseGalleryRankingDto;
-import com.gemini.userservice.entity.Gallery;
-import com.gemini.userservice.entity.Gemini;
-import com.gemini.userservice.entity.Like;
-import com.gemini.userservice.entity.UserInfo;
+import com.gemini.userservice.dto.response.*;
+import com.gemini.userservice.entity.*;
 import com.gemini.userservice.repository.GalleryRepository;
 import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.LikeRepository;
@@ -45,6 +40,8 @@ public class GalleryServiceImpl implements GalleryService{
         return total;
     }
 
+    // 전체갤러리. 페이징 조회 기준은 갤러리.
+    // 반환해주는게 갤러리 pk인가? 제미니 pk인가? -> 제미니 pk여야함. 😀 확인필요. 제미니 pk를 보내고 있는지 갤러리 pk를 보내고 있는지
     public ResponseGalleryPageDto getGalleryPage(Integer page, Integer size) {
 
         List<Gallery> galleries = galleryRepository.findAll();
@@ -77,8 +74,9 @@ public class GalleryServiceImpl implements GalleryService{
     }
 
 
-
-    public ResponseGalleryPageDto getMyGalleryPage(String username, Integer page, Integer size) {
+    // 내 갤러리. 페이징 조회 기준은 갤러리.
+    // 반환해주는게 갤러리 pk인가? 제미니 pk인가? -> 제미니 pk여야함. 😀 확인필요. 제미니 pk를 보내고 있는지 갤러리 pk를 보내고 있는지
+    public ResponseGeminiPageDto getMyGalleryPage(String username, Integer page, Integer size) {
         Optional<UserInfo> optionalUserInfo = userInfoRepository.findByUsername(username);
         if (!optionalUserInfo.isPresent()) {
             // 사용자가 존재하지 않는 경우 처리
@@ -86,39 +84,42 @@ public class GalleryServiceImpl implements GalleryService{
         }
         UserInfo userInfo = optionalUserInfo.get();
 
-        List<Gallery> galleries = galleryRepository.findByGemini_UserInfo(userInfo);
+        List<Gemini> myGeminis = geminiRepository.findByUserInfo(userInfo); //mypage니까 다 가져옴.
+
+//        List<Gallery> galleries = galleryRepository.findByGemini_UserInfo(userInfo);
 
         // 위에서 사용했던 로직을 재사용
-        if (galleries.size() > 0) {
-            if (galleries.size() < size) {
-                size = galleries.size();
+        if (myGeminis.size() > 0) {
+            if (myGeminis.size() < size) {
+                size = myGeminis.size();
             }
             Pageable pageable = PageRequest.of(page, size);
             int start = (int)pageable.getOffset();
-            if (start + 1 > galleries.size()) {
-                ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
-                return responseGalleryPageDto;
+            if (start + 1 > myGeminis.size()) {
+                ResponseGeminiPageDto responseGeminiPageDto = new ResponseGeminiPageDto();
+                return responseGeminiPageDto;
             }
-            List<GalleryDto> galleryDtos = new ArrayList<>();
+            List<GeminiDto> geminiDtos = new ArrayList<>();
             for (int i = start; i < start + size; i++) {
-                if (galleries.size() < i + 1) {
+                if (myGeminis.size() < i + 1) {
                     break;
                 }
-                Gallery gallery = galleries.get(i);
+                Gemini myGemini = myGeminis.get(i);
 
-                GalleryDto galleryDto = new GalleryDto(gallery, gallery.getGemini());
-                galleryDtos.add(galleryDto);
+                GeminiDto geminiDto = new GeminiDto(myGemini);
+                geminiDtos.add(geminiDto);
             }
-            Page<GalleryDto> galleryPage = new PageImpl<>(galleryDtos, pageable, galleries.size());
-            ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto(galleryPage);
-            return responseGalleryPageDto;
+            Page<GeminiDto> geminiPage = new PageImpl<>(geminiDtos, pageable, myGeminis.size());
+            ResponseGeminiPageDto responseGeminiPageDto = new ResponseGeminiPageDto(geminiPage);
+            return responseGeminiPageDto;
         }
-        ResponseGalleryPageDto responseGalleryPageDto = new ResponseGalleryPageDto();
-        return responseGalleryPageDto;
+        ResponseGeminiPageDto responseGeminiPageDto = new ResponseGeminiPageDto();
+        return responseGeminiPageDto;
     }
 
 
-
+    // 유저갤러리. 페이징 조회 기준은 갤러리. -> 제미니 기준으로 바꾸는게 좋음. (갤러리는 ispublic으로 한번 필터링 된놈들이라서..)
+    // 반환해주는게 갤러리 pk인가? 제미니 pk인가? -> 제미니 pk여야함. 😀 수정필요.
     public ResponseGalleryPageDto getUserGalleryPage(String nickname, Integer page, Integer size) {
         Optional<UserInfo> optionalUserInfo = userInfoRepository.findByNickname(nickname);
         if (!optionalUserInfo.isPresent()) {
@@ -200,6 +201,24 @@ public class GalleryServiceImpl implements GalleryService{
         ResponseGalleryDetailDto responseGalleryDetailDto = new ResponseGalleryDetailDto(producer, gemini, liked);
         return responseGalleryDetailDto;
     }
+
+    public ResponseGeminiDetailDto getGeminiDetail(String username, Long geminiNo) {
+        Optional<UserInfo> owner = userInfoRepository.findByUsername(username);
+        Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
+//        List<Tag> tags = gemini.get
+
+        return ResponseGeminiDetailDto.builder()
+                .geminiName(gemini.getName())
+                .geminiDescription(gemini.getDescription())
+                .geminiImage(gemini.getImageUrl())
+                .isPublic(gemini.getIsPublic())
+                .totalLike(gemini.getTotalLike())
+//                .tags(tags) // 😀수정 필요
+                .build();
+
+
+    }
+
 
     public String likeGallery(String username, Long galleryNo) {
 

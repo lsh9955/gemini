@@ -33,7 +33,7 @@ public class Gemini {
     private String imageUrl;
 
     @Column(name = "is_public", nullable = false)
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @Column(name = "total_like", nullable = false)
     private Integer totalLike;
