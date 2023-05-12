@@ -13,11 +13,12 @@ export const DialogueWrap = styled.div`
   width: 100%;
   height: 85%;
   display: flex;
-  padding: 0 5%;
+
   align-items: center;
   flex-direction: row;
   color: white;
   font-size: 130%;
+
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.4) 0%,
@@ -61,4 +62,25 @@ export const ButtonsWrap = styled.div`
   align-items: center;
   justify-content: right;
   flex-direction: row;
+`;
+export const DiaLogueUser = styled.div`
+  width: 20%;
+  height: 100%;
+  margin-right: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  & img {
+    width: 45%;
+    height: auto;
+    border-radius: 4px;
+  }
+  & div {
+    text-align: center;
+    width: 100%;
+    margin-top: 5%;
+    font-size: 80%;
+    word-break: keep-all;
+  }
 `;
