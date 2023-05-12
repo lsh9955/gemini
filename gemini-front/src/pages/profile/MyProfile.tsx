@@ -33,6 +33,7 @@ import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
 import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
 import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 import { AppStore } from "../../store/store";
+import MyProfileContentBodyR from "../../components/profile/myprofile/MyProfileContentBodyR";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -49,11 +50,16 @@ const MyProfile: FC = () => {
   const [starPoint, setStarPoint] = useState<number>(10);
 
   const getMyinfo = async () => {
+    console.log("내 정보를 가져옵니다.");
     const userInfoRes = await axiosInstanceWithAccessToken.get(
       "/user-service/profile/login"
     );
-    const followingRes = await axiosInstanceWithAccessToken.get(
-      `/user-service/profile/followcount/${reduxNickname}`
+    console.log(reduxNickname);
+    console.log("닉네임으로 팔로잉 찾아봅니다.");
+
+    const followingRes = await axiosInstanceWithAccessToken.post(
+      `/user-service/profile/followcount`,
+      { nickname: reduxNickname }
     );
 
     console.log("내정보");
@@ -79,19 +85,28 @@ const MyProfile: FC = () => {
 
   // for infinite scroll 😀
   const dummyImgs = [
-    { url: "http://placeimg.com/150/200/tech", pk: 1 },
-    { url: "http://placeimg.com/150/200/tech", pk: 2 },
-    { url: "http://placeimg.com/150/200/tech", pk: 3 },
-    { url: "http://placeimg.com/150/200/tech", pk: 4 },
-    { url: "http://placeimg.com/150/200/tech", pk: 5 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 1, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 2, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
+    { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },
     // ...
   ];
+
   interface ImageData {
-    url: string;
-    pk: number;
+    imageUrl: string;
+    geminiPk: number;
   }
 
-  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
+  interface ImageDataMine {
+    geminiPk: number;
+    image: string;
+    userPk: number;
+    // imageUrl: string;
+    // geminiPk: number;
+  }
+
+  const [images, setImages] = useState<ImageDataMine[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const infScrollImgLength = getInfScrollImgLength(images.length);
@@ -99,18 +114,36 @@ const MyProfile: FC = () => {
 
   const loadMoreImages = useCallback(async () => {
     try {
-      const response = await axios.get("/api/your_endpoint", {
-        params: {
-          page: page,
-          size: 16,
-        },
-      });
+      const response = await axiosInstanceWithAccessToken.get(
+        "/user-service/profile/mygeminis",
+        {
+          params: {
+            page: page,
+            size: 16,
+          },
+        }
+      );
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
           (item: any) => item.imageUrl
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
+        // setImages((prevImages) => [
+        //   ...prevImages.map(
+        //     (item: ImageDataMine): ImageData => ({
+        //       imageUrl: item.image,
+        //       geminiPk: item.geminiPk,
+        //     })
+        //   ),
+        //   ...newImages.map(
+        //     (item: ImageDataMine): ImageData => ({
+        //       imageUrl: item.image,
+        //       geminiPk: item.geminiPk,
+        //     })
+        //   ),
+        // ]);
+
         setPage((prevPage) => prevPage + 1);
         setHasMore(newImages.length > 0);
       } else {
@@ -188,7 +221,7 @@ const MyProfile: FC = () => {
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
-            <MyProfileContentBody
+            <MyProfileContentBodyR
               images={images}
               hasMore={hasMore}
               loadMoreImages={loadMoreImages}

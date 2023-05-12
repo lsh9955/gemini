@@ -10,26 +10,28 @@ import InfiniteScroll from "react-infinite-scroll-component";
 // interface ImageProps {
 //   imageUrl: string;
 // }
-interface ImageProps {
-  imageUrl: string;
-  pk: number;
+interface ImageMineProps {
+  geminiPk: number;
+  image: string;
+  userPk: number;
   onClick: () => void;
 }
 
 // const Image: FC<ImageProps> = ({ imageUrl }) => {
 //   return <ImageWrapper style={{ backgroundImage: `url(${imageUrl})` }} />;
 // };
-const Image: FC<ImageProps> = ({ imageUrl, pk, onClick }) => {
+const Image: FC<ImageMineProps> = ({ geminiPk, image, userPk, onClick }) => {
   return (
     <ImageWrapper
-      style={{ backgroundImage: `url(${imageUrl})` }}
+      style={{ backgroundImage: `url(${image})` }}
       onClick={onClick}
     />
   );
 };
 
 interface MyProfileContentBodyProps {
-  images: { imageUrl: string; geminiPk: number }[];
+  images: { geminiPk: number; image: string; userPk: number }[];
+
   hasMore: boolean;
   loadMoreImages: () => void;
 
@@ -37,7 +39,7 @@ interface MyProfileContentBodyProps {
   onImageClick: (geminiPk: number) => void;
 }
 
-const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
+const MyProfileContentBodyR: FC<MyProfileContentBodyProps> = ({
   images,
   hasMore,
   loadMoreImages,
@@ -62,8 +64,9 @@ const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
           <Image
             key={index}
             // imageUrl={imageUrl}
-            imageUrl={image.imageUrl}
-            pk={image.geminiPk} // 이미지 객체에 pk가 포함되어 있다고 가정합니다.
+            image={image.image}
+            geminiPk={image.geminiPk} // 이미지 객체에 pk가 포함되어 있다고 가정합니다.
+            userPk={image.userPk}
             onClick={() => onImageClick(image.geminiPk)}
           />
         ))}
@@ -72,4 +75,4 @@ const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
   );
 };
 
-export default MyProfileContentBody;
+export default MyProfileContentBodyR;

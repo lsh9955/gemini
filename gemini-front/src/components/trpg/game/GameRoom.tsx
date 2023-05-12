@@ -5,14 +5,16 @@ import ChatPage from "../chat/ChatPage";
 import GetPicture from "../playAsset/GetPicture";
 import PlayBar from "../playAsset/PlayBar";
 import { ChatScreen, GameScreen, RoomWrap } from "./GameRoomStyle";
-
+import { BASE_URL } from "../config";
 import Dialogue from "../dialogue/Dialogue";
 import GroundMain from "../groundMain/GroundMain";
 import MusicPlayer from "../playAsset/MusicPlayer";
 import DiceRoller from "../playAsset/DiceRoller";
+import { useSelector } from "react-redux";
 
 const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
-  const userN = localStorage.getItem("userInfo");
+  const userSeq = useSelector((state: any) => state.user);
+  const userN = userSeq.nickname;
   const [userList, setUserList] = useState<Array<string>>([]);
   const [chatList, setChatList] = useState<string[]>([]);
   const [createPicList, setCreatePicList] = useState<string[]>([]);
@@ -41,7 +43,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
+        const getRoomInfo = await axios.get(`${BASE_URL}/node/room`);
         const nowURL = new URL(window.location.href).pathname.split("/").at(-1);
 
         setUserList(

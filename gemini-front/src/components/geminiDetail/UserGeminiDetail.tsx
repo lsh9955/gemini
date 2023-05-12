@@ -3,10 +3,13 @@ import {
   ButtonWrapper,
   DescArea,
   DescBlockWrapper,
+  FlipContainer,
+  Flipper,
   FormLabel,
   GeminiDetailImgWrapper,
   GeminiDetialInfoWrapper,
   GeminiDetialWrapper,
+  GeminiDetialWrapperCanFlip,
   GeminiInfoButton,
   HeartIcon,
   LikeCount,
@@ -34,6 +37,7 @@ import { FaHeart } from "react-icons/fa";
 import HeartAnimation from "../../assets/animation-effect/HeartAnimation.json";
 import { useHistory } from "react-router";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
+import { Background } from "../../pages/ai_image/AiImage.styles";
 
 interface UserGeminiDetailProps {
   closeModal: () => void;
@@ -89,7 +93,11 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   // ❤ 하트 세번째시도
   const [animationVisible, setAnimationVisible] = useState(false);
   const lottieRef = useRef<Player | null>(null);
+  // 현재 like여부에 따라 하트 채워지고.. 달라짐.
+  const [isLike, setIsLike] = useState(false);
+
   const handleComponentClick = () => {
+    // 1원래
     if (!isLike) {
       setIsLike(!isLike);
       if (lottieRef.current) {
@@ -100,77 +108,105 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
       setIsLike(!isLike);
     }
   };
+
+  // ... 생략 ...
+
+  useEffect(() => {
+    console.log("animationVisible:", animationVisible); // animationVisible 상태 로깅
+  }, [animationVisible]);
+
+  useEffect(() => {
+    return () => {
+      if (lottieRef.current) {
+        lottieRef.current.stop();
+        // lottieRef.current = null;
+      }
+    };
+  }, []);
+
   const onAnimationComplete = () => {
     setAnimationVisible(false);
+    lottieRef.current = null;
   };
 
-  // 현재 like여부에 따라 하트 채워지고.. 달라짐.
-  const [isLike, setIsLike] = useState(false);
+  // flip관련
+  const [isFlipped, setIsFlipped] = useState<boolean>(false);
+  const flip = () => setIsFlipped(!isFlipped);
 
   return (
     <>
-      <GeminiDetialWrapper>
-        <Player
-          ref={lottieRef}
-          src={HeartAnimation}
-          background="transparent"
-          speed={1.1} // 속도 조정 가능
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            display: animationVisible ? "block" : "none",
-          }}
-          autoplay={false}
-          loop={false}
-          onEvent={(event) => {
-            if (event === "complete") onAnimationComplete();
-          }}
-        />
-
-        <GeminiDetailImgWrapper backgroundImage={geminiImg}>
-          <LikeNicknameWrapper>
-            <ProfileWrapper
-              onClick={() => history.push(`/userprofile/${userNickname}`)}
-            >
-              <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
-              <Nickname>{userNickname}</Nickname>
-            </ProfileWrapper>
-            <LikeWrapper onClick={handleComponentClick}>
-              <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
-              <LikeCount>{likeCount}개의 좋아요</LikeCount>
-            </LikeWrapper>
-          </LikeNicknameWrapper>
-        </GeminiDetailImgWrapper>
-        <GeminiDetialInfoWrapper>
-          <ToggleWrapper hideToggle={true}>
-            <ToggleText>공개</ToggleText>
-            <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-              <ToggleButtonCircle isOn={isOn} />
-            </ToggleButtonContainer>
-            <ToggleText>비공개</ToggleText>
-          </ToggleWrapper>
-          <NameInputWrapper>
-            <FormLabel>이름</FormLabel>
-            <TextInputDiv>{geminiName}</TextInputDiv>
-          </NameInputWrapper>
-          <DescBlockWrapper hideToggle={true}>
-            <FormLabel>소개</FormLabel>
-            <DescArea>{desc}</DescArea>
-          </DescBlockWrapper>
-          <TagBlockWrapper hideToggle={true}>
-            <FormLabel>키워드</FormLabel>
-            <TagArea>
-              {tagContents.map((tag, index) => (
-                <Tags key={index}>{tag}</Tags>
-              ))}
-            </TagArea>
-          </TagBlockWrapper>
-          <ButtonWrapper>
-            <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
-          </ButtonWrapper>
-        </GeminiDetialInfoWrapper>
-      </GeminiDetialWrapper>
+      <FlipContainer isFlipped={isFlipped}>
+        {!isFlipped && (
+          <Flipper isFront={true}>
+            {/* <Player
+              ref={lottieRef}
+              src={HeartAnimation}
+              background="transparent"
+              speed={1.1} // 속도 조정 가능
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                display: animationVisible ? "block" : "none",
+              }}
+              autoplay={false}
+              loop={false}
+              onEvent={(event) => {
+                if (event === "complete") onAnimationComplete();
+              }}
+            /> */}
+            {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
+            <GeminiDetailImgWrapper backgroundImage={geminiImg}>
+              <LikeNicknameWrapper>
+                <ProfileWrapper
+                  onClick={() => history.push(`/userprofile/${userNickname}`)}
+                >
+                  <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
+                  <Nickname>{userNickname}</Nickname>
+                </ProfileWrapper>
+                <LikeWrapper onClick={handleComponentClick}>
+                  <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
+                  <LikeCount>{likeCount}개의 좋아요</LikeCount>
+                </LikeWrapper>
+              </LikeNicknameWrapper>
+            </GeminiDetailImgWrapper>
+            <GeminiDetialInfoWrapper>
+              <ToggleWrapper hideToggle={true}>
+                <ToggleText>공개</ToggleText>
+                <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
+                  <ToggleButtonCircle isOn={isOn} />
+                </ToggleButtonContainer>
+                <ToggleText>비공개</ToggleText>
+              </ToggleWrapper>
+              <NameInputWrapper>
+                <FormLabel>이름</FormLabel>
+                <TextInputDiv>{geminiName}</TextInputDiv>
+              </NameInputWrapper>
+              <DescBlockWrapper hideToggle={true}>
+                <FormLabel>소개</FormLabel>
+                <DescArea>{desc}</DescArea>
+              </DescBlockWrapper>
+              <TagBlockWrapper hideToggle={true}>
+                <FormLabel>키워드</FormLabel>
+                <TagArea>
+                  {tagContents.map((tag, index) => (
+                    <Tags key={index}>{tag}</Tags>
+                  ))}
+                </TagArea>
+              </TagBlockWrapper>
+              <ButtonWrapper>
+                <GeminiInfoButton onClick={flip}>
+                  이 레시피 사용하기
+                </GeminiInfoButton>
+              </ButtonWrapper>
+            </GeminiDetialInfoWrapper>
+          </Flipper>
+        )}
+        <Flipper isFront={false}>
+          <div></div>
+          뒷면sssssssssssssssssssssss
+        </Flipper>
+      </FlipContainer>
     </>
   );
 };

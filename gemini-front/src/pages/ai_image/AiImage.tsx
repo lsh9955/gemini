@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
+
 import axios from "axios";
 
 import GenreImage from "../../components/ai_image/GenreImage";
@@ -274,9 +275,6 @@ const AiImage: FC = () => {
   // 별 개수에 따라서 다르게 모달이 뜸
   const [showGeminiModal, setShowGeminiModal] = useState(false);
   const [showNeedStarModal, setShowNeedStarModal] = useState(false);
-
-  //   const star = useSelector((state: UserState) => state.user.star);
-  const [star, setStar] = useState(0);
 
   const headers = {
     "X-Username": "google_109918724409380589068",

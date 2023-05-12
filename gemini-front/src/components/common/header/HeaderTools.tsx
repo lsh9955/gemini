@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { AppStore } from "../../../store/store";
+import { useSelector } from "react-redux";
 import Message from "../../../assets/img/Message.png";
 import Notification from "../../../assets/img/Notification.png";
 import Adol1by1Dummy from "../../../assets/img/Adol1by1Dummy.png";
@@ -28,6 +29,10 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
+  const reduxProfileImage = useSelector(
+    (state: AppStore) => state.user.profileImgUrl
+  );
+
   const showProfileModalHandler = () => {
     setShowAlarmModal(false);
     setShowProfileModal((prevState) => !prevState);
@@ -53,11 +58,19 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
   return (
     <>
       <StyledHeaderTools>
-        <StyledProfileImage
-          src={Adol1by1Dummy}
-          alt="ProfileImage"
-          onClick={showProfileModalHandler}
-        ></StyledProfileImage>
+        {reduxProfileImage ? (
+          <StyledProfileImage
+            src={reduxProfileImage}
+            alt="ProfileImage"
+            onClick={showProfileModalHandler}
+          />
+        ) : (
+          <StyledProfileImage
+            src={Adol1by1Dummy}
+            alt="ProfileImage"
+            onClick={showProfileModalHandler}
+          />
+        )}
         <StyledMessage
           src={Message}
           alt="MessageImg"
