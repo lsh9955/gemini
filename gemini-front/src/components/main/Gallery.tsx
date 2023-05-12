@@ -186,7 +186,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
         전체 둘러보기 {totalGallery}개의 이미지
       </GalleryTitle> */}
       <ContentWrap>
-        <GalleryTitleName ref={ref}>주간 TOP 5</GalleryTitleName>
+        <GalleryTitleName ref={ref}>일간 TOP 5</GalleryTitleName>
         <ImgWrap>
           {weeklyTop5.map((imageData, index) => (
             <StyledImg
@@ -197,7 +197,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
             />
           ))}
         </ImgWrap>
-        <GalleryTitleName>월간 TOP 5</GalleryTitleName>
+        <GalleryTitleName>주간 TOP 5</GalleryTitleName>
         <ImgWrap>
           {monthlyTop5.map((imageData, index) => (
             <StyledImg
@@ -218,7 +218,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
           onImageClick={handleImageClick} // 이 부분을 추가하세요.
         />
 
-        <EmptyBlock></EmptyBlock>
+        {/* <EmptyBlock></EmptyBlock> */}
       </ContentWrap>
       {isModalOpen && (
         <>

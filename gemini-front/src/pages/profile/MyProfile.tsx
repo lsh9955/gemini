@@ -49,9 +49,12 @@ const MyProfile: FC = () => {
   const [starPoint, setStarPoint] = useState<number>(10);
 
   const getMyinfo = async () => {
+    console.log("내 정보를 가져옵니다.");
     const userInfoRes = await axiosInstanceWithAccessToken.get(
       "/user-service/profile/login"
     );
+    console.log(reduxNickname);
+    console.log("닉네임으로 팔로잉 찾아봅니다.");
     const followingRes = await axiosInstanceWithAccessToken.get(
       `/user-service/profile/followcount/${reduxNickname}`
     );

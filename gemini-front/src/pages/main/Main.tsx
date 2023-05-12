@@ -30,7 +30,7 @@ const Main: React.FC = () => {
   useEffect(() => {
     if (!accessToken) {
       alert("로그인이 필요합니다. 로그인페이지로 이동합니다.");
-      history.push("/loginPage"); // 간이로 막아둠. 수정 필요 😀
+      // history.push("/loginPage"); // 간이로 막아둠. 수정 필요 😀
     }
   }, []);
   const hoverMessage = [
