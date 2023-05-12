@@ -58,8 +58,9 @@ export const FlipContainer = styled.div<{ isFlipped: boolean }>`
   perspective: 1000px;
   transform-style: preserve-3d;
   transform: ${({ isFlipped }) =>
-    `translate(-50%, -50%) 
-     rotateY(${isFlipped ? 180 : 0}deg) rotateX(${isFlipped ? 180 : 0}deg)`};
+    `translate(-50%, -50%) rotateY(${isFlipped ? 180 : 0}deg) rotateX(${
+      isFlipped ? 180 : 0
+    }deg)`};
   transition: transform 0.8s;
 `;
 
@@ -427,4 +428,20 @@ export const GeminiInfoButton = styled.div`
   &:active {
     background-color: rgba(255, 255, 255, 0.3);
   }
+`;
+
+export const Confirm = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+`;
+
+export const ConfirmContent = styled.div`
+  transform: scaleX(-1);
 `;

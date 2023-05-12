@@ -28,6 +28,8 @@ import {
   ToggleButtonContainer,
   ToggleText,
   ToggleWrapper,
+  Confirm,
+  ConfirmContent,
 } from "./UserGeminiDetail.styles";
 import { LinkImg } from "./MyGeminiDetail.styles";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
@@ -133,6 +135,22 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const flip = () => setIsFlipped(!isFlipped);
 
+  // flip 내용물 뒤집기
+  const confirmRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (confirmRef.current) {
+      const confirmContent = confirmRef.current.querySelector(
+        ".confirm-content"
+      ) as HTMLElement;
+      if (confirmContent) {
+        confirmContent.style.transform = isFlipped
+          ? "rotateY(180deg)"
+          : "rotateY(0)";
+      }
+    }
+  }, [isFlipped]);
+
   return (
     <>
       <FlipContainer isFlipped={isFlipped}>
@@ -202,9 +220,10 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
             </GeminiDetialInfoWrapper>
           </Flipper>
         )}
-        <Flipper isFront={false}>
-          <div></div>
-          뒷면sssssssssssssssssssssss
+        <Flipper isFront={isFlipped}>
+          <Confirm ref={confirmRef}>
+            <ConfirmContent className="confirm-content">뒷면</ConfirmContent>
+          </Confirm>
         </Flipper>
       </FlipContainer>
     </>
