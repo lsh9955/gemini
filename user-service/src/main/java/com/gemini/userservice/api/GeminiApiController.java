@@ -45,10 +45,10 @@ public class GeminiApiController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-//    @PostMapping("/complete")
-//    public ResponseEntity<?> completeGemini(@RequestBody RequestCompleteGeminiDto requestCompleteGeminiDto) {
-//
-//        String res = geminiService.completeGemini(requestCompleteGeminiDto);
-//        return ResponseEntity.status(HttpStatus.OK).body(res);
-//    }
+    @PostMapping("/complete")
+    public ResponseEntity<?> completeGemini(@RequestBody RequestCompleteGeminiDto requestCompleteGeminiDto) {
+
+        Long res = geminiService.completeGemini(requestCompleteGeminiDto);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 }
