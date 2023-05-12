@@ -15,4 +15,8 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
     @Query("SELECT a FROM Alarm a WHERE a.nickname = :nickname ORDER BY a.createdAt DESC")
     Optional<List<Alarm>> findByOrderByCreatedAtDesc(String nickname);
+
+    @Query("SELECT a FROM Alarm a WHERE a.alarmId = :alarmId")
+    Alarm findAlarmById(Long alarmId);
+
 }
