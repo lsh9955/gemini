@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { AppStore } from "./store";
 
 const initialState = {
   isLogged: false,
@@ -39,5 +40,5 @@ export const UserSlice = createSlice({
 });
 //
 export const { loginAccount, logoutAccount } = UserSlice.actions;
-
+export type RootState = AppStore;
 export default UserSlice.reducer;

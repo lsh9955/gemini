@@ -41,7 +41,7 @@ const LoginSuccess: FC = () => {
       const userInfo = await getUserProfile(accessToken);
       console.log("유저프로필 받았나?");
       console.log(userInfo);
-
+      localStorage.setItem("userInfo", userInfo.nickname);
       dispatch(loginAccount(userInfo));
       newUesrCheck(userInfo);
     };

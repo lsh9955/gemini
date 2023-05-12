@@ -5,23 +5,24 @@ export const GenreSampleImageBox = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 export const GenreSampleImage = styled.img`
-  width: 100%;
-  height: 18vh;
+  width: 85%;
+  height: auto;
   padding: 1%;
   border-radius: 20px;
 
   &:hover {
     cursor: pointer;
-    opacity: 0.5;
+    filter: brightness(50%);
   }
 `;
 
 export const GenreSampleImageLock = styled.img`
-  width: 100%;
-  height: 18vh;
+  width: 85%;
+  height: auto;
   padding: 1%;
   border-radius: 20px;
 `;
