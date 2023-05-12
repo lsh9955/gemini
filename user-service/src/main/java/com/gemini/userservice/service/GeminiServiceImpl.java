@@ -71,7 +71,10 @@ public class GeminiServiceImpl implements GeminiService{
             Tag tag = tagRepository.findByTagNo(tagId);
             defaultPrompt = defaultPrompt + tag.getPrompt() + ",";
         }
-        GenerateGeminiDto generateGeminiDto = new GenerateGeminiDto(defaultPrompt, username);
+        GenerateGeminiDto generateGeminiDto = new GenerateGeminiDto(defaultPrompt, username, requestGenerateGeminiDto.getTagIds());
+        if (requestGenerateGeminiDto.getSeed() != null) {
+            generateGeminiDto.setSeed(requestGenerateGeminiDto.getSeed());
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/makegemini";
@@ -89,6 +92,18 @@ public class GeminiServiceImpl implements GeminiService{
             }
         }
         return null;
-        }
+    }
+
+//    @Override
+//    public String completeGemini(String username) {
+//
+//        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+//        Integer star = 0;
+//        if (userInfo.isPresent()) {
+//            UserInfo user = userInfo.get();
+//            star = user.getStar();
+//        }
+//        return star;
+//    }
 
 }

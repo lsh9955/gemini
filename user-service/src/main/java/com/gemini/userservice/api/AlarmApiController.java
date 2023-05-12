@@ -96,8 +96,8 @@ public class AlarmApiController {
 
         Long geminiNo = geminiMap.get("gemini_no");
         String res = alarmService.contractGemini(username, geminiNo);
-        if (res == "fail") {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        if (res == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
