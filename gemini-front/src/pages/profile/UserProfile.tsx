@@ -49,7 +49,7 @@ const UserProfile: FC = () => {
   );
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
-  const [totalGallery, setTotalGallery] = useState<number>(10);
+  const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
     const res = await axiosInstanceWithAccessToken.get(
