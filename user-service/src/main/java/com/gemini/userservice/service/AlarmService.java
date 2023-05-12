@@ -12,4 +12,6 @@ public interface AlarmService {
 
     String deleteAlarm(String username, Long alarmId);
 
+    String contractGemini(String username, Long geminiNo);
+
 }

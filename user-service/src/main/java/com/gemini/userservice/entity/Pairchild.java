@@ -16,8 +16,8 @@ import javax.persistence.*;
 public class Pairchild {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    @Column(name = "pairchild_id", unique = true, nullable = false)
+    private Long pairchildId;
 
     @Column(name = "name", nullable = false, length = 30)
     private String name;

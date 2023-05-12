@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
 
-    Alarm findTopByOrderByIdDesc();
+    Alarm findTopByOrderByAlarmIdDesc();
 
 
     @Query("SELECT a FROM Alarm a WHERE a.nickname = :nickname ORDER BY a.createdAt DESC")
