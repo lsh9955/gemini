@@ -52,14 +52,76 @@ export const ModalForm = styled.div`
 
 export const ConfirmButton = styled.button`
   border: 1px solid #ffffff;
-  border-radius: 10px;
-  padding: 0.5rem;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  margin-right: 2rem;
+  padding-bottom: 0.3rem;
+  padding-top: 0.3rem;
+  padding-left: 1.3rem;
+  padding-right: 1.3rem;
   background-color: transparent;
+  color: #ffffff;
+  font-size: 18px;
+
+  &:hover {
+    /* background: #ffffff; */
+    /* color: transparent; */
+    /* background-color: #124141; */
+    mix-blend-mode: color-burn;
+  }
 `;
 
 export const CancelButton = styled.button`
   border: 1px solid #ffffff;
-  border-radius: 10px;
-  padding: 0.5rem;
+  border-radius: 5px;
+  padding-bottom: 0.3rem;
+  padding-top: 0.3rem;
+  padding-left: 1.3rem;
+  padding-right: 1.3rem;
   background-color: transparent;
+  color: #ffffff;
+  font-size: 18px;
+
+  &:hover {
+    mix-blend-mode: color-burn;
+  }
+`;
+
+export const Interval = styled.span`
+  padding: 1rem;
+`;
+
+export const ModalTitle = styled.div`
+  justify-content: center;
+  text-align: center;
+  margin-top: 0.8rem;
+`;
+
+export const First = styled.div`
+  margin-bottom: 0.5rem;
+`;
+
+export const SmallLetter = styled.div`
+  font-size: 14px;
+`;
+
+export const OneConfirmButton = styled.button`
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  /* margin-right: 2rem; */
+  padding-bottom: 0.3rem;
+  padding-top: 0.3rem;
+  padding-left: 1.3rem;
+  padding-right: 1.3rem;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 18px;
+
+  &:hover {
+    /* background: #ffffff; */
+    /* color: transparent; */
+    /* background-color: #124141; */
+    mix-blend-mode: color-burn;
+  }
 `;

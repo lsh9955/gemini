@@ -29,12 +29,12 @@ const Image: FC<ImageProps> = ({ imageUrl, pk, onClick }) => {
 };
 
 interface MyProfileContentBodyProps {
-  images: { url: string; pk: number }[];
+  images: { imageUrl: string; geminiPk: number }[];
   hasMore: boolean;
   loadMoreImages: () => void;
 
   // for modal 😀
-  onImageClick: (pk: number) => void;
+  onImageClick: (geminiPk: number) => void;
 }
 
 const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
@@ -62,9 +62,9 @@ const MyProfileContentBody: FC<MyProfileContentBodyProps> = ({
           <Image
             key={index}
             // imageUrl={imageUrl}
-            imageUrl={image.url}
-            pk={image.pk} // 이미지 객체에 pk가 포함되어 있다고 가정합니다.
-            onClick={() => onImageClick(image.pk)}
+            imageUrl={image.imageUrl}
+            pk={image.geminiPk} // 이미지 객체에 pk가 포함되어 있다고 가정합니다.
+            onClick={() => onImageClick(image.geminiPk)}
           />
         ))}
       </StyledMyProfileContentBody>
