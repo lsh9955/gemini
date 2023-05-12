@@ -97,7 +97,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   const loadMoreImages = useCallback(async () => {
     try {
       const response = await axiosInstanceWithAccessToken.get(
-        "/user-service/profile",
+        "/user-service/gallery",
         {
           params: {
             page: page,
