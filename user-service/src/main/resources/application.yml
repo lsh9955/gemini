@@ -15,7 +15,7 @@ spring:
       matching-strategy: ant_path_matcher
 
   jpa:
-    generate-ddl: false
+    generate-ddl: true
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -41,8 +41,9 @@ spring:
       host: mygemini.co.kr
       port: 27017
       database: gemini
-      username: gemini
-      password: starrail1@
+      username: gemini12
+      password: starrail12
+      authentication-database: admin
 
 
 server:
