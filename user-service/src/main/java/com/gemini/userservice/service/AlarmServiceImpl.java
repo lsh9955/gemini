@@ -42,8 +42,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     // SSE 클라이언트를 저장하는 리스트
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-    @Autowired
-    private GeminiRepository geminiRepository;
+
 
     @Override
     public ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter) {
@@ -159,7 +158,6 @@ public class AlarmServiceImpl implements AlarmService {
         }
         return null;
     }
-}
 
 
     @Override

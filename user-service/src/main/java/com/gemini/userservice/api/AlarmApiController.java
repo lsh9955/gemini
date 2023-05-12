@@ -33,7 +33,7 @@ public class AlarmApiController {
 
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter streamSseMvc(@RequestParam(value="nickname", required=false) String nickname, HttpServletResponse response) {
+    public SseEmitter streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
         System.out.println("nickname");
         System.out.println(nickname);
@@ -92,7 +92,7 @@ public class AlarmApiController {
 
     @PostMapping("/gemini")
     public ResponseEntity<?> contractGemini(@RequestHeader("X-Username") String username,
-                                           @RequestBody Map<String, Long> geminiMap) {
+                                            @RequestBody Map<String, Long> geminiMap) {
 
         Long geminiNo = geminiMap.get("gemini_no");
         String res = alarmService.contractGemini(username, geminiNo);
@@ -103,12 +103,13 @@ public class AlarmApiController {
 
     }
 
-    
+
     @DeleteMapping("/{alarmId}")
     public ResponseEntity<String> deleteAlarm(@RequestHeader("X-Username") String username, @PathVariable("alarmId") Long alarmId) {
         String res = alarmService.deleteAlarm(username, alarmId);
-        if (res == "fail")  {
+        if (res == "fail") {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("알람을 찾을 수 없습니다.");
         }
         return ResponseEntity.noContent().build();
+    }
 }
