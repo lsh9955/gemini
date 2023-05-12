@@ -45,7 +45,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     return () => {
       chatSocket?.off("allroomchange");
     };
-  }, []);
+  }, [chatSocket]);
   const closeModal = () => {
     setModal(false);
   };
