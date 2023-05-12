@@ -89,9 +89,11 @@ public class GalleryApiController {
 
         Long galleryNo = galleryMap.get("gallery_no"); // body에 gallery_no:1 형식으로 JSON을 보내야
         String res = galleryService.likeGallery(username, galleryNo);
-//        if (res == "fail") {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-//        } else {
+        // 총 좋아요 값인 res가 10의 배수 일때만 알람을 만듦
+        int likeCount = Integer.parseInt(res);
+        if (res == "fail") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        } else if (likeCount % 10 == 0) {
             try {
                 // 알람 메세지를 만들기 위해 LikeAlarmDto에 넣어준다.
                 LikeAlarmDto likeAlarmDto = new LikeAlarmDto();
@@ -110,7 +112,7 @@ public class GalleryApiController {
             }
 
 
-
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(res); // body에 결과좋아요 개수 반환
     }

@@ -9,7 +9,9 @@ import java.util.concurrent.Executors;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -85,5 +87,14 @@ public class AlarmApiController {
         });
         // 완료된 SseEmitter 객체 반환
         return emitter;
+    }
+
+    @DeleteMapping("/{alarmId}")
+    public ResponseEntity<String> deleteAlarm(@RequestHeader("X-Username") String username, @PathVariable("alarmId") Long alarmId) {
+        String res = alarmService.deleteAlarm(username, alarmId);
+        if (res == "fail")  {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("알람을 찾을 수 없습니다.");
+        }
+        return ResponseEntity.noContent().build();
     }
 }
