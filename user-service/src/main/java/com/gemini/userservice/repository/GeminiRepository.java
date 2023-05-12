@@ -12,6 +12,8 @@ public interface GeminiRepository extends JpaRepository<Gemini, Long>, CustomGem
 
     Gemini findByGeminiNo(Long geminiNo);
 
+    Gemini findByImageUrl(String imageUrl);
+
     List<Gemini> findByUserInfo(UserInfo userInfo);
 
 }
