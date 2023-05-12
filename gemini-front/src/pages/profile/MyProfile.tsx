@@ -55,8 +55,10 @@ const MyProfile: FC = () => {
     );
     console.log(reduxNickname);
     console.log("닉네임으로 팔로잉 찾아봅니다.");
-    const followingRes = await axiosInstanceWithAccessToken.get(
-      `/user-service/profile/followcount/${reduxNickname}`
+
+    const followingRes = await axiosInstanceWithAccessToken.post(
+      `/user-service/profile/followcount`,
+      { nickname: reduxNickname }
     );
 
     console.log("내정보");
