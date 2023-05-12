@@ -36,11 +36,13 @@ spring:
     port: 6379
     password: starrail1@
 
-
-#  data:
-#    mongodb:
-#      uri: mongodb+srv://marksman:gemini106@cluster0.lx5ch7g.mongodb.net/gemini_image?retryWrites=true&w=majority
-#      database: gemini_image
+  data:
+    mongodb:
+      host: mygemini.co.kr
+      port: 27017
+      database: gemini
+      username: gemini
+      password: starrail1@
 
 
 server:
