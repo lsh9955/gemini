@@ -1,24 +1,19 @@
 package com.gemini.userservice.service;
 
-import com.gemini.userservice.dto.GalleryDto;
-import com.gemini.userservice.dto.GeminiDto;
-import com.gemini.userservice.dto.ProfileResponseDto;
+import com.gemini.userservice.dto.*;
 import com.gemini.userservice.dto.response.ResponseGalleryDetailDto;
 import com.gemini.userservice.dto.response.ResponseGalleryPageDto;
 import com.gemini.userservice.dto.response.ResponseGalleryRankingDto;
-import com.gemini.userservice.entity.Gallery;
-import com.gemini.userservice.entity.Gemini;
-import com.gemini.userservice.entity.Like;
-import com.gemini.userservice.entity.UserInfo;
-import com.gemini.userservice.repository.GalleryRepository;
-import com.gemini.userservice.repository.GeminiRepository;
-import com.gemini.userservice.repository.LikeRepository;
-import com.gemini.userservice.repository.UserInfoRepository;
+import com.gemini.userservice.entity.*;
+import com.gemini.userservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -39,6 +34,9 @@ public class GalleryServiceImpl implements GalleryService{
     private final GeminiRepository geminiRepository;
 
     private final RedisTemplate<String, Object> redisTemplate;
+
+    private final MongoTemplate mongoTemplate;
+    private final TagRepository tagRepository;
 
     public Long getTotal() {
         Long total = galleryRepository.count();
@@ -244,5 +242,23 @@ public class GalleryServiceImpl implements GalleryService{
             return String.valueOf(totalLikes + 1);
         }
         return "fail";
+    }
+
+    public GeminiTagDto getGeminiTags(Long geminiNo) {
+
+        GeminiTag geminiTag = mongoTemplate.findOne(
+                Query.query(Criteria.where("gemini_no").is(geminiNo)),
+                GeminiTag.class
+        );
+        List<TagDto> tagDtos = new ArrayList<>();
+        for(Long tagId: geminiTag.getTagIds()) {
+            Tag tag = tagRepository.findByTagNo(tagId);
+            TagDto tagDto = new TagDto(tag);
+            tagDtos.add(tagDto);
+        }
+        GeminiTagDto geminiTagDto = GeminiTagDto.builder()
+                .tagDtos(tagDtos)
+                .build();
+        return geminiTagDto;
     }
 }
