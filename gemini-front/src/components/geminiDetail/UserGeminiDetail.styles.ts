@@ -1,25 +1,91 @@
 import styled from "styled-components";
 
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999; // GeminiDetialWrapper의 z-index보다 낮게 설정하세요.
+`;
+
 // GeminiDetialWrapper 😶 배경 수정할수도 있음.
 export const GeminiDetialWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; // 이 값을 더 높게 설정하세요.
+
   aspect-ratio: 3 / 2;
   width: 50vw;
-  position: relative;
-  z-index: 10;
   display: flex;
   background-color: #00000099;
-
-  // &::after {
-  //   content: "";
-  //   position: fixed;
-  //   top: 0;
-  //   left: 0;
-  //   right: 0;
-  //   bottom: 0;
-  //   background-color: rgba(0, 0, 0, 0.5);
-  //   z-index: -1;
-  // }
 `;
+
+export const GeminiDetialWrapperCanFlip = styled.div<{ isFlipped: boolean }>`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: ${({ isFlipped }) =>
+    `translate(-50%, -50%) rotateY(${isFlipped ? 180 : 0}deg)`};
+  transition: transform 0.8s;
+  z-index: 1000;
+
+  aspect-ratio: 3 / 2;
+  width: 50vw;
+  display: flex;
+  background-color: #00000099;
+`;
+
+// background-color: ${({ isFlipped }) =>
+//   isFlipped ? "#ffffff" : "#00000099;"};
+// flip 관련 😀
+// 부모 컴포넌트
+export const FlipContainer = styled.div<{ isFlipped: boolean }>`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  // display: flex;
+
+  background-color: #00000099;
+
+  aspect-ratio: ${({ isFlipped }) => (isFlipped ? "2 / 3" : "3 / 2")};
+  width: 50vw;
+  height: auto;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transform: ${({ isFlipped }) =>
+    `translate(-50%, -50%) 
+     rotateY(${isFlipped ? 180 : 0}deg) rotateX(${isFlipped ? 180 : 0}deg)`};
+  transition: transform 0.8s;
+`;
+
+// 자식 컴포넌트
+// export const Flipper = styled.div<{ isFront: boolean }>`
+//   position: absolute;
+//   display: flex;
+//   width: 100%;
+//   height: 100%;
+//   backface-visibility: hidden;
+//   aspect-ratio: ${({ isFront }) => (isFront ? "3 / 2" : "2 / 3")};
+//   transform: ${({ isFront }) => (isFront ? "rotateY(0)" : "rotateY(180deg)")};
+//   // background-color: ${({ isFront }) => (isFront ? "" : "#ffffff")};
+// `;
+export const Flipper = styled.div<{ isFront: boolean }>`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  aspect-ratio: ${({ isFront }) => (isFront ? "3 / 2" : "2 / 3")};
+  transform: ${({ isFront }) => (isFront ? "rotateY(0)" : "rotateY(180deg)")};
+  // background-color: #ffffff; // 배경색 추가
+`;
+
+// flip 관련 😀
 
 // GeminiDetialImgWrapper
 export const GeminiDetailImgWrapper = styled.div<{ backgroundImage: string }>`

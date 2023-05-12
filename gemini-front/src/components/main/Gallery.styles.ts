@@ -1,3 +1,4 @@
+import { FC } from "react";
 import styled from "styled-components";
 
 export const GalleryWrapper = styled.div`
@@ -64,5 +65,34 @@ export const ImgWrap = styled.div`
     border-radius: 4px;
     object-fit: cover;
     cursor: pointer;
+    transition: transform 0.3s ease; // 추가
+    &:hover {
+      transform: scale(1.2); // 추가
+    }
   }
+`;
+
+// interface StyledImgProps {
+//   imageUrl: string;
+//   geminiPk: number;
+// }
+
+// export const StyledImg = styled.img.attrs<StyledImgProps>((props) => ({
+//   src: props.imageUrl,
+//   alt: `Image ${props.geminiPk}`,
+// }))<StyledImgProps>`
+//   // 여기에 필요한 스타일을 적용하십시오.
+// `;
+
+interface StyledImgProps {
+  imageUrl: string;
+  geminiPk: number;
+  onClick: (geminiPk: number) => void; // 클릭 이벤트를 처리하는 함수를 추가합니다.
+}
+
+export const StyledImg = styled.img.attrs<StyledImgProps>((props) => ({
+  src: props.imageUrl,
+  alt: `Image ${props.geminiPk}`,
+}))<StyledImgProps>`
+  // 여기에 필요한 스타일을 적용하십시오.
 `;

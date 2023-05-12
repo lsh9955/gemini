@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import {
-  HairColorBox,
-  HairColorImage,
+  ColorWrapper,
   ColorContainer,
+  ColorImage,
   ColorText,
-} from "./AiSampleImage.styles";
+} from "./ColorSelect.styles";
 
 // 색상 종류
 import BlackColor from "../../assets/img/ai/color/black.png";
@@ -55,17 +55,17 @@ const ColorSelect: FC<Props> = ({ handleColor, parentId }) => {
   };
   return (
     <>
-      <HairColorBox>
+      <ColorWrapper>
         {colors.map((color) => (
           <ColorContainer
             key={color.name}
             onClick={() => handleColorClick(color)}
           >
             <ColorText>{color.koreanName}</ColorText>
-            <HairColorImage src={color.image} alt={color.name} />
+            <ColorImage src={color.image} alt={color.name} />
           </ColorContainer>
         ))}
-      </HairColorBox>
+      </ColorWrapper>
     </>
   );
 };

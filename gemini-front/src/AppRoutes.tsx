@@ -14,7 +14,7 @@ import MyGeminiDetail from "./components/geminiDetail/MyGeminiDetail";
 import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
 import SocketMain from "./components/trpg/SocketMain";
-
+import PrivacyRule from "./pages/PrivacyRule";
 const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
@@ -42,6 +42,8 @@ const AppRoutes = () => {
         <Route exact path="/geminidetail-my" component={MyGeminiDetail} />
         <Route exact path="/geminidetail-new" component={NewGeminiDetail} />
         <Route path="/room" component={SocketMain} />
+        <Route exact path="/privacy" component={PrivacyRule} />
+
         {/* ... */}
       </Switch>
     </>

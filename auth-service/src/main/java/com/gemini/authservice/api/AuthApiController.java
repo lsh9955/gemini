@@ -8,13 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.CookieValue;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,7 +23,7 @@ public class AuthApiController {
     @Autowired
     private ReissueAccessTokenService reissueAccessTokenService;
 
-    @PostMapping("/validate") // test complete 😀
+    @GetMapping("/validate") // test complete 😀
     public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
         System.out.println("======================@@@@@@@@@@@token_valate start======================@@@@@");
         System.out.println(token);
@@ -37,7 +34,7 @@ public class AuthApiController {
         if (username != null) {
             System.out.println("username != null not null!!!! got username!");
             System.out.println("username: "+ username);
-            return ResponseEntity.ok().header("username", username).build();
+            return ResponseEntity.ok().header("X-username", username).build();
         } else {
             System.out.println("username == null @@@@@@@@@@@@@@@");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
