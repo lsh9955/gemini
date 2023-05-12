@@ -3,11 +3,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import {
+  ListWrap,
+  RoomConcept,
   RoomListWrap,
   RoomTitle,
   RoomUserNum,
   RoomWrap,
+  TitleWrap,
 } from "./RoomListStyle";
+import { BASE_URL } from "../config";
 import CreateRoomModal from "./CreateRoomModal";
 
 const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
@@ -15,7 +19,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [modal, setModal] = useState<boolean>(false);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
+      const getRoomInfo = await axios.get(`${BASE_URL}/node/room`);
       setRooms(
         getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
@@ -28,7 +32,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get("http://mygemini.co.kr/node/room");
+        const getRoomInfo = await axios.get(`${BASE_URL}/node/room`);
         setRooms(
           getRoomInfo.data.room.map((v: any, i: any) => {
             return JSON.stringify(v);
@@ -41,7 +45,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     return () => {
       chatSocket?.off("allroomchange");
     };
-  }, []);
+  }, [chatSocket]);
   const closeModal = () => {
     setModal(false);
   };
@@ -50,16 +54,18 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
 
   return (
     <RoomListWrap>
-      <h1>TRPG</h1>
-      <button
-        onClick={() => {
-          setModal(!modal);
-        }}
-      >
-        방 생성하기
-      </button>
+      <TitleWrap>
+        <div>TRPG</div>
+        <button
+          onClick={() => {
+            setModal(!modal);
+          }}
+        >
+          생성하기
+        </button>
+      </TitleWrap>
       <CreateRoomModal modal={modal} closeModal={closeModal} />
-      <div>
+      <ListWrap>
         {rooms.map((v: any, i) => {
           return (
             <Link
@@ -69,12 +75,13 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
             >
               <RoomWrap roombgimg={JSON.parse(v).defaultpicture}>
                 <RoomTitle>{JSON.parse(v).title}</RoomTitle>
+                <RoomConcept>{JSON.parse(v).concept}</RoomConcept>
                 <RoomUserNum>{JSON.parse(v).usernum}/8</RoomUserNum>
               </RoomWrap>
             </Link>
           );
         })}
-      </div>
+      </ListWrap>
     </RoomListWrap>
   );
 };

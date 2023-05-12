@@ -3,6 +3,7 @@ import {
   BeforeBtn,
   ButtonsWrap,
   ChatLine,
+  DiaLogueUser,
   DialogueMainWrap,
   DialogueWrap,
   NextBtn,
@@ -12,6 +13,7 @@ import { io, Socket } from "socket.io-client";
 import nextButton from "../../../assets/img/nextButton.svg";
 
 const Dialogue = ({ gameMsg }: { gameMsg: any }) => {
+  console.log(gameMsg);
   const [nowTxtPage, setNowTxtPage] = useState<number>(0);
   const el = useRef(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -82,7 +84,15 @@ const Dialogue = ({ gameMsg }: { gameMsg: any }) => {
           <NextBtn src={nextButton} onClick={nextTxtHandler} />
         )}
       </ButtonsWrap>
+
       <DialogueWrap>
+        <DiaLogueUser>
+          <img
+            src={gameMsg[nowTxtPage] && gameMsg[nowTxtPage].userImg}
+            alt=""
+          />
+          <div>{gameMsg[nowTxtPage] && gameMsg[nowTxtPage].name}</div>
+        </DiaLogueUser>
         <ChatLine ref={el} />
       </DialogueWrap>
     </DialogueMainWrap>
