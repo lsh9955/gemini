@@ -45,6 +45,17 @@ interface Data {
   koreanName: string;
 }
 
+interface TagIds {
+  genreTagId: number;
+  presetTagId: number;
+  genderTagId: number;
+  hairColorTagId: number;
+  eyeColorTagId: number;
+  hairStyleTagId: number;
+  emotionTagId: number;
+  costumeTagId: number;
+}
+
 const AiImage: FC = () => {
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
@@ -270,6 +281,17 @@ const AiImage: FC = () => {
     setCostumeTagId(costume.tagId);
     setCostumeKorean(costume.koreanName);
   };
+
+  const tagIds = {
+    genreTagId,
+    presetTagId,
+    genderTagId,
+    hairColorTagId,
+    eyeColorTagId,
+    hairStyleTagId,
+    emotionTagId,
+    costumeTagId,
+  };
   /////////////////////////////////////////////////////////////////////
 
   // 별 개수에 따라서 다르게 모달이 뜸
@@ -356,8 +378,12 @@ const AiImage: FC = () => {
           <AiCreateButton onClick={openGeminiModal}>
             제미니 생성하기
           </AiCreateButton>
-          {showNeedStarModal && <NeedStarModal onClose={closeNeedStarModal} />}
-          {showGeminiModal && <MakeGeminiModal onClose={closeGeminiModal} />}
+          {showNeedStarModal && (
+            <NeedStarModal tagIds={tagIds} onClose={closeNeedStarModal} />
+          )}
+          {showGeminiModal && (
+            <MakeGeminiModal tagIds={tagIds} onClose={closeGeminiModal} />
+          )}
 
           <AiSampleBox>
             {showNoneBox && <NoneSampleBox />}

@@ -76,11 +76,11 @@ const NeedPayModal: React.FC<Props> = ({ onClose }) => {
         )
         .then((res) => {
           console.log(res);
-          setCurrentModal(<MakeGeminiModal onClose={onClose} />);
+          // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .catch((error) => {
           console.log(error);
-          setCurrentModal(<MakeGeminiModal onClose={onClose} />);
+          // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         });
     }
   };
