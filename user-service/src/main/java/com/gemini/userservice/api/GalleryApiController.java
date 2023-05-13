@@ -55,7 +55,7 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(responseGalleryRankingDto);
     }
 
-    @GetMapping("/{galleryNo}")
+    @GetMapping("/{galleryNo}") // galleryNo로 조회 (유저페이지, 일반 게시판전용)
     public ResponseEntity<ResponseGalleryDetailDto> getGalleryDetail(@RequestHeader("X-Username") String username,
                                                                      @PathVariable("galleryNo") Long galleryNo) {
 
