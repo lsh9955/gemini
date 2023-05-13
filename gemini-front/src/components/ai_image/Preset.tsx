@@ -67,7 +67,7 @@ const Preset: FC<Props> = ({ data, handlePreset }) => {
   return (
     <>
       <PresetBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <PresetContainer
             key={item.tagId}
             onClick={() => handlePresetClick(item)}

@@ -140,7 +140,7 @@ const HairStyle: FC<Props> = ({ data, handleHairStyle }) => {
   return (
     <>
       <HairStyleBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <HairStyleContainer
             key={item.tagId}
             onClick={() => handleHairStyleClick(item)}
