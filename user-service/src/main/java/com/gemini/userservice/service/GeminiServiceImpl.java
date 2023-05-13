@@ -2,17 +2,18 @@ package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.GenerateGeminiDto;
 import com.gemini.userservice.dto.TagDto;
+import com.gemini.userservice.dto.request.RequestCompleteGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseTagDto;
-import com.gemini.userservice.entity.Category;
-import com.gemini.userservice.entity.Tag;
-import com.gemini.userservice.entity.UserInfo;
+import com.gemini.userservice.entity.*;
 import com.gemini.userservice.repository.CategoryRepository;
+import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.TagRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -30,11 +31,15 @@ public class GeminiServiceImpl implements GeminiService{
 
     private final RestTemplate restTemplate;
 
+    private final MongoTemplate mongoTemplate;
+
     private final Environment env;
 
     private final UserInfoRepository userInfoRepository;
 
     private final CategoryRepository categoryRepository;
+    private final GeminiRepository geminiRepository;
+
 
     @Override
     public ResponseTagDto getTag(Long categoryNo) {
@@ -71,7 +76,10 @@ public class GeminiServiceImpl implements GeminiService{
             Tag tag = tagRepository.findByTagNo(tagId);
             defaultPrompt = defaultPrompt + tag.getPrompt() + ",";
         }
-        GenerateGeminiDto generateGeminiDto = new GenerateGeminiDto(defaultPrompt, username);
+        GenerateGeminiDto generateGeminiDto = new GenerateGeminiDto(defaultPrompt, username, requestGenerateGeminiDto.getTagIds());
+        if (requestGenerateGeminiDto.getSeed() != null) {
+            generateGeminiDto.setSeed(requestGenerateGeminiDto.getSeed());
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/makegemini";
@@ -89,6 +97,23 @@ public class GeminiServiceImpl implements GeminiService{
             }
         }
         return null;
-        }
+    }
+
+    @Override
+    public Long completeGemini(RequestCompleteGeminiDto requestCompleteGeminiDto) {
+
+        Gemini gemini = Gemini.builder()
+                .imageUrl(requestCompleteGeminiDto.getImgUrl())
+                .totalLike(0)
+                .seed(requestCompleteGeminiDto.getSeed())
+                .build();
+        geminiRepository.save(gemini);
+        GeminiTag geminiTag = GeminiTag.builder()
+                .geminiNo(gemini.getGeminiNo())
+                .tagIds(requestCompleteGeminiDto.getTagIds())
+                .build();
+        mongoTemplate.insert(geminiTag, "gemini_tag");
+        return gemini.getGeminiNo();
+    }
 
 }

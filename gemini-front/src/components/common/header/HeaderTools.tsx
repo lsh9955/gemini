@@ -1,39 +1,54 @@
 import React, { FC, useState } from "react";
-import styled from "styled-components";
-import { useHistory } from "react-router-dom";
-// import GeminiLogo from "../../assets/img/GeminiLogo.png";
+import { AppStore } from "../../../store/store";
+import { useSelector } from "react-redux";
 import Message from "../../../assets/img/Message.png";
 import Notification from "../../../assets/img/Notification.png";
+import Adol1by1Dummy from "../../../assets/img/Adol1by1Dummy.png";
 import {
   StyledHeaderTools,
   StyledProfileImage,
-  StyledMessage,
   StyledNotification,
+  StyledMessage,
 } from "./HeaderTools.styles";
 import AlarmModal from "../alarm/AlarmModal";
+import ProfileModal from "./profileImage/ProfileModal";
 
-const HeaderTools: FC = () => {
+type Alarm = {
+  alarmId: number;
+  memo: string;
+  checked: boolean;
+  category: number;
+};
+
+interface Props {
+  alarmList: Alarm[];
+}
+
+const HeaderTools: FC<Props> = ({ alarmList }) => {
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
+  const reduxProfileImage = useSelector(
+    (state: AppStore) => state.user.profileImgUrl
+  );
+
   const showProfileModalHandler = () => {
-    // history.push("/");
+    setShowAlarmModal(false);
     setShowProfileModal((prevState) => !prevState);
   };
 
   const showMessageModalHandler = () => {
-    // history.push("/");
+    setShowProfileModal(false);
     setShowAlarmModal((prevState) => !prevState);
   };
 
   const showNotificationModalHandler = () => {
     setShowNotificationModal((prevState) => !prevState);
-    // history.push("/");
   };
 
   const closeProfileModal = () => {
-    setShowAlarmModal(false);
+    setShowProfileModal(false);
   };
 
   const closeAlarmModal = () => {
@@ -43,11 +58,19 @@ const HeaderTools: FC = () => {
   return (
     <>
       <StyledHeaderTools>
-        <StyledProfileImage // 이 부분을 추가합니다.
-          //   src={ProfileImage}
-          alt="ProfileImage"
-          onClick={showProfileModalHandler}
-        ></StyledProfileImage>
+        {reduxProfileImage ? (
+          <StyledProfileImage
+            src={reduxProfileImage}
+            alt="ProfileImage"
+            onClick={showProfileModalHandler}
+          />
+        ) : (
+          <StyledProfileImage
+            src={Adol1by1Dummy}
+            alt="ProfileImage"
+            onClick={showProfileModalHandler}
+          />
+        )}
         <StyledMessage
           src={Message}
           alt="MessageImg"
@@ -58,8 +81,12 @@ const HeaderTools: FC = () => {
           alt="NotificationImg"
           onClick={showNotificationModalHandler}
         ></StyledNotification>
-        {showAlarmModal && <AlarmModal onClose={closeAlarmModal} />}
-        {showProfileModal && <AlarmModal onClose={closeProfileModal} />}
+        {showAlarmModal && (
+          <AlarmModal alarmList={alarmList} onClose={closeAlarmModal} />
+        )}
+        {showProfileModal && <ProfileModal onClose={closeProfileModal} />}
+
+        {/* {showProfileModal && <AlarmModal onClose={closeProfileModal} />} */}
       </StyledHeaderTools>
     </>
   );
