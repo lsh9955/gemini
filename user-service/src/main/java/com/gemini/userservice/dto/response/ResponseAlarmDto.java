@@ -17,4 +17,5 @@ public class ResponseAlarmDto {
     private Boolean checked;
     private Integer category;
     private Long latestAlarmId;
+    private Long geminiNo;
 }

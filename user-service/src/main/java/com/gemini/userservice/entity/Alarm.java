@@ -34,6 +34,9 @@ public class Alarm {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "gemini_no")
+    private Long geminiNo;
+
     @ManyToOne
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")
     private UserInfo userInfo;
