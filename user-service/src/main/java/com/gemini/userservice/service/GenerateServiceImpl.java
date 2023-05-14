@@ -4,10 +4,7 @@ import com.gemini.userservice.dto.*;
 import com.gemini.userservice.dto.request.RequestCompleteGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.request.RequestGeneratePoseDto;
-import com.gemini.userservice.dto.response.ResponseGenerateGeminiDto;
-import com.gemini.userservice.dto.response.ResponseGetAllBackgroundDto;
-import com.gemini.userservice.dto.response.ResponseGetAllPoseDto;
-import com.gemini.userservice.dto.response.ResponseTagDto;
+import com.gemini.userservice.dto.response.*;
 import com.gemini.userservice.entity.*;
 import com.gemini.userservice.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +43,7 @@ public class GenerateServiceImpl implements GenerateService {
 
     private final UserPoseRepository userPoseRepository;
     private final PoseRepository poseRepository;
-
+    private final ResponseAlarmRepository responseAlarmRepository;
 
 
     @Override
@@ -157,15 +154,18 @@ public class GenerateServiceImpl implements GenerateService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        DescriptionDto descriptionDto = DescriptionDto.builder().
+                description(background).
+                build();
         String sdUrl = String.format(env.getProperty("sd.url")) + "/background";
-        HttpEntity<String> request = new HttpEntity<>(background, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(sdUrl, request, String.class);
+        HttpEntity<DescriptionDto> request = new HttpEntity<>(descriptionDto, headers);
+        ResponseEntity<ResponseMLBackgroundDto> response = restTemplate.postForEntity(sdUrl, request, ResponseMLBackgroundDto.class);
         Background background1 = Background.builder()
                 .name(background)
-                .imageUrl(response.getBody())
+                .imageUrl(response.getBody().getImageUrl())
                 .build();
         backgroundRepository.save(background1);
-        return response.getBody();
+        return response.getBody().getImageUrl();
     }
 
     @Override
@@ -238,8 +238,8 @@ public class GenerateServiceImpl implements GenerateService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/pose";
         HttpEntity<GeneratePoseDto> request = new HttpEntity<>(generatePoseDto, headers);
-        ResponseEntity<List> response = restTemplate.postForEntity(sdUrl, request, List.class);
-        List<String> images = response.getBody();
+        ResponseEntity<ResponseMLPoseDto> response = restTemplate.postForEntity(sdUrl, request, ResponseMLPoseDto.class);
+        List<String> images = response.getBody().getUrlList();
         Pose pose = Pose.builder().
                 build();
         poseRepository.save(pose);

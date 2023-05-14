@@ -15,7 +15,7 @@ public class RequestCompleteGeminiDto {
 
     private String username;
 
-    private String imgUrl;
+    private String imageUrl;
 
     private List<Long> tagIds;
 
