@@ -82,7 +82,7 @@ export const Flipper = styled.div<{ isFront: boolean }>`
   height: 100%;
   backface-visibility: hidden;
   aspect-ratio: ${({ isFront }) => (isFront ? "3 / 2" : "2 / 3")};
-  transform: ${({ isFront }) => (isFront ? "rotateY(0)" : "rotateY(180deg)")};
+  transform: ${({ isFront }) => (isFront ? "rotate(0)" : "rotateY(180deg)")};
   transform-origin: ${({ isFront }) => (isFront ? "top left" : "bottom right")};
   // background-color: #ffffff; // 배경색 추가
 `;

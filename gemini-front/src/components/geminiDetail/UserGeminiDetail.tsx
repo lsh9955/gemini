@@ -152,10 +152,17 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     }
   }, [isFlipped]);
 
+  // flip 된 상태에서 원래대로 돌아가기
+  const backModal = () => {
+    setIsFlipped(false);
+  };
+
   return (
     <>
       <FlipContainer isFlipped={isFlipped}>
-        {!isFlipped && (
+        {isFlipped ? (
+          <FourCuts backModal={backModal} />
+        ) : (
           <Flipper isFront={true}>
             {/* <Player
               ref={lottieRef}
@@ -221,13 +228,13 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
             </GeminiDetialInfoWrapper>
           </Flipper>
         )}
-        <Flipper isFront={isFlipped}>
+        {/* <Flipper isFront={isFlipped}>
           <Confirm ref={confirmRef}>
             <ConfirmContent className="confirm-content">
-              <FourCuts></FourCuts>
+              <FourCuts closeModal={backModal}></FourCuts>
             </ConfirmContent>
           </Confirm>
-        </Flipper>
+        </Flipper> */}
       </FlipContainer>
     </>
   );
