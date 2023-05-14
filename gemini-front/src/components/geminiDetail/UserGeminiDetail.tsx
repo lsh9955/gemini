@@ -170,8 +170,11 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
 
   return (
     <>
-      <FlipContainerWrapper>
-        <FlipContainer isFlipped={isFlipped}>
+      <FlipContainerWrapper onClick={closeModal}>
+        <FlipContainer
+          isFlipped={isFlipped}
+          onClick={(e) => e.stopPropagation()}
+        >
           {isFlipped ? (
             <FourCuts backModal={backModal} />
           ) : (

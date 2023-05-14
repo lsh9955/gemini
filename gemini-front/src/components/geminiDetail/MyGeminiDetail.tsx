@@ -86,8 +86,11 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
 
   return (
     <>
-      <MyGeminiFlipContainerWrapper>
-        <MyGeminFlipContainer isFlipped={false}>
+      <MyGeminiFlipContainerWrapper onClick={closeModal}>
+        <MyGeminFlipContainer
+          isFlipped={false}
+          onClick={(e) => e.stopPropagation()}
+        >
           <GeminiDetailImgWrapper backgroundImage={geminiImg}>
             <LikeNicknameWrapper>
               <LinkProfileWrapper>
