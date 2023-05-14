@@ -45,7 +45,7 @@ const Gender: FC<Props> = ({ data, handleGender }) => {
   return (
     <>
       <GenderBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <GenderContainer
             key={item.tagId}
             onClick={() => handleGenderClick(item)}
