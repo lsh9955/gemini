@@ -75,9 +75,11 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
       setGeminiImg(geminiInfoData.geminiImage);
       setGeminiName(geminiInfoData.geminiName);
       setDesc(geminiInfoData.geminiDescription);
-      setTagContents(geminiInfoData.tags);
       setLikeCount(geminiInfoData.totalLike);
       setIsPublic(geminiInfoData.isPublic);
+      if (geminiInfoData.tags) {
+        setTagContents(geminiInfoData.tags);
+      }
     };
     // setTagContents(res); // 이걸 바탕으로..
 
