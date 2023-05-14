@@ -5,13 +5,6 @@ import {
   FormLabel,
   GeminiDetailImgWrapper,
   GeminiDetialInfoWrapper,
-  GeminiDetialWrapper,
-  GeminiInfoButton,
-  HeartIcon,
-  LikeCount,
-  LikeNicknameWrapper,
-  LikeWrapper,
-  LinkProfileWrapper,
   NameInputWrapper,
   TagArea,
   TagBlockWrapper,
@@ -29,11 +22,7 @@ import {
   NewGeminiFlipContainerWrapper,
   TextInput,
 } from "./NewGeminiDetail.styles";
-import {
-  EditButton,
-  EditButtonWrapper,
-  LinkImg,
-} from "./MyGeminiDetail.styles";
+import { EditButtonWrapper } from "./MyGeminiDetail.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 interface MyGeminiDetailProps {
@@ -45,7 +34,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
   closeModal,
   selectedImagePk,
 }) => {
-  const [isPublic, setIsPublic] = useState<boolean>(false);
+  const [isPublic, setIsPublic] = useState<boolean>(true);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
     "여성",
@@ -69,12 +58,6 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
   };
 
   const contractGemini = async () => {
-    // interface contractGeminiDto {
-    //   name: string;
-    //   description: string;
-    //   isPublic: boolean; // isPublic의 ! 값을 줄거임.
-    // }
-
     const contractRes = await axiosInstanceWithAccessToken.post(
       "/user-service/alarms/gemini",
       {
