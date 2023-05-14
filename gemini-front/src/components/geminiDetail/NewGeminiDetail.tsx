@@ -92,8 +92,10 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
       setGeminiImg(geminiInfoData.geminiImage);
       setGeminiName("");
       setDesc("");
-      setTagContents(geminiInfoData.tags);
       setIsPublic(true); // 기본은 공개임. display 되는건 !isPublic
+      if (geminiInfoData.tags) {
+        setTagContents(geminiInfoData.tags);
+      }
 
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
@@ -149,7 +151,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
             <TagBlockWrapper>
               <FormLabel>키워드</FormLabel>
               <TagArea>
-                {tagContents.map((tag, index) => (
+                {tagContents?.map((tag, index) => (
                   <Tags key={index}>{tag}</Tags>
                 ))}
               </TagArea>
