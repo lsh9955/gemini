@@ -49,6 +49,7 @@ const UserProfile: FC = () => {
   );
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
@@ -61,6 +62,7 @@ const UserProfile: FC = () => {
     setFollowingNum(res.data.following);
     setTotalGallery(res.data.geminis.length);
     setDesc(res.data.description);
+    setIsFollowing(res.data.isFollowing);
   };
 
   useEffect(() => {
@@ -123,7 +125,7 @@ const UserProfile: FC = () => {
   }, [loadMoreImages]);
   // for infinite scroll 😀
 
-  // for model component 😉
+  // for modal component 😉
   const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -135,7 +137,7 @@ const UserProfile: FC = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  // for model component 😉
+  // for modal component 😉
 
   return (
     <>
@@ -168,7 +170,11 @@ const UserProfile: FC = () => {
                   갤러리
                 </NumText>
               </FollowingTextWrapper>
-              <FollowButton />
+              <FollowButton
+                isFollowing={isFollowing}
+                setIsFollowing={setIsFollowing}
+                nickname={nickname}
+              />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>
