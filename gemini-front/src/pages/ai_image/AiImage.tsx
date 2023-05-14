@@ -71,7 +71,7 @@ const AiImage: FC = () => {
         .get<TagsResponse>(
           // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
           // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
-          `http://mygemini.co.kr/user-service/generate/${categoryNum}`,
+          `https://mygemini.co.kr/user-service/generate/${categoryNum}`,
           {
             headers,
           }
