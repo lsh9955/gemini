@@ -106,20 +106,36 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   // 현재 like여부에 따라 하트 채워지고.. 달라짐.
   const [isLike, setIsLike] = useState(false);
 
-  const handleComponentClick = () => {
-    // 1원래
-    if (!isLike) {
-      setIsLike(!isLike);
-      if (lottieRef.current) {
-        setAnimationVisible(true);
-        lottieRef.current.play();
-      }
-    } else {
-      setIsLike(!isLike);
+  // 하트 클릭에 따른 함수발동
+  const likeImage = async () => {
+    const res = await axiosInstanceWithAccessToken.post(
+      "/user-service/gallery",
+      { gallery_no: selectedImagePk }
+    );
+    if (lottieRef.current) {
+      setAnimationVisible(true);
+      lottieRef.current.play();
     }
+    return res.data;
   };
 
-  // ... 생략 ...
+  const unlikeImage = async () => {
+    const res = await axiosInstanceWithAccessToken.delete(
+      `/user-service/gallery/${selectedImagePk}`
+    );
+    return res.data;
+  };
+
+  const handleHeartClick = async () => {
+    const newLikeCount = isLike ? await unlikeImage() : await likeImage();
+    if (newLikeCount !== "fail") {
+      setLikeCount(newLikeCount);
+      setIsLike(!isLike);
+    } else {
+      // Handle failure case
+    }
+  };
+  // 하트 클릭에 따른 함수발동
 
   useEffect(() => {
     console.log("animationVisible:", animationVisible); // animationVisible 상태 로깅
@@ -174,7 +190,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                   <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
                   <Nickname>{userNickname}</Nickname>
                 </ProfileWrapper>
-                <LikeWrapper onClick={handleComponentClick}>
+                <LikeWrapper onClick={handleHeartClick}>
                   <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
                   <LikeCount>{likeCount}개의 좋아요</LikeCount>
                 </LikeWrapper>
