@@ -57,6 +57,9 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Alarm> alarms;
 
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserPose> userPoses;
+
     // 별 구매 시 총 별 개수 변경
     public void updateStar(Integer star) {
         this.star = star;

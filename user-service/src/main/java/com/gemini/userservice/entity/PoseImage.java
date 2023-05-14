@@ -1,7 +1,9 @@
 package com.gemini.userservice.entity;
 
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,13 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Document(collection = "gemini_tag")
-public class GeminiTag {
+@Document(collection = "pose_image")
+public class PoseImage {
 
     @Id
-    private Long geminiNo;
+    private Long poseNo;
 
-    private List<Long> tagIds;
-
-    private String prompt;
+    private List<String> images;
 }
