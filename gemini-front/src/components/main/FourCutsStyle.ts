@@ -16,4 +16,5 @@ export const Image = styled.div<{ image: string }>`
   width: 100%;
   height: 100%;
   aspect-ratio: 2 / 3;
+  transform: scaleY(-1);
 `;
