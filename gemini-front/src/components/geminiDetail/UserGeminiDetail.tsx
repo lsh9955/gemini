@@ -192,60 +192,6 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                 if (event === "complete") onAnimationComplete();
               }}
             /> */}
-<<<<<<< HEAD
-            {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
-            <GeminiDetailImgWrapper backgroundImage={geminiImg}>
-              <LikeNicknameWrapper>
-                <ProfileWrapper
-                  onClick={() => history.push(`/userprofile/${userNickname}`)}
-                >
-                  <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
-                  <Nickname>{userNickname}</Nickname>
-                </ProfileWrapper>
-                <LikeWrapper onClick={handleHeartClick}>
-                  <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
-                  <LikeCount>{likeCount}개의 좋아요</LikeCount>
-                </LikeWrapper>
-              </LikeNicknameWrapper>
-            </GeminiDetailImgWrapper>
-            <GeminiDetialInfoWrapper>
-              <ToggleWrapper hideToggle={true}>
-                <ToggleText>공개</ToggleText>
-                <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-                  <ToggleButtonCircle isOn={isOn} />
-                </ToggleButtonContainer>
-                <ToggleText>비공개</ToggleText>
-              </ToggleWrapper>
-              <NameInputWrapper>
-                <FormLabel>이름</FormLabel>
-                <TextInputDiv>{geminiName}</TextInputDiv>
-              </NameInputWrapper>
-              <DescBlockWrapper hideToggle={true}>
-                <FormLabel>소개</FormLabel>
-                <DescArea>{desc}</DescArea>
-              </DescBlockWrapper>
-              <TagBlockWrapper hideToggle={true}>
-                <FormLabel>키워드</FormLabel>
-                <TagArea>
-                  {tagContents.map((tag, index) => (
-                    <Tags key={index}>{tag}</Tags>
-                  ))}
-                </TagArea>
-              </TagBlockWrapper>
-              <ButtonWrapper>
-                <GeminiInfoButton onClick={flip}>
-                  이 레시피 사용하기
-                </GeminiInfoButton>
-              </ButtonWrapper>
-            </GeminiDetialInfoWrapper>
-          </Flipper>
-        )}
-        <Flipper isFront={false}>
-          <div></div>
-          뒷면sssssssssssssssssssssss
-        </Flipper>
-      </FlipContainer>
-=======
               {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
               <GeminiDetailImgWrapper
                 backgroundImage={geminiImg}
@@ -258,7 +204,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                     <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
                     <Nickname>{userNickname}</Nickname>
                   </ProfileWrapper>
-                  <LikeWrapper onClick={handleComponentClick}>
+                  <LikeWrapper onClick={handleHeartClick}>
                     <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
                     <LikeCount>{likeCount}개의 좋아요</LikeCount>
                   </LikeWrapper>
@@ -303,7 +249,6 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
         </Flipper> */}
         </FlipContainer>
       </FlipContainerWrapper>
->>>>>>> 4a1ad2c08c5c46eadc90703219f4a7c951e10b73
     </>
   );
 };
