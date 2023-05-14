@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 
 import axios from "axios";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 import GenreImage from "../../components/ai_image/GenreImage";
 import HairColor from "../../components/ai_image/HairColor";
@@ -66,9 +67,11 @@ const AiImage: FC = () => {
   // 태그 이미지 DB에서 가져오기
   useEffect(() => {
     if (categoryNum !== 0) {
-      axios
+      axiosInstanceWithAccessToken
         .get<TagsResponse>(
-          `http://192.168.31.73:8081/user-service/gemini/${categoryNum}`,
+          // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
+          // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
+          `http://mygemini.co.kr/user-service/generate/${categoryNum}`,
           {
             headers,
           }
@@ -185,6 +188,7 @@ const AiImage: FC = () => {
     setShowGender(false);
     setShowEmotion(false);
     setShowCostume(false);
+    // 남자일 때 혹은 여자일 때 헤어스타일을 true로 바꿔줌
     setShowHairStyle(true);
 
     setCategoryNum(6);
@@ -408,6 +412,9 @@ const AiImage: FC = () => {
               <Costume data={data} handleCostume={handleCostume} />
             )}
           </AiSampleBox>
+          {(showEyeColor || showEmotion || showHairStyle) && (
+            <div style={{ width: "100%", height: "10vh" }}></div>
+          )}
         </AiSampleWrapper>
       </AiWrapper>
     </Background>
