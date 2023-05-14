@@ -12,7 +12,7 @@ public interface UserService {
 
     void followUser(String currentUsername, FollowRequestDto followRequestDto);
 
-    void unfollowUser(String currentUsername, Long userPkToUnfollow);
+    void unfollowUser(String currentUsername, FollowRequestDto followRequestDto);
 
 
 
