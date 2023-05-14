@@ -23,9 +23,12 @@ import {
 import PayButton from "../../components/profile/pay/modal/PayModal";
 import FollowButton from "../../components/profile/userprofile/FollowButton";
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
+import AriesDummyProfile from "../../assets/img/AriesDummyProfile.png";
 import axios from "axios";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { async } from "q";
+import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
+import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 
 type UserProfileParams = {
   nickname: string;
@@ -46,7 +49,7 @@ const UserProfile: FC = () => {
   );
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
-  const [totalGallery, setTotalGallery] = useState<number>(10);
+  const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
     const res = await axiosInstanceWithAccessToken.get(
@@ -65,23 +68,21 @@ const UserProfile: FC = () => {
   }, []);
 
   // for infinite scroll 😀
-  const dummyImgs = [
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-  ];
 
-  const [images, setImages] = useState<string[]>([...dummyImgs]);
+  const dummyImgs = [
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 1 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 2 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 3 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 4 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 5 },
+    // ...
+  ];
+  interface ImageData {
+    imageUrl: string;
+    geminiPk: number;
+  }
+
+  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
@@ -90,12 +91,16 @@ const UserProfile: FC = () => {
 
   const loadMoreImages = useCallback(async () => {
     try {
-      const response = await axios.get("/api/your_endpoint", {
-        params: {
-          page: page,
-          size: 16,
-        },
-      });
+      const response = await axiosInstanceWithAccessToken.get(
+        "/user-service/profile/usergeminis",
+        {
+          params: {
+            nickname: nickname,
+            page: page,
+            size: 16,
+          },
+        }
+      );
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
@@ -118,6 +123,20 @@ const UserProfile: FC = () => {
   }, [loadMoreImages]);
   // for infinite scroll 😀
 
+  // for model component 😉
+  const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleImageClick = (pk: number) => {
+    setSelectedImagePk(pk);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  // for model component 😉
+
   return (
     <>
       <MyProfileWrapper minHeight={minHeight}>
@@ -125,7 +144,7 @@ const UserProfile: FC = () => {
           <MyBgImg></MyBgImg>
           <MyInfoSpace></MyInfoSpace>
           <MyInfoContentWrapper>
-            <MyProfileImg></MyProfileImg>
+            <MyProfileImg imgUrl={AriesDummyProfile}></MyProfileImg>
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
@@ -165,10 +184,20 @@ const UserProfile: FC = () => {
               images={images}
               hasMore={hasMore}
               loadMoreImages={loadMoreImages}
+              onImageClick={handleImageClick} // 이 부분을 추가하세요.
             />
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>
+      {isModalOpen && (
+        <>
+          <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
+          <UserGeminiDetail
+            closeModal={closeModal}
+            selectedImagePk={selectedImagePk}
+          />
+        </>
+      )}
     </>
   );
 };

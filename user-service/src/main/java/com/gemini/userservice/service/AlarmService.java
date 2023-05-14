@@ -3,6 +3,7 @@ package com.gemini.userservice.service;
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.Alarm.GeminiAlarmDto;
 import com.gemini.userservice.dto.Alarm.LikeAlarmDto;
+import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.entity.Alarm;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -18,6 +19,6 @@ public interface AlarmService {
 
     String deleteAlarm(String username, Long alarmId);
 
-    String contractGemini(String username, Long geminiNo);
+    String contractGemini(String username, RequestContractGeminiDto requestContractGeminiDto);
 
 }
