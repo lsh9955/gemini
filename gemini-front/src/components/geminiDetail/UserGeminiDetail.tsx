@@ -89,9 +89,12 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
       setUserNickname(galleryInfoData.nickname);
       setGeminiName(galleryInfoData.geminiName);
       setDesc(galleryInfoData.geminiDescription);
-      setTagContents(galleryInfoData.tags);
+      // setTagContents(galleryInfoData.tags);
       setLikeCount(galleryInfoData.totalLike);
       setIsLike(galleryInfoData.isLiked);
+      if (galleryInfoData.tags) {
+        setTagContents(galleryInfoData.tags);
+      }
 
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
