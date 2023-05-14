@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import CompleteAiImage from "../../../assets/img/CompleteAiImage.png";
+import axios from "axios";
 
 // styled-components
 import {
@@ -20,18 +20,33 @@ export interface Props {
   onClose: () => void;
 }
 
-type UserState = {
-  user: {
-    star: number;
-  };
-};
-
 const MakeGeminiModal: React.FC<Props> = ({ onClose }) => {
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
 
+  const headers = {
+    "X-Username": "google_109918724409380589068",
+  };
+  const data = {
+    tagIds: [1],
+  };
+
   // 여기서 axios가 성공했을 때 successgeminimodal로 보내기
   const MakeGeminiHandler = () => {
+    // 제미니 생성 post axios 하고 백서버에선 별개수를 반환해준다.
+    // axios 성공시에 아래 성공 모달을 집어 넣는다. 그리고 반환된 별개수를 리덕스에 저장한다.
+    // onClose();
     setCurrentModal(<SuccessGeminiModal onClose={onClose} />);
+    axios
+      .post("http://192.168.31.73:8081/user-service/gemini", data, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response);
+        alert(`${response.data.star} 제미니가 제작의뢰가 들어갔다`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

@@ -29,6 +29,7 @@ import {
   EditButtonWrapper,
   LinkImg,
 } from "./MyGeminiDetail.styles";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
@@ -39,7 +40,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   closeModal,
   selectedImagePk,
 }) => {
-  const [isOn, setIsOn] = useState<boolean>(false);
+  const [isPublic, setIsPublic] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
     "여성",
@@ -57,18 +58,27 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   );
 
   const handleClick = () => {
-    setIsOn(!isOn);
+    setIsPublic(!isPublic);
   };
 
   useEffect(() => {
-    const fetchTags = async () => {
+    const fetchGeminiInfo = async () => {
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
-      // setTagContents(data.tags); // Set the state with the fetched tags
-      // setDesc(data.desc)
-      // setGeminiImg(data.imgUrl)
+      const geminiRes = await axiosInstanceWithAccessToken.get(
+        `/user-service/gallery/gemini/${selectedImagePk}`
+      );
+      const geminiInfoData = geminiRes.data;
+      setGeminiImg(geminiInfoData.geminiImage);
+      setGeminiName(geminiInfoData.geminiName);
+      setDesc(geminiInfoData.geminiDescription);
+      setTagContents(geminiInfoData.tags);
+      setLikeCount(geminiInfoData.totalLike);
+      setIsPublic(geminiInfoData.isPublic);
     };
     // setTagContents(res); // 이걸 바탕으로..
+
+    fetchGeminiInfo();
   }, []);
 
   return (
@@ -88,8 +98,8 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
         <GeminiDetialInfoWrapper>
           <ToggleWrapper>
             <ToggleText>공개</ToggleText>
-            <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-              <ToggleButtonCircle isOn={isOn} />
+            <ToggleButtonContainer onClick={handleClick} isOn={isPublic}>
+              <ToggleButtonCircle isOn={isPublic} />
             </ToggleButtonContainer>
             <ToggleText>비공개</ToggleText>
           </ToggleWrapper>
