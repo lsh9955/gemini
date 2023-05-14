@@ -81,16 +81,16 @@ public class UserInfoApiController {
     }
 
 
-    @DeleteMapping("/{userId}") // test complete 😀
+    @DeleteMapping // test complete 😀
     public ResponseEntity<Void> unfollowUser(
             @RequestHeader("X-Username") String currentUsername,
-            @PathVariable("userId") Long userPkToUnfollow) {
+            @RequestBody FollowRequestDto followRequestDto) {
         System.out.println("unfollow test start@@@@@@@@@@@@@@@@@@@@");
 
         System.out.println("currentUsername"+ currentUsername);
-        System.out.println("userPkToUnfollow: "+ userPkToUnfollow);
+        System.out.println("userPkToUnfollow: "+ followRequestDto.toString());
 
-        userService.unfollowUser(currentUsername, userPkToUnfollow);
+        userService.unfollowUser(currentUsername, followRequestDto);
         System.out.println("unfollow success");
         return ResponseEntity.noContent().build();
     }
@@ -134,8 +134,8 @@ public class UserInfoApiController {
     }
 
     @GetMapping("/{nickname}") // test complete 😀
-    public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@PathVariable String nickname) {
-        OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(nickname);
+    public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@RequestHeader("X-Username") String username, @PathVariable String nickname) {
+        OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(username, nickname);
         return ResponseEntity.ok(otherUserProfileDto);
     }
 

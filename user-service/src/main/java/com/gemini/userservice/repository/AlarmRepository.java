@@ -19,4 +19,7 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     @Query("SELECT a FROM Alarm a WHERE a.alarmId = :alarmId")
     Alarm findAlarmById(Long alarmId);
 
+    Optional<List<Alarm>> findByNickname(String nickname);
+
+    int countByNickname(String finalNickname);
 }
