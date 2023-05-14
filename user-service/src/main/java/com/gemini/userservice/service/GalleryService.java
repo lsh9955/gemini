@@ -1,6 +1,7 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.response.*;
+import com.gemini.userservice.entity.Gallery;
 
 public interface GalleryService {
 
@@ -21,6 +22,9 @@ public interface GalleryService {
 
     ResponseGeminiDetailDto getGeminiDetail(String username, Long geminiNo);
 
+    Gallery createGallery(Long geminiNo);
+
+    void deleteGallery(Long geminiNo);
 
     String likeGallery(String username, Long galleryNo);
 

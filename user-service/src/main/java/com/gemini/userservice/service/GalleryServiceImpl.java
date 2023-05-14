@@ -1,9 +1,7 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.*;
-import com.gemini.userservice.dto.response.ResponseGalleryDetailDto;
-import com.gemini.userservice.dto.response.ResponseGalleryPageDto;
-import com.gemini.userservice.dto.response.ResponseGalleryRankingDto;
+import com.gemini.userservice.dto.response.*;
 import com.gemini.userservice.entity.*;
 import com.gemini.userservice.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -285,4 +283,36 @@ public class GalleryServiceImpl implements GalleryService{
                 .build();
         return geminiTagDto;
     }
+
+
+
+    public Gallery createGallery(Long geminiNo) {
+        Gemini gemini = geminiRepository.findById(geminiNo)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid geminiNo: " + geminiNo));
+
+        Gallery gallery = Gallery.builder()
+                .dailyLike(0)
+                .weeklyLike(0)
+                .gemini(gemini)
+                .build();
+
+        return galleryRepository.save(gallery);
+    }
+
+
+
+
+    public void deleteGallery(Long geminiNo) {
+        Gemini gemini = geminiRepository.findById(geminiNo)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid geminiNo: " + geminiNo));
+
+        Gallery gallery = gemini.getGallery();
+
+        if (gallery != null) {
+            galleryRepository.delete(gallery);
+        } else {
+            throw new IllegalArgumentException("No Gallery associated with geminiNo: " + geminiNo);
+        }
+    }
+
 }

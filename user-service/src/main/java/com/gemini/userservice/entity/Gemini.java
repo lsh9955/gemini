@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "GEMINI")
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Gemini {
