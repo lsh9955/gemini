@@ -1,11 +1,67 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { StyledFollowButton } from "./FollowButton.styles";
+import axios from "axios";
+import axiosInstanceWithAccessToken from "../../../utils/AxiosInstanceWithAccessToken";
 
-const FollowButton: FC = () => {
+interface FollowButtonProps {
+  isFollowing: boolean;
+  nickname: string;
+  setIsFollowing: (value: boolean) => void;
+}
+
+const FollowButton: FC<FollowButtonProps> = ({
+  isFollowing,
+  nickname,
+  setIsFollowing,
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleFollow = async () => {
+    setIsLoading(true);
+    try {
+      if (isFollowing) {
+        // Perform the unfollow operation
+        const unfollowUser = async () => {
+          try {
+            await axiosInstanceWithAccessToken.delete(
+              `/user-service/profile/`,
+              {
+                data: { nickname: nickname },
+              }
+            );
+            console.log("Unfollow request sent successfully");
+          } catch (error) {
+            console.error("Failed to send unfollow request: ", error);
+          }
+        };
+      } else {
+        // Perform the follow operation
+
+        const followUser = async () => {
+          try {
+            await axiosInstanceWithAccessToken.post("/user-service/profile", {
+              nickname: nickname,
+            });
+            console.log("Follow request sent successfully");
+          } catch (error) {
+            console.error("Failed to send follow request: ", error);
+          }
+        };
+
+        followUser();
+      }
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.error("Failed to toggle follow status: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <>
-      <StyledFollowButton>팔로우하기</StyledFollowButton>
-    </>
+    <StyledFollowButton isFollowing={isFollowing} onClick={handleFollow}>
+      {isLoading ? "Loading..." : isFollowing ? "언팔로우" : "팔로우하기"}
+    </StyledFollowButton>
   );
 };
 
