@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+import NewGeminiDetail from "../../geminiDetail/NewGeminiDetail";
 import {
   Overlay,
   ModalContainer,
@@ -21,86 +23,73 @@ interface Props {
 }
 
 const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
-  // const updateAlarmList = (newAlarm: Alarm) => {
-  //   // 알림 id가 이미 리스트에 존재하는 경우에는 업데이트를 하지 않습니다.
-  //   if (initialAlarmList.find((alarm) => alarm.alarmId === newAlarm.alarmId)) {
-  //     return;
-  //   } else {
-  //     setAlarmList((prevAlarmList) => [...prevAlarmList, newAlarm]);
-  //   }
-  // };
-  // console.log(alarmList);
-  // console.log(alarmList);
-  // const alarmMesseges = [
-  //   {
-  //     id: 1,
-  //     content: "Alarm1",
-  //   },
-  //   {
-  //     id: 2,
-  //     content: "Alarm2",
-  //   },
-  //   {
-  //     id: 3,
-  //     content: "Alarm3",
-  //   },
-  //   {
-  //     id: 4,
-  //     content: "Alarm4",
-  //   },
-  //   {
-  //     id: 5,
-  //     content: "Alarm5",
-  //   },
-  //   {
-  //     id: 6,
-  //     content: "Alarm6",
-  //   },
-  // ];
-  const handleAlarmClick = (category: number) => {
+  const history = useHistory();
+  const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
+  const [showGeminiDetail, setShowGeminiDetail] = useState(false);
+  const [selectedGemini, setSelectedGemini] = useState<any>(null);
+
+  const handleAlarmClick = (alarmId: number, category: number) => {
     // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
     switch (category) {
       case 1:
-        // 첫 번째 카테고리에 대한 처리
+        history.push("/mypage");
         break;
       case 2:
         // 두 번째 카테고리에 대한 처리
         break;
       case 3:
         // 세번째 카테고리에 대한 처리
-        break;
+        const geminino = alarmList[0].find(
+          (alarm: any) =>
+            alarm.alarmId === alarmId && alarm.category === category
+        );
+        console.log(geminino);
+        if (geminino) {
+          const geminiDetailModal = (
+            <NewGeminiDetail
+              closeModal={() => setCurrentModal("")}
+              selectedImagePk={geminino}
+            />
+          );
+          setCurrentModal(geminiDetailModal);
+        }
     }
   };
 
   return (
     <>
-      <Overlay onClick={onClose} aria-hidden>
-        <div aria-hidden onClick={(e) => e.stopPropagation()}>
-          <ModalContainer>
-            <AlarmTitle>알림</AlarmTitle>
-            <AlarmContentWrapper
-              style={{
-                maxHeight: "25vh",
-                overflowY: alarmList.length >= 6 ? "auto" : "visible",
-              }}
-            >
-              {alarmList.length === 0 ? (
-                <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
-              ) : (
-                alarmList[0].map((alarm: any, idx: any) => (
-                  <AlarmContent
-                    key={alarm.alarmId}
-                    idx={idx}
-                    onClick={() => handleAlarmClick(alarm.category)}
-                  >
-                    {alarm.memo}
-                  </AlarmContent>
-                ))
-              )}
-            </AlarmContentWrapper>
-          </ModalContainer>
-        </div>
-      </Overlay>
+      {!currentModal && (
+        <Overlay onClick={onClose} aria-hidden>
+          <div aria-hidden onClick={(e) => e.stopPropagation()}>
+            <ModalContainer>
+              <AlarmTitle>알림</AlarmTitle>
+              <AlarmContentWrapper
+                style={{
+                  maxHeight: "25vh",
+                  overflowY: alarmList.length >= 6 ? "auto" : "visible",
+                }}
+              >
+                {alarmList.length === 0 ? (
+                  <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
+                ) : (
+                  alarmList[0].map((alarm: any, idx: any) => (
+                    <AlarmContent
+                      key={alarm.alarmId}
+                      idx={idx}
+                      onClick={() =>
+                        handleAlarmClick(alarm.alarmId, alarm.category)
+                      }
+                    >
+                      {alarm.memo}
+                    </AlarmContent>
+                  ))
+                )}
+              </AlarmContentWrapper>
+            </ModalContainer>
+          </div>
+        </Overlay>
+      )}
+      {currentModal}
     </>
   );
 };
