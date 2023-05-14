@@ -3,6 +3,7 @@ import {
   HairStyleBox,
   HairStyleContainer,
   HairStyleImage,
+  HairStyleText,
 } from "./HairStyle.style";
 
 // import LongCur from "../../assets/img/ai/hair/LongCur.png";
@@ -140,11 +141,12 @@ const HairStyle: FC<Props> = ({ data, handleHairStyle }) => {
   return (
     <>
       <HairStyleBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <HairStyleContainer
             key={item.tagId}
             onClick={() => handleHairStyleClick(item)}
           >
+            <HairStyleText>{item.koreanName}</HairStyleText>
             <HairStyleImage src={item.imgUrl} alt={item.koreanName} />
           </HairStyleContainer>
         ))}
