@@ -108,7 +108,7 @@ public class GenerateServiceImpl implements GenerateService {
     public Long completeGemini(RequestCompleteGeminiDto requestCompleteGeminiDto) {
 
         Gemini gemini = Gemini.builder()
-                .imageUrl(requestCompleteGeminiDto.getImgUrl())
+                .imageUrl(requestCompleteGeminiDto.getImageUrl())
                 .totalLike(0)
                 .seed(requestCompleteGeminiDto.getSeed())
                 .build();
