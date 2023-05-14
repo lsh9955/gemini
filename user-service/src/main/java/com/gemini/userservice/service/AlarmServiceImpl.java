@@ -45,6 +45,8 @@ public class AlarmServiceImpl implements AlarmService {
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
 
+
+
     @Override
     public ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter) {
 
@@ -59,6 +61,7 @@ public class AlarmServiceImpl implements AlarmService {
 
 
         Alarm alarm = Alarm.builder()
+                .geminiNo(Long.MAX_VALUE)
                 .nickname(alarmDto.getGetAlarmNickName())
                 .memo(encodedMessage)
                 .userInfo(userInfo)
@@ -117,6 +120,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
+                .geminiNo(Long.MAX_VALUE)
                 .memo(encodedMessage)
                 .userInfo(userInfo)
                 .category(2)
