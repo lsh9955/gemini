@@ -85,8 +85,18 @@ const MyProfile: FC = () => {
 
   // for infinite scroll 😀
   const dummyImgs = [
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 1, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 2, userPk: 1 },
+    {
+      image:
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      geminiPk: 1,
+      userPk: 1,
+    },
+    {
+      image:
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/adol.png",
+      geminiPk: 2,
+      userPk: 1,
+    },
     { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
     { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
     { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },

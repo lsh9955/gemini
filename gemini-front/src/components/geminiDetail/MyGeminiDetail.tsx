@@ -3,6 +3,7 @@ import {
   ButtonWrapper,
   DescArea,
   DescBlockWrapper,
+  FlipContainerWrapper,
   FormLabel,
   GeminiDetailImgWrapper,
   GeminiDetialInfoWrapper,
@@ -28,6 +29,8 @@ import {
   EditButton,
   EditButtonWrapper,
   LinkImg,
+  MyGeminFlipContainer,
+  MyGeminiFlipContainerWrapper,
 } from "./MyGeminiDetail.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
@@ -72,9 +75,11 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
       setGeminiImg(geminiInfoData.geminiImage);
       setGeminiName(geminiInfoData.geminiName);
       setDesc(geminiInfoData.geminiDescription);
-      setTagContents(geminiInfoData.tags);
       setLikeCount(geminiInfoData.totalLike);
       setIsPublic(geminiInfoData.isPublic);
+      if (geminiInfoData.tags) {
+        setTagContents(geminiInfoData.tags);
+      }
     };
     // setTagContents(res); // 이걸 바탕으로..
 
@@ -83,58 +88,63 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
 
   return (
     <>
-      <GeminiDetialWrapper>
-        <GeminiDetailImgWrapper backgroundImage={geminiImg}>
-          <LikeNicknameWrapper>
-            <LinkProfileWrapper>
-              <LinkImg></LinkImg>
-            </LinkProfileWrapper>
-            <LikeWrapper>
-              <HeartIcon>❤️</HeartIcon>
-              <LikeCount>{likeCount}개의 좋아요</LikeCount>
-            </LikeWrapper>
-          </LikeNicknameWrapper>
-        </GeminiDetailImgWrapper>
-        <GeminiDetialInfoWrapper>
-          <ToggleWrapper>
-            <ToggleText>공개</ToggleText>
-            <ToggleButtonContainer onClick={handleClick} isOn={isPublic}>
-              <ToggleButtonCircle isOn={isPublic} />
-            </ToggleButtonContainer>
-            <ToggleText>비공개</ToggleText>
-          </ToggleWrapper>
-          <NameInputWrapper>
-            <FormLabel>이름</FormLabel>
-            <TextInputDiv
-            // type="text"
-            // id="nickname"
-            // value={nickname}
-            // onChange={(e) => setNickname(e.target.value)}
-            >
-              {geminiName}
-            </TextInputDiv>
-          </NameInputWrapper>
-          <DescBlockWrapper>
-            <FormLabel>소개</FormLabel>
-            <DescArea>{desc}</DescArea>
-          </DescBlockWrapper>
-          <TagBlockWrapper>
-            <FormLabel>키워드</FormLabel>
-            <TagArea>
-              {tagContents.map((tag, index) => (
-                <Tags key={index}>{tag}</Tags>
-              ))}
-            </TagArea>
-          </TagBlockWrapper>
-          <ButtonWrapper>
-            <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
-            <EditButtonWrapper>
-              <EditButton>수정</EditButton>
-              <EditButton>저장</EditButton>
-            </EditButtonWrapper>
-          </ButtonWrapper>
-        </GeminiDetialInfoWrapper>
-      </GeminiDetialWrapper>
+      <MyGeminiFlipContainerWrapper onClick={closeModal}>
+        <MyGeminFlipContainer
+          isFlipped={false}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <GeminiDetailImgWrapper backgroundImage={geminiImg}>
+            <LikeNicknameWrapper>
+              <LinkProfileWrapper>
+                <LinkImg></LinkImg>
+              </LinkProfileWrapper>
+              <LikeWrapper>
+                <HeartIcon>❤️</HeartIcon>
+                <LikeCount>{likeCount}개의 좋아요</LikeCount>
+              </LikeWrapper>
+            </LikeNicknameWrapper>
+          </GeminiDetailImgWrapper>
+          <GeminiDetialInfoWrapper>
+            <ToggleWrapper>
+              <ToggleText>공개</ToggleText>
+              <ToggleButtonContainer onClick={handleClick} isOn={isPublic}>
+                <ToggleButtonCircle isOn={isPublic} />
+              </ToggleButtonContainer>
+              <ToggleText>비공개</ToggleText>
+            </ToggleWrapper>
+            <NameInputWrapper>
+              <FormLabel>이름</FormLabel>
+              <TextInputDiv
+              // type="text"
+              // id="nickname"
+              // value={nickname}
+              // onChange={(e) => setNickname(e.target.value)}
+              >
+                {geminiName}
+              </TextInputDiv>
+            </NameInputWrapper>
+            <DescBlockWrapper>
+              <FormLabel>소개</FormLabel>
+              <DescArea>{desc}</DescArea>
+            </DescBlockWrapper>
+            <TagBlockWrapper>
+              <FormLabel>키워드</FormLabel>
+              <TagArea>
+                {tagContents?.map((tag, index) => (
+                  <Tags key={index}>{tag}</Tags>
+                ))}
+              </TagArea>
+            </TagBlockWrapper>
+            <ButtonWrapper>
+              <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
+              <EditButtonWrapper>
+                <EditButton>수정</EditButton>
+                <EditButton>저장</EditButton>
+              </EditButtonWrapper>
+            </ButtonWrapper>
+          </GeminiDetialInfoWrapper>
+        </MyGeminFlipContainer>
+      </MyGeminiFlipContainerWrapper>
     </>
   );
 };
