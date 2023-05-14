@@ -57,6 +57,20 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
   //     content: "Alarm6",
   //   },
   // ];
+  const handleAlarmClick = (category: number) => {
+    // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
+    switch (category) {
+      case 1:
+        // 첫 번째 카테고리에 대한 처리
+        break;
+      case 2:
+        // 두 번째 카테고리에 대한 처리
+        break;
+      case 3:
+        // 세번째 카테고리에 대한 처리
+        break;
+    }
+  };
 
   return (
     <>
@@ -74,7 +88,11 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
                 <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
               ) : (
                 alarmList[0].map((alarm: any, idx: any) => (
-                  <AlarmContent key={alarm.alarmId} idx={idx}>
+                  <AlarmContent
+                    key={alarm.alarmId}
+                    idx={idx}
+                    onClick={() => handleAlarmClick(alarm.category)}
+                  >
                     {alarm.memo}
                   </AlarmContent>
                 ))
