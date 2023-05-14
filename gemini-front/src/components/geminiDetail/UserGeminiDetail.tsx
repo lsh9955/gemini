@@ -40,6 +40,7 @@ import HeartAnimation from "../../assets/animation-effect/HeartAnimation.json";
 import { useHistory } from "react-router";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { Background } from "../../pages/ai_image/AiImage.styles";
+import FourCuts from "../main/FourCuts";
 
 interface UserGeminiDetailProps {
   closeModal: () => void;
@@ -222,7 +223,9 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
         )}
         <Flipper isFront={isFlipped}>
           <Confirm ref={confirmRef}>
-            <ConfirmContent className="confirm-content">뒷면</ConfirmContent>
+            <ConfirmContent className="confirm-content">
+              <FourCuts></FourCuts>
+            </ConfirmContent>
           </Confirm>
         </Flipper>
       </FlipContainer>
