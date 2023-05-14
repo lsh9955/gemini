@@ -21,36 +21,27 @@ const FollowButton: FC<FollowButtonProps> = ({
     try {
       if (isFollowing) {
         // Perform the unfollow operation
-        const unfollowUser = async () => {
-          try {
-            await axiosInstanceWithAccessToken.delete(
-              `/user-service/profile/`,
-              {
-                data: { nickname: nickname },
-              }
-            );
-            console.log("Unfollow request sent successfully");
-          } catch (error) {
-            console.error("Failed to send unfollow request: ", error);
-          }
-        };
+        try {
+          await axiosInstanceWithAccessToken.delete(`/user-service/profile/`, {
+            data: { nickname: nickname },
+          });
+          console.log("Unfollow request sent successfully");
+          setIsFollowing(false);
+        } catch (error) {
+          console.error("Failed to send unfollow request: ", error);
+        }
       } else {
         // Perform the follow operation
-
-        const followUser = async () => {
-          try {
-            await axiosInstanceWithAccessToken.post("/user-service/profile", {
-              nickname: nickname,
-            });
-            console.log("Follow request sent successfully");
-          } catch (error) {
-            console.error("Failed to send follow request: ", error);
-          }
-        };
-
-        followUser();
+        try {
+          await axiosInstanceWithAccessToken.post("/user-service/profile", {
+            nickname: nickname,
+          });
+          console.log("Follow request sent successfully");
+          setIsFollowing(true);
+        } catch (error) {
+          console.error("Failed to send follow request: ", error);
+        }
       }
-      setIsFollowing(!isFollowing);
     } catch (error) {
       console.error("Failed to toggle follow status: ", error);
     } finally {

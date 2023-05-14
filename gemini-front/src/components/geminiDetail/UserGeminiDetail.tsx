@@ -119,6 +119,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
       setAnimationVisible(true);
       lottieRef.current.play();
     }
+    setIsLike(!isLike);
     return res.data;
   };
 
@@ -126,6 +127,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     const res = await axiosInstanceWithAccessToken.delete(
       `/user-service/gallery/${selectedImagePk}`
     );
+    setIsLike(!isLike);
     return res.data;
   };
 
@@ -133,7 +135,6 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     const newLikeCount = isLike ? await unlikeImage() : await likeImage();
     if (newLikeCount !== "fail") {
       setLikeCount(newLikeCount);
-      setIsLike(!isLike);
     } else {
       // Handle failure case
     }
