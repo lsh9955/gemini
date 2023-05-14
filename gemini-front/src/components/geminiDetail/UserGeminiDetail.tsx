@@ -200,12 +200,20 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
               >
                 <LikeNicknameWrapper>
                   <ProfileWrapper
-                    onClick={() => history.push(`/userprofile/${userNickname}`)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      history.push(`/userprofile/${userNickname}`);
+                    }}
                   >
                     <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
                     <Nickname>{userNickname}</Nickname>
                   </ProfileWrapper>
-                  <LikeWrapper onClick={handleHeartClick}>
+                  <LikeWrapper
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleHeartClick();
+                    }}
+                  >
                     <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
                     <LikeCount>{likeCount}개의 좋아요</LikeCount>
                   </LikeWrapper>
