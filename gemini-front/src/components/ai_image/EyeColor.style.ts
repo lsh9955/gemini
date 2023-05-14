@@ -5,12 +5,13 @@ export const EyeColorBox = styled.div`
   height: auto;
   display: flex;
   flex-wrap: wrap;
+
   /* justify-content: center; */
 `;
 
 export const EyeColorContainer = styled.div`
   position: relative;
-  width: 23%;
+  width: 31%;
   height: auto;
   margin: 1%;
   border: 1px solid;
