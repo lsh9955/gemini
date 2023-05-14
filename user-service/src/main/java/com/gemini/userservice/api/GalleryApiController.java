@@ -89,7 +89,6 @@ public class GalleryApiController {
     public ResponseEntity<String> likeGallery(@RequestHeader("X-Username") String username,
                                                                 @RequestBody Map<String, Long> galleryMap) throws IOException {
 
-        // gallary_no 를 사용해서 gemini pk 가져오기
         SseEmitter emitter = new SseEmitter();
         emitterService.addEmitter(emitter);
 
@@ -103,6 +102,7 @@ public class GalleryApiController {
         } else if (likeCount % 10 == 0) {
             try {
                 // 알람 메세지를 만들기 위해 LikeAlarmDto에 넣어준다.
+                // gallary_no 를 사용해서 gemini pk 가져오기
                 LikeAlarmDto likeAlarmDto = new LikeAlarmDto();
                 likeAlarmDto.setGalleryNo(galleryNo);
 

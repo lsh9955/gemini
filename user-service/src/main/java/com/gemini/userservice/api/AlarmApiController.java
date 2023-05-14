@@ -1,6 +1,7 @@
 package com.gemini.userservice.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,37 +52,52 @@ public class AlarmApiController {
 
         final String finalNickname = nickname;
 
+        // 배치 크기 설정
+        int batchSize = (int) alarmRepository.countByNickname(finalNickname);
+
         // ExecutorService에 작업을 제출하여 비동기적으로 SSE 이벤트 생성 및 전송
         sseMvcExecutor.execute(() -> {
             try {
                 while (true) {
                     // AlarmRepository에서 최근 알림 데이터를 가져옴
-                    Optional<List<Alarm>> alarms = alarmRepository.findByOrderByCreatedAtDesc(finalNickname);
+//                    Optional<List<Alarm>> alarms = alarmRepository.findByOrderByCreatedAtDesc(finalNickname);
+                    Optional<List<Alarm>> alarms = alarmRepository.findByNickname(finalNickname);
+                    List<ResponseAlarmDto> responseAlarmDtos = new ArrayList<>();
 
                     // 가져온 알림 데이터를 ResponseAlarmDto로 변환하여 SSE 이벤트로 전송
                     alarms.ifPresent(alarmList -> {
                         alarmList.forEach(alarm -> {
                             try {
                                 ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
+                                        .geminiNo(alarm.getGeminiNo())
                                         .alarmId(alarm.getAlarmId())
                                         .latestAlarmId(latestAlarm)
                                         .memo(alarm.getMemo())
                                         .checked(alarm.getChecked())
                                         .category(alarm.getCategory())
                                         .build();
+                                responseAlarmDtos.add(responseAlarmDto);
 
-                                SseEmitter.SseEventBuilder event = SseEmitter.event()
-                                        .data(responseAlarmDto);
-                                emitter.send(event);
+                                if (responseAlarmDtos.size() == batchSize) {
+                                    SseEmitter.SseEventBuilder event = SseEmitter.event()
+                                            .data(new ArrayList<>(responseAlarmDtos));
+                                    emitter.send(event);
+
+                                }
+
+
                             } catch (IOException e) {
                                 // 에러가 발생해도 무시하고 다음 시행으로 넘어갑니다.
                                 System.err.println("Error sending SSE event: " + e.getMessage());
                             }
                         });
                     });
+                    // 반복문 외부에서 responseAlarmDtos 초기화
+                    responseAlarmDtos.clear();
 
                     // SSE 연결 유지
                     Thread.sleep(5000);
+
                 }
             } catch (Exception ex) {
                 // 에러 발생 시 SseEmitter를 종료
