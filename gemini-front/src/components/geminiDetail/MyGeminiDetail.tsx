@@ -128,7 +128,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
             <TagBlockWrapper>
               <FormLabel>키워드</FormLabel>
               <TagArea>
-                {tagContents.map((tag, index) => (
+                {tagContents?.map((tag, index) => (
                   <Tags key={index}>{tag}</Tags>
                 ))}
               </TagArea>
