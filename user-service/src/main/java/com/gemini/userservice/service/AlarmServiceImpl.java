@@ -2,6 +2,7 @@ package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.Alarm.LikeAlarmDto;
+import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.entity.Alarm;
 
@@ -38,6 +39,9 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Autowired
     private GeminiRepository geminiRepository;
+
+    @Autowired
+    private GalleryService galleryService;
 
 
     // SSE 클라이언트를 저장하는 리스트
@@ -146,14 +150,22 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public String contractGemini(String username, Long geminiNo) {
+    public String contractGemini(String username, RequestContractGeminiDto requestContractGeminiDto) {
 
         Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
         if(userInfo.isPresent()) {
             UserInfo user = userInfo.get();
-            Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
+            Gemini gemini = geminiRepository.findByGeminiNo(requestContractGeminiDto.getGeminiNo());
+
+            gemini.setDescription(requestContractGeminiDto.getDescription());
+            gemini.setName(requestContractGeminiDto.getName());
+
             gemini.contract(user);
             geminiRepository.save(gemini);
+
+            if(gemini.getIsPublic()) {
+                galleryService.createGallery(gemini.getGeminiNo());
+            }
             return "success";
         }
         return null;

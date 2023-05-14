@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.gemini.userservice.dto.request.RequestContractGeminiDto;
+import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -92,10 +94,9 @@ public class AlarmApiController {
 
     @PostMapping("/gemini")
     public ResponseEntity<?> contractGemini(@RequestHeader("X-Username") String username,
-                                            @RequestBody Map<String, Long> geminiMap) {
+                                            @RequestBody RequestContractGeminiDto requestContractGeminiDto) {
 
-        Long geminiNo = geminiMap.get("gemini_no");
-        String res = alarmService.contractGemini(username, geminiNo);
+        String res = alarmService.contractGemini(username, requestContractGeminiDto);
         if (res == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
         }
