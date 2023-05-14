@@ -19,5 +19,7 @@ public class RequestCompleteGeminiDto {
 
     private List<Long> tagIds;
 
+    private String prompt;
+
     private Long seed;
 }
