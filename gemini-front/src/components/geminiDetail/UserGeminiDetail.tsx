@@ -28,8 +28,6 @@ import {
   ToggleButtonContainer,
   ToggleText,
   ToggleWrapper,
-  Confirm,
-  ConfirmContent,
   FlipContainerWrapper,
 } from "./UserGeminiDetail.styles";
 import { LinkImg } from "./MyGeminiDetail.styles";
@@ -42,6 +40,7 @@ import { useHistory } from "react-router";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { Background } from "../../pages/ai_image/AiImage.styles";
 import FourCuts from "../main/FourCuts";
+import { CgPolaroid } from "react-icons/cg";
 
 interface UserGeminiDetailProps {
   closeModal: () => void;
@@ -137,22 +136,6 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const flip = () => setIsFlipped(!isFlipped);
 
-  // flip 내용물 뒤집기
-  const confirmRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (confirmRef.current) {
-      const confirmContent = confirmRef.current.querySelector(
-        ".confirm-content"
-      ) as HTMLElement;
-      if (confirmContent) {
-        confirmContent.style.transform = isFlipped
-          ? "rotateY(180deg)"
-          : "rotateY(0)";
-      }
-    }
-  }, [isFlipped]);
-
   // flip 된 상태에서 원래대로 돌아가기
   const backModal = () => {
     setIsFlipped(false);
@@ -184,7 +167,10 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
               }}
             /> */}
               {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
-              <GeminiDetailImgWrapper backgroundImage={geminiImg}>
+              <GeminiDetailImgWrapper
+                backgroundImage={geminiImg}
+                onClick={flip}
+              >
                 <LikeNicknameWrapper>
                   <ProfileWrapper
                     onClick={() => history.push(`/userprofile/${userNickname}`)}
@@ -223,9 +209,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                   </TagArea>
                 </TagBlockWrapper>
                 <ButtonWrapper>
-                  <GeminiInfoButton onClick={flip}>
-                    이 레시피 사용하기
-                  </GeminiInfoButton>
+                  <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
                 </ButtonWrapper>
               </GeminiDetialInfoWrapper>
             </Flipper>

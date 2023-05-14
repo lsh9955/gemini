@@ -18,7 +18,7 @@ export const GeminiDetialWrapper = styled.div`
   transform: translate(-50%, -50%);
   z-index: 1000; // 이 값을 더 높게 설정하세요.
 
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1;
   width: 50vw;
   display: flex;
   background-color: #00000099;
@@ -70,9 +70,9 @@ export const FlipContainer = styled.div<{ isFlipped: boolean }>`
 
   background-color: #00000099;
 
-  aspect-ratio: ${({ isFlipped }) => (isFlipped ? "2 / 3" : "3 / 2")};
+  aspect-ratio: ${({ isFlipped }) => (isFlipped ? "3 / 2" : "3 / 2")};
   width: 50vw;
-  max-height: 75vh; /* 세로 길이를 최대 높이로 제한 */
+  /* max-height: 75vh; 세로 길이를 최대 높이로 제한 */
 
   perspective: 1000px;
   transform-style: preserve-3d;
@@ -146,8 +146,7 @@ export const ProfileWrapper = styled.div`
   cursor: pointer;
 `;
 
-// 😶😶😶 여기서부터 해야됨.
-// export const ProfileImg = styled.div<{ backgroundImage: string }>`
+// 😶😶😶 여기서부터 해야됨.GeminiInfoButton
 //   width: 10%;
 //   height: 55%;
 //   border-radius: 50%;
@@ -448,20 +447,4 @@ export const GeminiInfoButton = styled.div`
   &:active {
     background-color: rgba(255, 255, 255, 0.3);
   }
-`;
-
-export const Confirm = styled.div`
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-`;
-
-export const ConfirmContent = styled.div`
-  transform: scaleX(-1);
 `;
