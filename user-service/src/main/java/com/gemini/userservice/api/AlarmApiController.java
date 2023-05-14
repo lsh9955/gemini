@@ -81,6 +81,9 @@ public class AlarmApiController {
                                             .data(new ArrayList<>(responseAlarmDtos));
                                     emitter.send(event);
 
+                                    // 전송 후 responseAlarmDtos 초기화
+                                    responseAlarmDtos.clear();
+
                                 }
 
 
