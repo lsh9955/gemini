@@ -77,9 +77,19 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
 
   useEffect(() => {
     const fetchGeminiInfo = async () => {
-      const res = axiosInstanceWithAccessToken.get(
+      const galleryRes = await axiosInstanceWithAccessToken.get(
         `/user-service/gallery/${selectedImagePk}`
       ); // 수정 필요😀
+      const galleryInfoData = galleryRes.data;
+      setGeminiImg(galleryInfoData.geminiImage);
+      setuserProfileImg(galleryInfoData.profileImage);
+      setUserNickname(galleryInfoData.nickname);
+      setGeminiName(galleryInfoData.geminiName);
+      setDesc(galleryInfoData.geminiDescription);
+      setTagContents(galleryInfoData.tags);
+      setLikeCount(galleryInfoData.totalLike);
+      setIsLike(galleryInfoData.isLiked);
+
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
       // setTagContents(data.tags); // Set the state with the fetched tags

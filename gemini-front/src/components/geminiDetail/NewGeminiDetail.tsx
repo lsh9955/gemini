@@ -28,9 +28,18 @@ import {
   EditButtonWrapper,
   LinkImg,
 } from "./MyGeminiDetail.styles";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
-const NewGeminiDetail: FC = () => {
-  const [isOn, setIsOn] = useState<boolean>(false);
+interface MyGeminiDetailProps {
+  closeModal: () => void;
+  selectedImagePk: number | null; // geminiPk
+}
+
+const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
+  closeModal,
+  selectedImagePk,
+}) => {
+  const [isPublic, setIsPublic] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
     "여성",
@@ -50,11 +59,53 @@ const NewGeminiDetail: FC = () => {
   );
 
   const handleClick = () => {
-    setIsOn(!isOn);
+    setIsPublic(!isPublic);
   };
 
+  const contractGemini = async () => {
+    // interface contractGeminiDto {
+    //   name: string;
+    //   description: string;
+    //   isPublic: boolean; // isPublic의 ! 값을 줄거임.
+    // }
+
+    const contractRes = await axiosInstanceWithAccessToken.post(
+      "/user-service/alarms/gemini",
+      {
+        gemini_no: selectedImagePk,
+        name: geminiName,
+        description: desc,
+        isPublic: isPublic,
+      }
+    );
+    // header에 X-username 토큰을 통해서 들어감.
+    closeModal();
+    if (contractRes.status === 200) {
+      return contractRes.data;
+    } else {
+      return null;
+    }
+    // 생성해서 알람이 온 시점에 이미 제미니는 생성되어있음.
+    // 정보만 update 해주면 된다.
+    // isPublic 공개상태에 따라서 gallery에 등록할지 안할지 분기처리.
+  };
+
+  const deleteGemini = () => {};
+
   useEffect(() => {
-    const fetchTags = async () => {
+    // 처음에 알람이 왔을때 클릭을 하면 prop이용, geminiPk로 줄것임.
+    // 마지막 버튼에 patch요청 보내서 갤러리에 생성을 하면 됨.
+    const fetchNewGeminiInfo = async () => {
+      const geminiRes = await axiosInstanceWithAccessToken.get(
+        `/user-service/gallery/gemini/${selectedImagePk}`
+      );
+      const geminiInfoData = geminiRes.data;
+      setGeminiImg(geminiInfoData.geminiImage);
+      setGeminiName("");
+      setDesc("");
+      setTagContents(geminiInfoData.tags);
+      setIsPublic(true); // 기본은 공개임. display 되는건 !isPublic
+
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
       // setTagContents(data.tags); // Set the state with the fetched tags
@@ -64,6 +115,7 @@ const NewGeminiDetail: FC = () => {
     // setTagContents(res); // 이걸 바탕으로..
   }, []);
 
+  // 모달 밖을 눌러서 닫는 액션을 취하면 안됨 (버그의 원인. 빈 정보의 제미니가 나옴.)
   return (
     <>
       <GeminiDetialWrapper>
@@ -81,8 +133,9 @@ const NewGeminiDetail: FC = () => {
         <GeminiDetialInfoWrapper>
           <ToggleWrapper>
             <ToggleText>공개</ToggleText>
-            <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-              <ToggleButtonCircle isOn={isOn} />
+            {/* isPublic의 반대값을 줘야함. BE와 통신할때는 true로 보내는데, toggle로 보여지는 상태는 false */}
+            <ToggleButtonContainer onClick={handleClick} isOn={!isPublic}>
+              <ToggleButtonCircle isOn={!isPublic} />
             </ToggleButtonContainer>
             <ToggleText>비공개</ToggleText>
           </ToggleWrapper>
@@ -110,8 +163,8 @@ const NewGeminiDetail: FC = () => {
           </TagBlockWrapper>
           <ButtonWrapper>
             <EditButtonWrapper>
-              <EnrollButton>계약하기</EnrollButton>
-              <EnrollButton>놓아주기</EnrollButton>
+              <EnrollButton onClick={contractGemini}>계약하기</EnrollButton>
+              <EnrollButton onClick={closeModal}>놓아주기</EnrollButton>
             </EditButtonWrapper>
           </ButtonWrapper>
         </GeminiDetialInfoWrapper>
