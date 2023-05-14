@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "GEMINI")
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Gemini {
@@ -35,7 +36,7 @@ public class Gemini {
     private Long seed;
 
     @Column(name = "is_public")
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")

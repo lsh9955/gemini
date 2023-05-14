@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import OpenPayModalButton from "../../components/profile/pay/button/OpenPayModalButton";
 import PayButton from "../../components/profile/pay/modal/PayModal";
 import {
@@ -23,29 +24,45 @@ import {
   NumText,
 } from "./UserProfile.styles";
 import MyProfileContentBody from "../../components/profile/myprofile/MyProfileContentBody";
-import axios from "axios";
 import { getInfScrollImgLength } from "./UserProfile";
+import axios from "axios";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
+import AriesDummyProfile from "../../assets/img/AriesDummyProfile.png";
 import { async } from "q";
+import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
+import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
+import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
+import { AppStore } from "../../store/store";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
   const history = useHistory();
+  const reduxNickname = useSelector((state: AppStore) => state.user.nickname);
 
-  const [nickname, setNickname] = useState<string>("내 닉네임");
+  const [profileImg, setProfileImg] = useState<string>(AriesDummyProfile);
+  const [nickname, setNickname] = useState<string>("기본 닉네임");
   const [desc, setDesc] = useState<string>(
-    "자기소개 부분: 내가 좋아하는 세계관, 캐릭터 등등을 적어보자 자  최대 몇글자로 하는게 좋을까? 넘기면 ...으로 만들까?"
+    "자기소개 부분: 내가 좋아하는 세계관, 캐릭터 등등을 적어보자. 기본 자기소개"
   );
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
   const [starPoint, setStarPoint] = useState<number>(10);
 
   const getMyinfo = async () => {
-    const res = await axiosInstanceWithAccessToken.get(
+    console.log("내 정보를 가져옵니다.");
+    const userInfoRes = await axiosInstanceWithAccessToken.get(
       "/user-service/profile/login"
     );
+    console.log(reduxNickname);
+    console.log("닉네임으로 팔로잉 찾아봅니다.");
+
+    const followingRes = await axiosInstanceWithAccessToken.post(
+      `/user-service/profile/followcount`,
+      { nickname: reduxNickname }
+    );
+
     console.log("내정보");
-    console.log(res.data.description);
+    console.log(userInfoRes.data.description);
     //     `description: "띄어쓰기 되지"
     // nickname: "띄어쓰기 되나"
     // profileBackground: null
@@ -53,9 +70,13 @@ const MyProfile: FC = () => {
     // star: 10000
     // userPk: 9
     // username: "google_12346"`
-    setNickname(res.data.nickname);
-    setDesc(res.data.description);
-    setStarPoint(res.data.star);
+    setProfileImg(userInfoRes.data.profileImgUrl);
+    setNickname(userInfoRes.data.nickname);
+    setDesc(userInfoRes.data.description);
+    setStarPoint(userInfoRes.data.star);
+
+    setFollowerNum(followingRes.data.followersCount);
+    setFollowingNum(followingRes.data.followingsCount);
   };
   useEffect(() => {
     getMyinfo();
@@ -63,17 +84,19 @@ const MyProfile: FC = () => {
 
   // for infinite scroll 😀
   const dummyImgs = [
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
-    "http://placeimg.com/150/200/tech",
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 1 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 2 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 3 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 4 },
+    { imageUrl: "http://placeimg.com/150/200/tech", geminiPk: 5 },
+    // ...
   ];
-  const [images, setImages] = useState<string[]>([...dummyImgs]);
+  interface ImageData {
+    imageUrl: string;
+    geminiPk: number;
+  }
+
+  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const infScrollImgLength = getInfScrollImgLength(images.length);
@@ -81,12 +104,15 @@ const MyProfile: FC = () => {
 
   const loadMoreImages = useCallback(async () => {
     try {
-      const response = await axios.get("/api/your_endpoint", {
-        params: {
-          page: page,
-          size: 16,
-        },
-      });
+      const response = await axiosInstanceWithAccessToken.get(
+        "/user-service/profile/mygeminis",
+        {
+          params: {
+            page: page,
+            size: 16,
+          },
+        }
+      );
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
@@ -109,6 +135,19 @@ const MyProfile: FC = () => {
   }, [loadMoreImages]);
   // for infinite scroll 😀
 
+  // for Modal component 😀
+  const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleImageClick = (pk: number) => {
+    setSelectedImagePk(pk);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  // for Modal component 😀
   return (
     <>
       <MyProfileWrapper minHeight={minHeight}>
@@ -116,9 +155,11 @@ const MyProfile: FC = () => {
           <MyBgImg></MyBgImg>
           <MyInfoSpace></MyInfoSpace>
           <MyInfoContentWrapper>
-            <MyProfileImg>
+            <MyProfileImg imgUrl={profileImg}>
+              {/* AriesDummyProfile */}
               <EditPenButton></EditPenButton>
             </MyProfileImg>
+
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
@@ -159,7 +200,17 @@ const MyProfile: FC = () => {
               images={images}
               hasMore={hasMore}
               loadMoreImages={loadMoreImages}
+              onImageClick={handleImageClick} // 이 부분을 추가하세요.
             />
+            {isModalOpen && (
+              <>
+                <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
+                <MyGeminiDetail
+                  closeModal={closeModal}
+                  selectedImagePk={selectedImagePk}
+                />
+              </>
+            )}
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>
