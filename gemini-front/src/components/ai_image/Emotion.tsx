@@ -101,7 +101,7 @@ const Emotion: FC<Props> = ({ data, handleEmotion }) => {
   return (
     <>
       <EmotionBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <EmotionContainer
             key={item.tagId}
             onClick={() => handleEmotionClick(item)}
