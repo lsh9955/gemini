@@ -19,16 +19,14 @@ const FourCuts: React.FC<FourCutsProps> = ({ backModal }) => {
   };
   // 나중에 get 받고 map해서 이미지 빼기
   return (
-    <ContainerWrapper>
-      <div onClick={handleClick}>
-        <MyGeminiText onClick={handleClick}>MyGemini</MyGeminiText>
-        <Container>
-          <Image image={Adol1by1Dummy} />
-          <Image image={Adol1by1Dummy} />
-          <Image image={Adol1by1Dummy} />
-          <Image image={Adol1by1Dummy} />
-        </Container>
-      </div>
+    <ContainerWrapper onClick={handleClick}>
+      <MyGeminiText>MyGemini</MyGeminiText>
+      <Container>
+        <Image image={Adol1by1Dummy} />
+        <Image image={Adol1by1Dummy} />
+        <Image image={Adol1by1Dummy} />
+        <Image image={Adol1by1Dummy} />
+      </Container>
     </ContainerWrapper>
   );
 };

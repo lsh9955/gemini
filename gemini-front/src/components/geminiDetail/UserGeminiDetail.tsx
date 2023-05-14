@@ -30,6 +30,7 @@ import {
   ToggleWrapper,
   Confirm,
   ConfirmContent,
+  FlipContainerWrapper,
 } from "./UserGeminiDetail.styles";
 import { LinkImg } from "./MyGeminiDetail.styles";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
@@ -159,12 +160,13 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
 
   return (
     <>
-      <FlipContainer isFlipped={isFlipped}>
-        {isFlipped ? (
-          <FourCuts backModal={backModal} />
-        ) : (
-          <Flipper isFront={true}>
-            {/* <Player
+      <FlipContainerWrapper>
+        <FlipContainer isFlipped={isFlipped}>
+          {isFlipped ? (
+            <FourCuts backModal={backModal} />
+          ) : (
+            <Flipper isFront={true}>
+              {/* <Player
               ref={lottieRef}
               src={HeartAnimation}
               background="transparent"
@@ -181,61 +183,62 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                 if (event === "complete") onAnimationComplete();
               }}
             /> */}
-            {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
-            <GeminiDetailImgWrapper backgroundImage={geminiImg}>
-              <LikeNicknameWrapper>
-                <ProfileWrapper
-                  onClick={() => history.push(`/userprofile/${userNickname}`)}
-                >
-                  <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
-                  <Nickname>{userNickname}</Nickname>
-                </ProfileWrapper>
-                <LikeWrapper onClick={handleComponentClick}>
-                  <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
-                  <LikeCount>{likeCount}개의 좋아요</LikeCount>
-                </LikeWrapper>
-              </LikeNicknameWrapper>
-            </GeminiDetailImgWrapper>
-            <GeminiDetialInfoWrapper>
-              <ToggleWrapper hideToggle={true}>
-                <ToggleText>공개</ToggleText>
-                <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-                  <ToggleButtonCircle isOn={isOn} />
-                </ToggleButtonContainer>
-                <ToggleText>비공개</ToggleText>
-              </ToggleWrapper>
-              <NameInputWrapper>
-                <FormLabel>이름</FormLabel>
-                <TextInputDiv>{geminiName}</TextInputDiv>
-              </NameInputWrapper>
-              <DescBlockWrapper hideToggle={true}>
-                <FormLabel>소개</FormLabel>
-                <DescArea>{desc}</DescArea>
-              </DescBlockWrapper>
-              <TagBlockWrapper hideToggle={true}>
-                <FormLabel>키워드</FormLabel>
-                <TagArea>
-                  {tagContents.map((tag, index) => (
-                    <Tags key={index}>{tag}</Tags>
-                  ))}
-                </TagArea>
-              </TagBlockWrapper>
-              <ButtonWrapper>
-                <GeminiInfoButton onClick={flip}>
-                  이 레시피 사용하기
-                </GeminiInfoButton>
-              </ButtonWrapper>
-            </GeminiDetialInfoWrapper>
-          </Flipper>
-        )}
-        {/* <Flipper isFront={isFlipped}>
+              {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
+              <GeminiDetailImgWrapper backgroundImage={geminiImg}>
+                <LikeNicknameWrapper>
+                  <ProfileWrapper
+                    onClick={() => history.push(`/userprofile/${userNickname}`)}
+                  >
+                    <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
+                    <Nickname>{userNickname}</Nickname>
+                  </ProfileWrapper>
+                  <LikeWrapper onClick={handleComponentClick}>
+                    <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
+                    <LikeCount>{likeCount}개의 좋아요</LikeCount>
+                  </LikeWrapper>
+                </LikeNicknameWrapper>
+              </GeminiDetailImgWrapper>
+              <GeminiDetialInfoWrapper>
+                <ToggleWrapper hideToggle={true}>
+                  <ToggleText>공개</ToggleText>
+                  <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
+                    <ToggleButtonCircle isOn={isOn} />
+                  </ToggleButtonContainer>
+                  <ToggleText>비공개</ToggleText>
+                </ToggleWrapper>
+                <NameInputWrapper>
+                  <FormLabel>이름</FormLabel>
+                  <TextInputDiv>{geminiName}</TextInputDiv>
+                </NameInputWrapper>
+                <DescBlockWrapper hideToggle={true}>
+                  <FormLabel>소개</FormLabel>
+                  <DescArea>{desc}</DescArea>
+                </DescBlockWrapper>
+                <TagBlockWrapper hideToggle={true}>
+                  <FormLabel>키워드</FormLabel>
+                  <TagArea>
+                    {tagContents.map((tag, index) => (
+                      <Tags key={index}>{tag}</Tags>
+                    ))}
+                  </TagArea>
+                </TagBlockWrapper>
+                <ButtonWrapper>
+                  <GeminiInfoButton onClick={flip}>
+                    이 레시피 사용하기
+                  </GeminiInfoButton>
+                </ButtonWrapper>
+              </GeminiDetialInfoWrapper>
+            </Flipper>
+          )}
+          {/* <Flipper isFront={isFlipped}>
           <Confirm ref={confirmRef}>
             <ConfirmContent className="confirm-content">
               <FourCuts closeModal={backModal}></FourCuts>
             </ConfirmContent>
           </Confirm>
         </Flipper> */}
-      </FlipContainer>
+        </FlipContainer>
+      </FlipContainerWrapper>
     </>
   );
 };
