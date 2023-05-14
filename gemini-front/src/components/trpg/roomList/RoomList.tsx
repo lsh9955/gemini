@@ -13,10 +13,13 @@ import {
 } from "./RoomListStyle";
 import { BASE_URL } from "../config";
 import CreateRoomModal from "./CreateRoomModal";
+import PasswordModal from "./PasswordModal";
 
 const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [rooms, setRooms] = useState<string[]>([]);
   const [modal, setModal] = useState<boolean>(false);
+  const [pwModal, setPwModal] = useState<boolean>(false);
+  const [targetPwRoom, setTargetPwRoom] = useState<any>(null);
   useEffect(() => {
     const res = async () => {
       const getRoomInfo = await axios.get(`${BASE_URL}/node/room`);
@@ -51,7 +54,13 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   };
 
   //비밀번호가 필요한 경우 추가할 것
-
+  const openPwModal = (v: any) => {
+    setPwModal(true);
+    setTargetPwRoom(v);
+  };
+  const closePwModal = (v: any) => {
+    setPwModal(false);
+  };
   return (
     <RoomListWrap>
       <TitleWrap>
@@ -64,10 +73,28 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
           생성하기
         </button>
       </TitleWrap>
+      <PasswordModal
+        pwModal={pwModal}
+        targetPwRoom={targetPwRoom}
+        closePwModal={closePwModal}
+      />
       <CreateRoomModal modal={modal} closeModal={closeModal} />
       <ListWrap>
         {rooms.map((v: any, i) => {
-          return (
+          return JSON.parse(v).password ? (
+            // 비밀번호 입력하는 모달창으로 이동
+            <div
+              onClick={() => {
+                openPwModal(JSON.parse(v));
+              }}
+            >
+              <RoomWrap roombgimg={JSON.parse(v).defaultpicture}>
+                <RoomTitle>{JSON.parse(v).title}</RoomTitle>
+                <RoomConcept>{JSON.parse(v).concept}</RoomConcept>
+                <RoomUserNum>{JSON.parse(v).usernum}/8</RoomUserNum>
+              </RoomWrap>
+            </div>
+          ) : (
             <Link
               to={`/room/${JSON.parse(v)["_id"]}`}
               key={i}

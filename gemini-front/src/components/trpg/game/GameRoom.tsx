@@ -106,6 +106,11 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
       })} */}
       <MusicPlayer playTarget={playTarget} playHandler={playHandler} />
       <DiceRoller playTarget={playTarget} playHandler={playHandler} />
+      <GetPicture
+        playTarget={playTarget}
+        playHandler={playHandler}
+        chatSocket={chatSocket}
+      />
     </RoomWrap>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DiceStart, DiceTitle, DiceWrap, SizeButton } from "./DiceRollerStyle";
 import oneDice from "../../assets/dice/1.gif";
 
@@ -13,7 +13,7 @@ const DiceRoller = ({
     playHandler("");
   };
   const handleMessageFromIframe = (event: any) => {
-    console.log("Received message from iframe:", event.data);
+    console.log("주사위 점수", event.data, isNaN(event.data));
   };
   useEffect(() => {
     window.addEventListener("message", handleMessageFromIframe);
@@ -27,7 +27,7 @@ const DiceRoller = ({
       <DiceTitle>주사위를 던집니다</DiceTitle>
       <iframe
         src={"https://stupendous-cupcake-e93f3f.netlify.app/"}
-        style={{ width: "100%", height: "50vh" }}
+        style={{ position: "absolute", width: "100%", height: "70%" }}
       />
       {/* <DiceStart>시작</DiceStart> */}
       <SizeButton onClick={sizeHandler}>닫기</SizeButton>

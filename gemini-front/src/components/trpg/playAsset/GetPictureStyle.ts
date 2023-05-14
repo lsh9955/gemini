@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const DiceWrap = styled.div<{ playerStyle: boolean }>`
+export const GetPictureWrap = styled.div<{ playerStyle: boolean }>`
   background: rgba(0, 0, 0, 0.45);
 
   width: 50%;
@@ -15,7 +15,7 @@ export const DiceWrap = styled.div<{ playerStyle: boolean }>`
   justify-content: space-between;
   align-items: center;
 `;
-export const DiceTitle = styled.div`
+export const GetPictureTitle = styled.div`
   font-size: 120%;
   color: white;
 `;

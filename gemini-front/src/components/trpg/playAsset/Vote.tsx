@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import { GetPictureTitle, GetPictureWrap, SizeButton } from "./GetPictureStyle";
 
-const GetPicture = ({
+const Vote = ({
   chatSocket,
   playTarget,
   playHandler,
@@ -65,4 +65,4 @@ const GetPicture = ({
   );
 };
 
-export default GetPicture;
+export default Vote;
