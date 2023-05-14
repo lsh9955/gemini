@@ -7,6 +7,18 @@ export const Background = styled.div`
   background-size: cover;
   height: 91vh;
   width: 100vw;
+
+  overflow-y: scroll;
+  /* Chrome, Safari, Edge, and Opera에서 스크롤바를 숨기는 방법 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox에서 스크롤바를 숨기는 방법 */
+  /* (Firefox는 "-moz-" 접두사를 사용합니다) */
+  ::-moz-scrollbar {
+    display: none;
+  }
 `;
 
 // 페이지의 가장 바깥쪽을 싸는 스타일
@@ -49,6 +61,7 @@ export const AiSampleBox = styled.div`
   width: 100%;
   height: auto;
   margin-top: 1vh;
+
   border: 1px solid;
   border-radius: 10px;
   background-color: white;

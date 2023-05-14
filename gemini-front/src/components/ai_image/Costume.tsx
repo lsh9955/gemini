@@ -51,7 +51,7 @@ const Costume: FC<Props> = ({ data, handleCostume }) => {
   return (
     <>
       <CostumeBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <CostumeContainer
             key={item.tagId}
             onClick={() => handleCostumeClick(item)}

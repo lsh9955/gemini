@@ -27,7 +27,7 @@ const EyeColor: FC<Props> = ({ data, handleEyeColor }) => {
   return (
     <>
       <EyeColorBox>
-        {data.map((item) => (
+        {data?.map((item) => (
           <EyeColorContainer
             key={item.tagId}
             onClick={() => handleEyeColorClick(item)}

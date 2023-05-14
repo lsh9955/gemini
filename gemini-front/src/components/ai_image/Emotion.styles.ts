@@ -10,7 +10,7 @@ export const EmotionBox = styled.div`
 
 export const EmotionContainer = styled.div`
   position: relative;
-  width: 23%;
+  width: 31%;
   height: auto;
   margin: 1%;
   border: 1px solid;
