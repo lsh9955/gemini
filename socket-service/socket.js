@@ -83,9 +83,9 @@ module.exports = (server, app, sessionMiddleware) => {
     path: "/socket",
     cors: {
       // 개발시
-      origin: "http://localhost:3000",
+      // origin: "http://localhost:3000",
       // 배포시
-      // origin: "http://mygemini.co.kr",
+      origin: "http://mygemini.co.kr",
     },
     transports: ["websocket", "polling"],
     allowEIO3: true,

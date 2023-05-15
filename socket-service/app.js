@@ -29,9 +29,9 @@ const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
   // 개발시
-  origin: "http://localhost:3000",
+  // origin: "http://localhost:3000",
   // 배포시
-  // origin: "https://mygemini.co.kr",
+  origin: "https://mygemini.co.kr",
   credentials: true,
 };
 
@@ -79,17 +79,21 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
 });
 //배포시 설정
-// const server = https.createServer({
-//   key: fs.readFileSync('/etc/letsencrypt/live/mygemini.co.kr/privkey.pem'),
-//   cert: fs.readFileSync('/etc/letsencrypt/live/mygemini.co.kr/cert.pem'),
-//   ca: fs.readFileSync('/etc/letsencrypt/live/mygemini.co.kr/chain.pem'),
-//   requestCert: false,
-//   rejectUnauthorized: false },app);
-//server.listen(5000);
+const server = https.createServer(
+  {
+    key: fs.readFileSync("/etc/letsencrypt/live/mygemini.co.kr/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/mygemini.co.kr/cert.pem"),
+    ca: fs.readFileSync("/etc/letsencrypt/live/mygemini.co.kr/chain.pem"),
+    requestCert: false,
+    rejectUnauthorized: false,
+  },
+  app
+);
+server.listen(5000);
 
 //개발시 설정
-const server = app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트 연결 체크 정상");
-});
+// const server = app.listen(app.get("port"), () => {
+//   console.log(app.get("port"), "번 포트 연결 체크 정상");
+// });
 
 webSocket(server, app, sessionMiddleware);

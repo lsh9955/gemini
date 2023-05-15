@@ -49,9 +49,9 @@ exports.createRoom = async (req, res, next) => {
     // io.emit("newRoom", newRoom);
 
     //개발시
-    res.redirect(`http://localhost:3000/room/${newRoom._id}`);
+    // res.redirect(`http://localhost:3000/room/${newRoom._id}`);
     //  배포시
-    // res.redirect(`https://mygemini.co.kr/room/${newRoom._id}`);
+    res.redirect(`https://mygemini.co.kr/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
     next(error);
@@ -86,9 +86,9 @@ exports.checkPassword = async (req, res) => {
         { $set: { usernum: willupdateRoom.usernum + 1 } }
       );
       //개발시
-      res.redirect(`http://localhost:3000/room/${req.params.id}`);
+      // res.redirect(`http://localhost:3000/room/${req.params.id}`);
       //  배포시
-      // res.redirect(`https://mygemini.co.kr/room/${req.params.id}`);
+      res.redirect(`https://mygemini.co.kr/room/${req.params.id}`);
     } else {
       res.json({ error: "비밀번호가 다릅니다. 다시 시도해주세요" });
     }
