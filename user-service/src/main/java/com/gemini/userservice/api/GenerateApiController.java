@@ -58,13 +58,6 @@ public class GenerateApiController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PostMapping("/gemini/complete")
-    public ResponseEntity<?> completeGemini(@RequestBody RequestCompleteGeminiDto requestCompleteGeminiDto) {
-
-        Long res = generateService.completeGemini(requestCompleteGeminiDto);
-        return ResponseEntity.status(HttpStatus.OK).body(res);
-    }
-
     @GetMapping("/background")
     public ResponseEntity<ResponseGetAllBackgroundDto> getAllBackgrounds() {
 
@@ -97,12 +90,7 @@ public class GenerateApiController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PostMapping("/background/complete")
-    public ResponseEntity<?> completeBackground(@RequestBody RequestCompleteBackgroundDto requestCompleteBackgroundDto) {
 
-        String res = generateService.completeBackground(requestCompleteBackgroundDto);
-        return ResponseEntity.status(HttpStatus.OK).body(res);
-    }
 
     @GetMapping("/pose")
     public ResponseEntity<ResponseGetAllPoseDto> getAllPoses(@RequestHeader("X-Username") String username) {
@@ -132,10 +120,5 @@ public class GenerateApiController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PostMapping("/pose/complete")
-    public ResponseEntity<?> completePose(@RequestBody RequestCompletePoseDto requestCompletePoseDto) {
 
-        List<String> res = generateService.completePose(requestCompletePoseDto);
-        return ResponseEntity.status(HttpStatus.OK).body(res);
-    }
 }
