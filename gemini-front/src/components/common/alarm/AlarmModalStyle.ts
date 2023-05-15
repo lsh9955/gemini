@@ -1,4 +1,8 @@
-import styled, { StyledComponentProps } from "styled-components";
+import styled, {
+  StyledComponentProps,
+  keyframes,
+  Keyframes,
+} from "styled-components";
 
 interface AlarmContentProps
   extends StyledComponentProps<"div", any, {}, never> {
@@ -109,4 +113,72 @@ export const LightOverlay = styled.div`
   right: 0;
   background: transparent;
   z-index: 9999;
+`;
+
+// keyframes
+
+const bounceIn = keyframes`
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+  30% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  60% {
+    transform: scale3d(.9, .9, .9);
+  }
+  70% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+`;
+
+export const StyledBody = styled.body`
+  font-size: 11px;
+  text-align: center;
+  /* background: #f1f1f1; */
+`;
+
+export const StyledP = styled.p`
+  font-size: 1rem;
+  position: relative;
+  display: inline-block;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #151515;
+  color: #f6f6f6;
+  animation: ${bounceIn} 1s 1;
+  transform-origin: left bottom;
+
+  &:after {
+    top: 88%;
+    left: 0;
+    position: absolute;
+    content: "";
+    border: 1.5rem solid;
+    border-color: #00cc99 transparent transparent #00cc99;
+  }
+`;
+
+export const Opponent = styled(StyledP)`
+  transform-origin: right top;
+  background: #151515;
+
+  &:after {
+    top: -35%;
+    left: auto;
+    right: 0;
+    border-color: transparent #151515 #151515 transparent;
+  }
 `;
