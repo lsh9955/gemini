@@ -41,7 +41,7 @@ public class AlarmApiController {
     private ThreadPoolTaskExecutor taskExecutor;
 
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
     public SseEmitter streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
         System.out.println("nickname");
