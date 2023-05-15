@@ -31,7 +31,7 @@ const corsOpt = {
   // 개발시
   // origin: "http://localhost:3000",
   // 배포시
-  origin: "http://mygemini.co.kr",
+  origin: "https://mygemini.co.kr",
   credentials: true,
 };
 
