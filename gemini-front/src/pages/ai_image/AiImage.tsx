@@ -197,14 +197,14 @@ const AiImage: FC = () => {
     setShowEmotion(false);
     setShowCostume(false);
     // 남자일 때 혹은 여자일 때 헤어스타일을 true로 바꿔줌
-    if (genreKorean === "성별을 선택해주세요" || genreKorean === "여성") {
-      setShowMaleHairStyle(false);
-      setShowHairStyle(true);
-      setCategoryNum(6);
-    } else {
+    if (genreKorean === "남성") {
       setShowHairStyle(false);
       setShowMaleHairStyle(true);
       setCategoryNum(9);
+    } else {
+      setShowHairStyle(true);
+      setShowMaleHairStyle(false);
+      setCategoryNum(6);
     }
   };
 
