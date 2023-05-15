@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const EmotionBox = styled.div`
+export const HairColorBox = styled.div`
   width: 100%;
   height: auto;
   display: flex;
@@ -8,9 +8,9 @@ export const EmotionBox = styled.div`
   /* justify-content: center; */
 `;
 
-export const EmotionContainer = styled.div`
+export const HairColorContainer = styled.div`
   position: relative;
-  width: 31%;
+  width: 23%;
   height: auto;
   margin: 1%;
   border: 1px solid;
@@ -21,7 +21,7 @@ export const EmotionContainer = styled.div`
   }
 `;
 
-export const EmotionImage = styled.img`
+export const HairColorImage = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 20px;

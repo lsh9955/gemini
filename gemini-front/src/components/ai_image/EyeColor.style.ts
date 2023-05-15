@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
-export const EmotionBox = styled.div`
+export const EyeColorBox = styled.div`
   width: 100%;
   height: auto;
   display: flex;
   flex-wrap: wrap;
+
   /* justify-content: center; */
 `;
 
-export const EmotionContainer = styled.div`
+export const EyeColorContainer = styled.div`
   position: relative;
   width: 31%;
   height: auto;
@@ -21,7 +22,7 @@ export const EmotionContainer = styled.div`
   }
 `;
 
-export const EmotionImage = styled.img`
+export const EyeColorImage = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 20px;

@@ -1,51 +1,62 @@
 import React, { FC } from "react";
 import { CostumeBox, CostumeContainer, CostumeImage } from "./Costume.styles";
 
-import Hanbok from "../../assets/img/ai/costume/Hanbok.png";
-import Kimono from "../../assets/img/ai/costume/Kimono.png";
-import MaidUniform from "../../assets/img/ai/costume/MaidUniform.png";
-import PlateArmor from "../../assets/img/ai/costume/PlateArmor.png";
-import Spacesuit from "../../assets/img/ai/costume/Spacesuit.png";
+// import Hanbok from "../../assets/img/ai/costume/Hanbok.png";
+// import Kimono from "../../assets/img/ai/costume/Kimono.png";
+// import MaidUniform from "../../assets/img/ai/costume/MaidUniform.png";
+// import PlateArmor from "../../assets/img/ai/costume/PlateArmor.png";
+// import Spacesuit from "../../assets/img/ai/costume/Spacesuit.png";
 
-interface Costume {
-  name: string;
-  image: string;
-  koreaName: string;
+// interface Costume {
+//   name: string;
+//   image: string;
+//   koreanName: string;
+// }
+
+// const costumes: Costume[] = [
+//   { name: "hanbok", image: Hanbok, koreanName: "한복" },
+//   { name: "kimono", image: Kimono, koreanName: "기모노" },
+//   { name: "maid uniform", image: MaidUniform, koreanName: "메이드복" },
+//   { name: "plate armor", image: PlateArmor, koreanName: "갑옷" },
+//   { name: "spacesuit", image: Spacesuit, koreanName: "우주인복" },
+// ];
+
+// interface Props {
+//   handleCostume: (Costume: {
+//     name: string;
+//     image: string;
+//     koreanName: string;
+//   }) => void;
+// }
+
+interface Data {
+  tagId: number;
+  koreanName: string;
+  imgUrl: string;
 }
-
-const costumes: Costume[] = [
-  { name: "hanbok", image: Hanbok, koreaName: "한복" },
-  { name: "kimono", image: Kimono, koreaName: "기모노" },
-  { name: "maid uniform", image: MaidUniform, koreaName: "메이드복" },
-  { name: "plate armor", image: PlateArmor, koreaName: "갑옷" },
-  { name: "spacesuit", image: Spacesuit, koreaName: "우주인복" },
-];
 
 interface Props {
-  handleCostume: (Costume: {
-    name: string;
-    image: string;
-    koreanName: string;
-  }) => void;
+  data: Data[];
+  handleCostume: (costume: Data) => void;
 }
 
-const Costume: FC<Props> = ({ handleCostume }) => {
-  const handleCostumeClick = (costume: Costume) => {
+const Costume: FC<Props> = ({ data, handleCostume }) => {
+  const handleCostumeClick = (item: Data) => {
     handleCostume({
-      name: costume.name,
-      image: costume.image,
-      koreanName: costume.koreaName,
+      tagId: item.tagId,
+      imgUrl: item.imgUrl,
+      koreanName: item.koreanName,
     });
   };
   return (
     <>
       <CostumeBox>
-        {costumes.map((costume) => (
+        {data?.map((item) => (
           <CostumeContainer
-            key={costume.name}
-            onClick={() => handleCostumeClick(costume)}
+            key={item.tagId}
+            onClick={() => handleCostumeClick(item)}
           >
-            <CostumeImage src={costume.image} alt={costume.name} />
+            <CostumeImage src={item.imgUrl} alt={item.koreanName} />
           </CostumeContainer>
         ))}
       </CostumeBox>

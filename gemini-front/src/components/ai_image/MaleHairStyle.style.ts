@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const HairStyleBox = styled.div`
+export const MaleHairStyleBox = styled.div`
   width: 100%;
   height: auto;
   display: flex;
@@ -8,7 +8,7 @@ export const HairStyleBox = styled.div`
   /* justify-content: center; */
 `;
 
-export const HairStyleContainer = styled.div`
+export const MaleHairStyleContainer = styled.div`
   position: relative;
   width: 31%;
   height: auto;
@@ -36,7 +36,7 @@ export const HairStyleContainer = styled.div`
   }
 `;
 
-export const HairStyleImage = styled.img`
+export const MaleHairStyleImage = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 20px;
@@ -47,7 +47,7 @@ export const HairStyleImage = styled.img`
   }
 `;
 
-export const HairStyleText = styled.p`
+export const MaleHairStyleText = styled.p`
   font-size: 15px;
   color: white;
 `;

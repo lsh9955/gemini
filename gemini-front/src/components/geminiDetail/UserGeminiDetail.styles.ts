@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import HeartAnime from "../../assets/img/HeartAnime.gif";
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ export const GeminiDetialWrapper = styled.div`
   transform: translate(-50%, -50%);
   z-index: 1000; // 이 값을 더 높게 설정하세요.
 
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1;
   width: 50vw;
   display: flex;
   background-color: #00000099;
@@ -42,24 +43,44 @@ export const GeminiDetialWrapperCanFlip = styled.div<{ isFlipped: boolean }>`
 // background-color: ${({ isFlipped }) =>
 //   isFlipped ? "#ffffff" : "#00000099;"};
 // flip 관련 😀
+
+export const FlipContainerWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
 // 부모 컴포넌트
 export const FlipContainer = styled.div<{ isFlipped: boolean }>`
-  position: fixed;
+  position: absolute; // position 값을 absolute로 변경
   top: 50%;
   left: 50%;
   z-index: 1000;
   // display: flex;
 
+  flex-direction: column; /* 세로 방향으로 아이템 정렬을 위해 추가 */
+  justify-content: center; /* 세로 방향으로 아이템을 가운데 정렬하기 위해 추가 */
+  align-items: center; /* 가로 방향으로 아이템을 가운데 정렬하기 위해 추가 */
+
   background-color: #00000099;
 
-  aspect-ratio: ${({ isFlipped }) => (isFlipped ? "2 / 3" : "3 / 2")};
+  aspect-ratio: ${({ isFlipped }) => (isFlipped ? "3 / 2" : "3 / 2")};
   width: 50vw;
-  height: auto;
+  /* max-height: 75vh; 세로 길이를 최대 높이로 제한 */
+
   perspective: 1000px;
   transform-style: preserve-3d;
   transform: ${({ isFlipped }) =>
-    `translate(-50%, -50%) 
-     rotateY(${isFlipped ? 180 : 0}deg) rotateX(${isFlipped ? 180 : 0}deg)`};
+    `translate(-50%, -50%) rotateY(${isFlipped ? 180 : 0}deg) rotateX(${
+      isFlipped ? 180 : 0
+    }deg)`};
   transition: transform 0.8s;
 `;
 
@@ -81,7 +102,8 @@ export const Flipper = styled.div<{ isFront: boolean }>`
   height: 100%;
   backface-visibility: hidden;
   aspect-ratio: ${({ isFront }) => (isFront ? "3 / 2" : "2 / 3")};
-  transform: ${({ isFront }) => (isFront ? "rotateY(0)" : "rotateY(180deg)")};
+  transform: ${({ isFront }) => (isFront ? "rotate(0)" : "rotateY(180deg)")};
+  transform-origin: ${({ isFront }) => (isFront ? "top left" : "bottom right")};
   // background-color: #ffffff; // 배경색 추가
 `;
 
@@ -125,8 +147,7 @@ export const ProfileWrapper = styled.div`
   cursor: pointer;
 `;
 
-// 😶😶😶 여기서부터 해야됨.
-// export const ProfileImg = styled.div<{ backgroundImage: string }>`
+// 😶😶😶 여기서부터 해야됨.GeminiInfoButton
 //   width: 10%;
 //   height: 55%;
 //   border-radius: 50%;
@@ -427,4 +448,18 @@ export const GeminiInfoButton = styled.div`
   &:active {
     background-color: rgba(255, 255, 255, 0.3);
   }
+`;
+
+interface HeartImgProps {
+  animationVisible: boolean;
+}
+
+export const HeartImg = styled.div<HeartImgProps>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(${HeartAnime});
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: ${({ animationVisible }) => (animationVisible ? "block" : "none")};
 `;

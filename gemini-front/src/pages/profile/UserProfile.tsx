@@ -49,6 +49,7 @@ const UserProfile: FC = () => {
   );
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
@@ -61,6 +62,7 @@ const UserProfile: FC = () => {
     setFollowingNum(res.data.following);
     setTotalGallery(res.data.geminis.length);
     setDesc(res.data.description);
+    setIsFollowing(res.data.isFollowing);
   };
 
   useEffect(() => {
@@ -102,9 +104,16 @@ const UserProfile: FC = () => {
         }
       );
 
+      console.log(response);
+
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
-          (item: any) => item.imageUrl
+          (item: any) => ({
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
+          })
+
+          // (item: any) => item.imageUrl
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         setPage((prevPage) => prevPage + 1);
@@ -123,7 +132,7 @@ const UserProfile: FC = () => {
   }, [loadMoreImages]);
   // for infinite scroll 😀
 
-  // for model component 😉
+  // for modal component 😉
   const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -135,7 +144,7 @@ const UserProfile: FC = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  // for model component 😉
+  // for modal component 😉
 
   return (
     <>
@@ -168,7 +177,11 @@ const UserProfile: FC = () => {
                   갤러리
                 </NumText>
               </FollowingTextWrapper>
-              <FollowButton />
+              <FollowButton
+                isFollowing={isFollowing}
+                setIsFollowing={setIsFollowing}
+                nickname={nickname}
+              />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>
