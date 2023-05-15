@@ -99,14 +99,17 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   useEffect(() => {
     const getUserImgs = async () => {
       const response = await axios.get(
-        "http://localhost:8081/user-service/gallery/mygeminis",
+        //개발시
+        // "http://localhost:8081/user-service/gallery/mygeminis",
+        //배포시
+        "https://mygemini.co.kr/user-service/gallery/mygeminis",
         {
           headers: {
             Accept: "*/*",
             // 배포시
-            // Authorization: userSeq.accessToken,
+            Authorization: userSeq.accessToken,
             //개발시
-            "X-Username": "google_104917137836848256614",
+            // "X-Username": "google_104917137836848256614",
           },
           params: {
             page: 0,
