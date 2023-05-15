@@ -14,8 +14,7 @@ public class ResponseAlarmDto {
     private Long alarmId;
     private String nickname;
     private String memo;
-    private Boolean checked;
     private Integer category;
-    private Long latestAlarmId;
     private Long geminiNo;
+    private String follower;
 }
