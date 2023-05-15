@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { AppStore } from "../../../store/store";
 import { useSelector } from "react-redux";
 import Message from "../../../assets/img/Message.png";
@@ -13,6 +13,7 @@ import {
 import AlarmModal from "../alarm/AlarmModal";
 import ProfileModal from "./profileImage/ProfileModal";
 import MessegeModal from "./profileImage/MessegeModal";
+import GeminiAlarmModal from "../alarm/GeminiAlarmModal";
 
 type Alarm = {
   alarmId: number;
@@ -29,6 +30,20 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showMessegeModal, setShowMessegeModal] = useState(false);
+  const [showGeminiAlarmModal, setShowGeminiAlarmModal] = useState(false);
+
+  // gemini 알림 보여줬는지 check
+  const [geminiAlarmShown, setGeminiAlarmShown] = useState(false);
+
+  useEffect(() => {
+    // alarmList가 변할 때마다 실행
+    alarmList.forEach((alarm: Alarm) => {
+      if (alarm.category === 3 && !geminiAlarmShown) {
+        setShowGeminiAlarmModal(true); // 카테고리가 3인 알람이 있으면 모달을 보여줌
+        setGeminiAlarmShown(true); // 모달을 보여줬음을 표시
+      }
+    });
+  }, [alarmList]);
 
   const reduxProfileImage = useSelector(
     (state: AppStore) => state.user.profileImgUrl
@@ -37,18 +52,21 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
   const showProfileModalHandler = () => {
     setShowAlarmModal(false);
     setShowMessegeModal(false);
+    setShowGeminiAlarmModal(false);
     setShowProfileModal((prevState) => !prevState);
   };
 
   const showAlarmModalHandler = () => {
     setShowProfileModal(false);
     setShowMessegeModal(false);
+    setShowGeminiAlarmModal(false);
     setShowAlarmModal((prevState) => !prevState);
   };
 
   const showMessegeModalHandler = () => {
     setShowAlarmModal(false);
     setShowProfileModal(false);
+    setShowGeminiAlarmModal(false);
     setShowMessegeModal((prevState) => !prevState);
   };
 
@@ -62,6 +80,10 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
 
   const closeMessegeModal = () => {
     setShowMessegeModal(false);
+  };
+
+  const closeGeminiModal = () => {
+    setShowGeminiAlarmModal(false);
   };
 
   return (
@@ -95,6 +117,9 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
         )}
         {showProfileModal && <ProfileModal onClose={closeProfileModal} />}
         {showMessegeModal && <MessegeModal onClose={closeMessegeModal} />}
+        {showGeminiAlarmModal && (
+          <GeminiAlarmModal onClose={closeGeminiModal} />
+        )}
       </StyledHeaderTools>
     </>
   );

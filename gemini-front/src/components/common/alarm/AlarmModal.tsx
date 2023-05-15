@@ -26,6 +26,7 @@ interface Props {
 }
 
 const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
+  console.log(alarmList);
   const history = useHistory();
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
   const [showGeminiDetail, setShowGeminiDetail] = useState(false);
@@ -33,11 +34,9 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
 
   const handleAlarmClick = async (alarmId: number, category: number) => {
     // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
-    const selectAlarmList = alarmList
-      .slice(-1)[0]
-      .find(
-        (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
-      );
+    const selectAlarmList = alarmList.find(
+      (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
+    );
     switch (category) {
       case 1:
         // 팔로우 했을 때
@@ -109,7 +108,7 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
                 {alarmList.length === 0 ? (
                   <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
                 ) : (
-                  alarmList.slice(-1)[0].map((alarm: any, idx: any) => (
+                  alarmList.map((alarm: any, idx: any) => (
                     <AlarmContent
                       key={alarm.alarmId}
                       idx={idx}

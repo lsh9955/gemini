@@ -52,7 +52,7 @@ export const ModalContainer = styled.div`
 `;
 
 export const AlarmTitle = styled.div`
-  border-bottom: #efebf0 solid 0.3px;
+  /* border-bottom: #efebf0 solid 0.3px; */
   text-align: center;
   font-size: 20px;
   padding: 0.6rem;
@@ -62,7 +62,7 @@ export const AlarmTitle = styled.div`
 `;
 
 export const AlarmContent = styled.div<AlarmContentProps>`
-  border-bottom: #efebf0 solid 0.3px;
+  border-top: #efebf0 solid 0.3px;
   text-align: center;
   font-size: 18px;
   padding: 0.6rem;
@@ -77,10 +77,36 @@ export const AlarmContentWrapper = styled.div`
 `;
 
 export const NoAlarmContent = styled.div`
+  border-top: #efebf0 solid 0.3px;
   background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
   font-size: 20px;
   padding: 0.5rem;
   /* border-radius: 10px; */
   color: white;
+`;
+
+export const GeminiAlarm = styled.div`
+  position: fixed;
+  top: 8%;
+  left: 77%;
+  transform: translate(-50%, 0);
+  width: 20%;
+  z-index: 1000;
+  border-radius: 10px;
+  /* background-color: #ffffff; */
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LightOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 8vh;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  z-index: 9999;
 `;

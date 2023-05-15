@@ -24,6 +24,7 @@ const Header: FC = () => {
   useEffect(() => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "https://mygemini.co.kr/alarms");
+    // xhr.open("GET", "http://172.30.1.72:8081/alarms");
     xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
     xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
     xhr.withCredentials = true;
@@ -34,18 +35,20 @@ const Header: FC = () => {
     // xhr.setRequestHeader("X-Nickname", "your-nickname");
 
     const url = `https://mygemini.co.kr/alarms?nickname=${reduxNickname}`;
+    // const url = "http://172.30.1.72:8081/alarms?nickname=yeji";
     const eventSource = new EventSource(url, {
       withCredentials: true,
     });
     eventSource.onmessage = (event) => {
-      const alarm = JSON.parse(event.data);
-      setAlarmList((prev) => [...prev, alarm]);
+      const newAlarm = JSON.parse(event.data);
+      setAlarmList(newAlarm);
     };
     return () => {
       eventSource.close();
       xhr.abort();
     };
   }, []);
+  // console.log(alarmList);
 
   return (
     <>
