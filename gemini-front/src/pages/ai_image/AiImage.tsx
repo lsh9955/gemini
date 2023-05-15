@@ -87,6 +87,27 @@ const AiImage: FC = () => {
     }
   }, [categoryNum]);
 
+  // useEffect(() => {
+  //   if (categoryNum !== 0) {
+  //     axios
+  //       .get<TagsResponse>(
+  //         `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
+  //         // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
+  //         // `/user-service/generate/${categoryNum}`,
+  //         {
+  //           headers,
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log(response.data);
+  //         setData(response.data.tags);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }, [categoryNum]);
+
   //////////////////////////////////////////////////////////////////////////////////////////
 
   // 왼쪽 select 컴포넌트를 클릭했을 때, 오른쪽 이미지 컴포넌트를 보여줄 트리거
@@ -197,7 +218,7 @@ const AiImage: FC = () => {
     setShowEmotion(false);
     setShowCostume(false);
     // 남자일 때 혹은 여자일 때 헤어스타일을 true로 바꿔줌
-    if (genreKorean === "남성") {
+    if (genderKorean == "남성") {
       setShowHairStyle(false);
       setShowMaleHairStyle(true);
       setCategoryNum(9);
@@ -353,6 +374,9 @@ const AiImage: FC = () => {
   const closeNeedStarModal = () => {
     setShowNeedStarModal(false);
   };
+
+  console.log(genderKorean);
+  console.log(categoryNum);
 
   return (
     <Background>
