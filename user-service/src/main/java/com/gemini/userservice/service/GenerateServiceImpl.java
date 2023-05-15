@@ -123,7 +123,7 @@ public class GenerateServiceImpl implements GenerateService {
                 Integer star = user.getStar() - 1;
                 user.updateStar(star);
                 userInfoRepository.save(user);
-                ResponseGenerateGeminiDto responseGenerateGeminiDto = new ResponseGenerateGeminiDto(star);
+                ResponseGenerateGeminiDto responseGenerateGeminiDto = new ResponseGenerateGeminiDto(star, response.getBody());
                 return responseGenerateGeminiDto;
             }
         }
@@ -246,7 +246,7 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public List<String> generatePose(RequestGeneratePoseDto requestGeneratePoseDto) {
+    public ResponseGeneratePoseDto generatePose(RequestGeneratePoseDto requestGeneratePoseDto) {
 
         List<String> prompts = new ArrayList<>();
         List<Long> seeds = new ArrayList<>();
@@ -271,10 +271,10 @@ public class GenerateServiceImpl implements GenerateService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/pose";
         HttpEntity<GeneratePoseDto> request = new HttpEntity<>(generatePoseDto, headers);
-        ResponseEntity<List> response = restTemplate.postForEntity(sdUrl, request, List.class);
-        List<String> images = response.getBody();
+        ResponseEntity<ResponseGeneratePoseDto> response = restTemplate.postForEntity(sdUrl, request, ResponseGeneratePoseDto.class);
+        ResponseGeneratePoseDto responseGeneratePoseDto = response.getBody();
 
-        return images;
+        return responseGeneratePoseDto;
     }
 
     @Override

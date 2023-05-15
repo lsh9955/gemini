@@ -15,5 +15,5 @@ public class RequestGeneratePoseDto {
 
     private List<String> users;
 
-    private Long sample;
+    private Integer sample;
 }

@@ -129,7 +129,7 @@ public class GenerateApiController {
     @PostMapping("/pose")
     public ResponseEntity<?> generatePose(@RequestBody RequestGeneratePoseDto requestGeneratePoseDto) {
 
-        List<String> res = generateService.generatePose(requestGeneratePoseDto);
+        ResponseGeneratePoseDto res = generateService.generatePose(requestGeneratePoseDto);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
