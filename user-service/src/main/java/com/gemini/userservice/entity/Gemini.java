@@ -57,4 +57,5 @@ public class Gemini {
     public void contract(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
+
 }

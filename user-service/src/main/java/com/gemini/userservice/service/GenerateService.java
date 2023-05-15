@@ -35,7 +35,7 @@ public interface GenerateService {
 
     PoseDto getPose(Long poseNo);
 
-    List<String> generatePose(RequestGeneratePoseDto requestGeneratePoseDto);
+    ResponseGeneratePoseDto generatePose(RequestGeneratePoseDto requestGeneratePoseDto);
 
     List<String> completePose(RequestCompletePoseDto requestCompletePoseDto);
 }
