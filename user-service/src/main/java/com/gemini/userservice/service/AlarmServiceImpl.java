@@ -65,12 +65,11 @@ public class AlarmServiceImpl implements AlarmService {
 
 
         Alarm alarm = Alarm.builder()
-                .geminiNo(Long.MAX_VALUE)
+                .follower(userInfo.getNickname())
                 .nickname(alarmDto.getGetAlarmNickName())
                 .memo(encodedMessage)
                 .userInfo(userInfo)
                 .category(1)
-                .checked(false)
                 .build();
         alarmRepository.save(alarm);
 
@@ -124,11 +123,10 @@ public class AlarmServiceImpl implements AlarmService {
 
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
-                .geminiNo(Long.MAX_VALUE)
+                .geminiNo(gallery.getGemini().getGeminiNo())
                 .memo(encodedMessage)
                 .userInfo(userInfo)
                 .category(2)
-                .checked(false)
                 .nickname(gallery.getGemini().getUserInfo().getNickname())
                 .build();
         alarmRepository.save(alarm);
@@ -172,7 +170,6 @@ public class AlarmServiceImpl implements AlarmService {
                 .geminiNo(geminiAlarmDto.getGeminiNo())
                 .userInfo(userInfo)
                 .category(3)
-                .checked(false)
                 .nickname(nickname)
                 .build();
         alarmRepository.save(alarm);

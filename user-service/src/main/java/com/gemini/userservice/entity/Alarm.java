@@ -22,8 +22,8 @@ public class Alarm {
     @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
-    @Column(name = "checked")
-    private Boolean checked;
+    @Column(name = "follower")
+    private String follower;
 
     @Column(name = "category")
     private Integer category;

@@ -22,4 +22,7 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     Optional<List<Alarm>> findByNickname(String nickname);
 
     int countByNickname(String finalNickname);
+
+    @Query("SELECT MAX(a.alarmId) FROM Alarm a WHERE a.nickname = :nickname")
+    Optional<List<Alarm>> findLastAlarmIdByNickname(String nickname);
 }
