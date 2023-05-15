@@ -107,7 +107,9 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
           },
         }
       );
+      console.log("아래가 결과임");
       console.log(response);
+      console.log("위가 결과임");
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
