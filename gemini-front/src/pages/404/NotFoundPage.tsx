@@ -22,6 +22,7 @@ const NotFoundPage: React.FC = () => {
       <StarryBackground>
         {/* <NotFound>404</NotFound> */}
         <Wrapper>
+          <Text>우주에서 길을 잃으셨어요</Text>
           <NotFound>
             4
             <span>
@@ -31,8 +32,7 @@ const NotFoundPage: React.FC = () => {
             </span>
             4
           </NotFound>
-          <Text>Where is your Gemini?</Text>
-          <Button onClick={MoveToHome}>HOME</Button>
+          <Button onClick={MoveToHome}>메인으로</Button>
         </Wrapper>
       </StarryBackground>
     </>

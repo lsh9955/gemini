@@ -34,20 +34,20 @@ export const Wrapper = styled.div`
   align-items: center;
   height: 100vh;
   text-align: center;
+  z-index: 11;
 `;
 
 export const Button = styled.div`
-  margin-top: 1.5rem;
+  margin-top: 20rem;
   border: solid #ffffff 1px;
   border-radius: 2px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 20px;
   background-color: transparent;
   color: white;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
   cursor: pointer;
   /* display: inline-block; */
 
@@ -60,9 +60,9 @@ export const Button = styled.div`
 export const Text = styled.div`
   color: #ffffff;
   text-align: center;
-  margin-top: 24rem;
+  /* margin-top: 24rem; */
   font-size: 1.3rem;
-  font-weight: bold;
+  /* font-weight: bold; */
 `;
 
 const earthBackgroundUrl =
