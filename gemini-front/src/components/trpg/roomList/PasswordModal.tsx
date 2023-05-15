@@ -81,7 +81,7 @@ const PasswordModal = ({
         <Box sx={style}>
           <CreateWrap>
             <ModalForm
-              action={`https://mygemini.co.kr/node/pwroom/${targetPwRoom}`}
+              action={`http://mygemini.co.kr/node/pwroom/${targetPwRoom}`}
               method="post"
             >
               <div>
