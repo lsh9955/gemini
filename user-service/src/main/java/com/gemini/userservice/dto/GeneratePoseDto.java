@@ -19,5 +19,5 @@ public class GeneratePoseDto {
 
     private List<Long> gemini_seed;
 
-    private Long pose_id;
+    private Integer pose_id;
 }
