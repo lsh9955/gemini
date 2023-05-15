@@ -147,6 +147,9 @@ const bounceIn = keyframes`
 export const StyledBody = styled.body`
   font-size: 11px;
   text-align: center;
+  position: relative;
+  left: 20.5rem;
+
   /* background: #f1f1f1; */
 `;
 
@@ -156,7 +159,7 @@ export const StyledP = styled.p`
   display: inline-block;
   padding: 1rem;
   margin-bottom: 1rem;
-  background: #151515;
+  background: rgba(0, 0, 0, 0.9);
   color: #f6f6f6;
   animation: ${bounceIn} 1s 1;
   transform-origin: left bottom;
@@ -173,12 +176,19 @@ export const StyledP = styled.p`
 
 export const Opponent = styled(StyledP)`
   transform-origin: right top;
-  background: #151515;
+  background: rgba(0, 0, 0, 0.9);
+  margin-top: 1rem;
+  border-radius: 10px;
 
   &:after {
-    top: -35%;
+    top: -30%;
     left: auto;
     right: 0;
-    border-color: transparent #151515 #151515 transparent;
+    border: 1rem solid;
+    border-color: transparent rgba(0, 0, 0, 0.9) rgba(0, 0, 0, 0.9) transparent;
   }
+`;
+
+export const Interval = styled.div`
+  margin-bottom: 8px;
 `;
