@@ -85,7 +85,7 @@ module.exports = (server, app, sessionMiddleware) => {
       // 개발시
       // origin: "http://localhost:3000",
       // 배포시
-      origin: "http://mygemini.co.kr",
+      origin: "https://mygemini.co.kr",
     },
     transports: ["websocket", "polling"],
     allowEIO3: true,
@@ -130,10 +130,7 @@ module.exports = (server, app, sessionMiddleware) => {
         io.to(voteData.roomId).emit("pickUserResponse", voteData.pickUser);
       });
       socket.on("voteResult", (voteResult) => {
-        io.to(voteResult.roomId).emit(
-          "voteResultResponse",
-          voteResult.pickUser
-        );
+        io.to(voteResult.roomId).emit("voteResultResponse", voteResult.pickUser);
       });
       socket.on("resetVote", (resetVote) => {
         io.to(resetVote.roomId).emit("voteResponse", null);
@@ -141,9 +138,7 @@ module.exports = (server, app, sessionMiddleware) => {
 
       socket.on("randomPick", async (voteData) => {
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
-        let userArray = voteStartRoom[0].userarr.filter(
-          (v) => v !== voteStartRoom[0].owner
-        );
+        let userArray = voteStartRoom[0].userarr.filter((v) => v !== voteStartRoom[0].owner);
         let ranCount = Math.floor(userArray.length * Math.random());
         io.to(voteData.roomId).emit("randomPickResponse", userArray[ranCount]);
       });
