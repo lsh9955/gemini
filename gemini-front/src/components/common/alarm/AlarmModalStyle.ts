@@ -148,7 +148,7 @@ export const StyledBody = styled.body`
   font-size: 11px;
   text-align: center;
   position: relative;
-  left: 20.5rem;
+  left: 26.8%;
 
   /* background: #f1f1f1; */
 `;
