@@ -107,6 +107,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
           },
         }
       );
+      console.log(response);
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(

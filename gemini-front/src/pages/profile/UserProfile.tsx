@@ -104,6 +104,8 @@ const UserProfile: FC = () => {
         }
       );
 
+      console.log(response);
+
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
           (item: any) => item.imageUrl
