@@ -113,7 +113,10 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
-          (item: any) => item.imageUrl
+          (item: any) => ({
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
+          })
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         setPage((prevPage) => prevPage + 1);
