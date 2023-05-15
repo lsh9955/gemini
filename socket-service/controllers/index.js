@@ -28,7 +28,7 @@ const userPicList = [
   "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/user3.png?alt=media&token=058ffe29-b1c5-495f-a649-5a10d5488e15",
   "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/user4.png?alt=media&token=1f8ab0c3-b74f-42f5-bd89-63f36740bb75",
 ];
-
+//방 생성
 exports.createRoom = async (req, res, next) => {
   try {
     const newRoom = await Room.create({
