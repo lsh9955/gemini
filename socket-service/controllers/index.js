@@ -16,7 +16,7 @@ exports.renderMain = async (req, res, next) => {
     next(error);
   }
 };
-
+//방 생성
 exports.renderRoom = async (req, res) => {
   const rooms = await Room.find({});
   res.json({ room: rooms });
