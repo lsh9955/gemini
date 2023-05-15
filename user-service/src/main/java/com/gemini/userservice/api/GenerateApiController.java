@@ -25,11 +25,11 @@ public class GenerateApiController {
 
     private final GenerateService generateService;
 
-    @GetMapping("/{galleryNo}")
-    public ResponseEntity<?> getDefault(@PathVariable("galleryNo") Long galleryNo) {
+    @GetMapping("")
+    public ResponseEntity<Integer> getStar(@RequestHeader("X-Username") String username) {
 
-        ResponseDefaultDto responseDefaultDto = generateService.getDefault(galleryNo);
-        return ResponseEntity.status(HttpStatus.OK).body(responseDefaultDto);
+        Integer star = generateService.getStar(username);
+        return ResponseEntity.status(HttpStatus.OK).body(star);
     }
 
     @GetMapping("/{categoryNo}")
@@ -39,13 +39,12 @@ public class GenerateApiController {
         return ResponseEntity.status(HttpStatus.OK).body(responseTagDto);
     }
 
-    @GetMapping("")
-    public ResponseEntity<Integer> getStar(@RequestHeader("X-Username") String username) {
+    @GetMapping("/default/{galleryNo}")
+    public ResponseEntity<?> getDefault(@PathVariable("galleryNo") Long galleryNo) {
 
-        Integer star = generateService.getStar(username);
-        return ResponseEntity.status(HttpStatus.OK).body(star);
+        ResponseDefaultDto responseDefaultDto = generateService.getDefault(galleryNo);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDefaultDto);
     }
-
 
     @PostMapping("/gemini")
     public ResponseEntity<?> generateGemini(@RequestHeader("X-Username") String username,
