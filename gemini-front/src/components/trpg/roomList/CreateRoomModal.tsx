@@ -81,7 +81,8 @@ const CreateRoomModal = ({
               </div>
               <SelectBtn>
                 <RoomKeySelectBtn
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     setPasswordOpen(false);
                   }}
                   passwordOpen={passwordOpen}
@@ -89,7 +90,8 @@ const CreateRoomModal = ({
                   공개방
                 </RoomKeySelectBtn>
                 <RoomKeySelectBtn
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     setPasswordOpen(true);
                   }}
                   passwordOpen={!passwordOpen}
@@ -98,13 +100,12 @@ const CreateRoomModal = ({
                 </RoomKeySelectBtn>
               </SelectBtn>
               <div>
-                {passwordOpen && (
-                  <PasswordInput
-                    type="password"
-                    name="password"
-                    placeholder="비밀번호"
-                  />
-                )}
+                <PasswordInput
+                  passwordOpen={passwordOpen}
+                  type="password"
+                  name="password"
+                  placeholder="비밀번호"
+                />
               </div>
               <input value={userSeq.nickname} name="userId" />
               <div>
