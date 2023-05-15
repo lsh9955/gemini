@@ -64,9 +64,9 @@ public class GenerateApiController {
 
         ResponseGetAllBackgroundDto res = generateService.getAllBackgrounds();
         if (res == null) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/background/{backgroundNo}")
