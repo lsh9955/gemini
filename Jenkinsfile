@@ -271,9 +271,9 @@ pipeline {
             				sshagent(credentials: ['ssh']) {
 								sh """
 									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${SOCKET_SERVICE_IMAGE_TAG}; then
-										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${SOCKET_SERVICE_IMAGE_TAG}
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker-compose -f docker-compose-socket.yml down --rmi all
 									fi
-									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 5000:5000 --name ${SOCKET_SERVICE_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${SOCKET_SERVICE_IMAGE_TAG}
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker-compose -f docker-compose-socket.yml up -d
 								"""
             				}
         				}
