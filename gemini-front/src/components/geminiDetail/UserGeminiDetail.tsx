@@ -29,6 +29,7 @@ import {
   ToggleText,
   ToggleWrapper,
   FlipContainerWrapper,
+  HeartImg,
 } from "./UserGeminiDetail.styles";
 import { LinkImg } from "./MyGeminiDetail.styles";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
@@ -41,6 +42,7 @@ import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessTok
 import { Background } from "../../pages/ai_image/AiImage.styles";
 import FourCuts from "../main/FourCuts";
 import { CgPolaroid } from "react-icons/cg";
+import HeartAnime from "../../assets/img/HeartAnime.gif";
 
 interface UserGeminiDetailProps {
   closeModal: () => void;
@@ -95,14 +97,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
       if (galleryInfoData.tags) {
         setTagContents(galleryInfoData.tags);
       }
-
-      // const res = await fetch(/* your API endpoint */);
-      // const data = await res.json();
-      // setTagContents(data.tags); // Set the state with the fetched tags
-      // setDesc(data.desc)
-      // setGeminiImg(data.imgUrl)
     };
-    // setTagContents(res); // 이걸 바탕으로..
     fetchGeminiInfo();
   }, []);
 
@@ -114,33 +109,34 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
 
   // 하트 클릭에 따른 함수발동
   const likeImage = async () => {
-    const res = await axiosInstanceWithAccessToken.post(
-      "/user-service/gallery",
-      { gallery_no: selectedImagePk }
-    );
+    // const res = await axiosInstanceWithAccessToken.post(
+    //   "/user-service/gallery",
+    //   { gallery_no: selectedImagePk }
+    // );
     if (lottieRef.current) {
       setAnimationVisible(true);
       lottieRef.current.play();
     }
     setIsLike(!isLike);
-    return res.data;
+    // return res.data;
   };
 
   const unlikeImage = async () => {
-    const res = await axiosInstanceWithAccessToken.delete(
-      `/user-service/gallery/${selectedImagePk}`
-    );
+    // const res = await axiosInstanceWithAccessToken.delete(
+    //   `/user-service/gallery/${selectedImagePk}`
+    // );
     setIsLike(!isLike);
-    return res.data;
+    // return res.data;
   };
 
   const handleHeartClick = async () => {
     const newLikeCount = isLike ? await unlikeImage() : await likeImage();
-    if (newLikeCount !== "fail") {
-      setLikeCount(newLikeCount);
-    } else {
-      // Handle failure case
-    }
+    // if (newLikeCount !== "fail") {
+    // setLikeCount(newLikeCount);
+    setLikeCount(1);
+    // } else {
+    // Handle failure case
+    // }
   };
   // 하트 클릭에 따른 함수발동
 
@@ -152,7 +148,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     return () => {
       if (lottieRef.current) {
         lottieRef.current.stop();
-        // lottieRef.current = null;
+        lottieRef.current = null;
       }
     };
   }, []);
@@ -171,6 +167,14 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     setIsFlipped(false);
   };
 
+  // history.push 통해서 데이터보내기.
+  const sendGalleryPkHandler = () => {
+    history.push({
+      pathname: "/aiImage",
+      state: { galleryPk: selectedImagePk },
+    });
+  };
+
   return (
     <>
       <FlipContainerWrapper onClick={closeModal}>
@@ -183,22 +187,24 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
           ) : (
             <Flipper isFront={true}>
               {/* <Player
-              ref={lottieRef}
-              src={HeartAnimation}
-              background="transparent"
-              speed={1.1} // 속도 조정 가능
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                display: animationVisible ? "block" : "none",
-              }}
-              autoplay={false}
-              loop={false}
-              onEvent={(event) => {
-                if (event === "complete") onAnimationComplete();
-              }}
-            /> */}
+                ref={lottieRef}
+                src={HeartAnimation}
+                background="transparent"
+                speed={1.1} // 속도 조정 가능
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  display: animationVisible ? "block" : "none",
+                }}
+                autoplay={false}
+                loop={false}
+                onEvent={(event) => {
+                  if (event === "complete") onAnimationComplete();
+                }}
+              /> */}
+              <HeartImg animationVisible={true}></HeartImg>
+
               {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
               <GeminiDetailImgWrapper
                 backgroundImage={geminiImg}
@@ -250,7 +256,9 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                   </TagArea>
                 </TagBlockWrapper>
                 <ButtonWrapper>
-                  <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
+                  <GeminiInfoButton onClick={sendGalleryPkHandler}>
+                    이 레시피 사용하기
+                  </GeminiInfoButton>
                 </ButtonWrapper>
               </GeminiDetialInfoWrapper>
             </Flipper>
