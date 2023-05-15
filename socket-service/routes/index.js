@@ -11,6 +11,7 @@ const {
   removeRoom,
   sendChat,
   sendPic,
+  checkPassword,
 } = require("../controllers");
 
 const router = express.Router();
@@ -26,6 +27,8 @@ router.get("/room/:id", enterRoom);
 router.delete("/room/:id", removeRoom);
 
 router.post("/room/:id/chat", sendChat);
+
+router.post("/pwroom/:id", checkPassword);
 
 //이미지 업로드 로직
 //Firebase업로드 로직으로 이식 또는 S3 업로드로 로직 구현

@@ -28,12 +28,14 @@ const http = require("http").Server(app);
 const cors = require("cors");
 app.set("port", process.env.PORT || 5000);
 const corsOpt = {
-  origin: `${BASE_URL}`,
+  // 개발시
+  origin: "http://localhost:3000",
+  // 배포시
   // origin: "https://mygemini.co.kr",
   credentials: true,
 };
-app.use(cors(corsOpt));
 
+app.use(cors(corsOpt));
 connect();
 
 const sessionMiddleware = session({
@@ -62,7 +64,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(sessionMiddleware);
 const indexRouter = require("./routes");
 app.use("/node/", indexRouter);
 

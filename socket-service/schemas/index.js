@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const { MONGO_ID, MONGO_PASSWORD, NODE_ENV } = process.env;
 
-const MONGO_URL = `mongodb+srv://${MONGO_ID}:${MONGO_PASSWORD}@youtubeclone.lv19k.mongodb.net/test`;
-console.log(MONGO_URL);
+const MONGO_URL = `mongodb://${MONGO_ID}:${MONGO_PASSWORD}@mygemini.co.kr:27017/?authMechanism=DEFAULT`;
+mongodb: console.log(MONGO_URL);
 const connect = () => {
   if (NODE_ENV !== "production") {
     mongoose.set("debug", true);

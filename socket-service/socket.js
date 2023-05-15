@@ -3,7 +3,7 @@ const { removeRoom } = require("./services");
 const Room = require("./schemas/room");
 const Chat = require("./schemas/chat");
 const cors = require("cors");
-const BASE_URL = require("./urlconfig");
+
 const redis = require("redis");
 const client = redis.createClient({
   url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/0`,
@@ -82,7 +82,10 @@ module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, {
     path: "/socket",
     cors: {
-      origin: `${BASE_URL}`,
+      // 개발시
+      origin: "http://localhost:3000",
+      // 배포시
+      // origin: "http://mygemini.co.kr",
     },
     transports: ["websocket", "polling"],
     allowEIO3: true,
@@ -92,7 +95,7 @@ module.exports = (server, app, sessionMiddleware) => {
   io.on("connection", (socket) => {
     console.log("chat 네임스페이스에 접속");
     const clientSocket = io.sockets;
-    console.log(clientSocket);
+
     let nowSocket = socket;
 
     socket.on("join", async (data) => {
@@ -117,6 +120,42 @@ module.exports = (server, app, sessionMiddleware) => {
       io.emit("allroomchange", "mongoDBChange");
       socket.on("message", (chatData) => {
         io.to(data.roomId).emit("messageResponse", chatData);
+      });
+      socket.on("startVote", async (voteData) => {
+        const voteStartRoom = await Room.find({ _id: voteData.roomId });
+        io.to(voteData.roomId).emit("voteResponse", voteStartRoom);
+      });
+      socket.on("pickUser", (voteData) => {
+        console.log(voteData);
+        io.to(voteData.roomId).emit("pickUserResponse", voteData.pickUser);
+      });
+      socket.on("voteResult", (voteResult) => {
+        io.to(voteResult.roomId).emit(
+          "voteResultResponse",
+          voteResult.pickUser
+        );
+      });
+      socket.on("resetVote", (resetVote) => {
+        io.to(resetVote.roomId).emit("voteResponse", null);
+      });
+
+      socket.on("randomPick", async (voteData) => {
+        const voteStartRoom = await Room.find({ _id: voteData.roomId });
+        let userArray = voteStartRoom[0].userarr.filter(
+          (v) => v !== voteStartRoom[0].owner
+        );
+        let ranCount = Math.floor(userArray.length * Math.random());
+        io.to(voteData.roomId).emit("randomPickResponse", userArray[ranCount]);
+      });
+
+      socket.on("resetRanVote", (resetVote) => {
+        io.to(resetVote.roomId).emit("resetRanVoteResponse", null);
+      });
+      socket.on("musicPlay", (music) => {
+        io.to(music.roomId).emit("musicPlayResponse", music.muiscURL);
+      });
+      socket.on("diceRoll", (dice) => {
+        io.to(dice.roomId).emit("diceRollResponse", dice.diceNum);
       });
     });
 

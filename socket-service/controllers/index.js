@@ -2,7 +2,7 @@ const Room = require("../schemas/room");
 const Chat = require("../schemas/chat");
 const { removeRoom: removeRoomService } = require("../services");
 const redis = require("redis");
-const BASE_URL = require("../urlconfig");
+
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
@@ -40,6 +40,7 @@ exports.createRoom = async (req, res, next) => {
       users: req.body.userId,
       userArr: [],
       usernum: 0,
+      userImg: req.body.userImg,
       //추후 유저 연결시 변경할 것
       defaultpicture: userPicList[Math.floor(Math.random() * 4)],
     });
@@ -47,7 +48,9 @@ exports.createRoom = async (req, res, next) => {
     //const io = req.app.get("io");
     // io.emit("newRoom", newRoom);
 
-    res.redirect(`${BASE_URL}/room/${newRoom._id}`);
+    //개발시
+    res.redirect(`http://localhost:3000/room/${newRoom._id}`);
+    //  배포시
     // res.redirect(`https://mygemini.co.kr/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
@@ -66,6 +69,28 @@ exports.enterRoom = async (req, res, next) => {
         { _id: req.params.id },
         { $set: { usernum: willupdateRoom.usernum + 1 } }
       );
+    }
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+exports.checkPassword = async (req, res) => {
+  try {
+    const willupdateRoom = await Room.find({ _id: req.params.id });
+    //비밀번호가 같은 경우
+    if (willupdateRoom.password === req.body.password) {
+      await Room.updateOne(
+        { _id: req.params.id },
+        { $set: { usernum: willupdateRoom.usernum + 1 } }
+      );
+      //개발시
+      res.redirect(`http://localhost:3000/room/${req.params.id}`);
+      //  배포시
+      // res.redirect(`https://mygemini.co.kr/room/${req.params.id}`);
+    } else {
+      res.json({ error: "비밀번호가 다릅니다. 다시 시도해주세요" });
     }
   } catch (error) {
     console.error(error);
