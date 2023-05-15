@@ -130,23 +130,7 @@ public class GenerateServiceImpl implements GenerateService {
         return null;
     }
 
-    @Override
-    public Long completeGemini(RequestCompleteGeminiDto requestCompleteGeminiDto) {
 
-        Gemini gemini = Gemini.builder()
-                .imageUrl(requestCompleteGeminiDto.getImageUrl())
-                .totalLike(0)
-                .seed(requestCompleteGeminiDto.getSeed())
-                .build();
-        geminiRepository.save(gemini);
-        GeminiTag geminiTag = GeminiTag.builder()
-                .geminiNo(gemini.getGeminiNo())
-                .tagIds(requestCompleteGeminiDto.getTagIds())
-                .prompt(requestCompleteGeminiDto.getPrompt())
-                .build();
-        mongoTemplate.insert(geminiTag, "gemini_tag");
-        return gemini.getGeminiNo();
-    }
 
     @Override
     public ResponseGetAllBackgroundDto getAllBackgrounds() {
@@ -189,17 +173,7 @@ public class GenerateServiceImpl implements GenerateService {
         return response.getBody();
     }
 
-    @Override
-    public String completeBackground(RequestCompleteBackgroundDto requestCompleteBackgroundDto) {
 
-        Background background1 = Background.builder()
-                .name(requestCompleteBackgroundDto.getKorean())
-                .description(requestCompleteBackgroundDto.getDescription())
-                .imageUrl(requestCompleteBackgroundDto.getImageUrl())
-                .build();
-        backgroundRepository.save(background1);
-        return background1.getImageUrl();
-    }
 
     @Override
     public ResponseGetAllPoseDto getAllPoses(String username) {
@@ -277,31 +251,5 @@ public class GenerateServiceImpl implements GenerateService {
         return responseGeneratePoseDto;
     }
 
-    @Override
-    public List<String> completePose(RequestCompletePoseDto requestCompletePoseDto) {
-
-        Pose pose = Pose.builder().
-                build();
-        poseRepository.save(pose);
-        Long poseNo = pose.getPoseNo();
-        List<String> imageUrls = requestCompletePoseDto.getImageUrls();
-        List<Long> geminis = requestCompletePoseDto.getGeminis();
-        PoseImage poseImage = PoseImage.builder()
-                .poseNo(poseNo)
-                .images(imageUrls)
-                .build();
-        mongoTemplate.insert(poseImage, "pose_image");
-        for(Long geminiNo : geminis) {
-            Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
-            UserInfo userInfo = gemini.getUserInfo();
-            UserPose userPose = UserPose.builder()
-                    .pose(pose)
-                    .userInfo(userInfo)
-                    .build();
-            userPoseRepository.save(userPose);
-        }
-
-        return imageUrls;
-    }
 
 }
