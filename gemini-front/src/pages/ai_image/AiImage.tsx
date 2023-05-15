@@ -61,7 +61,7 @@ interface TagIds {
 const AiImage: FC = () => {
   // 갤러리 디테일에서 넘어올 갤러리 pk값
   const location = useLocation();
-  const galleryPk = location.state && location.state.galleryPk;
+  // const galleryPk = location.state && location.state.galleryPk;
 
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
