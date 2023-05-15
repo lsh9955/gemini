@@ -11,6 +11,7 @@ import Preset from "../../components/ai_image/Preset";
 import Gender from "../../components/ai_image/Gender";
 import Emotion from "../../components/ai_image/Emotion";
 import Costume from "../../components/ai_image/Costume";
+import MaleHairStyle from "../../components/ai_image/MaleHairStyle";
 
 import {
   Background,
@@ -96,6 +97,7 @@ const AiImage: FC = () => {
   const [showHairColor, setShowHairColor] = useState(false);
   const [showEyeColor, setShowEyeColor] = useState(false);
   const [showHairStyle, setShowHairStyle] = useState(false);
+  const [showMaleHairStyle, setShowMaleHairStyle] = useState(false);
   const [showEmotion, setShowEmotion] = useState(false);
   const [showCostume, setShowCostume] = useState(false);
 
@@ -106,7 +108,6 @@ const AiImage: FC = () => {
   // 장르
   const handleGenreSelectBoxClick = () => {
     // axios 요청을 바꿔줌
-    setCategoryNum(1);
     setShowNoneBox(false);
     setShowHairColor(false);
     setShowHairStyle(false);
@@ -115,7 +116,10 @@ const AiImage: FC = () => {
     setShowGender(false);
     setShowEmotion(false);
     setShowCostume(false);
+    setShowMaleHairStyle(false);
     setShowGenreImage(true);
+
+    setCategoryNum(1);
   };
 
   // 프리셋
@@ -128,6 +132,7 @@ const AiImage: FC = () => {
     setShowGender(false);
     setShowEmotion(false);
     setShowCostume(false);
+    setShowMaleHairStyle(false);
     setShowPreset(true);
 
     setCategoryNum(2);
@@ -143,6 +148,7 @@ const AiImage: FC = () => {
     setShowPreset(false);
     setShowEmotion(false);
     setShowCostume(false);
+    setShowMaleHairStyle(false);
     setShowGender(true);
 
     setCategoryNum(3);
@@ -158,6 +164,7 @@ const AiImage: FC = () => {
     setShowEmotion(false);
     setShowCostume(false);
     setShowEyeColor(false);
+    setShowMaleHairStyle(false);
     setShowHairColor(true);
 
     setCategoryNum(4);
@@ -173,6 +180,7 @@ const AiImage: FC = () => {
     setShowGender(false);
     setShowEmotion(false);
     setShowCostume(false);
+    setShowMaleHairStyle(false);
     setShowEyeColor(true);
 
     setCategoryNum(5);
@@ -189,9 +197,15 @@ const AiImage: FC = () => {
     setShowEmotion(false);
     setShowCostume(false);
     // 남자일 때 혹은 여자일 때 헤어스타일을 true로 바꿔줌
-    setShowHairStyle(true);
-
-    setCategoryNum(6);
+    if (genreKorean === "성별을 선택해주세요" || genreKorean === "여성") {
+      setShowMaleHairStyle(false);
+      setShowHairStyle(true);
+      setCategoryNum(6);
+    } else {
+      setShowHairStyle(false);
+      setShowMaleHairStyle(true);
+      setCategoryNum(9);
+    }
   };
 
   // 감정
@@ -204,6 +218,7 @@ const AiImage: FC = () => {
     setShowPreset(false);
     setShowGender(false);
     setShowCostume(false);
+    setShowMaleHairStyle(false);
     setShowEmotion(true);
 
     setCategoryNum(7);
@@ -219,6 +234,7 @@ const AiImage: FC = () => {
     setShowPreset(false);
     setShowGender(false);
     setShowEmotion(false);
+    setShowMaleHairStyle(false);
     setShowCostume(true);
 
     setCategoryNum(8);
@@ -270,6 +286,11 @@ const AiImage: FC = () => {
   const handleHairStyle = (hairStyle: Data) => {
     setHairStyleTagId(hairStyle.tagId);
     setHairStyleKorean(hairStyle.koreanName);
+  };
+
+  const handleMaleHairStyle = (maleHairStyle: Data) => {
+    setHairStyleTagId(maleHairStyle.tagId);
+    setHairStyleKorean(maleHairStyle.koreanName);
   };
 
   const [emotionTagId, setEmotionTagId] = useState(0);
@@ -403,6 +424,12 @@ const AiImage: FC = () => {
             {showHairStyle && (
               <HairStyle data={data} handleHairStyle={handleHairStyle} />
             )}
+            {showMaleHairStyle && (
+              <MaleHairStyle
+                data={data}
+                handleMaleHairStyle={handleMaleHairStyle}
+              />
+            )}
             {showPreset && <Preset data={data} handlePreset={handlePreset} />}
             {showGender && <Gender data={data} handleGender={handleGender} />}
             {showEmotion && (
@@ -412,7 +439,10 @@ const AiImage: FC = () => {
               <Costume data={data} handleCostume={handleCostume} />
             )}
           </AiSampleBox>
-          {(showEyeColor || showEmotion || showHairStyle) && (
+          {(showEyeColor ||
+            showEmotion ||
+            showHairStyle ||
+            showMaleHairStyle) && (
             <div style={{ width: "100%", height: "10vh" }}></div>
           )}
         </AiSampleWrapper>
