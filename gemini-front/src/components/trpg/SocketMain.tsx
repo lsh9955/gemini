@@ -23,7 +23,7 @@ const SocketMain = ({ match }: { match: any }) => {
 
   //배포시
   useEffect(() => {
-    const sockConnect = io("https://mygemini.co.kr:443", {
+    const sockConnect = io("https://mygemini.co.kr", {
       path: "/socket",
       transports: ["websocket", "polling"],
       secure: true,
