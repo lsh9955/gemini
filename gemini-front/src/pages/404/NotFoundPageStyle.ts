@@ -49,7 +49,6 @@ export const Button = styled.div`
   padding-left: 2.5rem;
   padding-right: 2.5rem;
   cursor: pointer;
-  /* display: inline-block; */
 
   &:hover {
     color: black;
@@ -60,15 +59,8 @@ export const Button = styled.div`
 export const Text = styled.div`
   color: #ffffff;
   text-align: center;
-  /* margin-top: 24rem; */
   font-size: 1.3rem;
-  /* font-weight: bold; */
 `;
-
-const earthBackgroundUrl =
-  "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg";
-
-// "https://pbs.twimg.com/media/DON8Y_eUMAAV4pi.jpg";
 
 const rotateAnimation: Keyframes = keyframes`
   0% {

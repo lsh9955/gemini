@@ -12,6 +12,7 @@ import {
 } from "./HeaderTools.styles";
 import AlarmModal from "../alarm/AlarmModal";
 import ProfileModal from "./profileImage/ProfileModal";
+import MessegeModal from "./profileImage/MessegeModal";
 
 type Alarm = {
   alarmId: number;
@@ -27,7 +28,7 @@ interface Props {
 const HeaderTools: FC<Props> = ({ alarmList }) => {
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [showMessegeModal, setShowMessegeModal] = useState(false);
 
   const reduxProfileImage = useSelector(
     (state: AppStore) => state.user.profileImgUrl
@@ -35,16 +36,20 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
 
   const showProfileModalHandler = () => {
     setShowAlarmModal(false);
+    setShowMessegeModal(false);
     setShowProfileModal((prevState) => !prevState);
   };
 
-  const showMessageModalHandler = () => {
+  const showAlarmModalHandler = () => {
     setShowProfileModal(false);
+    setShowMessegeModal(false);
     setShowAlarmModal((prevState) => !prevState);
   };
 
-  const showNotificationModalHandler = () => {
-    setShowNotificationModal((prevState) => !prevState);
+  const showMessegeModalHandler = () => {
+    setShowAlarmModal(false);
+    setShowProfileModal(false);
+    setShowMessegeModal((prevState) => !prevState);
   };
 
   const closeProfileModal = () => {
@@ -53,6 +58,10 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
 
   const closeAlarmModal = () => {
     setShowAlarmModal(false);
+  };
+
+  const closeMessegeModal = () => {
+    setShowMessegeModal(false);
   };
 
   return (
@@ -74,19 +83,18 @@ const HeaderTools: FC<Props> = ({ alarmList }) => {
         <StyledMessage
           src={Message}
           alt="MessageImg"
-          onClick={showMessageModalHandler}
+          onClick={showAlarmModalHandler}
         ></StyledMessage>
         <StyledNotification
           src={Notification}
           alt="NotificationImg"
-          onClick={showNotificationModalHandler}
+          onClick={showMessegeModalHandler}
         ></StyledNotification>
         {showAlarmModal && (
           <AlarmModal alarmList={alarmList} onClose={closeAlarmModal} />
         )}
         {showProfileModal && <ProfileModal onClose={closeProfileModal} />}
-
-        {/* {showProfileModal && <AlarmModal onClose={closeProfileModal} />} */}
+        {showMessegeModal && <MessegeModal onClose={closeMessegeModal} />}
       </StyledHeaderTools>
     </>
   );
