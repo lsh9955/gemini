@@ -138,7 +138,12 @@ const MyProfile: FC = () => {
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
-          (item: any) => item.imageUrl
+          // (item: any) => item.imageUrl
+          (item: any) => ({
+            image: item.image,
+            geminiPk: item.geminiPk,
+            userPk: item.userPk,
+          })
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         // setImages((prevImages) => [
