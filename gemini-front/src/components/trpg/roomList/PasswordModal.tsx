@@ -67,7 +67,6 @@ const PasswordModal = ({
         pwRef.current.value = null;
       }
     } else {
-      console.log("가라고");
       history.push(`/room/${targetPwRoom["_id"]}`);
     }
   };
@@ -90,7 +89,7 @@ const PasswordModal = ({
                 <input
                   type="text"
                   name="password"
-                  placeholder="비밀번호를 입력해주세요"
+                  placeholder="비밀번호 입력"
                   ref={pwRef}
                 />
               </div>
@@ -102,8 +101,13 @@ const PasswordModal = ({
               >
                 확인
               </CheckPwButton>
+              {wrongPw && (
+                <>
+                  <p style={{ color: "white" }}>비밀번호가 틀렸습니다.</p>
+                  <p style={{ color: "white" }}> 다시 확인해 주세요</p>
+                </>
+              )}
             </ModalForm>
-            {wrongPw && <div>비밀번호가 틀렸습니다. 다시 확인해 주세요</div>}
 
             <ModalTransparent />
           </CreateWrap>

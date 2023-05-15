@@ -8,7 +8,7 @@ export const GetPictureWrap = styled.div<{ playerStyle: boolean }>`
   position: absolute;
   left: 10%;
   top: 15%;
-  padding: 2% 0;
+  padding-bottom: 2%;
   display: ${(props) => (props.playerStyle ? "none" : "flex")};
   border-radius: 4px;
   flex-direction: column;
@@ -18,6 +18,10 @@ export const GetPictureWrap = styled.div<{ playerStyle: boolean }>`
 export const GetPictureTitle = styled.div`
   font-size: 120%;
   color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 export const DiceStart = styled.button`
   width: 20%;
@@ -35,5 +39,21 @@ export const SizeButton = styled.button`
   color: white;
   font-size: 120%;
   border-radius: 4px;
-  background-color: #000000;
+  background-color: transparent;
+  border: 1px solid white;
+  cursor: pointer;
+`;
+
+export const BackImgWrap = styled.div`
+  width: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

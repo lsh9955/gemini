@@ -31,5 +31,6 @@ export const SizeButton = styled.button`
   color: white;
   font-size: 120%;
   border-radius: 4px;
-  background-color: #000000;
+  background-color: transparent;
+  border: 1px solid white;
 `;

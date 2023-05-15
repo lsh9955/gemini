@@ -3,7 +3,7 @@ import { Socket } from "socket.io-client";
 import { GetPictureTitle, GetPictureWrap, SizeButton } from "./GetPictureStyle";
 import { useSelector } from "react-redux";
 
-const Vote = ({
+const RandomPick = ({
   chatSocket,
   playTarget,
   playHandler,
@@ -34,9 +34,20 @@ const Vote = ({
     chatSocket?.on("voteResultResponse", function (data: any) {
       setVoteResult(data);
     });
+    chatSocket?.on("resetRanVoteResponse", function (data: any) {
+      setVoteArr([]);
+      setIsvoted(false);
+      setVoteResult(null);
+    });
+    chatSocket?.on("randomPickResponse", function (data: any) {
+      playHandler("randompick");
+      setVoteResult(data);
+    });
     return () => {
       chatSocket?.off("pickUserResponse");
       chatSocket?.off("voteResultResponse");
+      chatSocket?.off("randomPickResponse");
+      chatSocket?.off("resetRanVoteResponse");
     };
   }, [chatSocket]);
   const sizeHandler = () => {
@@ -45,7 +56,8 @@ const Vote = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const startVote = () => {
-    chatSocket?.emit("startVote", {
+    console.log(voteInfo);
+    chatSocket?.emit("randomPick", {
       roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
     });
   };
@@ -96,39 +108,37 @@ const Vote = ({
     });
   };
   const voteReset = () => {
-    chatSocket.emit("resetVote", {
+    chatSocket.emit("resetRanVote", {
       roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
     });
   };
 
   return (
     <>
-      <GetPictureWrap playerStyle={playTarget !== "vote"}>
+      <GetPictureWrap playerStyle={playTarget !== "randompick"}>
         <GetPictureTitle>
-          {!voteInfo && (
+          {!voteInfo && !voteResult && (
             <>
-              <p>투표를 진행할까요?</p>
+              <p>랜덤으로 한 명을 선택하시겠어요?</p>
               <button onClick={startVote}>시작하기</button>
             </>
           )}
-
+          {/* 
           {voteInfo && !isVoted && voteInfo[0].owner !== userSeq.nickname && (
             <>
               <p>플레이어 한 명을 골라주세요</p>
               <div>
-                {voteInfo[0].userarr
-                  .filter((v: any) => v !== voteInfo[0].owner)
-                  .map((v: any) => {
-                    return (
-                      <div
-                        onClick={() => {
-                          pickUser(v);
-                        }}
-                      >
-                        {v}
-                      </div>
-                    );
-                  })}
+                {voteInfo[0].userarr.map((v: any) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        pickUser(v);
+                      }}
+                    >
+                      {v}
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}
@@ -149,11 +159,9 @@ const Vote = ({
               >
                 투표 종료
               </button>
-            )}
+            )} */}
           {voteResult && <div>{voteResult} 가(이) 뽑혔습니다</div>}
-          {voteInfo && voteResult && voteInfo[0].owner === userSeq.nickname && (
-            <button onClick={voteReset}>초기화</button>
-          )}
+          {voteResult && <button onClick={voteReset}>초기화</button>}
         </GetPictureTitle>
 
         <SizeButton onClick={sizeHandler}>닫기</SizeButton>
@@ -162,4 +170,4 @@ const Vote = ({
   );
 };
 
-export default Vote;
+export default RandomPick;

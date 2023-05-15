@@ -14,12 +14,14 @@ import {
 import { BASE_URL } from "../config";
 import CreateRoomModal from "./CreateRoomModal";
 import PasswordModal from "./PasswordModal";
+import { useSelector } from "react-redux";
 
 const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const [rooms, setRooms] = useState<string[]>([]);
   const [modal, setModal] = useState<boolean>(false);
   const [pwModal, setPwModal] = useState<boolean>(false);
   const [targetPwRoom, setTargetPwRoom] = useState<any>(null);
+  const userSeq = useSelector((state: any) => state.user);
   useEffect(() => {
     const res = async () => {
       const getRoomInfo = await axios.get(`${BASE_URL}/node/room`);
