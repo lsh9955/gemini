@@ -34,7 +34,7 @@ public class AuthApiController {
         if (username != null) {
             System.out.println("username != null not null!!!! got username!");
             System.out.println("username: "+ username);
-            return ResponseEntity.ok().header("X-username", username).build();
+            return ResponseEntity.ok().header("X-Username", username).build();
         } else {
             System.out.println("username == null @@@@@@@@@@@@@@@");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
