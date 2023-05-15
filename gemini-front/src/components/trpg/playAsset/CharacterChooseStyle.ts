@@ -12,13 +12,25 @@ export const DiceWrap = styled.div<{ playerStyle: boolean }>`
   display: ${(props) => (props.playerStyle ? "none" : "flex")};
   border-radius: 4px;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
+`;
+export const PlayImgWrap = styled.div`
+  width: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export const DiceTitle = styled.div`
   font-size: 120%;
   color: white;
-  margin-bottom: 30%;
 `;
 export const DiceStart = styled.button`
   width: 20%;
@@ -30,8 +42,8 @@ export const DiceStart = styled.button`
   border-radius: 4px;
 `;
 export const SizeButton = styled.button`
-  width: 10%;
-  height: 8.5%;
+  width: 20%;
+  height: 15%;
 
   color: white;
   font-size: 120%;

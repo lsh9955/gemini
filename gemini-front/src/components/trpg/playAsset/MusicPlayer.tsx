@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
   MusicInput,
@@ -10,9 +10,13 @@ import {
 const MusicPlayer = ({
   playTarget,
   playHandler,
+  chatSocket,
+  musicURL,
 }: {
   playTarget: any;
   playHandler: any;
+  chatSocket: any;
+  musicURL: string;
 }) => {
   const [inputURL, setInputURL] = useState<string>("");
   const [playerStyle, setPlayerStyle] = useState<boolean>(false);
@@ -20,6 +24,9 @@ const MusicPlayer = ({
     // access to player in all event handlers via event.target
     event.target.pauseVideo();
   };
+  useEffect(() => {
+    setInputURL(musicURL);
+  }, [musicURL]);
 
   const opts: YouTubeProps["opts"] = {
     height: "200",
@@ -38,7 +45,11 @@ const MusicPlayer = ({
         break;
       }
     }
-    setInputURL(videoId);
+    // setInputURL(videoId);
+    chatSocket?.emit("musicPlay", {
+      muiscURL: videoId,
+      roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+    });
   };
 
   const sizeHandler = () => {
