@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
@@ -59,6 +59,10 @@ interface TagIds {
 }
 
 const AiImage: FC = () => {
+  // 갤러리 디테일에서 넘어올 갤러리 pk값
+  const location = useLocation();
+  const galleryPk = location.state && location.state.galleryPk;
+
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
 
@@ -374,9 +378,6 @@ const AiImage: FC = () => {
   const closeNeedStarModal = () => {
     setShowNeedStarModal(false);
   };
-
-  console.log(genderKorean);
-  console.log(categoryNum);
 
   return (
     <Background>
