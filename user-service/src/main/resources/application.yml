@@ -15,7 +15,7 @@ spring:
       matching-strategy: ant_path_matcher
 
   jpa:
-    generate-ddl: false
+    generate-ddl: true
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -34,8 +34,20 @@ spring:
   redis:
     host: mygemini.co.kr
     port: 6379
-    password: b106b106
+    password: starrail1@
+
+  data:
+    mongodb:
+      host: mygemini.co.kr
+      port: 27017
+      database: gemini
+      username: gemini12
+      password: starrail12
+      authentication-database: admin
 
 
 server:
   port: 8081
+
+sd:
+  url: http://43.201.232.211/ml_api

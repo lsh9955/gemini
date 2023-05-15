@@ -18,35 +18,69 @@ export const Overlay = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  position: absolute;
-  top: 13%;
+  position: fixed;
+  top: 0;
   left: 77%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   width: 20%;
   z-index: 1000;
   border-radius: 10px;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  display: flex;
+  flex-direction: column;
+  top: auto;
+  max-height: 40vh; /* AlarmContentWrapper의 최대 높이 */
+  overflow-y: auto; /* 내용이 AlarmContentWrapper 크기를 초과할 경우 스크롤바 생성 */
+
+  /* 커스텀 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #051320;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #151515;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 `;
 
 export const AlarmTitle = styled.div`
+  border-bottom: #efebf0 solid 0.3px;
   text-align: center;
-  margin-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  font-size: 24px;
-  border-bottom: #efebf0 solid 1px;
+  font-size: 20px;
+  padding: 0.6rem;
+  background-color: rgba(0, 0, 0, 0.5); // 투명도를 적용합니다.
+  color: #ffffff;
+  z-index: 10;
 `;
 
 export const AlarmContent = styled.div<AlarmContentProps>`
+  border-bottom: #efebf0 solid 0.3px;
   text-align: center;
-  font-size: 20px;
-  padding: 0.5rem;
+  font-size: 18px;
+  padding: 0.6rem;
+  background-color: rgba(0, 0, 0, 0.5); // 투명도를 적용합니다.
+  color: #efebf0;
+  /* background-color: ${({ idx }) =>
+    idx % 2 === 0 ? "#ffffff" : "#061829"}; */
+`;
+
+export const AlarmContentWrapper = styled.div`
   border-radius: 10px;
-  background-color: ${({ idx }) => (idx % 2 === 0 ? "#ffffff" : "#E7EBEF")};
 `;
 
 export const NoAlarmContent = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
   font-size: 20px;
   padding: 0.5rem;
   border-radius: 10px;
+  color: white;
 `;

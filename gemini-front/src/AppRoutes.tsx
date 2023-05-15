@@ -9,8 +9,13 @@ import SelectPairchild from "./pages/auth/SelectPairchild";
 import MyProfile from "./pages/profile/MyProfile";
 import AiImage from "./pages/ai_image/AiImage";
 import UserProfile from "./pages/profile/UserProfile";
+import UserGeminiDetail from "./components/geminiDetail/UserGeminiDetail";
+import MyGeminiDetail from "./components/geminiDetail/MyGeminiDetail";
+import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
-const AppRoutes: React.FC = () => {
+import SocketMain from "./components/trpg/SocketMain";
+import PrivacyRule from "./pages/PrivacyRule";
+const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
     "/loginPage",
@@ -33,6 +38,11 @@ const AppRoutes: React.FC = () => {
         <Route exact path="/userProfile/:nickname" component={UserProfile} />
 
         <Route exact path="/aiImage" component={AiImage} />
+        <Route exact path="/geminidetail-user" component={UserGeminiDetail} />
+        <Route exact path="/geminidetail-my" component={MyGeminiDetail} />
+        <Route exact path="/geminidetail-new" component={NewGeminiDetail} />
+        <Route path="/room" component={SocketMain} />
+        <Route exact path="/privacy" component={PrivacyRule} />
 
         {/* ... */}
       </Switch>

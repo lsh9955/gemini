@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ALARM")
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,20 +16,26 @@ public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "alarm_id")
+    private Long alarmId;
 
     @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
-    @Column(name = "checked")
-    private Boolean checked;
+    @Column(name = "follower")
+    private String follower;
 
     @Column(name = "category")
     private Integer category;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "gemini_no")
+    private Long geminiNo;
 
     @ManyToOne
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")

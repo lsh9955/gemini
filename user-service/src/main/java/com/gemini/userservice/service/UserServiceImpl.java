@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public void followUser(String currentUsername, FollowRequestDto followRequestDto) {
         UserInfo follower = userInfoRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("Current user not found"));
-        UserInfo following = userInfoRepository.findByUserPk(followRequestDto.getUserPk())
+        UserInfo following = userInfoRepository.findByNickname(followRequestDto.getNickname())
                 .orElseThrow(() -> new RuntimeException("User to follow not found"));
 
         Follow follow = Follow.builder()
@@ -91,10 +91,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void unfollowUser(String currentUsername, Long userPkToUnfollow) {
+    public void unfollowUser(String currentUsername, FollowRequestDto followRequestDto) {
         UserInfo follower = userInfoRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("Current user not found"));
-        UserInfo following = userInfoRepository.findByUserPk(userPkToUnfollow)
+        UserInfo following = userInfoRepository.findByNickname(followRequestDto.getNickname())
                 .orElseThrow(() -> new RuntimeException("User to unfollow not found"));
 
         Follow follow = followRepository.findByFollowerAndFollowing(follower, following)

@@ -14,6 +14,7 @@ axiosInstanceWithAccessToken.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
     // config.headers.X-username = "google_12346"; // 테스트용. 수정필요 😀
+    //
   }
   return config;
 });
@@ -38,6 +39,7 @@ axiosInstanceWithAccessToken.interceptors.response.use(
       } catch (reissueError: any) {
         if (reissueError.response.status === 401) {
           alert("세션이 만료되었습니다. 재로그인이 필요합니다.");
+
           return Promise.reject(reissueError);
         }
       }

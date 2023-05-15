@@ -80,13 +80,21 @@ export const MyInfoContentWrapper = styled.div`
 // export const MyProfileImg = styled.div`
 //   height: ${MyProfileImgDiameter};
 //   width: ${MyProfileImgDiameter};
+//   background-image: url(${AriesDummyProfile}); //axios받아서 받는걸로 수정예정.
+//   background-size: cover;
+//   margin-top: calc(-${MyProfileImgDiameter} / 2);
+
 //   border-radius: 50%;
 //   background-color: #ffffff;
 // `;
-export const MyProfileImg = styled.div`
+interface MyProfileImgProps {
+  imgUrl: string;
+}
+
+export const MyProfileImg = styled.div<MyProfileImgProps>`
   height: ${MyProfileImgDiameter};
   width: ${MyProfileImgDiameter};
-  background-image: url(${AriesDummyProfile}); //axios받아서 받는걸로 수정예정.
+  background-image: url(${(props) => props.imgUrl});
   background-size: cover;
   margin-top: calc(-${MyProfileImgDiameter} / 2);
 
