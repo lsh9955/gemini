@@ -7,23 +7,8 @@ const SocketMain = ({ match }: { match: any }) => {
   //socket 연결
   const [chatSocket, setChatSocket] = useState<any>(null);
   //개발시
-  useEffect(() => {
-    const sockConnect = io("http://localhost:5000", {
-      path: "/socket",
-      transports: ["websocket", "polling"],
-      secure: true,
-    });
-    setChatSocket(sockConnect);
-    console.log("소켓 생성이 됩니까?");
-    console.log(sockConnect);
-    return () => {
-      sockConnect.disconnect();
-    };
-  }, []);
-
-  //배포시
   // useEffect(() => {
-  //   const sockConnect = io("https://mygemini.co.kr:443", {
+  //   const sockConnect = io("http://localhost:5000", {
   //     path: "/socket",
   //     transports: ["websocket", "polling"],
   //     secure: true,
@@ -35,6 +20,21 @@ const SocketMain = ({ match }: { match: any }) => {
   //     sockConnect.disconnect();
   //   };
   // }, []);
+
+  //배포시
+  useEffect(() => {
+    const sockConnect = io("https://mygemini.co.kr:443", {
+      path: "/socket",
+      transports: ["websocket", "polling"],
+      secure: true,
+    });
+    setChatSocket(sockConnect);
+    console.log("소켓 생성이 됩니까?");
+    console.log(sockConnect);
+    return () => {
+      sockConnect.disconnect();
+    };
+  }, []);
 
   return (
     <>
