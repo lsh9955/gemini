@@ -110,36 +110,35 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
 
   // 하트 클릭에 따른 함수발동
   const likeImage = async () => {
-    // const res = await axiosInstanceWithAccessToken.post(
-    //   "/user-service/gallery",
-    //   { gallery_no: selectedImagePk }
-    // );
+    const res = await axiosInstanceWithAccessToken.post(
+      "/user-service/gallery",
+      { gallery_no: selectedImagePk }
+    );
     // if (lottieRef.current) {
     setAnimationVisible(true);
     // lottieRef.current.play();
     // }
     setIsLike(!isLike);
-    // return res.data;
+    return res.data;
   };
 
   const unlikeImage = async () => {
-    // const res = await axiosInstanceWithAccessToken.delete(
-    //   `/user-service/gallery/${selectedImagePk}`
-    // );
+    const res = await axiosInstanceWithAccessToken.delete(
+      `/user-service/gallery/${selectedImagePk}`
+    );
     setAnimationVisible(false);
     setIsLike(!isLike);
-    // return res.data;
+    return res.data;
   };
 
   const handleHeartClick = async () => {
     const newLikeCount = isLike ? await unlikeImage() : await likeImage();
-    // if (newLikeCount !== "fail") {
-    // setLikeCount(newLikeCount);
-    setLikeCount(1);
-
-    // } else {
-    // Handle failure case
-    // }
+    if (newLikeCount !== "fail") {
+      setLikeCount(newLikeCount);
+      // setLikeCount(1);
+    } else {
+      // Handle failure case
+    }
   };
   // 하트 클릭에 따른 함수발동
 
@@ -190,12 +189,12 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
           ) : (
             <Flipper isFront={true}>
               {/* <HeartImg animationVisible={true}></HeartImg> */}
-              <HeartCssEffect
+              {/* <HeartCssEffect
                 id={selectedImagePk ? selectedImagePk.toString() : ""}
                 visible={animationVisible}
                 onAnimationEnd={() => setAnimationVisible(false)}
-              />
-
+              /> */}
+              {/* 하트 포기. */}
               <GeminiDetailImgWrapper
                 backgroundImage={geminiImg}
                 onClick={flip}

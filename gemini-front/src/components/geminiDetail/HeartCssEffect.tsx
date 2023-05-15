@@ -21,6 +21,7 @@ const wishlistHeartWiggle = keyframes`
 
 const wishlistHeartAdd = keyframes`
   0% {
+    fill: ${heartColor};
     stroke-width: 5;
   }
   50% {
@@ -35,8 +36,10 @@ const wishlistHeartAdd = keyframes`
 const WishlistHeartGroup = styled.div<{ visible: boolean }>`
   position: absolute;
   z-index: 10000;
-  width: 100%;
-  height: 100%;
+  //   top: -25%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
   display: ${(props) => (props.visible ? "block" : "none")};
 
   input[type="checkbox"] {
@@ -84,10 +87,17 @@ const HeartCssEffect: React.FC<HeartCssEffectProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(visible); // 변경된 부분: isVisible 상태를 useState로 관리
   const heartRef = useRef<HTMLInputElement | null>(null);
+  const checkboxRef = useRef<HTMLInputElement | null>(null); // Create a ref for the checkbox
 
   useEffect(() => {
     setIsVisible(visible);
   }, [visible]);
+
+  useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.checked = true;
+    }
+  }, [isVisible, visible]);
 
   useEffect(() => {
     if (isVisible) {
@@ -114,6 +124,10 @@ const HeartCssEffect: React.FC<HeartCssEffectProps> = ({
 
   const handleClick = () => {
     setIsVisible(true);
+    if (checkboxRef.current) {
+      //   checkboxRef.current.checked = true;
+      checkboxRef.current.checked = !checkboxRef.current.checked; // Toggle the checkbox's checked state
+    }
   };
 
   return (
@@ -139,9 +153,11 @@ const HeartCssEffect: React.FC<HeartCssEffectProps> = ({
                 C58.483195,972.36218 52.441855,976.41623 49.999995,978.84865
                 C47.558135,976.41623 41.516795,972.36218 34.166665,972.36218
                 Z"
-              fill="transparent"
+              //   fill="transparent"
+              fill={heartColor}
               id="heart-path"
-              stroke="#737373"
+              //   stroke="#737373"
+              stroke={heartColor}
               strokeWidth="5"
             />
           </g>

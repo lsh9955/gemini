@@ -65,7 +65,7 @@ const SelectPairchildComp: FC = () => {
       if (response.status === 201) {
         alert("가입 완료!");
         // 가입 완료 후 로직 작성
-        history.push("/");
+        history.push("/selectPairchild");
       }
     } catch (error) {
       console.error("가입 실패:", error);
