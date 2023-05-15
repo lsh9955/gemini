@@ -1,16 +1,19 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.BackgroundDto;
+import com.gemini.userservice.dto.ML.RequestCompleteBackgroundDto;
+import com.gemini.userservice.dto.ML.RequestCompletePoseDto;
 import com.gemini.userservice.dto.PoseDto;
-import com.gemini.userservice.dto.request.RequestCompleteGeminiDto;
+import com.gemini.userservice.dto.ML.RequestCompleteGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.request.RequestGeneratePoseDto;
-import com.gemini.userservice.dto.response.ResponseGenerateGeminiDto;
-import com.gemini.userservice.dto.response.ResponseGetAllBackgroundDto;
-import com.gemini.userservice.dto.response.ResponseGetAllPoseDto;
-import com.gemini.userservice.dto.response.ResponseTagDto;
+import com.gemini.userservice.dto.response.*;
+
+import java.util.List;
 
 public interface GenerateService {
+
+    ResponseDefaultDto getDefault(Long galleryNo);
 
     ResponseTagDto getTag(Long tagId);
 
@@ -26,9 +29,13 @@ public interface GenerateService {
 
     String generateBackground(String background);
 
+    String completeBackground(RequestCompleteBackgroundDto requestCompleteBackgroundDto);
+
     ResponseGetAllPoseDto getAllPoses(String username);
 
     PoseDto getPose(Long poseNo);
 
-    String generatePose(RequestGeneratePoseDto requestGeneratePoseDto);
+    List<String> generatePose(RequestGeneratePoseDto requestGeneratePoseDto);
+
+    List<String> completePose(RequestCompletePoseDto requestCompletePoseDto);
 }

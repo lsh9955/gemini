@@ -2,20 +2,20 @@ package com.gemini.userservice.api;
 
 
 import com.gemini.userservice.dto.BackgroundDto;
+import com.gemini.userservice.dto.ML.RequestCompleteBackgroundDto;
+import com.gemini.userservice.dto.ML.RequestCompletePoseDto;
 import com.gemini.userservice.dto.PoseDto;
-import com.gemini.userservice.dto.request.RequestCompleteGeminiDto;
+import com.gemini.userservice.dto.ML.RequestCompleteGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.request.RequestGeneratePoseDto;
-import com.gemini.userservice.dto.response.ResponseGenerateGeminiDto;
-import com.gemini.userservice.dto.response.ResponseGetAllBackgroundDto;
-import com.gemini.userservice.dto.response.ResponseGetAllPoseDto;
-import com.gemini.userservice.dto.response.ResponseTagDto;
+import com.gemini.userservice.dto.response.*;
 import com.gemini.userservice.service.GenerateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,8 +25,15 @@ public class GenerateApiController {
 
     private final GenerateService generateService;
 
-    @GetMapping("/{category_no}")
-    public ResponseEntity<ResponseTagDto> getTag(@PathVariable("category_no") Long categoryNo) {
+    @GetMapping("/{galleryNo}")
+    public ResponseEntity<?> getDefault(@PathVariable("galleryNo") Long galleryNo) {
+
+        ResponseDefaultDto responseDefaultDto = generateService.getDefault(galleryNo);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDefaultDto);
+    }
+
+    @GetMapping("/{categoryNo}")
+    public ResponseEntity<ResponseTagDto> getTag(@PathVariable("categoryNo") Long categoryNo) {
 
         ResponseTagDto responseTagDto = generateService.getTag(categoryNo);
         return ResponseEntity.status(HttpStatus.OK).body(responseTagDto);
@@ -64,9 +71,9 @@ public class GenerateApiController {
 
         ResponseGetAllBackgroundDto res = generateService.getAllBackgrounds();
         if (res == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.ok(res);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping("/background/{backgroundNo}")
@@ -88,6 +95,13 @@ public class GenerateApiController {
         if (res == null) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @PostMapping("/background/complete")
+    public ResponseEntity<?> completeBackground(@RequestBody RequestCompleteBackgroundDto requestCompleteBackgroundDto) {
+
+        String res = generateService.completeBackground(requestCompleteBackgroundDto);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -115,10 +129,14 @@ public class GenerateApiController {
     @PostMapping("/pose")
     public ResponseEntity<?> generatePose(@RequestBody RequestGeneratePoseDto requestGeneratePoseDto) {
 
-        String res = generateService.generatePose(requestGeneratePoseDto);
-        if (res == null) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        List<String> res = generateService.generatePose(requestGeneratePoseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @PostMapping("/pose/complete")
+    public ResponseEntity<?> completePose(@RequestBody RequestCompletePoseDto requestCompletePoseDto) {
+
+        List<String> res = generateService.completePose(requestCompletePoseDto);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

@@ -1,7 +1,9 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.*;
-import com.gemini.userservice.dto.request.RequestCompleteGeminiDto;
+import com.gemini.userservice.dto.ML.RequestCompleteBackgroundDto;
+import com.gemini.userservice.dto.ML.RequestCompleteGeminiDto;
+import com.gemini.userservice.dto.ML.RequestCompletePoseDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.request.RequestGeneratePoseDto;
 import com.gemini.userservice.dto.response.*;
@@ -42,8 +44,32 @@ public class GenerateServiceImpl implements GenerateService {
     private final BackgroundRepository backgroundRepository;
 
     private final UserPoseRepository userPoseRepository;
+
     private final PoseRepository poseRepository;
-    private final ResponseAlarmRepository responseAlarmRepository;
+
+    private final GalleryRepository galleryRepository;
+
+    @Override
+    public ResponseDefaultDto getDefault(Long galleryNo) {
+
+        Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
+        Gemini gemini = gallery.getGemini();
+        GeminiTag geminiTag = mongoTemplate.findOne(
+                Query.query(Criteria.where("geminiNo").is(gemini.getGeminiNo())),
+                GeminiTag.class
+        );
+        List<Long> tags = geminiTag.getTagIds();
+        List<TagDto> res = new ArrayList<>();
+        for(Long tag: tags) {
+            Tag tagEntity = tagRepository.findByTagNo(tag);
+            TagDto tagDto = new TagDto(tagEntity);
+            res.add(tagDto);
+        }
+        ResponseDefaultDto responseDefaultDto = ResponseDefaultDto.builder().
+                defaultSetting(res).
+                build();
+        return responseDefaultDto;
+    }
 
 
     @Override
@@ -159,13 +185,20 @@ public class GenerateServiceImpl implements GenerateService {
                 build();
         String sdUrl = String.format(env.getProperty("sd.url")) + "/background";
         HttpEntity<DescriptionDto> request = new HttpEntity<>(descriptionDto, headers);
-        ResponseEntity<ResponseMLBackgroundDto> response = restTemplate.postForEntity(sdUrl, request, ResponseMLBackgroundDto.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(sdUrl, request, String.class);
+        return response.getBody();
+    }
+
+    @Override
+    public String completeBackground(RequestCompleteBackgroundDto requestCompleteBackgroundDto) {
+
         Background background1 = Background.builder()
-                .name(background)
-                .imageUrl(response.getBody().getImageUrl())
+                .name(requestCompleteBackgroundDto.getKorean())
+                .description(requestCompleteBackgroundDto.getDescription())
+                .imageUrl(requestCompleteBackgroundDto.getImageUrl())
                 .build();
         backgroundRepository.save(background1);
-        return response.getBody().getImageUrl();
+        return background1.getImageUrl();
     }
 
     @Override
@@ -213,7 +246,7 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public String generatePose(RequestGeneratePoseDto requestGeneratePoseDto) {
+    public List<String> generatePose(RequestGeneratePoseDto requestGeneratePoseDto) {
 
         List<String> prompts = new ArrayList<>();
         List<Long> seeds = new ArrayList<>();
@@ -238,18 +271,27 @@ public class GenerateServiceImpl implements GenerateService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/pose";
         HttpEntity<GeneratePoseDto> request = new HttpEntity<>(generatePoseDto, headers);
-        ResponseEntity<ResponseMLPoseDto> response = restTemplate.postForEntity(sdUrl, request, ResponseMLPoseDto.class);
-        List<String> images = response.getBody().getUrlList();
+        ResponseEntity<List> response = restTemplate.postForEntity(sdUrl, request, List.class);
+        List<String> images = response.getBody();
+
+        return images;
+    }
+
+    @Override
+    public List<String> completePose(RequestCompletePoseDto requestCompletePoseDto) {
+
         Pose pose = Pose.builder().
                 build();
         poseRepository.save(pose);
         Long poseNo = pose.getPoseNo();
+        List<String> imageUrls = requestCompletePoseDto.getImageUrls();
+        List<Long> geminis = requestCompletePoseDto.getGeminis();
         PoseImage poseImage = PoseImage.builder()
                 .poseNo(poseNo)
-                .images(images)
+                .images(imageUrls)
                 .build();
         mongoTemplate.insert(poseImage, "pose_image");
-        for(Long geminiNo : requestGeneratePoseDto.getGeminis()) {
+        for(Long geminiNo : geminis) {
             Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
             UserInfo userInfo = gemini.getUserInfo();
             UserPose userPose = UserPose.builder()
@@ -259,7 +301,7 @@ public class GenerateServiceImpl implements GenerateService {
             userPoseRepository.save(userPose);
         }
 
-        return "success";
+        return imageUrls;
     }
 
 }
