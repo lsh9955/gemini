@@ -19,7 +19,7 @@ public interface GenerateService {
 
     Integer getStar(String username);
 
-    Long completeGemini(RequestCompleteGeminiDto requestCompleteGeminiDto);
+
 
     ResponseGenerateGeminiDto generateGemini(RequestGenerateGeminiDto requestGenerateGeminiDto, String username);
 
@@ -29,7 +29,7 @@ public interface GenerateService {
 
     String generateBackground(String background);
 
-    String completeBackground(RequestCompleteBackgroundDto requestCompleteBackgroundDto);
+
 
     ResponseGetAllPoseDto getAllPoses(String username);
 
@@ -37,5 +37,5 @@ public interface GenerateService {
 
     ResponseGeneratePoseDto generatePose(RequestGeneratePoseDto requestGeneratePoseDto);
 
-    List<String> completePose(RequestCompletePoseDto requestCompletePoseDto);
+
 }
