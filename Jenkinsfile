@@ -12,6 +12,7 @@ pipeline {
         AUTH_SERVICE_IMAGE_TAG = "auth-service"
         USER_SERVICE_IMAGE_TAG = "user-service"
 		RANKING_SERVICE_IMAGE_TAG = "ranking-service"
+		SOCKET_SERVICE_IMAGE_TAG = "socket-service"
 		DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
@@ -133,6 +134,33 @@ pipeline {
 					}
 				}
 
+				stage('socket-service build') {
+					when {
+						allOf {
+							expression {
+								currentBuild.result == null || currentBuild.result == 'SUCCESS'
+							}
+							changeset "socket-service/**"
+						}
+					}
+					steps {
+						dir('socket-service') {
+							sh 'npm install'
+							sh 'echo -e "COOKIE_SECRET=\'${COOKIE_SECRET}\'\nMONGO_ID=\'${MONGO_ID}\'\nMONGO_PASSWORD=\'${MONGO_PASSWORD}\'\nREDIS_HOST=\'${REDIS_HOST}\'\nREDIS_PORT=\'${REDIS_PORT}\'\nREDIS_USERNAME=\'${REDIS_USERNAME}\'\nREDIS_PASSWORD=\'${REDIS_PASSWORD}\'" > .env.local'
+							sh 'docker build -t ${DOCKER_REGISTRY}:${RANKING_SERVICE_IMAGE_TAG} .'
+							sh 'docker push ${DOCKER_REGISTRY}:${RANKING_SERVICE_IMAGE_TAG}'
+						}
+					}
+					post {
+						success {
+							echo 'socket-service build succeeded'
+						}
+						failure {
+							echo 'socket-service build failed'
+						}
+					}
+				}
+
 			}
         }
         stage('deploy') {
@@ -223,6 +251,29 @@ pipeline {
 										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${RANKING_SERVICE_IMAGE_TAG}
 									fi
 									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 8083:8083 --name ${RANKING_SERVICE_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${RANKING_SERVICE_IMAGE_TAG}
+								"""
+            				}
+        				}
+                    }
+                }
+
+				stage('replace socket-service container') {
+                    when {
+                    	allOf {
+                      		expression {
+                        		currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                      		}
+                      		changeset "socket-service/**"
+                    	}
+                  	}
+                    steps {
+						script {
+            				sshagent(credentials: ['ssh']) {
+								sh """
+									if ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container ls -a | grep -q ${SOCKET_SERVICE_IMAGE_TAG}; then
+										ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker container stop ${SOCKET_SERVICE_IMAGE_TAG}
+									fi
+									ssh -o StrictHostKeyChecking=no ubuntu@k8b106.p.ssafy.io docker run -p 5000:5000 --name ${SOCKET_SERVICE_IMAGE_TAG} --network gemini -d --rm ${DOCKER_REGISTRY}:${SOCKET_SERVICE_IMAGE_TAG}
 								"""
             				}
         				}
