@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.11'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'application'
 }
 
 group = 'com.gemini'
@@ -14,6 +15,8 @@ configurations {
 	}
 }
 
+mainClassName = 'com.gemini.authservice.AuthServiceApplication'
+
 repositories {
 	mavenCentral()
 }
@@ -24,6 +27,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	implementation 'org.json:json:20210307'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2' //
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2' //
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2' //
+//	implementation 'org.springframework.boot:spring-boot-configuration-processor' //
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -34,4 +48,12 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+bootJar {
+	duplicatesStrategy = 'exclude'
+}
+
+jar {
+	duplicatesStrategy = 'exclude'
 }

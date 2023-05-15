@@ -1,9 +1,7 @@
-api_gateway_url: localhost
-
-server:
-  port: 8081
-
 spring:
+  profiles:
+    active: prod # 기본으로 쓸 프로파일
+
   application:
     name: user-service
 
@@ -16,23 +14,8 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${api_gateway_url}:3306/gemini?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
-    username: gemini
-    password: b106b106
-    hikari:
-      pool-name: jpa-hikari-pool
-      maximum-pool-size: 5
-      jdbc-url: ${spring.datasource.url}
-      username: ${spring.datasource.username}
-      password: ${spring.datasource.password}
-      driver-class-name: ${spring.datasource.driver-class-name}
-      data-source-properties:
-        rewriteBatchedStatements: true
-
   jpa:
-    generate-ddl: false
+    generate-ddl: true
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -47,3 +30,24 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
+
+  redis:
+    host: mygemini.co.kr
+    port: 6379
+    password: starrail1@
+
+  data:
+    mongodb:
+      host: mygemini.co.kr
+      port: 27017
+      database: gemini
+      username: gemini12
+      password: starrail12
+      authentication-database: admin
+
+
+server:
+  port: 8081
+
+sd:
+  url: http://43.201.232.211/ml_api

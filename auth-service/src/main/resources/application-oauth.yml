@@ -1,0 +1,48 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 424629007631-55vci0bsgdt2vbo73mrc7537d18dvsde.apps.googleusercontent.com
+            client-secret: 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
+            redirectUri: https://${api_gateway_url}/login/oauth2/code/google
+            scope:
+#              - email // Decided not to use email for now
+              - profile
+#              - openid
+#              - profile
+#              - email
+#          twitter:
+##            client-id: 1649727072565354496-lFFVudeDUXNAPWvsFIM7CoeDBlm3VN
+##            client-secret: YZi1siCVFqj7NHzEWnI6ePtdH10j3tZSTu1fuNw2oz3bq
+#            client-id: AA9Ml0aBMk0WRcASRO7Lkv1nl
+#            client-secret: vBB7LtTce7FL1qLwhHSecgiCApyCNc1p6EcT1MJfiemyYOv78M
+#            redirect-uri: "{baseUrl}/login/oauth2/code/twitter"
+#            authorization-grant-type: authorization_code
+#            scope:
+#              - read:user
+#            client-name: Twitter
+#
+#        provider:
+#          twitter:
+#            authorization-uri: https://api.twitter.com/oauth/authorize
+#            token-uri: https://api.twitter.com/oauth/access_token
+#            user-info-uri: https://api.twitter.com/1.1/account/verify_credentials.json
+#            user-name-attribute: screen_name
+          twitter:
+#            client-id: AA9Ml0aBMk0WRcASRO7Lkv1nl
+#            client-secret: vBB7LtTce7FL1qLwhHSecgiCApyCNc1p6EcT1MJfiemyYOv78M
+            client-id: M2RKdWFoTUw4X3k2aldOWU5JLXU6MTpjaQ
+            client-secret: jgmFmKBMj5RYPcdTwKLPWT_Liw2hsBy6Q1qrpF_wdbhQHiN4un
+            scope:
+              - read:user
+            redirect-uri: http://mygemini.co.kr/login/oauth2/code/twitter
+            authorization-grant-type: authorization_code
+            client-authentication-method: post
+        provider:
+          twitter:
+            authorization-uri: https://api.twitter.com/oauth/authorize
+            token-uri: https://api.twitter.com/oauth/access_token
+            user-info-uri: https://api.twitter.com/1.1/account/verify_credentials.json
+            user-name-attribute: screen_name

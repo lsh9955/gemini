@@ -1,0 +1,56 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 424629007631-55vci0bsgdt2vbo73mrc7537d18dvsde.apps.googleusercontent.com
+            client-secret: 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
+            redirectUri: https://${api_gateway_url}/login/oauth2/code/google
+            scope:
+              - profile
+          twitter:
+            client-id: M2RKdWFoTUw4X3k2aldOWU5JLXU6MTpjaQ
+            client-secret: jgmFmKBMj5RYPcdTwKLPWT_Liw2hsBy6Q1qrpF_wdbhQHiN4un
+            scope:
+              - read:user
+            redirect-uri: http://mygemini.co.kr/login/oauth2/code/twitter
+            authorization-grant-type: authorization_code
+            client-authentication-method: post
+        provider:
+          twitter:
+            authorization-uri: https://api.twitter.com/oauth/authorize
+            token-uri: https://api.twitter.com/oauth/access_token
+            user-info-uri: https://api.twitter.com/1.1/account/verify_credentials.json
+            user-name-attribute: screen_name
+
+api_gateway_url: mygemini.co.kr
+spring.datasource.url: jdbc:mysql://${api_gateway_url}:3307/gemini_auth?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+spring.datasource.password: starrail1@
+
+custom:
+  react:
+    redirect_uri: https://mygemini.co.kr/loginSuccess
+  springboot:
+    user_service_url: https://mygemini.co.kr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
