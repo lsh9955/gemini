@@ -15,6 +15,8 @@ import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
 import SocketMain from "./components/trpg/SocketMain";
 import PrivacyRule from "./pages/PrivacyRule";
+
+import NotFoundPage from "./pages/404/NotFoundPage";
 const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
@@ -22,7 +24,11 @@ const AppRoutes = () => {
     "/loginSuccess",
     "/selectPairchild",
   ];
-  const shouldShowHeader = !pathsWithoutHeader.includes(location.pathname);
+
+  // NotFoundPage를 위한 state 변수
+  const [isNotFoundPage, setIsNotFoundPage] = React.useState(false);
+  const shouldShowHeader =
+    !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
 
   return (
     <>
@@ -45,6 +51,14 @@ const AppRoutes = () => {
         <Route exact path="/privacy" component={PrivacyRule} />
 
         {/* ... */}
+        {/* NotFoundPage에는 header 안보이게 */}
+        <Route
+          path="*"
+          render={() => {
+            setIsNotFoundPage(true);
+            return <NotFoundPage />;
+          }}
+        />
       </Switch>
     </>
   );

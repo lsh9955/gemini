@@ -81,6 +81,6 @@ export const NoAlarmContent = styled.div`
   text-align: center;
   font-size: 20px;
   padding: 0.5rem;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   color: white;
 `;
