@@ -43,6 +43,7 @@ import { Background } from "../../pages/ai_image/AiImage.styles";
 import FourCuts from "../main/FourCuts";
 import { CgPolaroid } from "react-icons/cg";
 import HeartAnime from "../../assets/img/HeartAnime.gif";
+import HeartCssEffect from "./HeartCssEffect";
 
 interface UserGeminiDetailProps {
   closeModal: () => void;
@@ -102,8 +103,8 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   }, []);
 
   // ❤ 하트 세번째시도
-  const [animationVisible, setAnimationVisible] = useState(false);
-  const lottieRef = useRef<Player | null>(null);
+  const [animationVisible, setAnimationVisible] = useState(false); // 상태명을 animationVisible로 변경
+  // const lottieRef = useRef<Player | null>(null);
   // 현재 like여부에 따라 하트 채워지고.. 달라짐.
   const [isLike, setIsLike] = useState(false);
 
@@ -113,10 +114,10 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     //   "/user-service/gallery",
     //   { gallery_no: selectedImagePk }
     // );
-    if (lottieRef.current) {
-      setAnimationVisible(true);
-      lottieRef.current.play();
-    }
+    // if (lottieRef.current) {
+    setAnimationVisible(true);
+    // lottieRef.current.play();
+    // }
     setIsLike(!isLike);
     // return res.data;
   };
@@ -125,6 +126,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     // const res = await axiosInstanceWithAccessToken.delete(
     //   `/user-service/gallery/${selectedImagePk}`
     // );
+    setAnimationVisible(false);
     setIsLike(!isLike);
     // return res.data;
   };
@@ -134,6 +136,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     // if (newLikeCount !== "fail") {
     // setLikeCount(newLikeCount);
     setLikeCount(1);
+
     // } else {
     // Handle failure case
     // }
@@ -144,18 +147,18 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     console.log("animationVisible:", animationVisible); // animationVisible 상태 로깅
   }, [animationVisible]);
 
-  useEffect(() => {
-    return () => {
-      if (lottieRef.current) {
-        lottieRef.current.stop();
-        lottieRef.current = null;
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     if (lottieRef.current) {
+  //       lottieRef.current.stop();
+  //       lottieRef.current = null;
+  //     }
+  //   };
+  // }, []);
 
   const onAnimationComplete = () => {
     setAnimationVisible(false);
-    lottieRef.current = null;
+    // lottieRef.current = null;
   };
 
   // flip관련
@@ -186,26 +189,13 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
             <FourCuts backModal={backModal} />
           ) : (
             <Flipper isFront={true}>
-              {/* <Player
-                ref={lottieRef}
-                src={HeartAnimation}
-                background="transparent"
-                speed={1.1} // 속도 조정 가능
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  display: animationVisible ? "block" : "none",
-                }}
-                autoplay={false}
-                loop={false}
-                onEvent={(event) => {
-                  if (event === "complete") onAnimationComplete();
-                }}
-              /> */}
-              <HeartImg animationVisible={true}></HeartImg>
+              {/* <HeartImg animationVisible={true}></HeartImg> */}
+              <HeartCssEffect
+                id={selectedImagePk ? selectedImagePk.toString() : ""}
+                visible={animationVisible}
+                onAnimationEnd={() => setAnimationVisible(false)}
+              />
 
-              {/* ) 괄호 닫아줘야하나? 수정 필요 😀 */}
               <GeminiDetailImgWrapper
                 backgroundImage={geminiImg}
                 onClick={flip}
