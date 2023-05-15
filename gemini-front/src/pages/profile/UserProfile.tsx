@@ -109,8 +109,8 @@ const UserProfile: FC = () => {
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
           (item: any) => ({
-            imageUrl: item.image,
-            geminiPk: item.geminiPk,
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
           })
 
           // (item: any) => item.imageUrl
