@@ -66,34 +66,13 @@ const AiImage: FC = () => {
   const [categoryNum, setCategoryNum] = useState(0);
 
   // 태그 이미지 DB에서 가져오기
-  // useEffect(() => {
-  //   if (categoryNum !== 0) {
-  //     axiosInstanceWithAccessToken
-  //       .get<TagsResponse>(
-  //         // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
-  //         // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
-  //         `/user-service/generate/${categoryNum}`,
-  //         {
-  //           headers,
-  //         }
-  //       )
-  //       .then((response) => {
-  //         console.log(response.data);
-  //         setData(response.data.tags);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, [categoryNum]);
-
   useEffect(() => {
     if (categoryNum !== 0) {
-      axios
+      axiosInstanceWithAccessToken
         .get<TagsResponse>(
-          `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
+          // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
           // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
-          // `/user-service/generate/${categoryNum}`,
+          `/user-service/generate/${categoryNum}`,
           {
             headers,
           }
@@ -107,6 +86,27 @@ const AiImage: FC = () => {
         });
     }
   }, [categoryNum]);
+
+  // useEffect(() => {
+  //   if (categoryNum !== 0) {
+  //     axios
+  //       .get<TagsResponse>(
+  //         `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
+  //         // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
+  //         // `/user-service/generate/${categoryNum}`,
+  //         {
+  //           headers,
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log(response.data);
+  //         setData(response.data.tags);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }, [categoryNum]);
 
   //////////////////////////////////////////////////////////////////////////////////////////
 
