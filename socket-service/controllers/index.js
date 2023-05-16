@@ -30,6 +30,7 @@ const userPicList = [
 ];
 //방 생성
 exports.createRoom = async (req, res, next) => {
+  console.log("유저가 방 생성, 입장 전");
   try {
     const newRoom = await Room.create({
       title: req.body.title,
@@ -59,6 +60,7 @@ exports.createRoom = async (req, res, next) => {
 };
 
 exports.enterRoom = async (req, res, next) => {
+  console.log("기존에 생성된 방에 유저 입장");
   console.log(req);
   try {
     const willupdateRoom = await Room.find({ _id: req.params.id });
@@ -77,6 +79,7 @@ exports.enterRoom = async (req, res, next) => {
 };
 
 exports.checkPassword = async (req, res) => {
+  console.log("비밀방 입장 시도");
   try {
     const willupdateRoom = await Room.find({ _id: req.params.id });
     //비밀번호가 같은 경우
@@ -99,6 +102,7 @@ exports.checkPassword = async (req, res) => {
 };
 
 exports.removeRoom = async (req, res, next) => {
+  console.log("유저가 없어 방 제거");
   try {
     await removeRoomService(req.params.id);
     res.send("ok");

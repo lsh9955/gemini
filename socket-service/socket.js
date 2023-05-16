@@ -10,7 +10,7 @@ const client = redis.createClient({
 });
 
 client.on("connect", () => {
-  console.info("Redis connected!");
+  console.info("레디스 연결되었습니다");
 });
 
 //방 입장시 유저 정보, 유저 소켓 아이디에 따른 실제 유저 아이디를 Redis에 저장
@@ -18,6 +18,7 @@ const saveUser = async (data, socket) => {
   await client.set(String(socket.id), String(data.user));
   await client.set(String(data.user), String(data.roomId));
   await client.lpush(String(data.roomId), String(data.user));
+  console.log("방에 입장한 유저 정보 레디스에 저장되었습니다");
 };
 
 const findUserRoom = async (key) => {
@@ -119,18 +120,24 @@ module.exports = (server, app, sessionMiddleware) => {
 
       io.emit("allroomchange", "mongoDBChange");
       socket.on("message", (chatData) => {
+        console.log("유저가 메세지 전송");
         io.to(data.roomId).emit("messageResponse", chatData);
       });
       socket.on("startVote", async (voteData) => {
+        console.log("투표 시작");
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
         io.to(voteData.roomId).emit("voteResponse", voteStartRoom);
       });
       socket.on("pickUser", (voteData) => {
+        console.log("투표 유저 선택");
         console.log(voteData);
         io.to(voteData.roomId).emit("pickUserResponse", voteData.pickUser);
       });
       socket.on("voteResult", (voteResult) => {
-        io.to(voteResult.roomId).emit("voteResultResponse", voteResult.pickUser);
+        io.to(voteResult.roomId).emit(
+          "voteResultResponse",
+          voteResult.pickUser
+        );
       });
       socket.on("resetVote", (resetVote) => {
         io.to(resetVote.roomId).emit("voteResponse", null);
@@ -138,7 +145,9 @@ module.exports = (server, app, sessionMiddleware) => {
 
       socket.on("randomPick", async (voteData) => {
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
-        let userArray = voteStartRoom[0].userarr.filter((v) => v !== voteStartRoom[0].owner);
+        let userArray = voteStartRoom[0].userarr.filter(
+          (v) => v !== voteStartRoom[0].owner
+        );
         let ranCount = Math.floor(userArray.length * Math.random());
         io.to(voteData.roomId).emit("randomPickResponse", userArray[ranCount]);
       });
