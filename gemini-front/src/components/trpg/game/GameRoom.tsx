@@ -37,15 +37,15 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
 
   useEffect(() => {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://mygemini.co.kr/alarms");
-    // xhr.open("GET", "http://192.168.31.221:8081/alarms");
+    // xhr.open("GET", "https://mygemini.co.kr/alarms");
+    xhr.open("GET", "http://192.168.31.221:8081/alarms");
     xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
     xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
     xhr.withCredentials = true;
     xhr.send();
 
-    const url = `https://mygemini.co.kr/alarms?nickname=${reduxNickname}`;
-    // const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
+    // const url = `https://mygemini.co.kr/alarms?nickname=${reduxNickname}`;
+    const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
     const eventSource = new EventSource(url, {
       withCredentials: true,
     });
