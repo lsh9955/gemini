@@ -23,7 +23,7 @@ const LoginSuccess: FC = () => {
     if (userInfo.profileImgUrl) {
       setTimeout(() => {
         history.push("/");
-      }, 3000); // 3초(3000ms) 지연
+      }, 2000); // 3초(3000ms) 지연
     } else {
       alert("신규 회원이시군요! 캐릭터를 선택해주세요!");
       history.push("/selectPairchild");
