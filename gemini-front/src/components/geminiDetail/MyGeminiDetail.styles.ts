@@ -108,3 +108,11 @@ export const MyGeminFlipContainer = styled.div<{ isFlipped: boolean }>`
     }deg)`};
   transition: transform 0.8s;
 `;
+
+export const MyLikeWrapper = styled.div`
+  display: flex;
+  // align-items: center;
+  flex-direction: row;
+  padding-bottom: 3%;
+  // cursor: pointer;
+`;

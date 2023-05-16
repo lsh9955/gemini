@@ -31,17 +31,20 @@ import {
   LinkImg,
   MyGeminFlipContainer,
   MyGeminiFlipContainerWrapper,
+  MyLikeWrapper,
 } from "./MyGeminiDetail.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
   selectedImagePk: number | null;
+  setProfileImg: (imgUrl: string) => void;
 }
 
 const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   closeModal,
   selectedImagePk,
+  setProfileImg,
 }) => {
   const [isPublic, setIsPublic] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
@@ -62,6 +65,19 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
 
   const handleClick = () => {
     setIsPublic(!isPublic);
+  };
+
+  const profileImgUpdate = async () => {
+    try {
+      const profileUpdateRes = await axiosInstanceWithAccessToken.post(
+        `user-service/profile/profileImage`,
+        { geminiPk: selectedImagePk }
+      );
+      setProfileImg(geminiImg);
+    } catch (error) {
+      console.error(error);
+      // 오류 처리
+    }
   };
 
   useEffect(() => {
@@ -98,10 +114,11 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
               <LinkProfileWrapper>
                 <LinkImg></LinkImg>
               </LinkProfileWrapper>
-              <LikeWrapper>
+              <MyLikeWrapper>
                 <HeartIcon>❤️</HeartIcon>
                 <LikeCount>{likeCount}개의 좋아요</LikeCount>
-              </LikeWrapper>
+                <div onClick={profileImgUpdate}>프사 변경버튼</div>
+              </MyLikeWrapper>
             </LikeNicknameWrapper>
           </GeminiDetailImgWrapper>
           <GeminiDetialInfoWrapper>

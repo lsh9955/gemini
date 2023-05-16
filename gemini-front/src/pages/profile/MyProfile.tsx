@@ -344,6 +344,7 @@ const MyProfile: FC = () => {
                 <MyGeminiDetail
                   closeModal={closeModal}
                   selectedImagePk={selectedImagePk}
+                  setProfileImg={setProfileImg}
                 />
               </>
             )}
