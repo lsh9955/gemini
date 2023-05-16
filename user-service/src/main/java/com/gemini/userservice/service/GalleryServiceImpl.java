@@ -130,6 +130,7 @@ public class GalleryServiceImpl implements GalleryService{
         UserInfo userInfo = optionalUserInfo.get();
 //        List<Gallery> galleries = galleryRepository.findByGemini_UserInfoAndGemini_IsPublic(userInfo, true);
         List<Gallery> galleries = galleryRepository.findPublicGalleriesByUserInfo(userInfo);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@ 다른유저 갤러리 페이징 합니다.");
 
 
         // 위에서 사용했던 로직을 재사용
