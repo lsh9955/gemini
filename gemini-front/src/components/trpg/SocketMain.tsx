@@ -5,6 +5,7 @@ import GameRoom from "./game/GameRoom";
 import { io, Socket } from "socket.io-client";
 const SocketMain = ({ match }: { match: any }) => {
   //socket 연결
+
   const [chatSocket, setChatSocket] = useState<any>(null);
   //개발시
   // useEffect(() => {

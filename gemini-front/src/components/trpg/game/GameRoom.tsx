@@ -28,6 +28,38 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const [musicURL, setMusicURL] = useState<string>("");
   const [diceNum, setDiceNum] = useState<number>(-1);
   const [pickUserImg, SetPickUserImg] = useState<any>(null);
+  const [alarmList, setAlarmList] = useState<any>(null);
+  //알림 받기
+
+  const reduxNickname: any = useSelector((state: any) => state.user.nickname);
+
+  const accessToken = window.localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://mygemini.co.kr/alarms");
+    // xhr.open("GET", "http://192.168.31.221:8081/alarms");
+    xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+    xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
+    xhr.withCredentials = true;
+    xhr.send();
+
+    const url = `https://mygemini.co.kr/alarms?nickname=${reduxNickname}`;
+    // const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
+    const eventSource = new EventSource(url, {
+      withCredentials: true,
+    });
+    eventSource.onmessage = (event) => {
+      const newAlarm = JSON.parse(event.data);
+      setAlarmList(newAlarm);
+      console.log(newAlarm);
+    };
+    return () => {
+      eventSource.close();
+      xhr.abort();
+    };
+  }, []);
+
   useEffect(() => {
     // 현재는 유저정보를 랜덤으로 하고 있지만, 추후 생성시 json형태로 emit에 넣을것
     chatSocket?.emit("join", {
