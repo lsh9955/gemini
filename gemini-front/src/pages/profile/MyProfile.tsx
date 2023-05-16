@@ -98,9 +98,9 @@ const MyProfile: FC = () => {
       geminiPk: 2,
       userPk: 1,
     },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },
+    // { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
+    // { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
+    // { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },
     // ...
   ];
 
