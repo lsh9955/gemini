@@ -33,6 +33,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     };
     res();
   }, []);
+  //방 목록 정보 변경시
   useEffect(() => {
     chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
