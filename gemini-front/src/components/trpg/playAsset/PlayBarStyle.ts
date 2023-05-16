@@ -9,7 +9,7 @@ export const PlayBarWrap = styled.div`
   align-items: center;
 `;
 
-export const DiceWrap = styled.div`
+export const AddBackgroundWrap = styled.div`
   height: 60%;
   width: 10%;
   margin: 0 1%;
@@ -18,6 +18,9 @@ export const DiceWrap = styled.div`
     height: 100%;
     width: auto;
     cursor: pointer;
+  }
+  & > div {
+    display: none;
   }
   :hover {
     & > img {
@@ -31,18 +34,192 @@ export const DiceWrap = styled.div`
     }
   }
 `;
+
+export const DiceWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+export const DefaultBgImgWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+export const MusicWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+
+export const PhotoWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+export const RandompickWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+
+export const VoteWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+
+export const ExitWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  & > div {
+    display: none;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
+
 export const Dice = styled.img`
   height: 60%;
   width: auto;
   margin: 0 1%;
   cursor: pointer;
 `;
-// export const Dice = styled.img`
-//   height: 60%;
-//   width: auto;
-//   margin: 0 1%;
-//   cursor: pointer;
-// `;
 
 export const DefaultBgImg = styled.img`
   height: 60%;
