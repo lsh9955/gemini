@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
@@ -17,6 +17,17 @@ import SocketMain from "./components/trpg/SocketMain";
 import PrivacyRule from "./pages/PrivacyRule";
 
 import NotFoundPage from "./pages/404/NotFoundPage";
+
+import { useSelector } from "react-redux";
+import { AppStore } from "../src/store/store";
+
+type Alarm = {
+  alarmId: number;
+  memo: string;
+  checked: boolean;
+  category: number;
+};
+
 const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
@@ -52,9 +63,43 @@ const AppRoutes = () => {
   const shouldShowHeader =
     !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
 
+  //alarm 불러오기
+  const [alarmList, setAlarmList] = useState<Alarm[]>([]);
+
+  const reduxNickname: any = useSelector(
+    (state: AppStore) => state.user.nickname
+  );
+
+  const accessToken = window.localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://mygemini.co.kr/alarms");
+    // xhr.open("GET", "http://192.168.31.221:8081/alarms");
+    xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+    xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
+    xhr.withCredentials = true;
+    xhr.send();
+
+    const url = `https://mygemini.co.kr/alarms?nickname=${reduxNickname}`;
+    // const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
+    const eventSource = new EventSource(url, {
+      withCredentials: true,
+    });
+    eventSource.onmessage = (event) => {
+      const newAlarm = JSON.parse(event.data);
+      setAlarmList(newAlarm);
+    };
+    return () => {
+      eventSource.close();
+      xhr.abort();
+    };
+  }, []);
+  console.log(alarmList);
+
   return (
     <>
-      {shouldShowHeader && <Header />}
+      {shouldShowHeader && <Header alarmList={alarmList} />}
       <Switch>
         <Route exact path="/" component={Main} />
 
