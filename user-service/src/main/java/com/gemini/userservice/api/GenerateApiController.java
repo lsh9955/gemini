@@ -83,7 +83,7 @@ public class GenerateApiController {
                                                 @RequestBody Map<String, String> backgroundMap) {
 
         String background = backgroundMap.get("background");
-        String res = generateService.generateBackground(background);
+        String res = generateService.generateBackground(username, background);
         if (res == null) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
