@@ -57,7 +57,9 @@ export const BackImgWrap = styled.div`
     display: none;
   }
   & > img {
-    width: 20%;
+    width: 19%;
+    margin: 1%;
     height: auto;
+    cursor: pointer;
   }
 `;
