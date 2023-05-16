@@ -57,7 +57,7 @@ const GetPicture = ({
       {
         headers: {
           Accept: "*/*",
-          Authorization: `Bearer ${userSeq.accessToken}`,
+          Authorization: window.localStorage.getItem("accessToken"),
         },
       }
     );
