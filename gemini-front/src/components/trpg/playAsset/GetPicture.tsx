@@ -48,7 +48,7 @@ const GetPicture = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const imgCreateHandler = async (data: any) => {
-    console.log(data);
+    console.log(data.current.value);
     const response = await axios.post(
       "https://mygemini.co.kr/user-service/generate/background",
       {
