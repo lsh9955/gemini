@@ -33,13 +33,11 @@ const DiceRoller = ({
     console.log("주사위 점수", event.data, isNaN(event.data));
   };
   useEffect(() => {
-    if (diceStart) {
-      window?.addEventListener("message", handleMessageFromIframe);
+    window?.addEventListener("message", handleMessageFromIframe);
 
-      return () => {
-        window?.removeEventListener("message", handleMessageFromIframe);
-      };
-    }
+    return () => {
+      window?.removeEventListener("message", handleMessageFromIframe);
+    };
   }, []);
   return (
     <DiceWrap playerStyle={playTarget !== "dice"}>
