@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 public class RequestCompleteBackgroundDto {
 
+    private String username;
 
     private String imageUrl;
 
