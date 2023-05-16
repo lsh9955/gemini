@@ -19,6 +19,9 @@ const DiceRoller = ({
   const sizeHandler = () => {
     playHandler("");
   };
+  useEffect(() => {
+    console.log(diceNum);
+  }, [diceNum]);
 
   const handleMessageFromIframe = (event: any) => {
     if (!isNaN(event.data)) {
