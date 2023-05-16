@@ -78,7 +78,10 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         if (selectAlarmList) {
           const NewGeminiDetailModal = (
             <NewGeminiDetail
-              closeModal={() => setCurrentModal("")}
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
               selectedImagePk={selectAlarmList.geminiNo}
             />
           );
@@ -96,7 +99,10 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         if (selectAlarmList) {
           const NewBackgroundDetailModal = (
             <BackgroundAlarmModal
-              closeModal={() => setCurrentModal("")}
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
               selectedImageUrl={selectAlarmList.imageUrl}
             />
           );
