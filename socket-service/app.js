@@ -47,9 +47,11 @@ const sessionMiddleware = session({
     secure: false,
   },
 });
+//env확인
+
 const sessionOption = {
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
@@ -63,7 +65,6 @@ app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
 const indexRouter = require("./routes");
 app.use("/node", indexRouter);
 
@@ -76,6 +77,8 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
+  console.log("서버 응답 에러");
+  console.log(err, res);
   res.status(err.status || 500);
 });
 //배포시 설정
