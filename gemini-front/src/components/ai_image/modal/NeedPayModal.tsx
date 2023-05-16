@@ -63,7 +63,7 @@ const NeedPayModal: React.FC<Props> = ({ onClose }) => {
   const callback = (res: any) => {
     if (res.success) {
       axiosInstanceWithAccessToken
-        .post(`/order/kakao/single-payment`, {
+        .post(`/user-service/order/kakao/single-payment`, {
           orderStar: intNumberValue,
           merchantUid: uid,
         })
