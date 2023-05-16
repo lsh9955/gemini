@@ -105,6 +105,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     });
 
     chatSocket?.on("diceRollResponse", function (data: any) {
+      console.log("주사위 추적중", data);
       setDiceNum(data);
     });
 
