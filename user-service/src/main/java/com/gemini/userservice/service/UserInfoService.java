@@ -16,4 +16,6 @@ public interface UserInfoService {
     UserInfoDto selectPairchild(String username, RequestSelectPairchildDto selectGeminiDto);
 
     ResponseFollowCountDto getFollowCounts(String nickname);
+
+    String updateProfileImage(String username, Long geminiNo);
 }
