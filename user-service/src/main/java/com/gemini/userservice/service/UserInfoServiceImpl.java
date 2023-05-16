@@ -11,6 +11,7 @@ import com.gemini.userservice.repository.FollowRepository;
 import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import com.gemini.userservice.repository.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -143,5 +144,20 @@ public class UserInfoServiceImpl implements UserInfoService {
         long followersCount = followRepository.countByFollowing(userInfo);
         long followingsCount = followRepository.countByFollower(userInfo);
         return new ResponseFollowCountDto(followersCount, followingsCount);
+    }
+
+    @Override
+    public String updateProfileImage(String username, Long geminiNo) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        if (!userInfo.isPresent()) {
+            return null;
+        }
+        UserInfo user = userInfo.get();
+        Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
+        String imageUrl = gemini.getImageUrl();
+        user.updateProfileImage(imageUrl);
+        userInfoRepository.save(user);
+        return imageUrl;
     }
 }
