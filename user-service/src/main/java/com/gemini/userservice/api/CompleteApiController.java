@@ -73,7 +73,10 @@ public class CompleteApiController {
             // 알람 메세지를 만들기 위해 BackgroundAlarmDto에 넣어준다 => service에서 닉네임을 찾자
             BackgroundAlarmDto backgroundAlarmDto = new BackgroundAlarmDto();
             backgroundAlarmDto.setImageUrl(res);
-//            backgroundAlarmDto.setUsername(requestCompleteBackgroundDt);
+            backgroundAlarmDto.setUsername(requestCompleteBackgroundDto.getUsername());
+
+            // background 알람 생성
+            alarmService.createBackgroundAlarm(backgroundAlarmDto, emitter);
         }
 
 
