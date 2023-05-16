@@ -161,6 +161,9 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.on("diceRoll", (dice) => {
         io.to(dice.roomId).emit("diceRollResponse", dice.diceNum);
       });
+      socket.on("changeBgImg", (img) => {
+        io.to(img.roomId).emit("changeBgImgResponse", img.imgUrl);
+      });
     });
 
     socket.on("disconnect", async () => {
