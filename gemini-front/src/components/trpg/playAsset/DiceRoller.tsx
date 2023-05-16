@@ -58,31 +58,35 @@ const DiceRoller = ({
           width: "80%",
           color: "white",
           height: "20%",
-          textAlign: "left",
+
           zIndex: "333",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        점수 : {diceNum !== -1 && diceNum}
+        <div>점수 : {diceNum !== -1 && diceNum}</div>
+
+        <button
+          onClick={() => {
+            if (diceStart) {
+              diceReset();
+            }
+            setDiceStart(!diceStart);
+          }}
+          style={{
+            backgroundColor: "transparent",
+            fontSize: "120%",
+            width: "20%",
+            textAlign: "center",
+            color: "white",
+            border: "1px solid white",
+          }}
+        >
+          {diceStart ? "초기화" : "주사위 던지기"}
+        </button>
       </div>
-      <button
-        onClick={() => {
-          if (diceStart) {
-            diceReset();
-          }
-          setDiceStart(!diceStart);
-        }}
-        style={{
-          backgroundColor: "transparent",
-          fontSize: "120%",
-          marginBottom: "2%",
-          width: "20%",
-          textAlign: "center",
-          color: "white",
-          border: "1px solid white",
-        }}
-      >
-        {diceStart ? "초기화" : "주사위 던지기"}
-      </button>
+
       <SizeButton onClick={sizeHandler}>닫기</SizeButton>
     </DiceWrap>
   );
