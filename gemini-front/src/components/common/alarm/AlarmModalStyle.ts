@@ -208,11 +208,39 @@ export const BackgroundOverlay = styled.div`
 
 export const BackgroundContainer = styled.div`
   position: absolute; // position 값을 absolute로 변경
-  top: 50%;
-  left: 50%;
+  top: 18%;
+  left: 25%;
   z-index: 1002;
-  display: flex;
   background-color: rgba(0, 0, 0, 0.5);
-  width: 650px;
-  height: 500px;
+  width: 750px;
+  height: 600px;
+  text-align: center;
+`;
+
+export const BackgroundContent = styled.div`
+  /* text-align: center; */
+  /* justify-content: center; */
+  margin-top: 25px;
+  /* margin-left: 75px; */
+`;
+
+export const Button = styled.button`
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  margin-right: 2rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 18px;
+
+  &:hover {
+    /* background: #ffffff; */
+    /* color: transparent; */
+    /* background-color: #124141; */
+    mix-blend-mode: color-burn;
+  }
 `;
