@@ -153,9 +153,10 @@ const GetPicture = ({
         {selectBtn === "seePic" && (
           <>
             <BackImgWrap>
-              {picArr.map((v: any) => {
-                return <img src={v.imageUrl} alt="" />;
-              })}
+              {picArr &&
+                picArr.map((v: any) => {
+                  return <img src={v.imageUrl} alt="" />;
+                })}
             </BackImgWrap>
           </>
         )}
