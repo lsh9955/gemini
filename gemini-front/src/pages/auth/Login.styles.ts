@@ -7,8 +7,8 @@ import GeminiLoginTitle from "../../assets/img/GeminiLoginTitle.png";
 export const LoginTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 15vh;
-  margin-bottom: 5%;
+  margin-top: 10vh;
+  margin-bottom: 6%;
   justify-content: center;
   align-items: center;
   z-index: 3;
@@ -73,7 +73,7 @@ interface StyledLinkProps {
 export const LoginButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 5%;
+  margin-top: 5.3%;
 `;
 
 export const StyledLink = styled.a<StyledLinkProps>`

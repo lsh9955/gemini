@@ -187,10 +187,8 @@ const UserProfile: FC = () => {
         </MyInfoWrapper>
         <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
-            <MyProfileContentTitle>닉네임님의 Gemini</MyProfileContentTitle>
-            <MyProfileContentTitle>
-              닉네임님의 TRPG 추억로그
-            </MyProfileContentTitle>
+            <MyProfileContentTitle>{nickname}님의 Gemini</MyProfileContentTitle>
+            |<MyProfileContentTitle>TRPG 추억로그</MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
             <MyProfileContentBody
