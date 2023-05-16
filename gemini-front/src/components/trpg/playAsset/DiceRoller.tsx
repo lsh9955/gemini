@@ -66,10 +66,10 @@ const DiceRoller = ({
       </div>
       <button
         onClick={() => {
-          setDiceStart(!diceStart);
           if (diceStart) {
             diceReset();
           }
+          setDiceStart(!diceStart);
         }}
         style={{
           backgroundColor: "transparent",
