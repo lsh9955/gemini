@@ -58,6 +58,7 @@ const DiceRoller = ({
           color: "white",
           height: "20%",
           textAlign: "left",
+          zIndex: "333",
         }}
       >
         점수 : {diceNum !== -1 && diceNum}
