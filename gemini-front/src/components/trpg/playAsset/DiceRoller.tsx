@@ -19,7 +19,10 @@ const DiceRoller = ({
   const sizeHandler = () => {
     playHandler("");
   };
-  useEffect(() => {}, [diceNum]);
+  useEffect(() => {
+    console.log(diceNum);
+  }, [diceNum]);
+
   const handleMessageFromIframe = (event: any) => {
     if (!isNaN(event.data)) {
       chatSocket?.emit("diceRoll", {
@@ -56,16 +59,17 @@ const DiceRoller = ({
           color: "white",
           height: "20%",
           textAlign: "left",
+          zIndex: "333",
         }}
       >
         점수 : {diceNum !== -1 && diceNum}
       </div>
       <button
         onClick={() => {
-          setDiceStart(!diceStart);
           if (diceStart) {
             diceReset();
           }
+          setDiceStart(!diceStart);
         }}
         style={{
           backgroundColor: "transparent",

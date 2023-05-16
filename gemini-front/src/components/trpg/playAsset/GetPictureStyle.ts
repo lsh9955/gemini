@@ -56,4 +56,10 @@ export const BackImgWrap = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  & > img {
+    width: 19%;
+    margin: 1%;
+    height: auto;
+    cursor: pointer;
+  }
 `;

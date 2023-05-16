@@ -12,6 +12,7 @@ import {
 } from "./AlarmModalStyle";
 import UserGeminiDetail from "../../geminiDetail/UserGeminiDetail";
 import axiosInstanceWithAccessToken from "../../../utils/AxiosInstanceWithAccessToken";
+import BackgroundAlarmModal from "./BackgroundAlarmModal";
 
 // type Alarm = {
 //   alarmId: number;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
+  console.log(alarmList);
   const history = useHistory();
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
   const [showGeminiDetail, setShowGeminiDetail] = useState(false);
@@ -33,18 +35,18 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
 
   const handleAlarmClick = async (alarmId: number, category: number) => {
     // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
-    const selectAlarmList = alarmList
-      .slice(-1)[0]
-      .find(
-        (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
-      );
+    const selectAlarmList = alarmList.find(
+      (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
+    );
     switch (category) {
       case 1:
         // 팔로우 했을 때
         history.push(`/userProfile/${selectAlarmList.follower}`);
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
           // await axios.delete(`/alarms/${alarmId}`, {
           //   headers: {
           //     "X-username": "yyj", // 토큰을 사용하는 경우 예시입니다
@@ -68,7 +70,9 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         }
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
         }
@@ -76,20 +80,49 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
       case 3:
         // 제미니 생성
         if (selectAlarmList) {
-          const NewgeminiDetailModal = (
+          const NewGeminiDetailModal = (
             <NewGeminiDetail
-              closeModal={() => setCurrentModal("")}
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
               selectedImagePk={selectAlarmList.geminiNo}
             />
           );
-          setCurrentModal(NewgeminiDetailModal);
+          setCurrentModal(NewGeminiDetailModal);
         }
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
         }
+        break;
+      case 4:
+        // 배경 생성
+        if (selectAlarmList) {
+          const NewBackgroundDetailModal = (
+            <BackgroundAlarmModal
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
+              selectedImageUrl={selectAlarmList.imageUrl}
+            />
+          );
+          setCurrentModal(NewBackgroundDetailModal);
+        }
+        // 알람 삭제 요청 보내기
+        try {
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
+        } catch (error) {
+          console.error("알람 삭제 실패:", error);
+        }
+        break;
     }
   };
 
@@ -109,7 +142,7 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
                 {alarmList.length === 0 ? (
                   <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
                 ) : (
-                  alarmList.slice(-1)[0].map((alarm: any, idx: any) => (
+                  alarmList.map((alarm: any, idx: any) => (
                     <AlarmContent
                       key={alarm.alarmId}
                       idx={idx}

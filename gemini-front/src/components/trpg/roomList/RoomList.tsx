@@ -24,7 +24,7 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
   const userSeq = useSelector((state: any) => state.user);
   useEffect(() => {
     const res = async () => {
-      const getRoomInfo = await axios.get(`http://mygemini.co.kr/node/room`);
+      const getRoomInfo = await axios.get(`https://mygemini.co.kr/node/room`);
       setRooms(
         getRoomInfo.data.room.map((v: any, i: any) => {
           return JSON.stringify(v);
@@ -33,11 +33,12 @@ const RoomList = ({ chatSocket }: { chatSocket: Socket }) => {
     };
     res();
   }, []);
+  //방 목록 정보 변경시
   useEffect(() => {
     chatSocket?.on("allroomchange", (data: any) => {
       console.log("방 목록 정보 바뀜");
       const res = async () => {
-        const getRoomInfo = await axios.get(`http://mygemini.co.kr/node/room`);
+        const getRoomInfo = await axios.get(`https://mygemini.co.kr/node/room`);
         setRooms(
           getRoomInfo.data.room.map((v: any, i: any) => {
             return JSON.stringify(v);
