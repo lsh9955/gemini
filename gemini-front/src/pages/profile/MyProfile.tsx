@@ -126,7 +126,7 @@ const MyProfile: FC = () => {
   const loadMoreImages = useCallback(async () => {
     try {
       const response = await axiosInstanceWithAccessToken.get(
-        "/user-service/profile/mygeminis",
+        "/user-service/gallery/mygeminis",
         {
           params: {
             page: page,

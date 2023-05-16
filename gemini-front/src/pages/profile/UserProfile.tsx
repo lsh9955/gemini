@@ -53,8 +53,9 @@ const UserProfile: FC = () => {
   const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
-    const res = await axiosInstanceWithAccessToken.get(
-      `/user-service/profile/${nickname}`
+    const res = await axiosInstanceWithAccessToken.post(
+      `/user-service/gallery/usergalleries`,
+      { nickname: nickname }
     ); // 주소 수정 필요 😀
     console.log("가져온 다른 유저의 데이터");
     console.log(res.data);
