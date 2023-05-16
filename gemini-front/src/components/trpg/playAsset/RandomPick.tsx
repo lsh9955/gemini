@@ -119,49 +119,43 @@ const RandomPick = ({
         <GetPictureTitle>
           {!voteInfo && !voteResult && (
             <>
-              <p>랜덤으로 한 명을 선택하시겠어요?</p>
-              <button onClick={startVote}>시작하기</button>
-            </>
-          )}
-          {/* 
-          {voteInfo && !isVoted && voteInfo[0].owner !== userSeq.nickname && (
-            <>
-              <p>플레이어 한 명을 골라주세요</p>
-              <div>
-                {voteInfo[0].userarr.map((v: any) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        pickUser(v);
-                      }}
-                    >
-                      {v}
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
-          {voteInfo && isVoted && !voteResult && (
-            <>
-              <p>투표 진행 중입니다</p>
-              <p>잠시만 기다려주세요</p>
+              <p style={{ marginTop: "5%", fontSize: "160%" }}>
+                랜덤으로 한 명을 선택하시겠어요?
+              </p>
+              <button
+                onClick={startVote}
+                style={{
+                  marginTop: "15%",
+                  fontSize: "140%",
+                  color: "white",
+                  border: "1px solid white",
+                  backgroundColor: "transparent",
+                }}
+              >
+                시작하기
+              </button>
             </>
           )}
 
-          {voteInfo &&
-            voteInfo[0].owner === userSeq.nickname &&
-            !voteResult && (
-              <button
-                onClick={() => {
-                  endVote();
-                }}
-              >
-                투표 종료
-              </button>
-            )} */}
-          {voteResult && <div>{voteResult} 가(이) 뽑혔습니다</div>}
-          {voteResult && <button onClick={voteReset}>초기화</button>}
+          {voteResult && (
+            <div style={{ marginTop: "5%", fontSize: "160%" }}>
+              {voteResult} 가(이) 뽑혔습니다
+            </div>
+          )}
+          {voteResult && (
+            <button
+              onClick={voteReset}
+              style={{
+                marginTop: "5%",
+                fontSize: "160%",
+                color: "white",
+                border: "1px solid white",
+                backgroundColor: "transparent",
+              }}
+            >
+              초기화
+            </button>
+          )}
         </GetPictureTitle>
 
         <SizeButton onClick={sizeHandler}>닫기</SizeButton>

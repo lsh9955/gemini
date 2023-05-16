@@ -35,7 +35,7 @@ export const DiceStart = styled.button`
 export const SizeButton = styled.button`
   width: 20%;
   height: 15%;
-
+  margin-top: 1%;
   color: white;
   font-size: 120%;
   border-radius: 4px;
