@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
@@ -15,6 +15,8 @@ import NewGeminiDetail from "./components/geminiDetail/NewGeminiDetail";
 
 import SocketMain from "./components/trpg/SocketMain";
 import PrivacyRule from "./pages/PrivacyRule";
+
+import NotFoundPage from "./pages/404/NotFoundPage";
 const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
@@ -22,7 +24,33 @@ const AppRoutes = () => {
     "/loginSuccess",
     "/selectPairchild",
   ];
-  const shouldShowHeader = !pathsWithoutHeader.includes(location.pathname);
+
+  // 모든 경로를 배열에 저장
+  const validPaths = [
+    "/",
+    "/loginPage",
+    "/loginSuccess",
+    "/selectPairchild",
+    "/myProfile",
+    "/userProfile/:nickname",
+    "/aiImage",
+    "/geminidetail-user",
+    "/geminidetail-my",
+    "/geminidetail-new",
+    "/room",
+    "/privacy",
+  ];
+
+  // NotFoundPage를 위한 state 변수
+  const [isNotFoundPage, setIsNotFoundPage] = React.useState(false);
+
+  useEffect(() => {
+    // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정
+    setIsNotFoundPage(!validPaths.includes(location.pathname));
+  }, [location.pathname]);
+
+  const shouldShowHeader =
+    !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
 
   return (
     <>
@@ -45,6 +73,8 @@ const AppRoutes = () => {
         <Route exact path="/privacy" component={PrivacyRule} />
 
         {/* ... */}
+        {/* NotFoundPage에는 header 안보이게 */}
+        <Route path="*" component={NotFoundPage} />
       </Switch>
     </>
   );
