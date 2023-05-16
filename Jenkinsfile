@@ -146,7 +146,7 @@ pipeline {
 					steps {
 						dir('socket-service') {
 							sh 'npm install'
-							sh 'echo -e "COOKIE_SECRET=\'${COOKIE_SECRET}\'\nMONGO_ID=\'${MONGO_ID}\'\nMONGO_PASSWORD=\'${MONGO_PASSWORD}\'\nREDIS_HOST=\'${REDIS_HOST}\'\nREDIS_PORT=\'${REDIS_PORT}\'\nREDIS_USERNAME=\'${REDIS_USERNAME}\'\nREDIS_PASSWORD=\'${REDIS_PASSWORD}\'" > .env'
+							sh 'echo -e "COOKIE_SECRET=\'${COOKIE_SECRET}\'\nCOOKIE_SECRET=\'${COOKIE_SECRET}\'\nMONGO_ID=\'${MONGO_ID}\'\nMONGO_PASSWORD=\'${MONGO_PASSWORD}\'\nREDIS_HOST=\'${REDIS_HOST}\'\nREDIS_PORT=\'${REDIS_PORT}\'\nREDIS_USERNAME=\'${REDIS_USERNAME}\'\nREDIS_PASSWORD=\'${REDIS_PASSWORD}\'" > .env'
 							sh 'docker build -t ${DOCKER_REGISTRY}:${SOCKET_SERVICE_IMAGE_TAG} .'
 							sh 'docker push ${DOCKER_REGISTRY}:${SOCKET_SERVICE_IMAGE_TAG}'
 						}
