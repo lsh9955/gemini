@@ -69,6 +69,7 @@ const AppRoutes = () => {
   const reduxNickname: any = useSelector(
     (state: AppStore) => state.user.nickname
   );
+  console.log(reduxNickname);
 
   const accessToken = window.localStorage.getItem("accessToken");
 
