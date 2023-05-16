@@ -58,10 +58,41 @@ interface TagIds {
   costumeTagId: number;
 }
 
+// 갤러리에서 보내주는 갤러리pk 타입
+interface GalleryLocationState {
+  galleryPk: number;
+}
+
+interface GalleryTags {
+  genre: { tagId: number; genreKorean: string };
+  preset: { tagId: number; presetKorean: string };
+  gender: { tagId: number; genderKorean: string };
+  hairColor: { tagId: number; hairColorKorean: string };
+  eyeColor: { tagId: number; eyeColorKorean: string };
+  hairStyle: { tagId: number; hairStyleKorean: string };
+  emotion: { tagId: number; emotionKorean: string };
+  costume: { tagId: number; costumeKorean: string };
+}
+
 const AiImage: FC = () => {
   // 갤러리 디테일에서 넘어올 갤러리 pk값
-  const location = useLocation();
-  const galleryPk = location.state && location.state.galleryPk;
+  const location = useLocation<GalleryLocationState>();
+  const galleryPk = location.state?.galleryPk;
+
+  // url 만들어지면 수정하기
+  // useEffect(() => {
+  //   if (galleryPk) {
+  //     axiosInstanceWithAccessToken
+  //       .get<GalleryTags>(`/user-service/generate/${galleryPk}`, { headers })
+  //       .then((response) => {
+  //         console.log(response.data);
+  //         // 태그랑, 한국어 이름 set에 담기
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }, []);
 
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
