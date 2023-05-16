@@ -41,12 +41,10 @@ public class AlarmApiController {
     private ThreadPoolTaskExecutor taskExecutor;
 
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    // 인코딩 에러 고침
+    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
     public SseEmitter streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
-        System.out.println("nickname");
-        System.out.println(nickname);
-        System.out.println("기도 많이 할게요");
 
         // SseEmitter 객체 생성
         SseEmitter emitter = new SseEmitter();
@@ -82,6 +80,8 @@ public class AlarmApiController {
                                             .memo(alarm.getMemo())
                                             .category(alarm.getCategory())
                                             .follower(alarm.getFollower())
+                                            .imageUrl(alarm.getImageUrl())
+                                            .nickname(alarm.getNickname())
                                             .build();
                                     responseAlarmDtos.add(responseAlarmDto);
                                 } catch (Exception e) {
@@ -104,7 +104,7 @@ public class AlarmApiController {
                     });
 
                     // SSE 연결 유지
-                    Thread.sleep(10000);
+                    Thread.sleep(7000);
                 }
             } catch (Exception ex) {
                 // 에러 발생 시 SseEmitter를 종료
