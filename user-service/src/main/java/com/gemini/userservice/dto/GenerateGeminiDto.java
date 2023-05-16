@@ -25,7 +25,7 @@ public class GenerateGeminiDto {
 
     private String username;
 
-    private List<Long> tagIds;
+    private List<Long> tag_ids;
 
     private Long seed;
 
@@ -38,7 +38,7 @@ public class GenerateGeminiDto {
         this.width = 507;
         this.height = 676;
         this.username = username;
-        this.tagIds = tagIds;
+        this.tag_ids = tagIds;
     }
 
 
