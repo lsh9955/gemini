@@ -109,7 +109,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
   // 모달 밖을 눌러서 닫는 액션을 취하면 안됨 (버그의 원인. 빈 정보의 제미니가 나옴.)
   return (
     <>
-      <NewGeminiFlipContainerWrapper onClick={closeModal}>
+      <NewGeminiFlipContainerWrapper>
         <NewGeminFlipContainer
           isFlipped={false}
           onClick={(e) => e.stopPropagation()}
