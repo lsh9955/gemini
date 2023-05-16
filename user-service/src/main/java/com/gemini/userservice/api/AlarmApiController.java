@@ -51,7 +51,7 @@ public class AlarmApiController {
     // 인코딩 에러 고침
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
     public ResponseEntity<SseEmitter> streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
-        response.setContentType(MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8");
+        response.setContentType("text/event-stream;charset=UTF-8");
         response.setHeader("Cache-Control", "no-store");
         Optional<UserInfo> userInfo = userInfoRepository.findByNickname(nickname);
         if (!userInfo.isPresent()) {
