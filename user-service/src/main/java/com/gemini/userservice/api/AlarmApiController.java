@@ -45,6 +45,9 @@ public class AlarmApiController {
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
     public SseEmitter streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
+        System.out.println("!!!!!!!!!");
+        System.out.println(nickname);
+        System.out.println("!!!!!!!!!");
 
         // SseEmitter 객체 생성
         SseEmitter emitter = new SseEmitter();
@@ -52,20 +55,20 @@ public class AlarmApiController {
         // ExecutorService 객체 생성
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
 
-        final String finalNickname = nickname;
 
         // 이전 알람 리스트를 저장할 변수
         AtomicReference<List<Alarm>> previousAlarms = new AtomicReference<>(new ArrayList<>());
 
-        // 배치 크기 설정
-        int batchSize = (int) alarmRepository.countByNickname(finalNickname);
 
         // ExecutorService에 작업을 제출하여 비동기적으로 SSE 이벤트 생성 및 전송
         sseMvcExecutor.execute(() -> {
             try {
                 while (true) {
                     // AlarmRepository에서 최근 알림 데이터를 가져옴
-                    Optional<List<Alarm>> alarms = alarmRepository.findByNickname(finalNickname);
+                    Optional<List<Alarm>> alarms = alarmRepository.findByNickname(nickname);
+                    System.out.println("!!!!!!!!!");
+                    System.out.println(nickname);
+                    System.out.println("!!!!!!!!!");
                     List<ResponseAlarmDto> responseAlarmDtos = new ArrayList<>();
 
                     // 가져온 알림 데이터를 ResponseAlarmDto로 변환하여 SSE 이벤트로 전송
@@ -84,6 +87,9 @@ public class AlarmApiController {
                                             .nickname(alarm.getNickname())
                                             .build();
                                     responseAlarmDtos.add(responseAlarmDto);
+                                    System.out.println("!!!!!!!!!");
+                                    System.out.println(responseAlarmDto.getAlarmId());
+                                    System.out.println("!!!!!!!!!");
                                 } catch (Exception e) {
                                     // 에러가 발생해도 무시하고 다음 시행으로 넘어갑니다.
                                     System.err.println("Error sending SSE event: " + e.getMessage());
@@ -94,11 +100,20 @@ public class AlarmApiController {
                                 SseEmitter.SseEventBuilder event = SseEmitter.event()
                                         .data(responseAlarmDtos);
                                 emitter.send(event);
+                                System.out.println("!!!!!!!!!");
+                                System.out.println(emitter);
+                                System.out.println("!!!!!!!!!");
 
                                 // 이전 알람 리스트를 새로운 알람 리스트로 업데이트
                                 previousAlarms.set(new ArrayList<>(alarmList));
+                                System.out.println("!!!!!!!!!");
+                                System.out.println(previousAlarms);
+                                System.out.println("!!!!!!!!!");
                             } catch (IOException e) {
                                 System.err.println("Error sending SSE event: " + e.getMessage());
+                                System.out.println("!!!!!!!!!");
+                                System.out.println("errrrrrr");
+                                System.out.println("!!!!!!!!!");
                             }
                         }
                     });
