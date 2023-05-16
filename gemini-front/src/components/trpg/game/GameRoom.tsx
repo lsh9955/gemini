@@ -29,6 +29,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const [diceNum, setDiceNum] = useState<number>(-1);
   const [pickUserImg, SetPickUserImg] = useState<any>(null);
   const [alarmList, setAlarmList] = useState<any>(null);
+  const [changeBg, setChangeBg] = useState<any>(null);
   //알림 받기
 
   const reduxNickname: any = useSelector((state: any) => state.user.nickname);
@@ -105,8 +106,10 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     });
 
     chatSocket?.on("diceRollResponse", function (data: any) {
-      console.log("주사위 추적중", data);
       setDiceNum(data);
+    });
+    chatSocket?.on("changeBgImgResponse", function (data: any) {
+      setChangeBg(data);
     });
 
     return () => {
@@ -118,6 +121,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
       chatSocket?.off("voteResponse");
       chatSocket?.off("musicPlayResponse");
       chatSocket?.off("diceRollResponse");
+      chatSocket?.off("changeBgImgResponse");
     };
   }, [chatSocket]);
 
@@ -165,7 +169,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   };
 
   return (
-    <RoomWrap>
+    <RoomWrap bgimg={changeBg}>
       <GameScreen>
         <PlayBar playHandler={playHandler} />
         <GroundMain />
