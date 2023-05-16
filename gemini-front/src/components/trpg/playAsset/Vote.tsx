@@ -107,15 +107,43 @@ const Vote = ({
         <GetPictureTitle>
           {!voteInfo && (
             <>
-              <p>투표를 진행할까요?</p>
-              <button onClick={startVote}>시작하기</button>
+              <p style={{ marginTop: "5%", fontSize: "160%" }}>
+                투표를 진행할까요?
+              </p>
+              <button
+                onClick={startVote}
+                style={{
+                  marginTop: "5%",
+                  fontSize: "140%",
+                  color: "white",
+                  border: "1px solid white",
+                  backgroundColor: "transparent",
+                  width: "auto",
+                }}
+              >
+                시작하기
+              </button>
             </>
           )}
 
           {voteInfo && !isVoted && voteInfo[0].owner !== userSeq.nickname && (
             <>
-              <p>플레이어 한 명을 골라주세요</p>
-              <div>
+              <p style={{ marginTop: "5%", fontSize: "160%" }}>
+                플레이어 한 명을 골라주세요
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "90%",
+                  height: "60%",
+                  flexWrap: "wrap",
+                  fontSize: "140%",
+                  color: "white",
+                  marginTop: "4%",
+                }}
+              >
                 {voteInfo[0].userarr
                   .filter((v: any) => v !== voteInfo[0].owner)
                   .map((v: any) => {
@@ -123,6 +151,12 @@ const Vote = ({
                       <div
                         onClick={() => {
                           pickUser(v);
+                        }}
+                        style={{
+                          color: "white",
+                          fontSize: "140%",
+                          fontWeight: "bold",
+                          margin: "5%",
                         }}
                       >
                         {v}
@@ -134,8 +168,10 @@ const Vote = ({
           )}
           {voteInfo && isVoted && !voteResult && (
             <>
-              <p>투표 진행 중입니다</p>
-              <p>잠시만 기다려주세요</p>
+              <p style={{ marginTop: "5%", fontSize: "160%" }}>
+                투표 진행 중입니다
+              </p>
+              <p style={{ fontSize: "160%" }}>잠시만 기다려주세요</p>
             </>
           )}
 
@@ -146,13 +182,35 @@ const Vote = ({
                 onClick={() => {
                   endVote();
                 }}
+                style={{
+                  marginTop: "5%",
+                  fontSize: "160%",
+                  color: "white",
+                  border: "1px solid white",
+                  backgroundColor: "transparent",
+                }}
               >
                 투표 종료
               </button>
             )}
-          {voteResult && <div>{voteResult} 가(이) 뽑혔습니다</div>}
+          {voteResult && (
+            <div style={{ marginTop: "5%", fontSize: "160%" }}>
+              {voteResult} 가(이) 뽑혔습니다
+            </div>
+          )}
           {voteInfo && voteResult && voteInfo[0].owner === userSeq.nickname && (
-            <button onClick={voteReset}>초기화</button>
+            <button
+              onClick={voteReset}
+              style={{
+                marginTop: "15%",
+                fontSize: "160%",
+                color: "white",
+                border: "1px solid white",
+                backgroundColor: "transparent",
+              }}
+            >
+              초기화
+            </button>
           )}
         </GetPictureTitle>
 

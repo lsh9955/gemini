@@ -12,6 +12,8 @@ export const RoomWrap = styled.div<{ bgimg: any }>`
   flex-direction: row;
   background-image: ${(props) =>
     props.bgimg ? `url(${props.bgimg})` : `url(${defaultBgImg})`};
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 export const GameScreen = styled.div`
   width: 70%;
