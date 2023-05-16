@@ -41,7 +41,7 @@ connect();
 const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
-  secret: process.env.COOKIE_SECRET,
+  secret: "1234",
   cookie: {
     httpOnly: true,
     secure: false,
@@ -50,7 +50,7 @@ const sessionMiddleware = session({
 const sessionOption = {
   resave: true,
   saveUninitialized: true,
-  secret: process.env.COOKIE_SECRET,
+  secret: "1234",
   cookie: {
     httpOnly: true,
     secure: false,
