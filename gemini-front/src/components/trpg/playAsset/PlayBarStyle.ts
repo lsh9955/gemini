@@ -54,7 +54,7 @@ export const DiceWrap = styled.div`
     width: auto;
     cursor: pointer;
   }
-  & > div {
+  & div {
     display: none;
   }
   :hover {
@@ -62,7 +62,7 @@ export const DiceWrap = styled.div`
       display: none;
       cursor: pointer;
     }
-    & > div {
+    & div {
       display: inline;
       color: white;
       cursor: pointer;

@@ -82,7 +82,8 @@ const PlayBar = ({ playHandler }: { playHandler: any }) => {
         }}
       >
         <img src={dice} alt="" />
-        <div>주사위 굴리기</div>
+        <div>주사위</div>
+        <div>굴리기</div>
       </DiceWrap>
 
       <MusicWrap
