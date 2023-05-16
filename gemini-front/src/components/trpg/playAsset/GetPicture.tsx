@@ -64,7 +64,7 @@ const GetPicture = ({
       }
     );
     const result = await response;
-    setCreateImg(result.imageUrl);
+    setCreateImg(result.data.imageUrl);
   };
 
   return (
