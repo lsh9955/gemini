@@ -3,6 +3,7 @@ import {
   ButtonWrapper,
   DescArea,
   DescBlockWrapper,
+  FlipContainerWrapper,
   FormLabel,
   GeminiDetailImgWrapper,
   GeminiDetialInfoWrapper,
@@ -28,18 +29,24 @@ import {
   EditButton,
   EditButtonWrapper,
   LinkImg,
+  MyGeminFlipContainer,
+  MyGeminiFlipContainerWrapper,
+  MyLikeWrapper,
 } from "./MyGeminiDetail.styles";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
   selectedImagePk: number | null;
+  setProfileImg: (imgUrl: string) => void;
 }
 
 const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   closeModal,
   selectedImagePk,
+  setProfileImg,
 }) => {
-  const [isOn, setIsOn] = useState<boolean>(false);
+  const [isPublic, setIsPublic] = useState<boolean>(false);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
     "여성",
@@ -57,74 +64,104 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   );
 
   const handleClick = () => {
-    setIsOn(!isOn);
+    setIsPublic(!isPublic);
+  };
+
+  const profileImgUpdate = async () => {
+    try {
+      const profileUpdateRes = await axiosInstanceWithAccessToken.post(
+        `user-service/profile/profileImage`,
+        { geminiPk: selectedImagePk }
+      );
+      setProfileImg(geminiImg);
+    } catch (error) {
+      console.error(error);
+      // 오류 처리
+    }
   };
 
   useEffect(() => {
-    const fetchTags = async () => {
+    const fetchGeminiInfo = async () => {
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
-      // setTagContents(data.tags); // Set the state with the fetched tags
-      // setDesc(data.desc)
-      // setGeminiImg(data.imgUrl)
+      const geminiRes = await axiosInstanceWithAccessToken.get(
+        `/user-service/gallery/gemini/${selectedImagePk}`
+      );
+      const geminiInfoData = geminiRes.data;
+      setGeminiImg(geminiInfoData.geminiImage);
+      setGeminiName(geminiInfoData.geminiName);
+      setDesc(geminiInfoData.geminiDescription);
+      setLikeCount(geminiInfoData.totalLike);
+      setIsPublic(geminiInfoData.isPublic);
+      if (geminiInfoData.tags) {
+        setTagContents(geminiInfoData.tags);
+      }
     };
     // setTagContents(res); // 이걸 바탕으로..
+
+    fetchGeminiInfo();
   }, []);
 
   return (
     <>
-      <GeminiDetialWrapper>
-        <GeminiDetailImgWrapper backgroundImage={geminiImg}>
-          <LikeNicknameWrapper>
-            <LinkProfileWrapper>
-              <LinkImg></LinkImg>
-            </LinkProfileWrapper>
-            <LikeWrapper>
-              <HeartIcon>❤️</HeartIcon>
-              <LikeCount>{likeCount}개의 좋아요</LikeCount>
-            </LikeWrapper>
-          </LikeNicknameWrapper>
-        </GeminiDetailImgWrapper>
-        <GeminiDetialInfoWrapper>
-          <ToggleWrapper>
-            <ToggleText>공개</ToggleText>
-            <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-              <ToggleButtonCircle isOn={isOn} />
-            </ToggleButtonContainer>
-            <ToggleText>비공개</ToggleText>
-          </ToggleWrapper>
-          <NameInputWrapper>
-            <FormLabel>이름</FormLabel>
-            <TextInputDiv
-            // type="text"
-            // id="nickname"
-            // value={nickname}
-            // onChange={(e) => setNickname(e.target.value)}
-            >
-              {geminiName}
-            </TextInputDiv>
-          </NameInputWrapper>
-          <DescBlockWrapper>
-            <FormLabel>소개</FormLabel>
-            <DescArea>{desc}</DescArea>
-          </DescBlockWrapper>
-          <TagBlockWrapper>
-            <FormLabel>키워드</FormLabel>
-            <TagArea>
-              {tagContents.map((tag, index) => (
-                <Tags key={index}>{tag}</Tags>
-              ))}
-            </TagArea>
-          </TagBlockWrapper>
-          <ButtonWrapper>
-            <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
-            <EditButtonWrapper>
-              <EditButton>수정</EditButton>
-              <EditButton>저장</EditButton>
-            </EditButtonWrapper>
-          </ButtonWrapper>
-        </GeminiDetialInfoWrapper>
-      </GeminiDetialWrapper>
+      <MyGeminiFlipContainerWrapper onClick={closeModal}>
+        <MyGeminFlipContainer
+          isFlipped={false}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <GeminiDetailImgWrapper backgroundImage={geminiImg}>
+            <LikeNicknameWrapper>
+              <LinkProfileWrapper>
+                <LinkImg></LinkImg>
+              </LinkProfileWrapper>
+              <MyLikeWrapper>
+                <HeartIcon>❤️</HeartIcon>
+                <LikeCount>{likeCount}개의 좋아요</LikeCount>
+                <div onClick={profileImgUpdate}>프사 변경버튼</div>
+              </MyLikeWrapper>
+            </LikeNicknameWrapper>
+          </GeminiDetailImgWrapper>
+          <GeminiDetialInfoWrapper>
+            <ToggleWrapper>
+              <ToggleText>공개</ToggleText>
+              <ToggleButtonContainer onClick={handleClick} isOn={isPublic}>
+                <ToggleButtonCircle isOn={isPublic} />
+              </ToggleButtonContainer>
+              <ToggleText>비공개</ToggleText>
+            </ToggleWrapper>
+            <NameInputWrapper>
+              <FormLabel>이름</FormLabel>
+              <TextInputDiv
+              // type="text"
+              // id="nickname"
+              // value={nickname}
+              // onChange={(e) => setNickname(e.target.value)}
+              >
+                {geminiName}
+              </TextInputDiv>
+            </NameInputWrapper>
+            <DescBlockWrapper>
+              <FormLabel>소개</FormLabel>
+              <DescArea>{desc}</DescArea>
+            </DescBlockWrapper>
+            <TagBlockWrapper>
+              <FormLabel>키워드</FormLabel>
+              <TagArea>
+                {tagContents?.map((tag, index) => (
+                  <Tags key={index}>{tag}</Tags>
+                ))}
+              </TagArea>
+            </TagBlockWrapper>
+            <ButtonWrapper>
+              <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
+              <EditButtonWrapper>
+                <EditButton>수정</EditButton>
+                <EditButton>저장</EditButton>
+              </EditButtonWrapper>
+            </ButtonWrapper>
+          </GeminiDetialInfoWrapper>
+        </MyGeminFlipContainer>
+      </MyGeminiFlipContainerWrapper>
     </>
   );
 };

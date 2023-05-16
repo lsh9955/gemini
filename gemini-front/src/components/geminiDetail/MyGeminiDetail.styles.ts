@@ -69,60 +69,50 @@ export const LinkImg = styled.img.attrs({
 
 ///////////////////////////////////////////////////////////
 
-export const LikeNicknameWrapper = styled.div`
-  //
+export const MyGeminiFlipContainerWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  // flex
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
-export const ProfileImg = styled.div`
-  //
+export const MyGeminFlipContainer = styled.div<{ isFlipped: boolean }>`
+  position: absolute; // position 값을 absolute로 변경
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  display: flex;
+
+  flex-direction: row; /* 세로 방향으로 아이템 정렬을 위해 추가 */
+  justify-content: center; /* 세로 방향으로 아이템을 가운데 정렬하기 위해 추가 */
+  align-items: center; /* 가로 방향으로 아이템을 가운데 정렬하기 위해 추가 */
+
+  background-color: #00000099;
+
+  aspect-ratio: ${({ isFlipped }) => (isFlipped ? "3 / 2" : "3 / 2")};
+  width: 50vw;
+  /* max-height: 75vh; 세로 길이를 최대 높이로 제한 */
+
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transform: ${({ isFlipped }) =>
+    `translate(-50%, -50%) rotateY(${isFlipped ? 180 : 0}deg) rotateX(${
+      isFlipped ? 180 : 0
+    }deg)`};
+  transition: transform 0.8s;
 `;
 
-export const Nickname = styled.div`
-  //
-`;
-
-export const LikeWrapper = styled.div`
-  //
-`;
-
-export const Heart = styled.div`
-  //
-`;
-
-export const LikeContent = styled.div`
-  //
-`;
-
-// 여기까지 왼쪽
-
-export const GeminiDetialInfoWrapper = styled.div`
-  //
-`;
-
-export const ToggleWrapper = styled.div`
-  //
-`;
-
-export const ToggleButton = styled.div`
-  //
-`;
-
-export const FormLabel = styled.div`
-  //
-`;
-
-export const TextInput = styled.div`
-  //
-`;
-
-export const TagArea = styled.div`
-  //
-`;
-
-export const Tags = styled.div`
-  //
-`;
-
-export const GeminiInfoButton = styled.div`
-  //
+export const MyLikeWrapper = styled.div`
+  display: flex;
+  // align-items: center;
+  flex-direction: row;
+  padding-bottom: 3%;
+  // cursor: pointer;
 `;

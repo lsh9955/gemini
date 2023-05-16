@@ -21,7 +21,9 @@ const LoginSuccess: FC = () => {
 
   const newUesrCheck = (userInfo: UserInfoDto) => {
     if (userInfo.profileImgUrl) {
-      history.push("/");
+      setTimeout(() => {
+        history.push("/");
+      }, 2000); // 3초(3000ms) 지연
     } else {
       alert("신규 회원이시군요! 캐릭터를 선택해주세요!");
       history.push("/selectPairchild");

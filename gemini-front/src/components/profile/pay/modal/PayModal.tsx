@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import axios from "axios";
+import axiosInstanceWithAccessToken from "../../../../utils/AxiosInstanceWithAccessToken";
 // 여기부터 수정 😀
 import {
   StarImgWrapper,
@@ -70,24 +70,18 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
   // 결제 모듈 성공시 별 개수 변경, merchant_uid 등 결제 정보 보내서 저장하기
   const callback = (res: any) => {
     if (res.success) {
-      axios
-        .post(
-          "http://192.168.31.221:8081/order/kakao/single-payment",
-          {
-            orderStar: intNumberValue,
-            merchantUid: uid,
-          },
-          {
-            headers: {
-              "X-Username": "yyj",
-            },
-          }
-        )
+      axiosInstanceWithAccessToken
+        .post(`/user-service/order/kakao/single-payment`, {
+          orderStar: intNumberValue,
+          merchantUid: uid,
+        })
         .then((res) => {
           console.log(res);
+          // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .catch((error) => {
           console.log(error);
+          // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .finally(() => {
           onClose(); // axios 요청이 끝난 후에 모달이 닫히도록 함

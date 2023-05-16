@@ -33,6 +33,7 @@ const Main: React.FC = () => {
       history.push("/loginPage"); // 간이로 막아둠. 수정 필요 😀
     }
   }, []);
+
   const hoverMessage = [
     `AI로 나만의\n 캐릭터 만들기`,
     "나만의 캐릭터로\nTRPG하러가기",

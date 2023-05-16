@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import defaultBgImg from "../../../assets/img/defaultBgImg.jpg";
-export const RoomWrap = styled.div`
+export const RoomWrap = styled.div<{ bgimg: any }>`
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,9 +10,11 @@ export const RoomWrap = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  background-image: url(${defaultBgImg});
+  background-image: ${(props) =>
+    props.bgimg ? `url(${props.bgimg})` : `url(${defaultBgImg})`};
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
-
 export const GameScreen = styled.div`
   width: 70%;
   height: 100vh;

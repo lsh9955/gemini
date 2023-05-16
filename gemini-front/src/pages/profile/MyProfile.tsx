@@ -34,6 +34,7 @@ import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
 import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 import { AppStore } from "../../store/store";
 import MyProfileContentBodyR from "../../components/profile/myprofile/MyProfileContentBodyR";
+import MyProfileContentBodyTRPG from "../../components/profile/myprofile/MyProfileContentBodyTRPG";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -85,11 +86,21 @@ const MyProfile: FC = () => {
 
   // for infinite scroll 😀
   const dummyImgs = [
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 1, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 2, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
-    { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },
+    {
+      image:
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      geminiPk: 1,
+      userPk: 1,
+    },
+    {
+      image:
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/adol.png",
+      geminiPk: 2,
+      userPk: 1,
+    },
+    // { image: "http://placeimg.com/150/200/tech", geminiPk: 3, userPk: 1 },
+    // { image: "http://placeimg.com/150/200/tech", geminiPk: 4, userPk: 1 },
+    // { image: "http://placeimg.com/150/200/tech", geminiPk: 5, userPk: 1 },
     // ...
   ];
 
@@ -115,7 +126,7 @@ const MyProfile: FC = () => {
   const loadMoreImages = useCallback(async () => {
     try {
       const response = await axiosInstanceWithAccessToken.get(
-        "/user-service/profile/mygeminis",
+        "/user-service/gallery/mygeminis",
         {
           params: {
             page: page,
@@ -124,9 +135,16 @@ const MyProfile: FC = () => {
         }
       );
 
+      console.log(response);
+
       if (response.status === 200) {
-        const newImages = response.data.galleryPage.content.map(
-          (item: any) => item.imageUrl
+        const newImages = response.data.geminiPage.content.map(
+          // (item: any) => item.imageUrl
+          (item: any) => ({
+            image: item.image,
+            geminiPk: item.geminiPk,
+            userPk: item.userPk,
+          })
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         // setImages((prevImages) => [
@@ -160,6 +178,88 @@ const MyProfile: FC = () => {
   }, [loadMoreImages]);
   // for infinite scroll 😀
 
+  // for switching Inf scroll content 🙄
+  const [currentView, setCurrentView] = useState<"Gemini" | "TRPG">("Gemini");
+  const handleGeminiClick = () => setCurrentView("Gemini");
+  const handleTRPGClick = () => setCurrentView("TRPG");
+
+  interface memoriesData {
+    poseNo: number;
+    background: string;
+    poseImages: string[];
+    onClick: () => void;
+  }
+
+  const dummyMemories = [
+    {
+      poseNo: 1,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+    {
+      poseNo: 2,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+    {
+      poseNo: 3,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+    {
+      poseNo: 4,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+
+    // ...
+  ];
+  const [memories, setMemories] = useState<memoriesData[]>([...dummyMemories]);
+  const [hasMoreMemories, setHasMoreMemories] = useState(true);
+  const handleMemoryClick = () => {};
+  useEffect(() => {
+    const fetchMemoryRes = async () => {
+      const MemoryRes = await axiosInstanceWithAccessToken.get(
+        "/generate/pose"
+      );
+      console.log("메모리 데이터 가져왔습니다.");
+      console.log(MemoryRes.data);
+      setMemories(MemoryRes.data);
+    };
+    fetchMemoryRes();
+  }, []);
+
+  // for switching Inf scroll content 🙄
+
   // for Modal component 😀
   const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -188,7 +288,7 @@ const MyProfile: FC = () => {
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
-              <EditButton>수정하기</EditButton>
+              {/* <EditButton>수정하기</EditButton> */}
             </MyProfileTextWrapper>
             <FollowingAndPayWrappter>
               <FollowingTextWrapper>
@@ -215,24 +315,36 @@ const MyProfile: FC = () => {
         </MyInfoWrapper>
         <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
-            <MyProfileContentTitle>{nickname}님의 Gemini</MyProfileContentTitle>
-            <MyProfileContentTitle>
-              닉네임님의 TRPG 추억로그
+            <MyProfileContentTitle onClick={handleGeminiClick}>
+              {nickname}님의 Gemini
+            </MyProfileContentTitle>
+            {/* <MyProfileContentTitle>|</MyProfileContentTitle> */}
+            <MyProfileContentTitle onClick={handleTRPGClick}>
+              TRPG 추억로그
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
-            <MyProfileContentBodyR
-              images={images}
-              hasMore={hasMore}
-              loadMoreImages={loadMoreImages}
-              onImageClick={handleImageClick} // 이 부분을 추가하세요.
-            />
+            {currentView === "Gemini" ? (
+              <MyProfileContentBodyR
+                images={images}
+                hasMore={hasMore}
+                loadMoreImages={loadMoreImages}
+                onImageClick={handleImageClick} // 이 부분을 추가하세요.
+              />
+            ) : (
+              <MyProfileContentBodyTRPG
+                images={memories}
+                onImageClick={handleMemoryClick}
+                // TRPGComponent에 필요한 props
+              />
+            )}
             {isModalOpen && (
               <>
                 <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
                 <MyGeminiDetail
                   closeModal={closeModal}
                   selectedImagePk={selectedImagePk}
+                  setProfileImg={setProfileImg}
                 />
               </>
             )}

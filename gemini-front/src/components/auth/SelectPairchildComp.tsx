@@ -9,6 +9,8 @@ import {
   CharacterImage,
   SubmitButton,
   NicknameLabel,
+  PairchildNameContainer,
+  PairchildName,
   // Overlay,
 } from "./SelectPairchildComp.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
@@ -19,6 +21,9 @@ const SelectPairchildComp: FC = () => {
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
   const [selectedCharacter, setSelectedCharacter] = useState("");
+  const [showAriesName, setShowAriesName] = useState(false);
+  const [showLeoName, setShowLeoName] = useState(false);
+
   const [characterUrls, setCharacterUrls] = useState<string[]>([]);
   const CharacterProfileUrls = [
     "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
@@ -65,7 +70,7 @@ const SelectPairchildComp: FC = () => {
       if (response.status === 201) {
         alert("가입 완료!");
         // 가입 완료 후 로직 작성
-        history.push("/");
+        history.push("/selectPairchild");
       }
     } catch (error) {
       console.error("가입 실패:", error);
@@ -105,27 +110,52 @@ const SelectPairchildComp: FC = () => {
         </InputWrapper>
 
         <FormLabel htmlFor="description">기본 캐릭터 선택</FormLabel>
+
         <CharacterContainer>
           <CharacterImage
             src={characterUrls[0]}
             alt="Aries"
             isSelected={selectedCharacter === characterUrls[0]}
+            onMouseEnter={() => setShowAriesName(true)}
+            onMouseLeave={() => {
+              if (selectedCharacter !== characterUrls[0]) {
+                setShowAriesName(false);
+              }
+            }}
             onClick={() => {
               setSelectedCharacter(characterUrls[0]);
               setUrlsToSendProfileImg(CharacterProfileUrls[0]);
+              setShowLeoName(false);
             }}
           />
-
+          <PairchildName
+            style={{ visibility: showAriesName ? "visible" : "hidden" }}
+          >
+            {"아리에스\n페어차일드"}
+          </PairchildName>
           <CharacterImage
             src={characterUrls[1]}
-            alt="Adol"
+            alt="Leo"
             isSelected={selectedCharacter === characterUrls[1]}
+            onMouseEnter={() => setShowLeoName(true)}
+            onMouseLeave={() => {
+              if (selectedCharacter !== characterUrls[1]) {
+                setShowLeoName(false);
+              }
+            }}
             onClick={() => {
               setSelectedCharacter(characterUrls[1]);
               setUrlsToSendProfileImg(CharacterProfileUrls[1]);
+              setShowAriesName(false);
             }}
           />
+          <PairchildName
+            style={{ visibility: showLeoName ? "visible" : "hidden" }}
+          >
+            {"레오\n페어차일드"}
+          </PairchildName>
         </CharacterContainer>
+
         <SubmitButton onClick={handleSubmit}>가입완료</SubmitButton>
       </SelectPairchildWrapper>
     </>

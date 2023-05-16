@@ -3,12 +3,12 @@ import styled from "styled-components";
 export const DiceWrap = styled.div<{ playerStyle: boolean }>`
   background: rgba(0, 0, 0, 0.45);
 
-  width: 30%;
+  width: 50%;
   height: 50%;
   position: absolute;
-  left: 20%;
+  left: 10%;
   top: 15%;
-  padding: 5% 0;
+  padding: 2% 0;
   display: ${(props) => (props.playerStyle ? "none" : "flex")};
   border-radius: 4px;
   flex-direction: column;
@@ -18,6 +18,7 @@ export const DiceWrap = styled.div<{ playerStyle: boolean }>`
 export const DiceTitle = styled.div`
   font-size: 120%;
   color: white;
+  margin-bottom: 30%;
 `;
 export const DiceStart = styled.button`
   width: 20%;
@@ -29,11 +30,13 @@ export const DiceStart = styled.button`
   border-radius: 4px;
 `;
 export const SizeButton = styled.button`
-  width: 20%;
-  height: 15%;
+  width: 10%;
+  height: 8.5%;
 
   color: white;
   font-size: 120%;
   border-radius: 4px;
-  background-color: #000000;
+  background-color: transparent;
+  border: 1px solid white;
+  cursor: pointer;
 `;

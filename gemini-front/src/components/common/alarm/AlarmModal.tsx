@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+import axios from "axios";
+import NewGeminiDetail from "../../geminiDetail/NewGeminiDetail";
 import {
   Overlay,
   ModalContainer,
@@ -7,84 +10,156 @@ import {
   NoAlarmContent,
   AlarmContentWrapper,
 } from "./AlarmModalStyle";
+import UserGeminiDetail from "../../geminiDetail/UserGeminiDetail";
+import axiosInstanceWithAccessToken from "../../../utils/AxiosInstanceWithAccessToken";
+import BackgroundAlarmModal from "./BackgroundAlarmModal";
 
-type Alarm = {
-  alarmId: number;
-  memo: string;
-  checked: boolean;
-  category: number;
-};
+// type Alarm = {
+//   alarmId: number;
+//   memo: string;
+//   checked: boolean;
+//   category: number;
+// };
 
 interface Props {
   onClose: () => void;
-  alarmList: Alarm[];
+  alarmList: any;
 }
 
 const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
-  // const alarmList;
+  console.log(alarmList);
+  const history = useHistory();
+  const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
+  const [showGeminiDetail, setShowGeminiDetail] = useState(false);
+  const [selectedGemini, setSelectedGemini] = useState<any>(null);
 
-  // const updateAlarmList = (newAlarm: Alarm) => {
-  //   // 알림 id가 이미 리스트에 존재하는 경우에는 업데이트를 하지 않습니다.
-  //   if (initialAlarmList.find((alarm) => alarm.alarmId === newAlarm.alarmId)) {
-  //     return;
-  //   } else {
-  //     setAlarmList((prevAlarmList) => [...prevAlarmList, newAlarm]);
-  //   }
-  // };
-  // console.log(alarmList);
-  // console.log(alarmList);
-  const alarmMesseges = [
-    {
-      id: 1,
-      content: "Alarm1",
-    },
-    {
-      id: 2,
-      content: "Alarm2",
-    },
-    {
-      id: 3,
-      content: "Alarm3",
-    },
-    {
-      id: 4,
-      content: "Alarm4",
-    },
-    {
-      id: 5,
-      content: "Alarm5",
-    },
-    {
-      id: 6,
-      content: "Alarm6",
-    },
-  ];
+  const handleAlarmClick = async (alarmId: number, category: number) => {
+    // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
+    const selectAlarmList = alarmList.find(
+      (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
+    );
+    switch (category) {
+      case 1:
+        // 팔로우 했을 때
+        history.push(`/userProfile/${selectAlarmList.follower}`);
+        // 알람 삭제 요청 보내기
+        try {
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
+          // await axios.delete(`/alarms/${alarmId}`, {
+          //   headers: {
+          //     "X-username": "yyj", // 토큰을 사용하는 경우 예시입니다
+          //   },
+          // });
+        } catch (error) {
+          console.error("알람 삭제 실패:", error);
+        }
+        break;
+
+      case 2:
+        // 좋아요 눌렸을 때
+        if (selectAlarmList) {
+          const GeminiDetailModal = (
+            <UserGeminiDetail
+              closeModal={() => setCurrentModal("")}
+              selectedImagePk={selectAlarmList.geminiNo}
+            />
+          );
+          setCurrentModal(GeminiDetailModal);
+        }
+        // 알람 삭제 요청 보내기
+        try {
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
+        } catch (error) {
+          console.error("알람 삭제 실패:", error);
+        }
+        break;
+      case 3:
+        // 제미니 생성
+        if (selectAlarmList) {
+          const NewGeminiDetailModal = (
+            <NewGeminiDetail
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
+              selectedImagePk={selectAlarmList.geminiNo}
+            />
+          );
+          setCurrentModal(NewGeminiDetailModal);
+        }
+        // 알람 삭제 요청 보내기
+        try {
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
+        } catch (error) {
+          console.error("알람 삭제 실패:", error);
+        }
+        break;
+      case 4:
+        // 배경 생성
+        if (selectAlarmList) {
+          const NewBackgroundDetailModal = (
+            <BackgroundAlarmModal
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
+              selectedImageUrl={selectAlarmList.imageUrl}
+            />
+          );
+          setCurrentModal(NewBackgroundDetailModal);
+        }
+        // 알람 삭제 요청 보내기
+        try {
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
+        } catch (error) {
+          console.error("알람 삭제 실패:", error);
+        }
+        break;
+    }
+  };
 
   return (
     <>
-      <Overlay onClick={onClose} aria-hidden>
-        <div aria-hidden onClick={(e) => e.stopPropagation()}>
-          <ModalContainer>
-            <AlarmTitle>알림</AlarmTitle>
-            <AlarmContentWrapper
-              style={{
-                maxHeight: "25vh",
-                overflowY: alarmList.length >= 6 ? "auto" : "visible",
-              }}
-            >
-              {alarmMesseges.length === 0 ? (
-                <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
-              ) : (
-                alarmMesseges.map((alarm, idx) => (
-                  <AlarmContent key={alarm.id} idx={alarm.id}>
-                    {alarm.content}
-                  </AlarmContent>
-                ))
-              )}
-            </AlarmContentWrapper>
-          </ModalContainer>
-        </div>
-      </Overlay>
+      {!currentModal && (
+        <Overlay onClick={onClose} aria-hidden>
+          <div aria-hidden onClick={(e) => e.stopPropagation()}>
+            <ModalContainer>
+              <AlarmTitle>알림</AlarmTitle>
+              <AlarmContentWrapper
+                style={{
+                  maxHeight: "25vh",
+                  overflowY: alarmList.length >= 6 ? "auto" : "visible",
+                }}
+              >
+                {alarmList.length === 0 ? (
+                  <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
+                ) : (
+                  alarmList.map((alarm: any, idx: any) => (
+                    <AlarmContent
+                      key={alarm.alarmId}
+                      idx={idx}
+                      onClick={() =>
+                        handleAlarmClick(alarm.alarmId, alarm.category)
+                      }
+                    >
+                      {alarm.memo}
+                    </AlarmContent>
+                  ))
+                )}
+              </AlarmContentWrapper>
+            </ModalContainer>
+          </div>
+        </Overlay>
+      )}
+      {currentModal}
     </>
   );
 };

@@ -59,7 +59,8 @@ export const DetailTitle = styled.div`
   font-size: 150%;
   margin: 5% 0;
 `;
-export const PasswordInput = styled.input`
+export const PasswordInput = styled.input<{ passwordOpen: boolean }>`
+  display: ${(props) => (props.passwordOpen ? "inline-block" : "none")};
   width: 100%;
   height: 10%;
   font-size: 140%;
