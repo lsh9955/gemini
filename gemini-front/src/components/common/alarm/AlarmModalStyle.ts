@@ -192,3 +192,27 @@ export const Opponent = styled(StyledP)`
 export const Interval = styled.div`
   margin-bottom: 8px;
 `;
+
+// 배경 백그라운드 알람
+export const BackgroundOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0vh;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+`;
+
+export const BackgroundContainer = styled.div`
+  position: absolute; // position 값을 absolute로 변경
+  top: 50%;
+  left: 50%;
+  z-index: 1002;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 650px;
+  height: 500px;
+`;

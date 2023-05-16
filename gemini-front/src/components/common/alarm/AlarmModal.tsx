@@ -12,6 +12,7 @@ import {
 } from "./AlarmModalStyle";
 import UserGeminiDetail from "../../geminiDetail/UserGeminiDetail";
 import axiosInstanceWithAccessToken from "../../../utils/AxiosInstanceWithAccessToken";
+import BackgroundAlarmModal from "./BackgroundAlarmModal";
 
 // type Alarm = {
 //   alarmId: number;
@@ -75,13 +76,13 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
       case 3:
         // 제미니 생성
         if (selectAlarmList) {
-          const NewgeminiDetailModal = (
+          const NewGeminiDetailModal = (
             <NewGeminiDetail
               closeModal={() => setCurrentModal("")}
               selectedImagePk={selectAlarmList.geminiNo}
             />
           );
-          setCurrentModal(NewgeminiDetailModal);
+          setCurrentModal(NewGeminiDetailModal);
         }
         // 알람 삭제 요청 보내기
         try {
@@ -89,6 +90,25 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         } catch (error) {
           console.error("알람 삭제 실패:", error);
         }
+        break;
+      case 4:
+        // 배경 생성
+        if (selectAlarmList) {
+          const NewBackgroundDetailModal = (
+            <BackgroundAlarmModal
+              closeModal={() => setCurrentModal("")}
+              selectedImageUrl={selectAlarmList.imageUrl}
+            />
+          );
+          setCurrentModal(NewBackgroundDetailModal);
+        }
+        // 알람 삭제 요청 보내기
+        try {
+          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+        } catch (error) {
+          console.error("알람 삭제 실패:", error);
+        }
+        break;
     }
   };
 
