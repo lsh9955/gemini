@@ -82,8 +82,8 @@ const AppRoutes = () => {
     xhr.withCredentials = true;
     xhr.send();
 
-    const url = `https://mygemini.co.kr/user-service/alarms?nickname=${reduxNickname}`;
-    // const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
+    const url = `https://mygemini.co.kr/user-service/alarms`;
+    // const url = "http://192.168.31.221:8081/alarms";
     const eventSource = new EventSource(url, {
       withCredentials: true,
     });
