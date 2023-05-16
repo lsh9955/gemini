@@ -50,14 +50,14 @@ public class AlarmApiController {
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
     // 인코딩 에러 고침
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
-    public ResponseEntity<SseEmitter> streamSseMvc(@RequestHeader("X-Username") String username, HttpServletResponse response) {
+    public ResponseEntity<SseEmitter> streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
-        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        Optional<UserInfo> userInfo = userInfoRepository.findByNickname(nickname);
         if (!userInfo.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        UserInfo user = userInfo.get();
-        String nickname = user.getNickname();
+
+
         System.out.println("!!!!!!!!!");
         System.out.println("nickname: " + nickname);
         System.out.println("!!!!!!!!!");
