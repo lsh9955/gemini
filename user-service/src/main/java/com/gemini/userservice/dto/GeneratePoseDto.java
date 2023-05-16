@@ -7,11 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
-public class GeminiTagDto {
+public class GeneratePoseDto {
 
-    List<TagDto> tagDtos;
+    private List<Long> geminis;
+
+    private List<String> gemini_prompt;
+
+    private List<Long> gemini_seed;
+
+    private Integer pose_id;
 }

@@ -7,11 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
-public class GeminiTagDto {
+public class PoseDto {
 
-    List<TagDto> tagDtos;
+    private Long poseNo;
+
+    private List<String> poseImages;
+
 }

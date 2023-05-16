@@ -1,17 +1,15 @@
-package com.gemini.userservice.dto;
+package com.gemini.userservice.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-public class GeminiTagDto {
+public class ResponseMLPoseDto {
 
-    List<TagDto> tagDtos;
+    private List<String> urlList;
 }

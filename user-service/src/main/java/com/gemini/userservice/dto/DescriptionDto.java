@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.batch.BatchDataSource;
 
-import java.util.List;
-
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
-public class GeminiTagDto {
+public class DescriptionDto {
 
-    List<TagDto> tagDtos;
+    private String description;
 }

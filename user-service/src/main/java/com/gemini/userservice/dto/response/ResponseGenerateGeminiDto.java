@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class ResponseGenerateGeminiDto {
 
     private Integer star;
+
+    private String imageUrl;
 }

@@ -1,4 +1,4 @@
-package com.gemini.userservice.dto;
+package com.gemini.userservice.dto.ML;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class GeminiTagDto {
+public class RequestCompleteBackgroundDto {
 
-    List<TagDto> tagDtos;
+
+    private String imageUrl;
+
+    private String korean;
+
+    private String description;
+
 }

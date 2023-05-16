@@ -1,4 +1,4 @@
-package com.gemini.userservice.dto.request;
+package com.gemini.userservice.dto.ML;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class RequestCompleteGeminiDto {
+public class RequestCompletePoseDto {
 
-    private String username;
+    private List<Long> geminis;
 
-    private String imgUrl;
-
-    private List<Long> tagIds;
-
-    private Long seed;
+    private List<String> imageUrls;
 }

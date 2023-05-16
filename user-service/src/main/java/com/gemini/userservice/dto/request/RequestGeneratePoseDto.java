@@ -4,10 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class RequestNicknameDto {
+public class RequestGeneratePoseDto {
 
-    private String nickname;
+    private List<Long> geminis;
+
+    private List<String> users;
+
+    private Integer sample;
 }
