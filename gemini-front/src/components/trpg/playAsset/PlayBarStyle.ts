@@ -14,6 +14,13 @@ export const Dice = styled.img`
   margin: 0 1%;
   cursor: pointer;
 `;
+// export const Dice = styled.img`
+//   height: 60%;
+//   width: auto;
+//   margin: 0 1%;
+//   cursor: pointer;
+// `;
+
 export const DefaultBgImg = styled.img`
   height: 60%;
   width: auto;
