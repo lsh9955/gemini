@@ -67,6 +67,13 @@ const GetPicture = ({
     setCreateImg(result.data.imageUrl);
   };
 
+  const changeBgImg = (targetImg: string) => {
+    chatSocket?.emit("changeBgImg", {
+      imgUrl: targetImg,
+      roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+    });
+  };
+
   return (
     <>
       <GetPictureWrap playerStyle={playTarget !== "addBackground"}>
@@ -155,7 +162,15 @@ const GetPicture = ({
             <BackImgWrap>
               {picArr &&
                 picArr.map((v: any) => {
-                  return <img src={v.imageUrl} alt="" />;
+                  return (
+                    <img
+                      src={v.imageUrl}
+                      alt=""
+                      onClick={() => {
+                        changeBgImg(v.imageUrl);
+                      }}
+                    />
+                  );
                 })}
             </BackImgWrap>
           </>
