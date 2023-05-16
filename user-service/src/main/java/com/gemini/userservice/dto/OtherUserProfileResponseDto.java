@@ -18,6 +18,8 @@ public class OtherUserProfileResponseDto {
     private Long following;
 //    private Integer star; // eliminated. watching other user's star is not allowed.
 
+    private String profileUrl;
+
     private Boolean isFollowing;
     private List<GeminiDto> geminis;
 }
