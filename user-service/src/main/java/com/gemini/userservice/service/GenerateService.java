@@ -27,9 +27,7 @@ public interface GenerateService {
 
     BackgroundDto getBackground(Long backgroundNo);
 
-    String generateBackground(String background);
-
-
+    String generateBackground(String username, String background);
 
     ResponseGetAllPoseDto getAllPoses(String username);
 
