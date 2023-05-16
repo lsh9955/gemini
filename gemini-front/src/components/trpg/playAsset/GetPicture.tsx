@@ -8,6 +8,7 @@ import {
 } from "./GetPictureStyle";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { clearInterval } from "timers";
 
 const GetPicture = ({
   chatSocket,
@@ -20,17 +21,19 @@ const GetPicture = ({
 }) => {
   const [selectBtn, setSelectBtn] = useState("seePic");
   const [picArr, setPicArr] = useState<any>(null);
+  const [createImg, setCreateImg] = useState<any>(null);
   useEffect(() => {
     console.log(playTarget);
   }, [playTarget]);
+
   useEffect(() => {
-    const imgCreateHandler = async () => {
+    const imgGetHandler = async () => {
       const response = await axios.get(
         "https://mygemini.co.kr/user-service/generate/background",
         {
           headers: {
             Accept: "*/*",
-            Authorization: userSeq.accessToken,
+            Authorization: window.localStorage.getItem("accessToken"),
           },
         }
       );
@@ -38,7 +41,7 @@ const GetPicture = ({
       const result = await response;
       setPicArr(result.data.backgrounds);
     };
-    imgCreateHandler();
+    imgGetHandler();
   }, []);
   const sizeHandler = () => {
     playHandler("");
@@ -48,8 +51,7 @@ const GetPicture = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const imgCreateHandler = async (data: any) => {
-    console.log(data.current.value);
-    const response = await axios.post(
+    const response: any = await axios.post(
       "https://mygemini.co.kr/user-service/generate/background",
       {
         background: data.current.value,
@@ -61,10 +63,8 @@ const GetPicture = ({
         },
       }
     );
-
     const result = await response;
-    console.log(response);
-    return result;
+    setCreateImg(result.imageUrl);
   };
 
   return (
@@ -152,10 +152,14 @@ const GetPicture = ({
         )}
         {selectBtn === "seePic" && (
           <>
-            <BackImgWrap></BackImgWrap>
+            <BackImgWrap>
+              {picArr.map((v: any) => {
+                return <img src={v.imageUrl} alt="" />;
+              })}
+            </BackImgWrap>
           </>
         )}
-
+        {createImg && <img src={createImg} />}
         <SizeButton onClick={sizeHandler}>닫기</SizeButton>
       </GetPictureWrap>
     </>
