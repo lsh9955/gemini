@@ -160,15 +160,16 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public String generateBackground(String background) {
+    public String generateBackground(String username, String background) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        DescriptionDto descriptionDto = DescriptionDto.builder().
+        GenerateBackgroundDto generateBackgroundDto = GenerateBackgroundDto.builder().
+                username(username).
                 description(background).
                 build();
         String sdUrl = String.format(env.getProperty("sd.url")) + "/background";
-        HttpEntity<DescriptionDto> request = new HttpEntity<>(descriptionDto, headers);
+        HttpEntity<GenerateBackgroundDto> request = new HttpEntity<>(generateBackgroundDto, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(sdUrl, request, String.class);
         return response.getBody();
     }
