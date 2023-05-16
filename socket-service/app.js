@@ -41,18 +41,18 @@ connect();
 const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
-  secret: "1234",
+  secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
     secure: false,
   },
 });
 //env확인
-console.log(process.env.COOKIE_SECRET);
+
 const sessionOption = {
   resave: true,
   saveUninitialized: true,
-  secret: "1234",
+  secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
     secure: false,
