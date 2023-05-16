@@ -2,6 +2,7 @@ import React from "react";
 import {
   AddBackground,
   Dice,
+  DiceWrap,
   Music,
   Photo,
   PlayBarWrap,
@@ -24,12 +25,18 @@ const PlayBar = ({ playHandler }: { playHandler: any }) => {
           playHandler("addBackground");
         }}
       />
-      <Dice
+      {/* <Dice
         src={dice}
         onClick={() => {
           playHandler("dice");
         }}
       />
+       */}
+
+      <DiceWrap>
+        <img src={dice} alt="" />
+        <div>주사위 굴리기</div>
+      </DiceWrap>
       <Music
         src={music}
         onClick={() => {
