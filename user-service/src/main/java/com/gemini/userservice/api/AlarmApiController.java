@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
+import com.gemini.userservice.entity.UserInfo;
+import com.gemini.userservice.repository.UserInfoRepository;
+import com.gemini.userservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,23 +32,32 @@ import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.service.AlarmService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user-service/alarms")
 public class AlarmApiController {
 
-    @Autowired
-    private AlarmRepository alarmRepository;
 
-    @Autowired
-    private AlarmService alarmService;
+    private final AlarmRepository alarmRepository;
 
-    @Autowired
-    private ThreadPoolTaskExecutor taskExecutor;
+    private final AlarmService alarmService;
+
+
+    private final ThreadPoolTaskExecutor taskExecutor;
+
+
+    private final UserInfoRepository userInfoRepository;
 
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
     // 인코딩 에러 고침
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
-    public SseEmitter streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
+    public ResponseEntity<SseEmitter> streamSseMvc(@RequestHeader("X-Username") String username, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        if (!userInfo.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserInfo user = userInfo.get();
+        String nickname = user.getNickname();
         System.out.println("!!!!!!!!!");
         System.out.println("nickname: " + nickname);
         System.out.println("!!!!!!!!!");
@@ -127,7 +140,7 @@ public class AlarmApiController {
             }
         });
         // 완료된 SseEmitter 객체 반환
-        return emitter;
+        return ResponseEntity.status(HttpStatus.OK).body(emitter);
     }
 
     @PostMapping("/gemini")
