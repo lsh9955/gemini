@@ -8,6 +8,29 @@ export const PlayBarWrap = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const DiceWrap = styled.div`
+  height: 60%;
+  width: 10%;
+  margin: 0 1%;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+  }
+  :hover {
+    & > img {
+      display: none;
+      cursor: pointer;
+    }
+    & > div {
+      display: inline;
+      color: white;
+      cursor: pointer;
+    }
+  }
+`;
 export const Dice = styled.img`
   height: 60%;
   width: auto;
