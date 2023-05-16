@@ -53,9 +53,8 @@ const UserProfile: FC = () => {
   const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
-    const res = await axiosInstanceWithAccessToken.post(
-      `/user-service/gallery/usergalleries`,
-      { nickname: nickname }
+    const res = await axiosInstanceWithAccessToken.get(
+      `/user-service/profile/${nickname}`
     ); // 주소 수정 필요 😀
     console.log("가져온 다른 유저의 데이터");
     console.log(res.data);
@@ -94,11 +93,13 @@ const UserProfile: FC = () => {
 
   const loadMoreImages = useCallback(async () => {
     try {
-      const response = await axiosInstanceWithAccessToken.get(
-        "/user-service/profile/usergeminis",
+      const response = await axiosInstanceWithAccessToken.post(
+        "/user-service/gallery/usergalleries",
+        {
+          nickname: nickname,
+        },
         {
           params: {
-            nickname: nickname,
             page: page,
             size: 16,
           },
