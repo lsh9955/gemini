@@ -14,6 +14,11 @@ export const AddBackgroundWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
+
   & > img {
     height: 100%;
     width: auto;
@@ -40,6 +45,10 @@ export const DiceWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
@@ -65,6 +74,10 @@ export const DefaultBgImgWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
@@ -90,6 +103,10 @@ export const MusicWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
@@ -116,6 +133,10 @@ export const PhotoWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
@@ -141,6 +162,10 @@ export const RandompickWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
@@ -167,6 +192,10 @@ export const VoteWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
@@ -193,6 +222,10 @@ export const ExitWrap = styled.div`
   width: 10%;
   margin: 0 1%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: keep-all;
   & > img {
     height: 100%;
     width: auto;
