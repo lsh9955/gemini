@@ -48,8 +48,8 @@ const sessionMiddleware = session({
   },
 });
 const sessionOption = {
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
