@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import Vote from "../playAsset/Vote";
 import RandomPick from "../playAsset/RandomPick";
 import CharacterChoose from "../playAsset/CharacterChoose";
+import FourPicture from "../playAsset/FourPicture";
 const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const userSeq = useSelector((state: any) => state.user);
   const userN = userSeq.nickname;
@@ -230,6 +231,11 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
         playHandler={playHandler}
         chatSocket={chatSocket}
         pickUserImg={pickUserImg}
+      />
+      <FourPicture
+        playTarget={playTarget}
+        playHandler={playHandler}
+        chatSocket={chatSocket}
       />
     </RoomWrap>
   );
