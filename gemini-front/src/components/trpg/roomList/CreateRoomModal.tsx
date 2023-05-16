@@ -62,7 +62,10 @@ const CreateRoomModal = ({
       >
         <Box sx={style}>
           <CreateWrap>
-            <ModalForm action={`http://mygemini.co.kr/node/room`} method="post">
+            <ModalForm
+              action={`https://mygemini.co.kr/node/room`}
+              method="post"
+            >
               <div>
                 <DetailTitle>방 제목</DetailTitle>
                 <input
