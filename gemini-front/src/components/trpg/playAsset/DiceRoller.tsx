@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DiceStart, DiceTitle, DiceWrap, SizeButton } from "./DiceRollerStyle";
-import oneDice from "../../assets/dice/1.gif";
 
 const DiceRoller = ({
   playTarget,
@@ -30,7 +29,6 @@ const DiceRoller = ({
         roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
       });
     }
-    console.log("주사위 점수", event.data, isNaN(event.data));
   };
   useEffect(() => {
     window?.addEventListener("message", handleMessageFromIframe);
@@ -76,8 +74,8 @@ const DiceRoller = ({
           }}
           style={{
             backgroundColor: "transparent",
-            fontSize: "120%",
-            width: "20%",
+            fontSize: "100%",
+            width: "50%",
             textAlign: "center",
             color: "white",
             border: "1px solid white",
