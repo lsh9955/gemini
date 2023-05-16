@@ -46,7 +46,7 @@ public class AlarmApiController {
     public SseEmitter streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
         System.out.println("!!!!!!!!!");
-        System.out.println(nickname);
+        System.out.println("nickname: " + nickname);
         System.out.println("!!!!!!!!!");
 
         // SseEmitter 객체 생성
