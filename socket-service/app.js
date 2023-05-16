@@ -47,6 +47,7 @@ const sessionMiddleware = session({
     secure: false,
   },
 });
+//env확인
 console.log(process.env.COOKIE_SECRET);
 const sessionOption = {
   resave: true,
