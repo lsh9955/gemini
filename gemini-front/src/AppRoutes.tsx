@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
+import axios from "axios";
+import axiosInstanceWithAccessToken from "../src/utils/AxiosInstanceWithAccessToken";
 import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
@@ -66,36 +68,68 @@ const AppRoutes = () => {
   //alarm 불러오기
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
 
-  const reduxNickname: any = useSelector(
-    (state: AppStore) => state.user.nickname
-  );
-  console.log(reduxNickname);
-
   const accessToken = window.localStorage.getItem("accessToken");
 
   useEffect(() => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://mygemini.co.kr/user-service/alarms");
-    // xhr.open("GET", "http://192.168.31.221:8081/alarms");
-    xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
-    xhr.withCredentials = true;
-    xhr.send();
+    const fetchAlarms = async () => {
+      try {
+        const response = await axiosInstanceWithAccessToken.get(
+          "https://mygemini.co.kr/user-service/alarms",
+          {
+            withCredentials: true,
+          }
+        );
 
-    const url = "https://mygemini.co.kr/user-service/alarms";
-    // const url = "http://192.168.31.221:8081/alarms";
-    const eventSource = new EventSource(url, {
-      withCredentials: true,
-    });
+        const newAlarm = response.data;
+        setAlarmList(newAlarm);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const eventSource = new EventSource(
+      "https://mygemini.co.kr/user-service/alarms",
+      {
+        withCredentials: true,
+      }
+    );
+
     eventSource.onmessage = (event) => {
       const newAlarm = JSON.parse(event.data);
       setAlarmList(newAlarm);
     };
+
+    fetchAlarms();
+
     return () => {
       eventSource.close();
-      xhr.abort();
     };
   }, []);
+  console.log(alarmList);
+
+  // useEffect(() => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open("GET", "https://mygemini.co.kr/user-service/alarms");
+  //   // xhr.open("GET", "http://192.168.31.221:8081/alarms");
+  //   xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+  //   xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
+  //   xhr.withCredentials = true;
+  //   xhr.send();
+
+  //   const url = "https://mygemini.co.kr/user-service/alarms";
+  //   // const url = "http://192.168.31.221:8081/alarms";
+  //   const eventSource = new EventSource(url, {
+  //     withCredentials: true,
+  //   });
+  //   eventSource.onmessage = (event) => {
+  //     const newAlarm = JSON.parse(event.data);
+  //     setAlarmList(newAlarm);
+  //   };
+  //   return () => {
+  //     eventSource.close();
+  //     xhr.abort();
+  //   };
+  // }, []);
   console.log(alarmList);
 
   return (
