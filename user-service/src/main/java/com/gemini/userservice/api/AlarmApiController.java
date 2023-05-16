@@ -28,7 +28,7 @@ import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.service.AlarmService;
 
 @RestController
-@RequestMapping("/alarms")
+@RequestMapping("/user-service/alarms")
 public class AlarmApiController {
 
     @Autowired
