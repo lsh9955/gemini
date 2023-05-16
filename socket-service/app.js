@@ -76,6 +76,8 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
+  console.log("서버 응답 에러");
+  console.log(err, res);
   res.status(err.status || 500);
 });
 //배포시 설정
