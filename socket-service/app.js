@@ -47,7 +47,7 @@ const sessionMiddleware = session({
     secure: false,
   },
 });
-console.log(COOKIE_SECRET);
+console.log(process.env.COOKIE_SECRET);
 const sessionOption = {
   resave: true,
   saveUninitialized: true,
