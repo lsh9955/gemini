@@ -44,7 +44,9 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         history.push(`/userProfile/${selectAlarmList.follower}`);
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
           // await axios.delete(`/alarms/${alarmId}`, {
           //   headers: {
           //     "X-username": "yyj", // 토큰을 사용하는 경우 예시입니다
@@ -68,7 +70,9 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         }
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
         }
@@ -89,7 +93,9 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         }
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
         }
@@ -110,7 +116,9 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         }
         // 알람 삭제 요청 보내기
         try {
-          await axiosInstanceWithAccessToken.delete(`/alarms/${alarmId}`);
+          await axiosInstanceWithAccessToken.delete(
+            `/user-service/alarms/${alarmId}`
+          );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
         }
