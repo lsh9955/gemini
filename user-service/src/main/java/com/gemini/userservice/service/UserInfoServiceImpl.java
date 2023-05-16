@@ -117,6 +117,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .following(followingCount)
                 .isFollowing(isFollowing) // 여기 추가정보를 넣어야함.
 //                .star(userInfo.getStar()) // eliminated. watching other user's star is not allowed.
+                .profileUrl(profileOwnerUserInfo.getProfileImgUrl())
                 .geminis(geminiDtos)
                 .build();
     }
