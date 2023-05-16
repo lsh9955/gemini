@@ -138,7 +138,7 @@ const MyProfile: FC = () => {
       console.log(response);
 
       if (response.status === 200) {
-        const newImages = response.data.galleryPage.content.map(
+        const newImages = response.data.geminiPage.content.map(
           // (item: any) => item.imageUrl
           (item: any) => ({
             image: item.image,

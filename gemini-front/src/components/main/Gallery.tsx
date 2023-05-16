@@ -92,10 +92,15 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     const weeklyRes = await axiosInstanceWithAccessToken.get(
       "/user-service/gallery/weekly"
     );
+    console.log("랭킹 데이터 가져옵니다.");
+    console.log(dailyRes);
+    console.log(weeklyRes);
+    console.log("여기까지!");
   };
 
   useEffect(() => {
     console.log("일간, 주간 갤러리 요청");
+    fetchRankingData();
 
     // Dto 보니까 아래처럼 들어와서 바꿔야함.
     // interface ImageData2 {
