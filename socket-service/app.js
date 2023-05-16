@@ -31,7 +31,7 @@ const corsOpt = {
   // 개발시
   // origin: "http://localhost:3000",
   // 배포시
-  origin: "http://mygemini.co.kr",
+  origin: "https://mygemini.co.kr",
   credentials: true,
 };
 
@@ -63,8 +63,6 @@ app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(express.cookieSession());
 const indexRouter = require("./routes");
 app.use("/node", indexRouter);
 
