@@ -26,6 +26,13 @@ const TRPGImage: FC<MemoriesDataProps> = ({
   poseImages,
   onClick,
 }) => {
+  useEffect(() => {
+    console.log(`MyProfileContentBodyTRPG로 들어가는 images`);
+    console.log(`poseNo,
+    background,
+    poseImages, 순서로 로깅합니다 ${poseNo} ${background} ${poseImages}`);
+  }, []);
+
   return (
     <TRPGImageWrapper onClick={onClick} background={background}>
       {poseImages.map((imageUrl, index) => (
@@ -55,6 +62,10 @@ const MyProfileContentBodyTRPG: FC<MyProfileContentBodyTRPGProps> = ({
 
   onImageClick, // 괜찮은지 봐야함.
 }) => {
+  useEffect(() => {
+    console.log(`MyProfileContentBodyTRPG로 들어가는 images`);
+    console.log(images);
+  }, []);
   return (
     <StyledMyProfileTRPGContentBody>
       {images.map((imageObj, index) => (
