@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { clearInterval } from "timers";
+import loading from "../../../assets/img/loadding.gif";
 
 const GetPicture = ({
   chatSocket,
@@ -26,22 +27,22 @@ const GetPicture = ({
   useEffect(() => {
     console.log(playTarget);
   }, [playTarget]);
+  //db에서 이미지 받아옴
+  const imgGetHandler = async () => {
+    const response = await axios.get(
+      "https://mygemini.co.kr/user-service/generate/background",
+      {
+        headers: {
+          Accept: "*/*",
+          Authorization: window.localStorage.getItem("accessToken"),
+        },
+      }
+    );
 
+    const result = await response;
+    setPicArr(result.data.backgrounds);
+  };
   useEffect(() => {
-    const imgGetHandler = async () => {
-      const response = await axios.get(
-        "https://mygemini.co.kr/user-service/generate/background",
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: window.localStorage.getItem("accessToken"),
-          },
-        }
-      );
-
-      const result = await response;
-      setPicArr(result.data.backgrounds);
-    };
     imgGetHandler();
   }, []);
   const sizeHandler = () => {
@@ -76,6 +77,23 @@ const GetPicture = ({
     });
   };
 
+  const checkIsImg = async (target: string) => {
+    //setcreate 비울것
+    const checkValid: any = await axios.get(
+      "https://mygemini.co.kr/user-service/complete/background",
+      {
+        params: {
+          background: target,
+        },
+      }
+    );
+    console.log(checkValid);
+    if (checkValid.data === "ok") {
+      setCreateImg(null);
+      imgGetHandler();
+    }
+  };
+
   return (
     <>
       <GetPictureWrap playerStyle={playTarget !== "addBackground"}>
@@ -98,6 +116,9 @@ const GetPicture = ({
             }}
             onClick={() => {
               setSelectBtn("seePic");
+              if (createImg) {
+                checkIsImg(createImg);
+              }
             }}
           >
             배경 보기
@@ -197,6 +218,13 @@ const GetPicture = ({
                     />
                   );
                 })}
+              {createImg && (
+                <img
+                  src={loading}
+                  alt=""
+                  style={{ width: "60%", height: "auto" }}
+                />
+              )}
             </BackImgWrap>
           </>
         )}
