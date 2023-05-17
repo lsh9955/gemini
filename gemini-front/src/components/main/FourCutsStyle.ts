@@ -12,6 +12,8 @@ export const Container = styled.div`
   width: 44vw;
   height: 66vh;
   justify-items: center; /* 이미지를 가운데로 정렬합니다 */
+  margin-left: 1.3rem;
+  z-index: 99999;
 `;
 
 export const Image = styled.div<{ image: string }>`
@@ -27,10 +29,10 @@ export const Image = styled.div<{ image: string }>`
 `;
 
 export const MyGeminiText = styled.div`
-  text-align: right;
+  text-align: center;
   margin-bottom: 1rem;
   color: white; /* 원하는 색상으로 설정하세요 */
-  font-size: 1.3rem; /* 원하는 글꼴 크기로 설정하세요 */
+  font-size: 1rem; /* 원하는 글꼴 크기로 설정하세요 */
   margin-top: 1rem;
   transform: scaleY(-1);
 `;

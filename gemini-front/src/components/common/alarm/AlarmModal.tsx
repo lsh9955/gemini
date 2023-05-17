@@ -45,7 +45,7 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         // 알람 삭제 요청 보내기
         try {
           await axiosInstanceWithAccessToken.delete(
-            `/user-service/alarms/${alarmId}`
+            `/user-service/alarms/${selectAlarmList.alarmId}`
           );
           // await axios.delete(`/alarms/${alarmId}`, {
           //   headers: {
@@ -71,7 +71,7 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         // 알람 삭제 요청 보내기
         try {
           await axiosInstanceWithAccessToken.delete(
-            `/user-service/alarms/${alarmId}`
+            `/user-service/alarms/${selectAlarmList.alarmId}`
           );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
@@ -94,7 +94,7 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         // 알람 삭제 요청 보내기
         try {
           await axiosInstanceWithAccessToken.delete(
-            `/user-service/alarms/${alarmId}`
+            `/user-service/alarms/${selectAlarmList.alarmId}`
           );
         } catch (error) {
           console.error("알람 삭제 실패:", error);
@@ -117,7 +117,7 @@ const AlarmModal: React.FC<Props> = ({ onClose, alarmList }) => {
         // 알람 삭제 요청 보내기
         try {
           await axiosInstanceWithAccessToken.delete(
-            `/user-service/alarms/${alarmId}`
+            `/user-service/alarms/${selectAlarmList.alarmId}`
           );
         } catch (error) {
           console.error("알람 삭제 실패:", error);

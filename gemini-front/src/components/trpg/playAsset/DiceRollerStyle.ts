@@ -31,10 +31,9 @@ export const DiceStart = styled.button`
 `;
 export const SizeButton = styled.button`
   width: 10%;
-  height: 8.5%;
-
+  height: auto;
   color: white;
-  font-size: 120%;
+  font-size: 90%;
   border-radius: 4px;
   background-color: transparent;
   border: 1px solid white;

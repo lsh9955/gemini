@@ -52,7 +52,7 @@ const DiceRoller = ({
       <div
         style={{
           backgroundColor: "transparent",
-          fontSize: "160%",
+
           marginBottom: "2%",
           width: "80%",
           color: "white",
@@ -60,11 +60,13 @@ const DiceRoller = ({
 
           zIndex: "333",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <div>점수 : {diceNum !== -1 && diceNum}</div>
+        <div style={{ fontSize: "100%", width: "40%" }}>
+          점수 : {diceNum !== -1 && diceNum}
+        </div>
 
         <button
           onClick={() => {
@@ -76,7 +78,7 @@ const DiceRoller = ({
           style={{
             backgroundColor: "transparent",
             fontSize: "100%",
-            width: "50%",
+            width: "40%",
             textAlign: "center",
             color: "white",
             border: "1px solid white",
