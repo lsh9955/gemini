@@ -46,7 +46,7 @@ public class Gemini {
     @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes;
 
-    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_no")
     private Gallery gallery;
 

@@ -24,7 +24,7 @@ public class Gallery {
     @Column(name = "weekly_like")
     private Integer weeklyLike;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gemini_no")
     private Gemini gemini;
 
