@@ -141,6 +141,14 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     setDiceNum(-1);
   };
 
+  useEffect(() => {
+    if (playTarget === "randompick") {
+      chatSocket?.emit("startRanPick", {
+        roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+      });
+    }
+  }, [playTarget]);
+
   return (
     <RoomWrap bgimg={changeBg}>
       <GameScreen>
