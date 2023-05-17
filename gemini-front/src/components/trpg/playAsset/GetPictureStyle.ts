@@ -63,3 +63,29 @@ export const BackImgWrap = styled.div`
     cursor: pointer;
   }
 `;
+export const MakeImg = styled.div`
+  width: 60%;
+  height: 40%;
+  & > div {
+    display: none;
+  }
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+  :hover {
+    & > div {
+      display: block;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 999;
+      width: 100%;
+      height: 100%;
+      color: white;
+      font-size: 90%;
+    }
+    & > img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+`;
