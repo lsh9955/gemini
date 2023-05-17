@@ -135,7 +135,7 @@ public class GenerateServiceImpl implements GenerateService {
     @Override
     public ResponseGetAllBackgroundDto getAllBackgrounds() {
 
-        List<Background> backgrounds = backgroundRepository.findAllOrderByBackgroundNoDesc();
+        List<Background> backgrounds = backgroundRepository.findAllByOrderByBackgroundNoDesc();
         if (backgrounds == null) {
             return null;
         }

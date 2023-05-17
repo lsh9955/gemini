@@ -11,7 +11,7 @@ public interface BackgroundRepository extends JpaRepository<Background, Long> {
 
     Background findByBackgroundNo(Long backgroundNo);
 
-    List<Background> findAllOrderByBackgroundNoDesc();
+    List<Background> findAllByOrderByBackgroundNoDesc();
 
     Optional<Background> findByImageUrl(String imageUrl);
 
