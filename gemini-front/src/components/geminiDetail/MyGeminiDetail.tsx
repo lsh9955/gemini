@@ -34,6 +34,7 @@ import {
   MyLikeWrapper,
 } from "./MyGeminiDetail.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
+import { updateHeaderProfileImg } from "../../store/UserSlice";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
@@ -74,6 +75,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
         { geminiPk: selectedImagePk }
       );
       setProfileImg(geminiImg);
+      updateHeaderProfileImg(geminiImg);
     } catch (error) {
       console.error(error);
       // 오류 처리
