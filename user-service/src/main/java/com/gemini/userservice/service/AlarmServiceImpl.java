@@ -68,18 +68,20 @@ public class AlarmServiceImpl implements AlarmService {
 
         // 세션이 종료될 경우 저장한 SseEmitter를 삭제한다.
         // 세션이 종료될 경우 예외 처리를 한다.
-        sseEmitter.onCompletion(() -> {
-            if (emitterRepository.contains(username)) {
-                System.out.println("onCompletion 삭제ㅔㅔㅔㅔ[ㅔㅔㅔㅔㅔ");
-                emitterRepository.delete(username);
-            }
-        });
         sseEmitter.onTimeout(() -> {
             if (emitterRepository.contains(username)) {
                 System.out.println("타임아웃 삭제ㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔ");
                 emitterRepository.delete(username);
             }
         });
+
+        sseEmitter.onCompletion(() -> {
+            if (emitterRepository.contains(username)) {
+                System.out.println("onCompletion 삭제ㅔㅔㅔㅔ[ㅔㅔㅔㅔㅔ");
+                emitterRepository.delete(username);
+            }
+        });
+
 
         // 503 Service Unavailable 오류가 발생하지 않도록 첫 데이터를 보낸다.
         try {
