@@ -6,6 +6,7 @@ import { logoutAccount } from "./store/UserSlice";
 import { logout } from "./store/Cookie";
 import axios from "axios";
 import AppRoutes from "./AppRoutes";
+import BlockBackButtonRouter from "./BlockBackButtonRouter";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,8 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <style>{`
+      <BlockBackButtonRouter>
+        <style>{`
         body::-webkit-scrollbar {
           display: none;
         }
@@ -42,7 +44,8 @@ const App: React.FC = () => {
           scrollbar-width: none; /* Firefox */
         }
       `}</style>
-      <AppRoutes />
+        <AppRoutes />
+      </BlockBackButtonRouter>
     </BrowserRouter>
   );
 };
