@@ -280,8 +280,10 @@ const MyProfile: FC = () => {
   // for Modal component 😀
 
   // 페이 모달
+  // useselector로 star 값 불러오기
+  const reduxStar = useSelector((state: AppStore) => state.user.star);
   const [payModal, showPayModal] = useState(false);
-  const [paymentResult, setPaymentResult] = useState<number>(starPoint);
+  const [paymentResult, setPaymentResult] = useState<any>(reduxStar);
 
   const openPayModal = () => {
     showPayModal(true);
