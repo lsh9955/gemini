@@ -77,12 +77,11 @@ const ChatFooter = ({
             chatTypeHandler("룸 채팅");
           }}
         >
-          룸 채팅
           <div
             style={{
               position: "absolute",
-              width: "5%",
-              height: "5%",
+              width: "30px",
+              height: "30px",
               borderRadius: "80px",
               color: "white",
               backgroundColor: "darkred",
@@ -90,18 +89,18 @@ const ChatFooter = ({
           >
             {notReadMsg["룸 채팅"]}
           </div>
+          룸 채팅
         </button>
         <button
           onClick={() => {
             chatTypeHandler("정보");
           }}
         >
-          정보
           <div
             style={{
               position: "absolute",
-              width: "5%",
-              height: "5%",
+              width: "30px",
+              height: "30px",
               borderRadius: "80px",
               color: "white",
               backgroundColor: "darkred",
@@ -109,18 +108,18 @@ const ChatFooter = ({
           >
             {notReadMsg["정보"]}
           </div>
+          정보
         </button>
         <button
           onClick={() => {
             chatTypeHandler("잡담");
           }}
         >
-          잡담
           <div
             style={{
               position: "absolute",
-              width: "5%",
-              height: "5%",
+              width: "30px",
+              height: "30px",
               borderRadius: "80px",
               color: "white",
               backgroundColor: "darkred",
@@ -128,18 +127,18 @@ const ChatFooter = ({
           >
             {notReadMsg["잡담"]}
           </div>
+          잡담
         </button>
         <button
           onClick={() => {
             chatTypeHandler("개인채팅");
           }}
         >
-          개인채팅
           <div
             style={{
               position: "absolute",
-              width: "5%",
-              height: "5%",
+              width: "30px",
+              height: "30px",
               borderRadius: "80px",
               color: "white",
               backgroundColor: "darkred",
@@ -147,6 +146,7 @@ const ChatFooter = ({
           >
             {notReadMsg["개인채팅"]}
           </div>
+          개인채팅
         </button>
       </ChatStatuButtonWrap>
       <ChatInputWrap>
