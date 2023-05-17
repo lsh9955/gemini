@@ -65,7 +65,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     // ...
   ];
 
-  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
+  const [images, setImages] = useState<ImageData[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
