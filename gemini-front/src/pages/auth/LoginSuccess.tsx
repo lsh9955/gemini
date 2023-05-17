@@ -77,7 +77,10 @@ const LoginSuccess: FC = () => {
       console.log("userinfo 가져오기 성공");
       const alarmSubscribe = () => {
         eventSource = new EventSource(
-          `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`
+          `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`,
+          {
+            withCredentials: true,
+          }
         );
         console.log("열리기 직전");
         console.log(eventSource);
@@ -95,13 +98,13 @@ const LoginSuccess: FC = () => {
           console.error("SSE 연결 중 오류가 발생했습니다.", error);
         };
 
-        return () => {
-          // 컴포넌트가 언마운트될 때 SSE 연결 종료
+        // return () => {
+        //   // 컴포넌트가 언마운트될 때 SSE 연결 종료
 
-          if (eventSource) {
-            eventSource.close();
-          }
-        };
+        //   if (eventSource) {
+        //     eventSource.close();
+        //   }
+        // };
       };
       alarmSubscribe();
       console.log("설마 나갔니?");

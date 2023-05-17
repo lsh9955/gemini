@@ -25,11 +25,23 @@ const ChatPage = ({
     console.log("메세지가 오고있어요", messages);
     if (messages?.length > 0) {
       if (messages[messages.length - 1].type !== nowMsgType) {
-        const newNotRead: any = notReadMsg;
-        newNotRead[messages[messages.length - 1].type] =
-          newNotRead[messages[messages.length - 1].type] + 1;
-        console.log("메세지 쌓일 때 ", newNotRead);
-        setNotReadMsg(newNotRead);
+        if (
+          messages[messages.length - 1].type === "개인채팅" &&
+          messages[messages.length - 1].sendtarget ===
+            window.localStorage.getItem("userInfo")
+        ) {
+          const newNotRead: any = notReadMsg;
+          newNotRead[messages[messages.length - 1].type] =
+            newNotRead[messages[messages.length - 1].type] + 1;
+          console.log("메세지 쌓일 때 ", newNotRead);
+          setNotReadMsg(newNotRead);
+        } else if (messages[messages.length - 1].type !== "개인채팅") {
+          const newNotRead: any = notReadMsg;
+          newNotRead[messages[messages.length - 1].type] =
+            newNotRead[messages[messages.length - 1].type] + 1;
+          console.log("메세지 쌓일 때 ", newNotRead);
+          setNotReadMsg(newNotRead);
+        }
       }
     }
   }, [messages]);

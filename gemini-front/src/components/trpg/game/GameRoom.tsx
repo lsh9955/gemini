@@ -64,6 +64,11 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
       res();
     });
     chatSocket?.on("messageResponse", (data: any) => {
+      if (data.type === "룸 채팅") {
+        setGameMsg((prev) => [...prev, data]);
+      }
+      setMsgData((prev) => [...prev, data]);
+
       setMsg(data);
     });
 
@@ -98,13 +103,13 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     };
   }, [chatSocket]);
 
-  useEffect(() => {
-    if (msg.type === "룸 채팅") {
-      setGameMsg([...gameMsg, msg]);
-    }
-    setMsgData([...msgData, msg]);
-    console.log(gameMsg, msg);
-  }, [msg]);
+  // useEffect(() => {
+  //   if (msg.type === "룸 채팅") {
+  //     setGameMsg([...gameMsg, msg]);
+  //   }
+  //   setMsgData((prev) => [...prev, msg]);
+  //   console.log(gameMsg, msg);
+  // }, [msg]);
 
   useEffect(() => {
     const getUserImgs = async () => {
