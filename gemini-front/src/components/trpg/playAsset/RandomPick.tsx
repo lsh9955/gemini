@@ -22,11 +22,6 @@ const RandomPick = ({
   const [voteResult, setVoteResult] = useState<any>(null);
   const [ranPickUser, setRanPickUser] = useState<any>([]);
   const [allUser, setAllUser] = useState<any>(null);
-  useEffect(() => {
-    chatSocket?.emit("startRanPick", {
-      roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
-    });
-  }, []);
 
   useEffect(() => {
     chatSocket?.on("pickUserResponse", function (data: any) {
