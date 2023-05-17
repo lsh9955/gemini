@@ -34,8 +34,11 @@ const AppRoutes = () => {
   const location = useLocation();
   const pathsWithoutHeader = [
     "/loginPage",
+    "/loginpage",
     "/loginSuccess",
+    "/loginsuccess",
     "/selectPairchild",
+    "/selectpairchild",
   ];
 
   // 모든 경로를 배열에 저장
