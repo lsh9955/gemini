@@ -9,18 +9,21 @@ import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.dto.response.ResponseFollowCountDto;
 import com.gemini.userservice.dto.response.ResponseOrdersDto;
+import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.EmitterService;
 
 import com.gemini.userservice.service.UserInfoService;
 import com.gemini.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user-service/profile")
@@ -37,6 +40,8 @@ public class UserInfoApiController {
 
     @Autowired
     private EmitterService emitterService;
+    @Autowired
+    private GeminiRepository geminiRepository;
 
 
     //  X-Username으로 모두 변경 필요. 로컬 테스트 끝나고. 😀
@@ -137,6 +142,18 @@ public class UserInfoApiController {
     public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@RequestHeader("X-Username") String username, @PathVariable String nickname) {
         OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(username, nickname);
         return ResponseEntity.ok(otherUserProfileDto);
+    }
+
+    @PostMapping("/profileImage")
+    public ResponseEntity<String> updateProfileImage(@RequestHeader("X-Username") String username,
+                                                                       @RequestBody Map<String, Long> geminiMap) {
+
+        Long geminiNo = geminiMap.get("geminiPk");
+        String res = userInfoService.updateProfileImage(username, geminiNo);
+        if (res == null) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(res);
     }
 
 }

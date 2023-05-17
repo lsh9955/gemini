@@ -135,14 +135,19 @@ public class GenerateServiceImpl implements GenerateService {
     @Override
     public ResponseGetAllBackgroundDto getAllBackgrounds() {
 
-        List<Background> backgrounds = backgroundRepository.findAll();
+        List<Background> backgrounds = backgroundRepository.findAllByOrderByBackgroundNoDesc();
         if (backgrounds == null) {
             return null;
         }
         List<BackgroundDto> backgroundDtos = new ArrayList<>();
+        Integer i = 0;
         for (Background background : backgrounds) {
+            i = i + 1;
             BackgroundDto backgroundDto = new BackgroundDto(background);
             backgroundDtos.add(backgroundDto);
+            if (i > 19) {
+                break;
+            }
         }
         ResponseGetAllBackgroundDto responseGetAllBackgroundDto = new ResponseGetAllBackgroundDto(backgroundDtos);
         return responseGetAllBackgroundDto;

@@ -128,6 +128,10 @@ module.exports = (server, app, sessionMiddleware) => {
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
         io.to(voteData.roomId).emit("voteResponse", voteStartRoom);
       });
+      socket.on("startRanPick", async (voteData) => {
+        const voteStartRoom = await Room.find({ _id: voteData.roomId });
+        io.to(voteData.roomId).emit("startRanPickResponse", voteStartRoom);
+      });
       socket.on("pickUser", (voteData) => {
         console.log("투표 유저 선택");
         console.log(voteData);
@@ -145,9 +149,7 @@ module.exports = (server, app, sessionMiddleware) => {
 
       socket.on("randomPick", async (voteData) => {
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
-        let userArray = voteStartRoom[0].userarr.filter(
-          (v) => v !== voteStartRoom[0].owner
-        );
+        let userArray = voteData.ranPick;
         let ranCount = Math.floor(userArray.length * Math.random());
         io.to(voteData.roomId).emit("randomPickResponse", userArray[ranCount]);
       });
@@ -160,6 +162,9 @@ module.exports = (server, app, sessionMiddleware) => {
       });
       socket.on("diceRoll", (dice) => {
         io.to(dice.roomId).emit("diceRollResponse", dice.diceNum);
+      });
+      socket.on("changeBgImg", (img) => {
+        io.to(img.roomId).emit("changeBgImgResponse", img.imgUrl);
       });
     });
 

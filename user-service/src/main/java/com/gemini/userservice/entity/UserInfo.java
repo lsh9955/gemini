@@ -65,5 +65,10 @@ public class UserInfo {
         this.star = star;
     }
 
+    public void updateProfileImage(String imageUrl) {
+
+        this.profileImgUrl = imageUrl;
+    }
+
 
 }
