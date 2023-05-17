@@ -1,31 +1,24 @@
 import React, { useState } from "react";
-import PayModal from "../modal/PayModal";
 import StarIcon from "@mui/icons-material/Star";
 
 // styled-component
 import { Button, Span, IconWrapper } from "../button/OpenPayModalButtonStyle";
 
-const OpenPayModalButton: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
+interface Props {
+  openPayModal: () => void;
+}
 
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
+const OpenPayModalButton: React.FC<Props> = ({ openPayModal }) => {
   return (
     <>
-      <Button onClick={openModal}>
+      <Button onClick={openPayModal}>
         <Span>별조각 구매하기</Span>
         <IconWrapper>
           {" "}
           <StarIcon></StarIcon>
         </IconWrapper>
       </Button>
-      {showModal && <PayModal onClose={closeModal} />}
+      {/* {openPayModal && <PayModal onClose={closePayModal} />} */}
     </>
   );
 };
