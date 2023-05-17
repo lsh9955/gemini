@@ -128,6 +128,10 @@ module.exports = (server, app, sessionMiddleware) => {
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
         io.to(voteData.roomId).emit("voteResponse", voteStartRoom);
       });
+      socket.on("startRanPick", async (voteData) => {
+        const voteStartRoom = await Room.find({ _id: voteData.roomId });
+        io.to(voteData.roomId).emit("startRanPickResponse", voteStartRoom);
+      });
       socket.on("pickUser", (voteData) => {
         console.log("투표 유저 선택");
         console.log(voteData);
