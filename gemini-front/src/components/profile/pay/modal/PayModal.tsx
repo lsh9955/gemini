@@ -30,6 +30,7 @@ import {
 
 interface Props {
   onClose: () => void;
+  setPaymentResult: any;
 }
 // 여기까지 수정. 😀
 
@@ -37,7 +38,7 @@ declare const window: typeof globalThis & {
   IMP: any;
 };
 
-const PayModal: React.FC<Props> = ({ onClose }) => {
+const PayModal: React.FC<Props> = ({ onClose, setPaymentResult }) => {
   const [numberValue, setNumberValue] = useState("");
 
   // 숫자 외 입력 불가
@@ -75,8 +76,9 @@ const PayModal: React.FC<Props> = ({ onClose }) => {
           orderStar: intNumberValue,
           merchantUid: uid,
         })
-        .then((res) => {
-          console.log(res);
+        .then((response) => {
+          console.log(response);
+          setPaymentResult(response.data.star); // 결제 결과를 저장
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .catch((error) => {
