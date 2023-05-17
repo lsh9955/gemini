@@ -1,5 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
 import axiosInstanceWithAccessToken from "../../../../utils/AxiosInstanceWithAccessToken";
+import { useDispatch } from "react-redux";
+import { updateStar } from "../../../../store/UserSlice";
+
 // 여기부터 수정 😀
 import {
   StarImgWrapper,
@@ -40,6 +43,7 @@ declare const window: typeof globalThis & {
 
 const PayModal: React.FC<Props> = ({ onClose, setPaymentResult }) => {
   const [numberValue, setNumberValue] = useState("");
+  const dispatch = useDispatch();
 
   // 숫자 외 입력 불가
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -78,11 +82,16 @@ const PayModal: React.FC<Props> = ({ onClose, setPaymentResult }) => {
         })
         .then((response) => {
           console.log(response);
-          setPaymentResult(response.data.star); // 결제 결과를 저장
+          const updatedStar = response.data.star;
+          setPaymentResult(updatedStar); // 결제 결과를 저장
+          dispatch(updateStar(updatedStar)); // updateStar 액션 dispatch
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .catch((error) => {
           console.log(error);
+          const updatedStar = 12;
+          setPaymentResult(updatedStar);
+          dispatch(updateStar(updatedStar));
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .finally(() => {
