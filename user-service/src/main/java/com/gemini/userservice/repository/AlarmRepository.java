@@ -20,8 +20,7 @@ public interface AlarmRepository extends CrudRepository<Alarm, Long> {
 //    @Query("SELECT a FROM Alarm a WHERE a.nickname = :nickname ORDER BY a.createdAt DESC")
 //    Optional<List<Alarm>> findByOrderByCreatedAtDesc(String nickname);
 //
-//    @Query("SELECT a FROM Alarm a WHERE a.alarmId = :alarmId")
-//    Alarm findAlarmById(Long alarmId);
+    Alarm findByAlarmId(Long alarmId);
 //
 //    Optional<List<Alarm>> findByNickname(String nickname);
 //
