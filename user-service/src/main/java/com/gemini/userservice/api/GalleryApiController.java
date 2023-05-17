@@ -2,6 +2,7 @@ package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.Alarm.LikeAlarmDto;
 import com.gemini.userservice.dto.FollowRequestDto;
+import com.gemini.userservice.dto.request.RequestGalleryEnrollmentDto;
 import com.gemini.userservice.dto.response.*;
 import com.gemini.userservice.entity.Gallery;
 import com.gemini.userservice.service.AlarmService;
@@ -17,6 +18,7 @@ import com.gemini.userservice.service.EmitterService;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -161,6 +163,18 @@ public class GalleryApiController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
+    }
+
+    @PostMapping("/enrollment") // isPublic을 받아서 현재상태와 비교한 후, 갤러리에 등록/삭제 분기처리
+    public ResponseEntity<?> updateGalleryEnrollment(@RequestHeader("X-Username") String username, @RequestBody RequestGalleryEnrollmentDto requestGalleryEnrollmentDto) {
+        Long geminiPk = requestGalleryEnrollmentDto.getGeminiPk();
+        Boolean isPublic = requestGalleryEnrollmentDto.getIsPublic();
+
+        ResponseGalleryEnrollmentDto responseGalleryEnrollmentDto = galleryService.updateGalleryEnrollment(geminiPk, isPublic);
+        
+        return ResponseEntity.ok(responseGalleryEnrollmentDto);
+
+
     }
 
 }
