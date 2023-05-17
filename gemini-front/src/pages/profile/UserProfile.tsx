@@ -93,48 +93,43 @@ const UserProfile: FC = () => {
   const infScrollImgLength = getInfScrollImgLength(images.length);
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
 
-  const loadMoreImages = useCallback(
-    async () => {
-      try {
-        const response = await axiosInstanceWithAccessToken.post(
-          "/user-service/gallery/usergalleries",
-          {
-            nickname: nickname,
+  const loadMoreImages = useCallback(async () => {
+    try {
+      const response = await axiosInstanceWithAccessToken.post(
+        "/user-service/gallery/usergalleries",
+        {
+          nickname: nickname,
+        },
+        {
+          params: {
+            page: page,
+            size: 16,
           },
-          {
-            params: {
-              page: page,
-              size: 16,
-            },
-          }
-        );
-
-        console.log(response);
-
-        if (response.status === 200) {
-          const newImages = response.data.galleryPage.content.map(
-            (item: any) => ({
-              imageUrl: item.imageUrl,
-              geminiPk: item.galleryNo,
-            })
-
-            // (item: any) => item.imageUrl
-          );
-          setImages((prevImages) => [...prevImages, ...newImages]);
-          setPage((prevPage) => prevPage + 1);
-          setHasMore(newImages.length > 0);
-        } else {
-          setHasMore(false);
         }
-      } catch (error) {
-        console.error(error);
+      );
+
+      console.log(response);
+
+      if (response.status === 200) {
+        const newImages = response.data.galleryPage.content.map(
+          (item: any) => ({
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
+          })
+
+          // (item: any) => item.imageUrl
+        );
+        setImages((prevImages) => [...prevImages, ...newImages]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMore(newImages.length > 0);
+      } else {
         setHasMore(false);
       }
-    },
-    [
-      // page
-    ]
-  );
+    } catch (error) {
+      console.error(error);
+      setHasMore(false);
+    }
+  }, [page]);
 
   useEffect(() => {
     loadMoreImages();
