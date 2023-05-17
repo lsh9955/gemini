@@ -94,8 +94,8 @@ public class CompleteApiController {
     public ResponseEntity<?> checkBackground(@RequestParam("background") String imageUrl) {
 
         String res = completeService.checkBackground(imageUrl);
-        if (res == null) {
-            ResponseEntity.status(HttpStatus.NO_CONTENT).body("no_content");
+        if (res == "fail") {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no_content");
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
