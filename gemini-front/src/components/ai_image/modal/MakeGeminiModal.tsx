@@ -36,7 +36,7 @@ export interface Props {
 
 const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
-
+  const dispatch = useDispatch();
   const headers = {
     "X-Username": "google_109918724409380589068",
   };
@@ -58,12 +58,10 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
     // 제미니 생성 post axios 하고 백서버에선 별개수를 반환해준다.
     // axios 성공시에 아래 성공 모달을 집어 넣는다. 그리고 반환된 별개수를 리덕스에 저장한다.
     // onClose();
-    const dispatch = useDispatch();
+
     setCurrentModal(<SuccessGeminiModal tagIds={tagIds} onClose={onClose} />);
     axiosInstanceWithAccessToken
-      .post("/user-service/generate/gemini", data, {
-        headers,
-      })
+      .post("/user-service/generate/gemini", data)
       .then((response) => {
         console.log(response);
         const updatedStar = response.data.star;
