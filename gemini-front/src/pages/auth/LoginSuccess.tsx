@@ -77,7 +77,10 @@ const LoginSuccess: FC = () => {
       console.log("userinfo 가져오기 성공");
       const alarmSubscribe = () => {
         eventSource = new EventSource(
-          `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`
+          `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`,
+          {
+            withCredentials: true,
+          }
         );
         console.log("열리기 직전");
         console.log(eventSource);
