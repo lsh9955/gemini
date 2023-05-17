@@ -82,6 +82,20 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     }
   };
 
+  const updateGalleryOnPublic = async () => {
+    const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
+      `user-service/gemini/updatePublic`,
+      { geminiPk: selectedImagePk, isPublic: isPublic }
+    );
+
+    console.log(
+      "업데이트 되었나? geminiPk와 isPublic을 body에 담는데, userInfo 확인해서 유효성 검사하고. true로 보낸다면-> 갤러리에 해당 geminipk가 있는지 조회하고, 있으면 그대로 두고, 없을시 신설. false로 보낼시, 있는지 조회하고 있으면 삭제."
+    );
+    console.log(GalleryPublicRes);
+    alert("변경사항이 반영되었습니다.");
+    closeModal();
+  };
+
   useEffect(() => {
     const fetchGeminiInfo = async () => {
       // const res = await fetch(/* your API endpoint */);
@@ -158,7 +172,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
               <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
               <EditButtonWrapper>
                 <EditButton>수정</EditButton>
-                <EditButton>저장</EditButton>
+                <EditButton onClick={updateGalleryOnPublic}>저장</EditButton>
               </EditButtonWrapper>
             </ButtonWrapper>
           </GeminiDetialInfoWrapper>
