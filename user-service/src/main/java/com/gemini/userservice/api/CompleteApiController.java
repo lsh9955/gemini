@@ -95,7 +95,7 @@ public class CompleteApiController {
 
         String res = completeService.checkBackground(imageUrl);
         if (res == null) {
-            ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            ResponseEntity.status(HttpStatus.NO_CONTENT).body("no_content");
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
