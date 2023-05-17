@@ -283,7 +283,6 @@ const MyProfile: FC = () => {
   // useselector로 star 값 불러오기
   const [payModal, showPayModal] = useState(false);
   const [paymentResult, setPaymentResult] = useState<any>(starPoint);
-  const displayStar = paymentResult !== null ? paymentResult : starPoint;
 
   const openPayModal = () => {
     showPayModal(true);
@@ -291,7 +290,7 @@ const MyProfile: FC = () => {
 
   const closePayModal = () => {
     showPayModal(false);
-    console.log(paymentResult);
+    setStarPoint(paymentResult);
   };
 
   return (
@@ -323,7 +322,7 @@ const MyProfile: FC = () => {
                   팔로잉
                 </NumText>
                 <NumText>
-                  {displayStar}
+                  {starPoint}
                   <br />
                   별조각
                 </NumText>
