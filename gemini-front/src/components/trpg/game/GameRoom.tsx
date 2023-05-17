@@ -117,7 +117,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
           headers: {
             Accept: "*/*",
             // 배포시
-            Authorization: userSeq.accessToken,
+            Authorization: window.localStorage.getItem("accessToken"),
             //개발시
             // "X-Username": "google_104917137836848256614",
           },
