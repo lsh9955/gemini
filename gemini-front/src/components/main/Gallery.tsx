@@ -116,41 +116,46 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   };
 
   // 무한스크롤 불러오기
-  const loadMoreImages = useCallback(async () => {
-    try {
-      console.log("무한스크롤 요청 /user-service/gallery");
-      const response = await axiosInstanceWithAccessToken.get(
-        "/user-service/gallery",
-        {
-          params: {
-            page: page,
-            size: 16,
-          },
-        }
-      );
-      console.log("아래가 결과임");
-      console.log(`${response.data.length}개`);
-      console.log(response);
-      console.log("위가 결과임");
-
-      if (response.status === 200) {
-        const newImages = response.data.galleryPage.content.map(
-          (item: any) => ({
-            imageUrl: item.imageUrl,
-            geminiPk: item.galleryNo,
-          })
+  const loadMoreImages = useCallback(
+    async () => {
+      try {
+        console.log("무한스크롤 요청 /user-service/gallery");
+        const response = await axiosInstanceWithAccessToken.get(
+          "/user-service/gallery",
+          {
+            params: {
+              page: page,
+              size: 16,
+            },
+          }
         );
-        setImages((prevImages) => [...prevImages, ...newImages]);
-        setPage((prevPage) => prevPage + 1);
-        setHasMore(newImages.length > 0);
-      } else {
+        console.log("아래가 결과임");
+        console.log(`${response.data.length}개`);
+        console.log(response);
+        console.log("위가 결과임");
+
+        if (response.status === 200) {
+          const newImages = response.data.galleryPage.content.map(
+            (item: any) => ({
+              imageUrl: item.imageUrl,
+              geminiPk: item.galleryNo,
+            })
+          );
+          setImages((prevImages) => [...prevImages, ...newImages]);
+          setPage((prevPage) => prevPage + 1);
+          setHasMore(newImages.length > 0);
+        } else {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error(error);
         setHasMore(false);
       }
-    } catch (error) {
-      console.error(error);
-      setHasMore(false);
-    }
-  }, [page]);
+    },
+    [
+      // page
+    ]
+  );
 
   useEffect(() => {
     loadMoreImages();

@@ -86,50 +86,55 @@ const UserProfile: FC = () => {
     geminiPk: number;
   }
 
-  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
+  const [images, setImages] = useState<ImageData[]>([]); //더미 이미지 제거 ...dummyImgs
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
   const infScrollImgLength = getInfScrollImgLength(images.length);
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
 
-  const loadMoreImages = useCallback(async () => {
-    try {
-      const response = await axiosInstanceWithAccessToken.post(
-        "/user-service/gallery/usergalleries",
-        {
-          nickname: nickname,
-        },
-        {
-          params: {
-            page: page,
-            size: 16,
+  const loadMoreImages = useCallback(
+    async () => {
+      try {
+        const response = await axiosInstanceWithAccessToken.post(
+          "/user-service/gallery/usergalleries",
+          {
+            nickname: nickname,
           },
-        }
-      );
-
-      console.log(response);
-
-      if (response.status === 200) {
-        const newImages = response.data.galleryPage.content.map(
-          (item: any) => ({
-            imageUrl: item.imageUrl,
-            geminiPk: item.galleryNo,
-          })
-
-          // (item: any) => item.imageUrl
+          {
+            params: {
+              page: page,
+              size: 16,
+            },
+          }
         );
-        setImages((prevImages) => [...prevImages, ...newImages]);
-        setPage((prevPage) => prevPage + 1);
-        setHasMore(newImages.length > 0);
-      } else {
+
+        console.log(response);
+
+        if (response.status === 200) {
+          const newImages = response.data.galleryPage.content.map(
+            (item: any) => ({
+              imageUrl: item.imageUrl,
+              geminiPk: item.galleryNo,
+            })
+
+            // (item: any) => item.imageUrl
+          );
+          setImages((prevImages) => [...prevImages, ...newImages]);
+          setPage((prevPage) => prevPage + 1);
+          setHasMore(newImages.length > 0);
+        } else {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error(error);
         setHasMore(false);
       }
-    } catch (error) {
-      console.error(error);
-      setHasMore(false);
-    }
-  }, [page]);
+    },
+    [
+      // page
+    ]
+  );
 
   useEffect(() => {
     loadMoreImages();
