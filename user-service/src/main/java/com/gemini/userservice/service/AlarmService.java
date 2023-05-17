@@ -12,11 +12,14 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.List;
 
 public interface AlarmService {
+
+    SseEmitter subscribe(String username);
+
     ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter);
 
     ResponseAlarmDto createLikeAlarm(String username, LikeAlarmDto likeAlarmDto, SseEmitter emitter);
 
-    ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto, SseEmitter emitter);
+    ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto);
 
     ResponseAlarmDto createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto, SseEmitter emitter);
 
@@ -24,4 +27,5 @@ public interface AlarmService {
 
     String contractGemini(String username, RequestContractGeminiDto requestContractGeminiDto);
 
+    void send(String usernmae, Long alarmId, ResponseAlarmDto responseAlarmDto);
 }

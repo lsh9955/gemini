@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.entity.UserInfo;
+import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import com.gemini.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.entity.Alarm;
-import com.gemini.userservice.repository.AlarmRepository;
+//import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.service.AlarmService;
 
 @RestController
@@ -36,11 +37,9 @@ import com.gemini.userservice.service.AlarmService;
 @RequestMapping("/user-service/alarms")
 public class AlarmApiController {
 
-
-    private final AlarmRepository alarmRepository;
+//    private final AlarmRepository alarmRepository;
 
     private final AlarmService alarmService;
-
 
     private final ThreadPoolTaskExecutor taskExecutor;
 
@@ -49,100 +48,26 @@ public class AlarmApiController {
 
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
     // 인코딩 에러 고침
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
-    public ResponseEntity<SseEmitter> streamSseMvc(@RequestParam(value = "nickname", required = false) String nickname, HttpServletResponse response) {
-        response.setContentType("text/event-stream;charset=UTF-8");
-        response.setHeader("Cache-Control", "no-store");
-        Optional<UserInfo> userInfo = userInfoRepository.findByNickname(nickname);
+
+    @GetMapping("/subscribe")
+    public ResponseEntity<SseEmitter> subscribe(@RequestHeader("X-Username") String username) {
+        // Authentication을 UserDto로 업캐스팅
+
+        SseEmitter res = alarmService.subscribe(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllAlarms(@RequestHeader("X-Username") String username) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
         if (!userInfo.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-
-
-        System.out.println("!!!!!!!!!");
-        System.out.println("nickname: " + nickname);
-        System.out.println("!!!!!!!!!");
-
-        // SseEmitter 객체 생성
-        SseEmitter emitter = new SseEmitter();
-
-        // ExecutorService 객체 생성
-        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-
-
-        // 이전 알람 리스트를 저장할 변수
-        AtomicReference<List<Alarm>> previousAlarms = new AtomicReference<>(new ArrayList<>());
-
-
-        // ExecutorService에 작업을 제출하여 비동기적으로 SSE 이벤트 생성 및 전송
-        sseMvcExecutor.execute(() -> {
-            try {
-                while (true) {
-                    // AlarmRepository에서 최근 알림 데이터를 가져옴
-                    Optional<List<Alarm>> alarms = alarmRepository.findByNickname(nickname);
-                    System.out.println("!!!!!!!!!");
-                    System.out.println(nickname);
-                    System.out.println("!!!!!!!!!");
-                    List<ResponseAlarmDto> responseAlarmDtos = new ArrayList<>();
-
-                    // 가져온 알림 데이터를 ResponseAlarmDto로 변환하여 SSE 이벤트로 전송
-                    alarms.ifPresent(alarmList -> {
-                        // 이전 알람 리스트와 새로운 알람 리스트가 다른 경우에만 이벤트를 보내도록 수정
-                        if (!alarmList.equals(previousAlarms.get())) {
-                            alarmList.forEach(alarm -> {
-                                try {
-                                    ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                                            .geminiNo(alarm.getGeminiNo())
-                                            .alarmId(alarm.getAlarmId())
-                                            .memo(alarm.getMemo())
-                                            .category(alarm.getCategory())
-                                            .follower(alarm.getFollower())
-                                            .imageUrl(alarm.getImageUrl())
-                                            .nickname(alarm.getNickname())
-                                            .build();
-                                    responseAlarmDtos.add(responseAlarmDto);
-                                    System.out.println("!!!!!!!!!");
-                                    System.out.println(responseAlarmDto.getAlarmId());
-                                    System.out.println("!!!!!!!!!");
-                                } catch (Exception e) {
-                                    // 에러가 발생해도 무시하고 다음 시행으로 넘어갑니다.
-                                    System.err.println("Error sending SSE event: " + e.getMessage());
-                                }
-                            });
-
-                            try {
-                                SseEmitter.SseEventBuilder event = SseEmitter.event()
-                                        .data(responseAlarmDtos);
-                                emitter.send(event);
-                                System.out.println("!!!!!!!!!");
-                                System.out.println(emitter);
-                                System.out.println("!!!!!!!!!");
-
-                                // 이전 알람 리스트를 새로운 알람 리스트로 업데이트
-                                previousAlarms.set(new ArrayList<>(alarmList));
-                                System.out.println("!!!!!!!!!");
-                                System.out.println(previousAlarms);
-                                System.out.println("!!!!!!!!!");
-                            } catch (IOException e) {
-                                System.err.println("Error sending SSE event: " + e.getMessage());
-                                System.out.println("!!!!!!!!!");
-                                System.out.println("errrrrrr");
-                                System.out.println("!!!!!!!!!");
-                            }
-                        }
-                    });
-
-                    // SSE 연결 유지
-                    Thread.sleep(30000);
-                }
-            } catch (Exception ex) {
-                // 에러 발생 시 SseEmitter를 종료
-                emitter.completeWithError(ex);
-            }
-        });
-        // 완료된 SseEmitter 객체 반환
-        return ResponseEntity.status(HttpStatus.OK).body(emitter);
+        return ResponseEntity.status(HttpStatus.OK).body(userInfo);
     }
+
 
     @PostMapping("/gemini")
     public ResponseEntity<?> contractGemini(@RequestHeader("X-Username") String username,
