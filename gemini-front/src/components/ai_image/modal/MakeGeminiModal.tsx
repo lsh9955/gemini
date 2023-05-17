@@ -59,12 +59,12 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
     // onClose();
     setCurrentModal(<SuccessGeminiModal tagIds={tagIds} onClose={onClose} />);
     axiosInstanceWithAccessToken
-      .post("/user-service/generate", data, {
+      .post("/user-service/generate/gemini", data, {
         headers,
       })
       .then((response) => {
         console.log(response);
-        alert(`${response.data.star} 제미니가 제작의뢰가 들어갔다`);
+        alert(`제미니의 제작의뢰가 들어갔다`);
       })
       .catch((error) => {
         console.log(error);
