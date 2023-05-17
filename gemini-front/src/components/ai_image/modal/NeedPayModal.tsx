@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updateStar } from "../../../store/UserSlice";
+
 import uuid from "react-uuid";
 import KakaoLogo from "../../../assets/img/kakao_logo.png";
 import CompleteAiImage from "../../../assets/img/CompleteAiImage.png";
@@ -31,6 +33,7 @@ interface Props {
 const NeedPayModal: React.FC<Props> = ({ onClose }) => {
   const [numberValue, setNumberValue] = useState("");
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
+  const dispatch = useDispatch();
 
   // 숫자 외 입력 불가
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -67,8 +70,10 @@ const NeedPayModal: React.FC<Props> = ({ onClose }) => {
           orderStar: intNumberValue,
           merchantUid: uid,
         })
-        .then((res) => {
-          console.log(res);
+        .then((response) => {
+          console.log(response);
+          const updatedStar = response.data.star;
+          dispatch(updateStar(updatedStar)); // updateStar 액션 dispatch
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .catch((error) => {

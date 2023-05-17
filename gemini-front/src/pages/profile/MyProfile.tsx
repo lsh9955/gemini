@@ -281,9 +281,8 @@ const MyProfile: FC = () => {
 
   // 페이 모달
   // useselector로 star 값 불러오기
-  const reduxStar = useSelector((state: AppStore) => state.user.star);
   const [payModal, showPayModal] = useState(false);
-  const [paymentResult, setPaymentResult] = useState<any>(reduxStar);
+  const [paymentResult, setPaymentResult] = useState<any>(starPoint);
 
   const openPayModal = () => {
     showPayModal(true);
@@ -323,7 +322,7 @@ const MyProfile: FC = () => {
                   팔로잉
                 </NumText>
                 <NumText>
-                  {paymentResult}
+                  {starPoint}
                   <br />
                   별조각
                 </NumText>

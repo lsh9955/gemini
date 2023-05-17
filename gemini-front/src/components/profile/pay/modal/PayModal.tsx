@@ -89,9 +89,6 @@ const PayModal: React.FC<Props> = ({ onClose, setPaymentResult }) => {
         })
         .catch((error) => {
           console.log(error);
-          const updatedStar = 12;
-          setPaymentResult(updatedStar);
-          dispatch(updateStar(updatedStar));
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .finally(() => {
