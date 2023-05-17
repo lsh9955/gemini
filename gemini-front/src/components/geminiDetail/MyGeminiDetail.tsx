@@ -99,6 +99,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
         `user-service/gallery/enrollment`,
         { geminiPk: selectedImagePk, isPublic: isPublic }
       );
+      console.log(GalleryPublicRes);
 
       const { method, updated } = GalleryPublicRes.data;
 
