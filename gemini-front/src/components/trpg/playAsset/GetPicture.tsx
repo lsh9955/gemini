@@ -4,6 +4,7 @@ import {
   BackImgWrap,
   GetPictureTitle,
   GetPictureWrap,
+  MakeImg,
   SizeButton,
 } from "./GetPictureStyle";
 import axios from "axios";
@@ -206,6 +207,16 @@ const GetPicture = ({
         {selectBtn === "seePic" && !imgAlert && (
           <>
             <BackImgWrap>
+              {createImg && (
+                <MakeImg>
+                  <div>배경을 만드는 중이에요!</div>
+                  <img
+                    src={loading}
+                    alt=""
+                    style={{ width: "60%", height: "auto" }}
+                  />
+                </MakeImg>
+              )}
               {picArr &&
                 picArr.map((v: any) => {
                   return (
@@ -218,13 +229,6 @@ const GetPicture = ({
                     />
                   );
                 })}
-              {createImg && (
-                <img
-                  src={loading}
-                  alt=""
-                  style={{ width: "60%", height: "auto" }}
-                />
-              )}
             </BackImgWrap>
           </>
         )}
