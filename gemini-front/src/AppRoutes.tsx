@@ -70,8 +70,13 @@ const AppRoutes = () => {
     setIsNotFoundPage(!validPaths.includes(location.pathname));
   }, [location.pathname]);
 
+  // const shouldShowHeader =
+  //   !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
   const shouldShowHeader =
-    !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
+    !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
+    !isNotFoundPage &&
+    !location.pathname.startsWith("/userProfile/") &&
+    !location.pathname.startsWith("/userprofile/");
 
   //alarm 불러오기
   // const [alarmList, setAlarmList] = useState<Alarm[]>([]);
