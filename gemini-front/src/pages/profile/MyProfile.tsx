@@ -249,7 +249,7 @@ const MyProfile: FC = () => {
   useEffect(() => {
     const fetchMemoryRes = async () => {
       const MemoryRes = await axiosInstanceWithAccessToken.get(
-        "/generate/pose"
+        "/user-service/generate/pose"
       );
       console.log("인생네컷 메모리 데이터 가져왔습니다.");
       console.log(MemoryRes);
