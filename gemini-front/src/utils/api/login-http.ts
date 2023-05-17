@@ -24,6 +24,10 @@ export const getUserProfile = async (
     // },
     withCredentials: true,
   });
+  console.log("유저프로필 받아오는 본체");
+  console.log(accessToken);
+  console.log(response);
+  console.log("유저프로필 받아오는 본체 여기까지.");
 
   return response.data;
 };
