@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { loginAccount } from "../../store/UserSlice";
 import { useHistory } from "react-router-dom";
 import { UserInfoDto } from "../../utils/api/login-http";
+import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 
 const LoginSuccess: FC = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,14 @@ const LoginSuccess: FC = () => {
       localStorage.setItem("userInfo", userInfo.nickname);
       console.log("1");
       dispatch(loginAccount(userInfo));
-      console.log("2");
+      const alarmSubscribe = axiosInstanceWithAccessToken.get(
+        `/user-service/alarms/subscribe`
+      );
+      console.log("알람 구독간다");
+      console.log(alarmSubscribe);
+      console.log(
+        "알람구독 res데이터 위에있고, 이제 신규유저인지 체크 들어간다."
+      );
       newUesrCheck(userInfo);
       console.log("3");
     };
