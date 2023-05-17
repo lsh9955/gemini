@@ -78,21 +78,56 @@ const AiImage: FC = () => {
   // 갤러리 디테일에서 넘어올 갤러리 pk값
   const location = useLocation<GalleryLocationState>();
   const galleryPk = location.state?.galleryPk;
+  // 갤러리 pk를 통해 get으로 불러온 값
+  const [galleryInfo, setGalleryInfo] = useState<any>([]);
 
   // url 만들어지면 수정하기
-  // useEffect(() => {
-  //   if (galleryPk) {
-  //     axiosInstanceWithAccessToken
-  //       .get<GalleryTags>(`/user-service/generate/${galleryPk}`, { headers })
-  //       .then((response) => {
-  //         console.log(response.data);
-  //         // 태그랑, 한국어 이름 set에 담기
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (galleryPk) {
+      axiosInstanceWithAccessToken
+        .get<GalleryTags>(`/user-service/generate/${galleryPk}`, { headers })
+        .then((response) => {
+          console.log(response.data);
+          setGalleryInfo(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
+
+  // 갤러리 디테일에서 가져온 태그값들을 담아줌
+  galleryInfo.defaultSetting.forEach((item: any) => {
+    const { tagId, koreanName, categoryId } = item;
+    if (categoryId === 1 && tagId !== null && koreanName !== null) {
+      setGenreTagId(item.tagId);
+      setGenreKorean(koreanName);
+    } else if (categoryId === 2 && tagId !== null && koreanName !== null) {
+      setPresetTagId(tagId);
+      setPresetKorean(koreanName);
+    } else if (categoryId === 3 && tagId !== null && koreanName !== null) {
+      setGenderTagId(tagId);
+      setGenderKorean(koreanName);
+    } else if (categoryId === 4 && tagId !== null && koreanName !== null) {
+      setHairColorTagId(tagId);
+      setHairColorKorean(koreanName);
+    } else if (categoryId === 5 && tagId !== null && koreanName !== null) {
+      setEyeColorTagId(tagId);
+      setEyeColorKorean(koreanName);
+    } else if (categoryId === 6 && tagId !== null && koreanName !== null) {
+      setHairStyleTagId(tagId);
+      setHairStyleKorean(koreanName);
+    } else if (categoryId === 7 && tagId !== null && koreanName !== null) {
+      setEmotionTagId(tagId);
+      setEmotionKorean(koreanName);
+    } else if (categoryId === 8 && tagId !== null && koreanName !== null) {
+      setCostumeTagId(tagId);
+      setCostumeKorean(koreanName);
+    } else if (categoryId === 9 && tagId !== null && koreanName !== null) {
+      setHairStyleTagId(tagId);
+      setHairStyleKorean(koreanName);
+    }
+  });
 
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
