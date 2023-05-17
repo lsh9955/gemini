@@ -22,6 +22,7 @@ const GetPicture = ({
   const [selectBtn, setSelectBtn] = useState("seePic");
   const [picArr, setPicArr] = useState<any>(null);
   const [createImg, setCreateImg] = useState<any>(null);
+  const [imgAlert, setImgAlert] = useState<boolean>(false);
   useEffect(() => {
     console.log(playTarget);
   }, [playTarget]);
@@ -65,6 +66,7 @@ const GetPicture = ({
     );
     const result = await response;
     setCreateImg(result.data.imageUrl);
+    setImgAlert(true);
   };
 
   const changeBgImg = (targetImg: string) => {
@@ -116,7 +118,30 @@ const GetPicture = ({
             배경 생성하기
           </button>
         </div>
-        {selectBtn === "createPic" && (
+        {imgAlert && (
+          <GetPictureTitle>
+            <p style={{ fontSize: "120%", marginBottom: "3%" }}>
+              그림을 그리는 중입니다....
+            </p>
+            <p>조금만 기다려주세요!</p>
+            <button
+              onClick={() => {
+                setImgAlert(false);
+              }}
+              style={{
+                fontSize: "110%",
+                color: "white",
+                border: "2px solid white",
+                marginTop: "5%",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+              }}
+            >
+              닫기
+            </button>
+          </GetPictureTitle>
+        )}
+        {selectBtn === "createPic" && !imgAlert && (
           <>
             <GetPictureTitle>
               <p style={{ fontSize: "120%", marginBottom: "3%" }}>
@@ -157,7 +182,7 @@ const GetPicture = ({
             </div>
           </>
         )}
-        {selectBtn === "seePic" && (
+        {selectBtn === "seePic" && !imgAlert && (
           <>
             <BackImgWrap>
               {picArr &&
