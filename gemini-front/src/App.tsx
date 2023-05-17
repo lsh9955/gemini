@@ -34,8 +34,8 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <BlockBackButtonRouter>
-        <style>{`
+      {/* <BlockBackButtonRouter> */}
+      <style>{`
         body::-webkit-scrollbar {
           display: none;
         }
@@ -44,8 +44,8 @@ const App: React.FC = () => {
           scrollbar-width: none; /* Firefox */
         }
       `}</style>
-        <AppRoutes />
-      </BlockBackButtonRouter>
+      <AppRoutes />
+      {/* </BlockBackButtonRouter> */}
     </BrowserRouter>
   );
 };
