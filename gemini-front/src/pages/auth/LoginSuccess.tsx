@@ -18,6 +18,7 @@ import { UserInfoDto } from "../../utils/api/login-http";
 const LoginSuccess: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [userInfoGet, setUserInfoGet] = useState<any>(null);
 
   const newUesrCheck = (userInfo: UserInfoDto) => {
     if (userInfo.profileImgUrl) {
@@ -47,12 +48,33 @@ const LoginSuccess: FC = () => {
       console.log(userInfo);
       localStorage.setItem("userInfo", userInfo.nickname);
       console.log("1");
+      setUserInfoGet(userInfo);
       dispatch(loginAccount(userInfo));
 
-      // 알람 구독
+      // alarmSubscribe();
+
+      // const alarmSubscribe = axiosInstanceWithAccessToken.get(
+      //   `/user-service/alarms/subscribe`
+      // );
+      // console.log("알람 구독간다");
+      // console.log(alarmSubscribe);
+
+      console.log(
+        "알람구독 res데이터 위에있고, 이제 신규유저인지 체크 들어간다."
+      );
+      newUesrCheck(userInfo);
+      console.log("3");
+    };
+
+    fetchAccessToken();
+  }, []);
+
+  // 알람 구독
+  useEffect(() => {
+    if (userInfoGet) {
       const alarmSubscribe = () => {
         const eventSource = new EventSource(
-          `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfo.nickname}`
+          `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`
         );
 
         eventSource.onopen = () => {
@@ -74,22 +96,8 @@ const LoginSuccess: FC = () => {
         };
       };
       alarmSubscribe();
-
-      // const alarmSubscribe = axiosInstanceWithAccessToken.get(
-      //   `/user-service/alarms/subscribe`
-      // );
-      // console.log("알람 구독간다");
-      // console.log(alarmSubscribe);
-
-      console.log(
-        "알람구독 res데이터 위에있고, 이제 신규유저인지 체크 들어간다."
-      );
-      newUesrCheck(userInfo);
-      console.log("3");
-    };
-
-    fetchAccessToken();
-  }, []);
+    }
+  }, [userInfoGet]);
 
   return (
     <>
