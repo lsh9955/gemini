@@ -36,9 +36,12 @@ export const UserSlice = createSlice({
       state.profileImgUrl = null;
       state.star = null;
     },
+    updateStar(state, action) {
+      state.star = action.payload;
+    },
   },
 });
 //
-export const { loginAccount, logoutAccount } = UserSlice.actions;
+export const { loginAccount, logoutAccount, updateStar } = UserSlice.actions;
 export type RootState = AppStore;
 export default UserSlice.reducer;
