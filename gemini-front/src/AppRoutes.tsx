@@ -39,6 +39,7 @@ const AppRoutes = () => {
     "/loginsuccess",
     "/selectPairchild",
     "/selectpairchild",
+    // "/userProfile",
   ];
 
   // 모든 경로를 배열에 저장
@@ -53,6 +54,7 @@ const AppRoutes = () => {
     "/myProfile",
     "/myprofile",
     "/userProfile/:nickname",
+    "/userprofile/:nickname",
     "/aiImage",
     "/aiimage",
     "/geminidetail-user",
@@ -66,17 +68,31 @@ const AppRoutes = () => {
   const [isNotFoundPage, setIsNotFoundPage] = React.useState(false);
 
   useEffect(() => {
+    // // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정
+    // setIsNotFoundPage(!validPaths.includes(location.pathname));
     // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정
-    setIsNotFoundPage(!validPaths.includes(location.pathname));
+    const isValidPath = validPaths.some((path) => {
+      const regexPath = path.replace(/:\w+/g, "\\w+");
+      const regex = new RegExp(`^${regexPath}$`, "i");
+      return regex.test(location.pathname);
+    });
+    setIsNotFoundPage(!isValidPath);
   }, [location.pathname]);
 
   // const shouldShowHeader =
   //   !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
+
   const shouldShowHeader =
     !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
-    !isNotFoundPage &&
-    !location.pathname.startsWith("/userProfile/") &&
-    !location.pathname.startsWith("/userprofile/");
+    !isNotFoundPage;
+
+  console.log("url경로를 보여줌");
+  console.log(location.pathname);
+  // const shouldShowHeader =
+  //   !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
+  //   !isNotFoundPage &&
+  //   !location.pathname.startsWith("/userProfile/") &&
+  //   !location.pathname.startsWith("/userprofile/");
 
   //alarm 불러오기
   // const [alarmList, setAlarmList] = useState<Alarm[]>([]);
