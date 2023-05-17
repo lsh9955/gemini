@@ -18,7 +18,7 @@ export const DiceWrap = styled.div<{ playerStyle: boolean }>`
 export const DiceTitle = styled.div`
   font-size: 120%;
   color: white;
-  margin-bottom: 30%;
+  margin-bottom: 3%;
 `;
 export const DiceStart = styled.button`
   width: 20%;
