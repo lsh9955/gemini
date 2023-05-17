@@ -200,6 +200,16 @@ export const LikeCount = styled.div`
   // 원하는 스타일을 추가하세요
 `;
 
+export const ProfileChangeButton = styled.div`
+  color: white;
+  font-size: 1rem;
+  margin-left: auto;
+  // align-self: end;
+  cursor: pointer;
+  padding-bottom: 3%;
+  // 원하는 스타일을 추가하세요
+`;
+
 // 여기까지 왼쪽 아래부터 오른쪽 😀
 
 export const GeminiDetialInfoWrapper = styled.div`
