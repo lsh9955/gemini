@@ -159,26 +159,27 @@ const RandomPick = ({
                   height: "50%",
                 }}
               ></div>
-              {allUser[0].userarr
-                .filter((v: any) => v !== allUser[0].owner)
-                .map((k: any) => {
-                  return (
-                    <PicUser
-                      pickedUser={ranPickUser.indexOf(k) === -1}
-                      onClick={() => {
-                        ranPickUser.indexOf(k) === -1
-                          ? pickUser(k)
-                          : setRanPickUser(
-                              ranPickUser
-                                .slice()
-                                .splice(ranPickUser.indexOf(k), 1)
-                            );
-                      }}
-                    >
-                      {k}
-                    </PicUser>
-                  );
-                })}
+              {allUser &&
+                allUser[0].userarr
+                  .filter((v: any) => v !== allUser[0].owner)
+                  .map((k: any) => {
+                    return (
+                      <PicUser
+                        pickedUser={ranPickUser.indexOf(k) === -1}
+                        onClick={() => {
+                          ranPickUser.indexOf(k) === -1
+                            ? pickUser(k)
+                            : setRanPickUser(
+                                ranPickUser
+                                  .slice()
+                                  .splice(ranPickUser.indexOf(k), 1)
+                              );
+                        }}
+                      >
+                        {k}
+                      </PicUser>
+                    );
+                  })}
               <button
                 onClick={() => {
                   startVote();
