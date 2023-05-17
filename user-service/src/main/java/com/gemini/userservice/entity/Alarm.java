@@ -22,8 +22,8 @@ public class Alarm {
     @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
-    @Column(name = "checked")
-    private Boolean checked;
+    @Column(name = "follower")
+    private String follower;
 
     @Column(name = "category")
     private Integer category;
@@ -36,6 +36,9 @@ public class Alarm {
 
     @Column(name = "gemini_no")
     private Long geminiNo;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")
