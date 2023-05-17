@@ -21,6 +21,8 @@ const LoginSuccess: FC = () => {
 
   const newUesrCheck = (userInfo: UserInfoDto) => {
     if (userInfo.profileImgUrl) {
+      console.log("param userInfo input");
+      console.log(userInfo);
       setTimeout(() => {
         history.push("/");
       }, 2000); // 3초(3000ms) 지연
@@ -44,8 +46,11 @@ const LoginSuccess: FC = () => {
       console.log("유저프로필 받았나?");
       console.log(userInfo);
       localStorage.setItem("userInfo", userInfo.nickname);
+      console.log("1");
       dispatch(loginAccount(userInfo));
+      console.log("2");
       newUesrCheck(userInfo);
+      console.log("3");
     };
 
     fetchAccessToken();
