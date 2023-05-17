@@ -212,7 +212,7 @@ export const MyProfileContentTitleWrapper = styled.div`
   margin-bottom: 1.5vw; // 😀 타이틀이랑 간격 수정가능
 `;
 
-export const MyProfileContentTitle = styled.div`
+export const MyProfileContentTitle = styled.div<{ active: boolean }>`
   //   height: ${myProfileContentWrapperHeight};
   font-size: 1.3rem;
   //   background-color: #ffffff99;
@@ -221,7 +221,19 @@ export const MyProfileContentTitle = styled.div`
   cursor: pointer;
   z-index: 10;
   // color: #858585;
-  border-bottom: 2px solid black;
+  // border-bottom: ${({ active }) => (active ? "2px solid black" : "none")};
+  position: relative;
+
+  :before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: ${({ active }) => (active ? "100%" : "0")};
+    height: 2px;
+    background-color: black;
+    transition: width 0.3s ease-in-out;
+  }
 `;
 
 // export const EditPenButton = styled.div`
