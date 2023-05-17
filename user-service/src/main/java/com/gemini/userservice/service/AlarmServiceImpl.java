@@ -128,15 +128,7 @@ public class AlarmServiceImpl implements AlarmService {
                 .memo(encodedMessage)
                 .build();
 
-        for (SseEmitter sseEmitter : emitters) {
-            try {
-                sseEmitter.send(responseAlarmDto);
-            } catch (IOException ex) {
-                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
-                emitters.remove(emitter);
-            }
 
-        }
 
         return responseAlarmDto;
     }
@@ -187,15 +179,6 @@ public class AlarmServiceImpl implements AlarmService {
                 .memo(encodedMessage)
                 .build();
 
-        for (SseEmitter sseEmitter : emitters) {
-            try {
-                sseEmitter.send(responseAlarmDto);
-            } catch (IOException ex) {
-                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
-                emitters.remove(emitter);
-            }
-
-        }
 
         return responseAlarmDto;
 
@@ -274,15 +257,6 @@ public class AlarmServiceImpl implements AlarmService {
                 .memo(encodedMessage)
                 .build();
 
-        for (SseEmitter sseEmitter : emitters) {
-            try {
-                sseEmitter.send(responseAlarmDto);
-            } catch (IOException ex) {
-                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
-                emitters.remove(emitter);
-            }
-
-        }
 
         return responseAlarmDto;
 
