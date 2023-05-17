@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CompleteAiImage from "../../../assets/img/CompleteAiImage.png";
-import axios from "axios";
 import axiosInstanceWithAccessToken from "../../../utils/AxiosInstanceWithAccessToken";
 
 // styled-components
@@ -68,7 +67,7 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
       .then((response) => {
         console.log(response);
         const updatedStar = response.data.star;
-        dispatch(updateStar(updatedStar)); // updateStar 액션 dispatch
+        dispatch(updateStar(updatedStar));
         alert(`제미니의 제작의뢰가 들어갔다`);
       })
       .catch((error) => {
