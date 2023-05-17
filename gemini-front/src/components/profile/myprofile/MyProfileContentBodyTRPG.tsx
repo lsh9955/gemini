@@ -31,6 +31,9 @@ const TRPGImage: FC<MemoriesDataProps> = ({
     console.log(`poseNo,
     background,
     poseImages, 순서로 로깅합니다 ${poseNo} ${background} ${poseImages}`);
+    console.log(poseNo);
+    console.log(background);
+    console.log(poseImages);
   }, []);
 
   return (
