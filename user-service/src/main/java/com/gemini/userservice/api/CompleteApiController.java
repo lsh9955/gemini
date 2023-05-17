@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 
 import java.util.List;
 
@@ -87,6 +87,16 @@ public class CompleteApiController {
     public ResponseEntity<?> completePose(@RequestBody RequestCompletePoseDto requestCompletePoseDto) {
 
         List<String> res = completeService.completePose(requestCompletePoseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @GetMapping("/background")
+    public ResponseEntity<?> checkBackground(@RequestParam("background") String imageUrl) {
+
+        String res = completeService.checkBackground(imageUrl);
+        if (res == null) {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }
