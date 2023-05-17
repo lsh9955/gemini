@@ -166,6 +166,24 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.on("changeBgImg", (img) => {
         io.to(img.roomId).emit("changeBgImgResponse", img.imgUrl);
       });
+      socket.on("inputfourPic", async (userImg) => {
+        const willupdateRoom = await Room.find({ _id: userImg.roomId });
+        let changeUserArr = willupdateRoom[0].fourpic.slice();
+        changeUserArr.push(userImg.userImg);
+        await Room.updateOne(
+          { _id: userImg.roomId },
+          {
+            $set: {
+              fourpic: changeUserArr,
+            },
+          }
+        );
+      });
+      socket.on("makeFourPic", async (userImg) => {
+        const willupdateRoom = await Room.find({ _id: userImg.roomId });
+        let changeUserArr = willupdateRoom[0].fourpic.slice();
+        io.to(userImg.roomId).emit("makeFourPicResponse", changeUserArr);
+      });
     });
 
     socket.on("disconnect", async () => {
