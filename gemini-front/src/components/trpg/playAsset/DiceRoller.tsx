@@ -22,21 +22,22 @@ const DiceRoller = ({
     console.log(diceNum);
   }, [diceNum]);
 
-  const handleMessageFromIframe = (event: any) => {
-    if (!isNaN(event.data)) {
-      chatSocket?.emit("diceRoll", {
-        diceNum: event.data,
-        roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
-      });
-    }
-  };
   useEffect(() => {
+    const handleMessageFromIframe = (event: any) => {
+      if (!isNaN(event.data)) {
+        chatSocket?.emit("diceRoll", {
+          diceNum: event.data,
+          roomId:
+            new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+        });
+      }
+    };
     window?.addEventListener("message", handleMessageFromIframe);
 
     return () => {
       window?.removeEventListener("message", handleMessageFromIframe);
     };
-  }, []);
+  }, [chatSocket]);
   return (
     <DiceWrap playerStyle={playTarget !== "dice"}>
       <DiceTitle>주사위를 던집니다</DiceTitle>
