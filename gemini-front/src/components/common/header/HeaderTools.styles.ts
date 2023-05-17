@@ -13,6 +13,7 @@ export const StyledHeaderTools = styled.div`
 export const StyledProfileImage = styled.img`
   cursor: pointer;
   width: 27%;
+  aspect-ratio: 1;
   height: auto;
   border-radius: 50%; // 이 부분을 추가합니다.
   object-fit: cover; // 이미지의 비율을 유지하면서 원형으로 자르기 위해 추가합니다.
