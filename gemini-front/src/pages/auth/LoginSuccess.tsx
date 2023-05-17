@@ -71,33 +71,38 @@ const LoginSuccess: FC = () => {
 
   // 알람 구독
   useEffect(() => {
+    let eventSource: any;
     console.log("useeffect로 들어오나?");
     if (userInfoGet) {
       console.log("userinfo 가져오기 성공");
       const alarmSubscribe = () => {
-        const eventSource = new EventSource(
+        eventSource = new EventSource(
           `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`
         );
         console.log("열리기 직전");
+        console.log(eventSource);
         eventSource.onopen = () => {
           console.log("SSE 연결이 열렸습니다.");
         };
 
-        eventSource.onmessage = (event) => {
+        eventSource.onmessage = (event: any) => {
+          console.log("onmessege로 들어왔나?");
           const eventData = JSON.parse(event.data);
           console.log(eventData);
         };
 
-        eventSource.onerror = (error) => {
+        eventSource.onerror = (error: any) => {
           console.error("SSE 연결 중 오류가 발생했습니다.", error);
         };
 
         return () => {
           // 컴포넌트가 언마운트될 때 SSE 연결 종료
+
           eventSource.close();
         };
       };
       alarmSubscribe();
+      console.log("설마 나갔니?");
     }
   }, [userInfoGet]);
 
