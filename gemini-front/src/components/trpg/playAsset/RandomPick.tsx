@@ -21,8 +21,9 @@ const RandomPick = ({
   const [isPicked, setIsPicked] = useState(false);
   const [voteResult, setVoteResult] = useState<any>(null);
   const [ranPickUser, setRanPickUser] = useState<any>([]);
+  const [allUser, setAllUser] = useState<any>(null);
   useEffect(() => {
-    chatSocket?.emit("startVote", {
+    chatSocket?.emit("startRanPick", {
       roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
     });
   }, []);
@@ -40,6 +41,11 @@ const RandomPick = ({
       setIsvoted(false);
       setVoteResult(null);
     });
+
+    chatSocket?.on("startRanPickResponse", function (data: any) {
+      setAllUser(data);
+    });
+
     chatSocket?.on("randomPickResponse", function (data: any) {
       playHandler("randompick");
       setVoteResult(data);
@@ -153,8 +159,8 @@ const RandomPick = ({
                   height: "50%",
                 }}
               ></div>
-              {voteInfo[0].userarr
-                .filter((v: any) => v !== voteInfo[0].owner)
+              {allUser[0].userarr
+                .filter((v: any) => v !== allUser[0].owner)
                 .map((k: any) => {
                   return (
                     <PicUser
