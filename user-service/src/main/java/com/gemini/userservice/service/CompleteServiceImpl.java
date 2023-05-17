@@ -95,6 +95,6 @@ public class CompleteServiceImpl implements CompleteService{
         if (background.isPresent()) {
             return "ok";
         }
-        return null;
+        return "fail";
     }
 }

@@ -19,7 +19,7 @@ public class UserServiceApplication {
 	public CorsFilter corsFilter() {
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();https://mygemini.s3.amazonaws.com/gemini/20230511_015322447902_TestUser.png
+		CorsConfiguration config = new CorsConfiguration();
 		config.addAllowedOriginPattern("*");
 		config.addAllowedMethod("*");
 		config.addAllowedHeader("*");

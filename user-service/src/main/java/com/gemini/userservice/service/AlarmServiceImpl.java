@@ -10,13 +10,12 @@ import com.gemini.userservice.entity.Alarm;
 
 import com.gemini.userservice.entity.Gallery;
 import com.gemini.userservice.entity.UserInfo;
-import com.gemini.userservice.repository.AlarmRepository;
-import com.gemini.userservice.repository.GalleryRepository;
+import com.gemini.userservice.repository.*;
 import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.AlarmRepository;
-import com.gemini.userservice.repository.GeminiRepository;
-import com.gemini.userservice.repository.UserInfoRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +28,10 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService {
 
-    @Autowired
-    private AlarmRepository alarmRepository;
 
     @Autowired
     private UserInfoRepository userInfoRepository;
@@ -46,11 +45,49 @@ public class AlarmServiceImpl implements AlarmService {
     @Autowired
     private GalleryService galleryService;
 
+    private final static Long DEFAULT_TIMEOUT = 3600000L;
+
+    private final static String NOTIFICATION_NAME = "notify";
 
     // SSE 클라이언트를 저장하는 리스트
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
+    private final AlarmRepository alarmRepository;
 
+    private final EmitterRepository emitterRepository;
+
+    @Override
+    public SseEmitter subscribe(String username) {
+        // 새로운 SseEmitter를 만든다
+        SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
+
+        // 유저 ID로 SseEmitter를 저장한다.
+        emitterRepository.save(username, sseEmitter);
+
+        // 세션이 종료될 경우 저장한 SseEmitter를 삭제한다.
+        sseEmitter.onCompletion(() -> emitterRepository.delete(username));
+        sseEmitter.onTimeout(() -> emitterRepository.delete(username));
+
+        // 503 Service Unavailable 오류가 발생하지 않도록 첫 데이터를 보낸다.
+        try {
+            sseEmitter.send(SseEmitter.event().id("").name(NOTIFICATION_NAME).data("Connection completed"));
+        } catch (IOException exception) {
+
+        }
+        return sseEmitter;
+    }
+
+    public void send(String username, Long alarmId, ResponseAlarmDto responseAlarmDto) {
+        // 유저 ID로 SseEmitter를 찾아 이벤트를 발생 시킨다.
+        emitterRepository.get(username).ifPresentOrElse(sseEmitter -> {
+            try {
+                sseEmitter.send(SseEmitter.event().id(alarmId.toString()).name(NOTIFICATION_NAME).data(responseAlarmDto));
+            } catch (IOException exception) {
+                // IOException이 발생하면 저장된 SseEmitter를 삭제하고 예외를 발생시킨다.
+                emitterRepository.delete(username);
+            }
+        }, () -> log.info("No emitter found"));
+    }
 
 
     @Override
@@ -68,9 +105,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         Alarm alarm = Alarm.builder()
                 .follower(userInfo.getNickname())
-                .nickname(alarmDto.getGetAlarmNickName())
                 .memo(encodedMessage)
-                .userInfo(userInfo)
                 .category(1)
                 .build();
         alarmRepository.save(alarm);
@@ -127,9 +162,9 @@ public class AlarmServiceImpl implements AlarmService {
         Alarm alarm = Alarm.builder()
                 .geminiNo(gallery.getGemini().getGeminiNo())
                 .memo(encodedMessage)
-                .userInfo(userInfo)
+//                .userInfo(userInfo)
                 .category(2)
-                .nickname(gallery.getGemini().getUserInfo().getNickname())
+//                .nickname(gallery.getGemini().getUserInfo().getNickname())
                 .build();
         alarmRepository.save(alarm);
 
@@ -154,7 +189,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto, SseEmitter emitter) {
+    public ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto) {
 
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(geminiAlarmDto.getUsername());
@@ -170,9 +205,9 @@ public class AlarmServiceImpl implements AlarmService {
         Alarm alarm = Alarm.builder()
                 .memo(encodedMessage)
                 .geminiNo(geminiAlarmDto.getGeminiNo())
-                .userInfo(userInfo)
+//                .userInfo(userInfo)
                 .category(3)
-                .nickname(nickname)
+//                .nickname(nickname)
                 .build();
         alarmRepository.save(alarm);
 
@@ -181,15 +216,19 @@ public class AlarmServiceImpl implements AlarmService {
                 .memo(encodedMessage)
                 .build();
 
-        for (SseEmitter sseEmitter : emitters) {
-            try {
-                sseEmitter.send(responseAlarmDto);
-            } catch (IOException ex) {
-                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
-                emitters.remove(emitter);
-            }
+        send(userInfo.getUsername(), alarm.getAlarmId(), responseAlarmDto);
 
-        }
+
+//        for (SseEmitter sseEmitter : emitters) {
+//            try {
+//                sseEmitter.send(responseAlarmDto);
+//            } catch (IOException ex) {
+//                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
+//                emitters.remove(emitter);
+//            }
+//
+//        }
+
 
         return responseAlarmDto;
 
@@ -210,9 +249,9 @@ public class AlarmServiceImpl implements AlarmService {
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
                 .memo(encodedMessage)
-                .userInfo(userInfo)
+//                .userInfo(userInfo)
                 .category(4)
-                .nickname(nickname)
+//                .nickname(nickname)
                 .imageUrl(backgroundAlarmDto.getImageUrl())
                 .build();
         alarmRepository.save(alarm);
@@ -263,14 +302,16 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public String deleteAlarm(String username, Long alarmId) {
-        Alarm alarm = alarmRepository.findAlarmById(alarmId);
-        if (alarm != null) {
-            alarmRepository.delete(alarm);
-            return "Success"; // 삭제 성공
-        } else {
-            return "fail"; // 알람을 찾을 수 없음
-        }
+//        Alarm alarm = alarmRepository.findAlarmById(alarmId);
+//        if (alarm != null) {
+//            alarmRepository.delete(alarm);
+//            return "Success"; // 삭제 성공
+//        } else {
+//            return "fail"; // 알람을 찾을 수 없음
+//        }
+        return null;
     }
+
 
 
 }
