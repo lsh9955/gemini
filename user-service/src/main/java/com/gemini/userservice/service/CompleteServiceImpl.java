@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -87,4 +88,13 @@ public class CompleteServiceImpl implements CompleteService{
         return imageUrls;
     }
 
+    @Override
+    public String checkBackground(String imageUrl) {
+
+        Optional<Background> background = backgroundRepository.findByImageUrl(imageUrl);
+        if (background.isPresent()) {
+            return "ok";
+        }
+        return null;
+    }
 }
