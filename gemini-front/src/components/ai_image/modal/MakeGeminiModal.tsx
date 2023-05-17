@@ -49,7 +49,7 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
       tagIds.hairStyleTagId,
       tagIds.emotionTagId,
       tagIds.costumeTagId,
-    ],
+    ].filter((tagId) => tagId !== null),
   };
 
   // 여기서 axios가 성공했을 때 successgeminimodal로 보내기
