@@ -7,21 +7,29 @@ const FourPicture = ({
   chatSocket,
   playTarget,
   playHandler,
+  fourpi,
 }: {
   chatSocket: any;
   playTarget: any;
   playHandler: any;
+  fourpi: any;
 }) => {
   const [diceStart, setDiceStart] = useState<boolean>(false);
   const [fourPic, setFourPic] = useState(null);
   const [makePic, setMakePic] = useState(false);
+  useEffect(() => {
+    chatSocket?.emit("makeFourPic", {
+      roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+    });
+  }, []);
+
   const getFourUser = () => {
     const imgCreateHandler = async () => {
       const response: any = await axios.post(
         "https://mygemini.co.kr/user-service/generate/pose",
         {
           sample: 0,
-          geminis: [119, 119, 119, 119],
+          geminis: fourpi,
         },
         {
           headers: {
@@ -55,17 +63,21 @@ const FourPicture = ({
           <div style={{ marginTop: "2%", fontSize: "90%", color: "white" }}>
             원하는 모습을 선택해주세요
           </div>
-          <img
-            src={fourUser}
-            alt=""
-            style={{
-              width: "34%",
-              height: "auto",
-              cursor: "pointer",
-              marginTop: "2%",
-            }}
-            onClick={getFourUser}
-          />
+          {fourpi ? (
+            <img
+              src={fourUser}
+              alt=""
+              style={{
+                width: "34%",
+                height: "auto",
+                cursor: "pointer",
+                marginTop: "2%",
+              }}
+              onClick={getFourUser}
+            />
+          ) : (
+            <div>동료들의 모습을 불러오고 있어요</div>
+          )}
         </div>
       )}
       {makePic && (

@@ -58,6 +58,14 @@ const CharacterChoose = ({
                 onClick={() => {
                   localStorage.setItem("gameUserImg", JSON.stringify(v));
                   playHandler("");
+                  chatSocket?.emit("inputfourPic", {
+                    userImg: Number(v.geminiPk),
+                    roomId:
+                      new URL(window.location.href).pathname
+                        .split("/")
+                        .at(-1) ?? "",
+                  });
+                  //inputfourPic
                 }}
                 alt=""
               />
