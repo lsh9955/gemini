@@ -107,7 +107,7 @@ public class GalleryApiController {
                 likeAlarmDto.setGalleryNo(galleryNo);
 
                 // 팔로우 알림 생성
-                alarmService.createLikeAlarm(username, likeAlarmDto, emitter);
+//                alarmService.createLikeAlarm(username, likeAlarmDto, emitter);
 
                 emitter.send(SseEmitter.event().name("COMPLETE").data("SUCCESS")); // success message
             } catch (IOException e) {
