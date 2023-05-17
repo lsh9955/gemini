@@ -14,6 +14,7 @@ export interface UserInfoDto {
 export const getUserProfile = async (
   accessToken: string
 ): Promise<UserInfoDto> => {
+  console.log("유저프로필 받아오는 함수 시작합니다.");
   const url = `${process.env.REACT_APP_API_USER_BASE_URL}/user-service/profile/login`;
   const response: AxiosResponse<UserInfoDto> = await axios.get(url, {
     headers: {
