@@ -25,7 +25,7 @@ const LoginSuccess: FC = () => {
       console.log(userInfo);
       setTimeout(() => {
         history.push("/");
-      }, 2000); // 3초(3000ms) 지연
+      }, 1500); // 3초(3000ms) 지연
     } else {
       alert("신규 회원이시군요! 캐릭터를 선택해주세요!");
       history.push("/selectPairchild");
