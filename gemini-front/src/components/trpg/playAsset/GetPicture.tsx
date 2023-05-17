@@ -4,7 +4,6 @@ import {
   BackImgWrap,
   GetPictureTitle,
   GetPictureWrap,
-  MakeImg,
   SizeButton,
 } from "./GetPictureStyle";
 import axios from "axios";
@@ -208,14 +207,11 @@ const GetPicture = ({
           <>
             <BackImgWrap>
               {createImg && (
-                <MakeImg>
-                  <div>배경을 만드는 중이에요!</div>
-                  <img
-                    src={loading}
-                    alt=""
-                    style={{ width: "60%", height: "auto" }}
-                  />
-                </MakeImg>
+                <img
+                  src={loading}
+                  alt=""
+                  style={{ width: "60%", height: "auto" }}
+                />
               )}
               {picArr &&
                 picArr.map((v: any) => {
