@@ -329,14 +329,22 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public String deleteAlarm(String username, Long alarmId) {
-//        Alarm alarm = alarmRepository.findAlarmById(alarmId);
-//        if (alarm != null) {
-//            alarmRepository.delete(alarm);
-//            return "Success"; // 삭제 성공
-//        } else {
-//            return "fail"; // 알람을 찾을 수 없음
-//        }
-        return null;
+        Alarm alarm = alarmRepository.findByAlarmId(alarmId);
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        UserInfo user = userInfo.get();
+        if (alarm != null) {
+            alarmRepository.delete(alarm);
+            AlarmData alarmData = alarmDataRepository.findByAlarmId(alarmId);
+            alarmDataRepository.delete(alarmData);
+            Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(user.getUserPk());
+            AlarmUser alarmUser1 = alarmUser.get();
+            List<Long> alarmIds = alarmUser1.getAlarmIds();
+            alarmIds.remove(alarmId);
+            alarmUser1.update(alarmIds);
+            alarmUserRepository.save(alarmUser1);
+            return "Success"; // 삭제 성공
+        }
+        return "fail"; // 알람을 찾을 수 없음
     }
 
 
