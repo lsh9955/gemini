@@ -133,7 +133,7 @@ public class AlarmApiController {
                     });
 
                     // SSE 연결 유지
-                    Thread.sleep(7000);
+                    Thread.sleep(30000);
                 }
             } catch (Exception ex) {
                 // 에러 발생 시 SseEmitter를 종료
