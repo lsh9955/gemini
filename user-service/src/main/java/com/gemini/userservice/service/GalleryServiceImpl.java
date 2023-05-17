@@ -291,6 +291,8 @@ public class GalleryServiceImpl implements GalleryService{
     public Gallery createGallery(Long geminiNo) {
         Gemini gemini = geminiRepository.findById(geminiNo)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid geminiNo: " + geminiNo));
+        gemini.setIsPublic(true);
+        geminiRepository.save(gemini);
 
         Gallery gallery = Gallery.builder()
                 .dailyLike(0)
@@ -311,10 +313,42 @@ public class GalleryServiceImpl implements GalleryService{
         Gallery gallery = gemini.getGallery();
 
         if (gallery != null) {
+            gemini.setIsPublic(false);
+            geminiRepository.save(gemini);
             galleryRepository.delete(gallery);
         } else {
             throw new IllegalArgumentException("No Gallery associated with geminiNo: " + geminiNo);
         }
+    }
+
+    public ResponseGalleryEnrollmentDto updateGalleryEnrollment(Long geminiPk, Boolean intendedIsPublic) {
+        // 갤러리가 있는지 여부 파악. -> param의 isPublic과 다르다? create/delete액션. 그에 맞는 DB 조작. 어떤 액션을 했는지, updated 여부 return
+        Gemini gemini = geminiRepository.findByGeminiNo(geminiPk);
+        Boolean currentIsPublic = gemini.getIsPublic();
+        ResponseGalleryEnrollmentDto response;
+        if (!currentIsPublic.equals(intendedIsPublic)) {
+            if (intendedIsPublic) {
+                // Create Gallery
+                this.createGallery(gemini.getGeminiNo());
+                response = ResponseGalleryEnrollmentDto.builder()
+                        .method("created")
+                        .updated(true)
+                        .build();
+            } else {
+                // Delete Gallery
+                this.deleteGallery(gemini.getGeminiNo());
+                response = ResponseGalleryEnrollmentDto.builder()
+                        .method("deleted")
+                        .updated(true)
+                        .build();
+            }
+        } else {
+            response = ResponseGalleryEnrollmentDto.builder()
+                    .method("no action")
+                    .updated(false)
+                    .build();
+        }
+        return response;
     }
 
 }

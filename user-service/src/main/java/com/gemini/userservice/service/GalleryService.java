@@ -29,4 +29,6 @@ public interface GalleryService {
     String likeGallery(String username, Long galleryNo);
 
     String cancelGalleryLike(String username, Long galleryNo);
+
+    ResponseGalleryEnrollmentDto updateGalleryEnrollment(Long geminiPk, Boolean intendedIsPublic);
 }
