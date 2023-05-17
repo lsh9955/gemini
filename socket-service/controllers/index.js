@@ -42,9 +42,10 @@ exports.createRoom = async (req, res, next) => {
       users: req.body.userId,
       userArr: [],
       usernum: 0,
+      fourpic: [],
       userImg: req.body.userImg,
       //추후 유저 연결시 변경할 것
-      defaultpicture: userPicList[Math.floor(Math.random() * 4)],
+      defaultpicture: req.body.userImg,
     });
 
     //const io = req.app.get("io");
