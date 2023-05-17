@@ -321,11 +321,19 @@ const MyProfile: FC = () => {
                   <br />
                   팔로잉
                 </NumText>
-                <NumText>
-                  {starPoint}
-                  <br />
-                  별조각
-                </NumText>
+                {starPoint === 10 ? (
+                  <NumText>
+                    {paymentResult}
+                    <br />
+                    별조각
+                  </NumText>
+                ) : (
+                  <NumText>
+                    {starPoint}
+                    <br />
+                    별조각
+                  </NumText>
+                )}
               </FollowingTextWrapper>
               {/* <PayButton /> */}
               <OpenPayModalButton openPayModal={openPayModal} />
