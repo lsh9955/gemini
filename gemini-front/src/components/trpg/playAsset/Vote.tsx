@@ -157,6 +157,7 @@ const Vote = ({
                           fontSize: "140%",
                           fontWeight: "bold",
                           margin: "5%",
+                          cursor: "pointer",
                         }}
                       >
                         {v}
