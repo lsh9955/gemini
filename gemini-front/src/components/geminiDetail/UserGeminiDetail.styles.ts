@@ -95,6 +95,7 @@ export const FlipContainer = styled.div<{ isFlipped: boolean }>`
 //   // background-color: ${({ isFront }) => (isFront ? "" : "#ffffff")};
 // `;
 export const Flipper = styled.div<{ isFront: boolean }>`
+  z-index: 1000;
   position: absolute;
   display: flex;
   width: 100%;
