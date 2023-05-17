@@ -79,6 +79,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
 
     chatSocket?.on("diceRollResponse", function (data: any) {
       setDiceNum(data);
+      setPlayTarget("dice");
     });
     chatSocket?.on("changeBgImgResponse", function (data: any) {
       setChangeBg(data);

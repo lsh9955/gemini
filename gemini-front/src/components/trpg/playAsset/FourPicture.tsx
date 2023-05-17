@@ -77,7 +77,7 @@ const FourPicture = ({
             flexDirection: "column",
           }}
         >
-          <div style={{ marginTop: "2%", fontSize: "110%" }}>
+          <div style={{ marginTop: "2%", fontSize: "110%", color: "white" }}>
             사진을 찍었어요! 내 보관함에서 확인해주세요
           </div>
           <button
@@ -87,6 +87,10 @@ const FourPicture = ({
               cursor: "pointer",
               marginTop: "2%",
               fontSize: "120%",
+              border: "1px solid white",
+              borderRadius: "4px",
+              backgroundColor: "transparent",
+              color: "white",
             }}
             onClick={() => {
               setMakePic(false);
