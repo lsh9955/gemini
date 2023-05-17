@@ -71,12 +71,14 @@ const LoginSuccess: FC = () => {
 
   // 알람 구독
   useEffect(() => {
+    console.log("useeffect로 들어오나?");
     if (userInfoGet) {
+      console.log("userinfo 가져오기 성공");
       const alarmSubscribe = () => {
         const eventSource = new EventSource(
           `https://mygemini.co.kr/user-service/alarms/subscribe?nickname=${userInfoGet.nickname}`
         );
-
+        console.log("열리기 직전");
         eventSource.onopen = () => {
           console.log("SSE 연결이 열렸습니다.");
         };
