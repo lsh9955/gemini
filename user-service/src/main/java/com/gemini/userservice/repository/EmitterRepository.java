@@ -16,7 +16,19 @@ public class EmitterRepository {
     private static Map<String, SseEmitter> emitterMap = new ConcurrentHashMap<>();
 
     public SseEmitter save(String username, SseEmitter sseEmitter) {
-        emitterMap.put(getKey(username), sseEmitter);
+
+        String key = getKey(username);
+
+        if (!emitterMap.containsKey(key)) {
+            emitterMap.put(key, sseEmitter);
+            log.info("Saved SseEmitter for {}", username);
+        } else {
+            SseEmitter existingEmitter = emitterMap.get(key);
+            existingEmitter.complete(); // 기존 값 제거
+            emitterMap.put(key, sseEmitter);
+            log.info("SseEmitter for {} already exists", username);
+        }
+        log.info("구독구독구독");
         log.info("Saved SseEmitter for {}", username);
         return sseEmitter;
     }
