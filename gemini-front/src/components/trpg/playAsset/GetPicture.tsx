@@ -79,7 +79,7 @@ const GetPicture = ({
 
   const checkIsImg = async (target: string) => {
     //setcreate 비울것
-    const checkValid: string = await axios.get(
+    const checkValid: any = await axios.get(
       "https://mygemini.co.kr/user-service/complete/background",
       {
         params: {
@@ -88,7 +88,7 @@ const GetPicture = ({
       }
     );
     console.log(checkValid);
-    if (checkValid === "ok") {
+    if (checkValid.data === "ok") {
       setCreateImg(null);
       imgGetHandler();
     }
@@ -218,7 +218,13 @@ const GetPicture = ({
                     />
                   );
                 })}
-              {createImg && <img src={loading} alt="" />}
+              {createImg && (
+                <img
+                  src={loading}
+                  alt=""
+                  style={{ width: "60%", height: "auto" }}
+                />
+              )}
             </BackImgWrap>
           </>
         )}
