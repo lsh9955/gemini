@@ -124,7 +124,7 @@ const HeaderTools: FC = () => {
           alt="MessageImg"
           onClick={showAlarmModalHandler}
         ></StyledMessage>
-        <RiLogoutBoxRFill onClick={moveToLoginPage} size={34} color="white" />
+        <RiLogoutBoxRFill onClick={moveToLoginPage} size={38} color="white" />
         {/* <StyledNotification
           src={Notification}
           alt="NotificationImg"
