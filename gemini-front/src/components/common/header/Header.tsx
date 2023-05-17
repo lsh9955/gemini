@@ -16,12 +16,12 @@ interface Props {
   alarmList: Alarm[];
 }
 
-const Header: FC<Props> = ({ alarmList }) => {
+const Header: FC<Props> = () => {
   return (
     <>
       <StyledHeader>
         <HeaderLogo></HeaderLogo>
-        <HeaderTools alarmList={alarmList}></HeaderTools>
+        <HeaderTools></HeaderTools>
       </StyledHeader>
     </>
   );
