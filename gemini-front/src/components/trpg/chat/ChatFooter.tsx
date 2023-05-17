@@ -78,21 +78,23 @@ const ChatFooter = ({
           }}
           style={{ position: "relative" }}
         >
-          <div
-            style={{
-              position: "absolute",
-              width: "25px",
-              height: "23px",
-              borderRadius: "80px",
-              color: "white",
-              top: "-20px",
-              right: "-20px",
-              backgroundColor: "darkred",
-              textAlign: "center",
-            }}
-          >
-            {notReadMsg["룸 채팅"] !== 0 && notReadMsg["룸 채팅"]}
-          </div>
+          {notReadMsg["룸 채팅"] !== 0 && (
+            <div
+              style={{
+                position: "absolute",
+                width: "25px",
+                height: "23px",
+                borderRadius: "80px",
+                color: "white",
+                top: "-20px",
+                right: "-20px",
+                backgroundColor: "darkred",
+                textAlign: "center",
+              }}
+            >
+              {notReadMsg["룸 채팅"]}
+            </div>
+          )}
           룸 채팅
         </button>
         <button
@@ -101,21 +103,23 @@ const ChatFooter = ({
           }}
           style={{ position: "relative" }}
         >
-          <div
-            style={{
-              position: "absolute",
-              width: "25px",
-              height: "23px",
-              borderRadius: "80px",
-              color: "white",
-              top: "-20px",
-              right: "-20px",
-              backgroundColor: "darkred",
-              textAlign: "center",
-            }}
-          >
-            {notReadMsg["정보"] !== 0 && notReadMsg["정보"]}
-          </div>
+          {notReadMsg["정보"] !== 0 && (
+            <div
+              style={{
+                position: "absolute",
+                width: "25px",
+                height: "23px",
+                borderRadius: "80px",
+                color: "white",
+                top: "-20px",
+                right: "-20px",
+                backgroundColor: "darkred",
+                textAlign: "center",
+              }}
+            >
+              {notReadMsg["정보"]}
+            </div>
+          )}
           정보
         </button>
         <button
@@ -124,21 +128,23 @@ const ChatFooter = ({
           }}
           style={{ position: "relative" }}
         >
-          <div
-            style={{
-              position: "absolute",
-              width: "25px",
-              height: "23px",
-              borderRadius: "80px",
-              color: "white",
-              top: "-20px",
-              right: "-20px",
-              backgroundColor: "darkred",
-              textAlign: "center",
-            }}
-          >
-            {notReadMsg["잡담"] !== 0 && notReadMsg["잡담"]}
-          </div>
+          {notReadMsg["잡담"] !== 0 && (
+            <div
+              style={{
+                position: "absolute",
+                width: "25px",
+                height: "23px",
+                borderRadius: "80px",
+                color: "white",
+                top: "-20px",
+                right: "-20px",
+                backgroundColor: "darkred",
+                textAlign: "center",
+              }}
+            >
+              {notReadMsg["잡담"]}
+            </div>
+          )}
           잡담
         </button>
         <button
@@ -147,21 +153,23 @@ const ChatFooter = ({
           }}
           style={{ position: "relative" }}
         >
-          <div
-            style={{
-              position: "absolute",
-              width: "25px",
-              height: "23px",
-              borderRadius: "80px",
-              color: "white",
-              top: "-20px",
-              right: "-20px",
-              backgroundColor: "darkred",
-              textAlign: "center",
-            }}
-          >
-            {notReadMsg["개인채팅"] !== 0 && notReadMsg["개인채팅"]}
-          </div>
+          {notReadMsg["개인채팅"] !== 0 && (
+            <div
+              style={{
+                position: "absolute",
+                width: "25px",
+                height: "23px",
+                borderRadius: "80px",
+                color: "white",
+                top: "-20px",
+                right: "-20px",
+                backgroundColor: "darkred",
+                textAlign: "center",
+              }}
+            >
+              {notReadMsg["개인채팅"]}
+            </div>
+          )}
           개인채팅
         </button>
       </ChatStatuButtonWrap>
