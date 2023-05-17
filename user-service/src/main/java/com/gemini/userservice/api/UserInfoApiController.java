@@ -65,8 +65,8 @@ public class UserInfoApiController {
             //알람을 보내는 사람 => 팔로우 한 사람
             followAlarmDto.setSendAlarmUserName(currentUsername);
 
-            // 팔로우 알림 생성
-            alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
+//            // 팔로우 알림 생성
+//            alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
 
             emitter.send(SseEmitter.event().name("COMPLETE").data("SUCCESS")); // success message
         } catch (IOException e) { // IOException 뿐만 아니라 InterruptedException도 처리해 주어야 함

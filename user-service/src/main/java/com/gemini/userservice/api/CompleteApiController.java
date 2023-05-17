@@ -6,6 +6,8 @@ import com.gemini.userservice.dto.BackgroundDto;
 import com.gemini.userservice.dto.ML.RequestCompleteBackgroundDto;
 import com.gemini.userservice.dto.ML.RequestCompleteGeminiDto;
 import com.gemini.userservice.dto.ML.RequestCompletePoseDto;
+import com.gemini.userservice.repository.AlarmRepository;
+import com.gemini.userservice.repository.EmitterRepository;
 import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.CompleteService;
 import com.gemini.userservice.service.EmitterService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,20 +32,19 @@ public class CompleteApiController {
     @Autowired
     private EmitterService emitterService;
 
-    @Autowired
-    private AlarmService alarmService;
+
+    private final EmitterRepository emitterRepository;
 
 
     private final CompleteService completeService;
+
+    private final AlarmService alarmService;
+    private final AlarmRepository alarmRepository;
 
     @PostMapping("/gemini")
     public ResponseEntity<?> completeGemini(@RequestBody RequestCompleteGeminiDto requestCompleteGeminiDto) {
 
         Long res = completeService.completeGemini(requestCompleteGeminiDto);
-
-        SseEmitter emitter = new SseEmitter();
-        emitterService.addEmitter(emitter);
-
 
         // res가 null 값이 아니면 알람 생성
         if(res != null) {
@@ -52,9 +54,7 @@ public class CompleteApiController {
             geminiAlarmDto.setGeminiNo(res);
             geminiAlarmDto.setUsername(requestCompleteGeminiDto.getUsername());
 
-            //gemini 생성 알림
-            alarmService.createGeminiAlarm(geminiAlarmDto,emitter);
-
+            alarmService.createGeminiAlarm(geminiAlarmDto);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -76,7 +76,7 @@ public class CompleteApiController {
             backgroundAlarmDto.setUsername(requestCompleteBackgroundDto.getUsername());
 
             // background 알람 생성
-            alarmService.createBackgroundAlarm(backgroundAlarmDto, emitter);
+//            alarmService.createBackgroundAlarm(backgroundAlarmDto, emitter);
         }
 
 
