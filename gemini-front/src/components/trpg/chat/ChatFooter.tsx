@@ -76,18 +76,22 @@ const ChatFooter = ({
           onClick={() => {
             chatTypeHandler("룸 채팅");
           }}
+          style={{ position: "relative" }}
         >
           <div
             style={{
               position: "absolute",
-              width: "30px",
-              height: "30px",
+              width: "25px",
+              height: "23px",
               borderRadius: "80px",
               color: "white",
+              top: "-20px",
+              right: "-20px",
               backgroundColor: "darkred",
+              textAlign: "center",
             }}
           >
-            {notReadMsg["룸 채팅"]}
+            {notReadMsg["룸 채팅"] !== 0 && notReadMsg["룸 채팅"]}
           </div>
           룸 채팅
         </button>
@@ -95,18 +99,22 @@ const ChatFooter = ({
           onClick={() => {
             chatTypeHandler("정보");
           }}
+          style={{ position: "relative" }}
         >
           <div
             style={{
               position: "absolute",
-              width: "30px",
-              height: "30px",
+              width: "25px",
+              height: "23px",
               borderRadius: "80px",
               color: "white",
+              top: "-20px",
+              right: "-20px",
               backgroundColor: "darkred",
+              textAlign: "center",
             }}
           >
-            {notReadMsg["정보"]}
+            {notReadMsg["정보"] !== 0 && notReadMsg["정보"]}
           </div>
           정보
         </button>
@@ -114,18 +122,22 @@ const ChatFooter = ({
           onClick={() => {
             chatTypeHandler("잡담");
           }}
+          style={{ position: "relative" }}
         >
           <div
             style={{
               position: "absolute",
-              width: "30px",
-              height: "30px",
+              width: "25px",
+              height: "23px",
               borderRadius: "80px",
               color: "white",
+              top: "-20px",
+              right: "-20px",
               backgroundColor: "darkred",
+              textAlign: "center",
             }}
           >
-            {notReadMsg["잡담"]}
+            {notReadMsg["잡담"] !== 0 && notReadMsg["잡담"]}
           </div>
           잡담
         </button>
@@ -133,18 +145,22 @@ const ChatFooter = ({
           onClick={() => {
             chatTypeHandler("개인채팅");
           }}
+          style={{ position: "relative" }}
         >
           <div
             style={{
               position: "absolute",
-              width: "30px",
-              height: "30px",
+              width: "25px",
+              height: "23px",
               borderRadius: "80px",
               color: "white",
+              top: "-20px",
+              right: "-20px",
               backgroundColor: "darkred",
+              textAlign: "center",
             }}
           >
-            {notReadMsg["개인채팅"]}
+            {notReadMsg["개인채팅"] !== 0 && notReadMsg["개인채팅"]}
           </div>
           개인채팅
         </button>
