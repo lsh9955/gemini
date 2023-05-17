@@ -120,7 +120,7 @@ const PlayBar = ({ playHandler }: { playHandler: any }) => {
       </PhotoWrap>
       <ExitWrap
         onClick={() => {
-          history.push("/room");
+          history.push("/");
         }}
       >
         <img src={exit} alt="" />

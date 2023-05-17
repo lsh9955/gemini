@@ -32,6 +32,7 @@ const FourPicture = ({
       );
       const result = await response;
       setFourPic(result);
+      setMakePic(true);
     };
     imgCreateHandler();
   };
@@ -51,14 +52,14 @@ const FourPicture = ({
             flexDirection: "column",
           }}
         >
-          <div style={{ marginTop: "2%", fontSize: "110%" }}>
+          <div style={{ marginTop: "2%", fontSize: "90%", color: "white" }}>
             원하는 모습을 선택해주세요
           </div>
           <img
             src={fourUser}
             alt=""
             style={{
-              width: "30%",
+              width: "34%",
               height: "auto",
               cursor: "pointer",
               marginTop: "2%",
