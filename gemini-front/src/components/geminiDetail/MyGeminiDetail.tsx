@@ -83,17 +83,36 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   };
 
   const updateGalleryOnPublic = async () => {
-    const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
-      `user-service/gemini/updatePublic`,
-      { geminiPk: selectedImagePk, isPublic: isPublic }
-    );
+    // const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
+    //   `user-service/gallery/enrollment`,
+    //   { geminiPk: selectedImagePk, isPublic: isPublic }
+    // );
 
-    console.log(
-      "업데이트 되었나? geminiPk와 isPublic을 body에 담는데, userInfo 확인해서 유효성 검사하고. true로 보낸다면-> 갤러리에 해당 geminipk가 있는지 조회하고, 있으면 그대로 두고, 없을시 신설. false로 보낼시, 있는지 조회하고 있으면 삭제."
-    );
-    console.log(GalleryPublicRes);
-    alert("변경사항이 반영되었습니다.");
-    closeModal();
+    // console.log(
+    //   "업데이트 되었나? geminiPk와 isPublic을 body에 담는데, userInfo 확인해서 유효성 검사하고. true로 보낸다면-> 갤러리에 해당 geminipk가 있는지 조회하고, 있으면 그대로 두고, 없을시 신설. false로 보낼시, 있는지 조회하고 있으면 삭제."
+    // );
+    // console.log(GalleryPublicRes);
+    // alert("변경사항이 반영되었습니다.");
+    // closeModal();
+    try {
+      const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
+        `user-service/gallery/enrollment`,
+        { geminiPk: selectedImagePk, isPublic: isPublic }
+      );
+
+      const { method, updated } = GalleryPublicRes.data;
+
+      if (updated) {
+        alert(`변경사항이 정상적으로 반영되었습니다. ${method}.`);
+      } else {
+        // alert(`No action was performed. The gallery was already ${method === "created" ? "public" : "private"}.`); // 변경사항 없으면 그냥 닫음.
+      }
+
+      closeModal();
+    } catch (error) {
+      console.error("An error occurred:", error);
+      alert("변경사항이 반영되지 않았습니다. 다시 시도해주세요.");
+    }
   };
 
   useEffect(() => {
