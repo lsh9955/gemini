@@ -272,27 +272,28 @@ public class AlarmServiceImpl implements AlarmService {
         if (userInfo.isPresent()) {
             UserInfo user = userInfo.get();
             Long userNo = user.getUserPk();
-            Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userNo);
+            Optional<AlarmUser> alarmUser = alarmUserRepository.findById(userNo);
             if (alarmUser.isPresent()) {
                 AlarmUser alarmUser1 = alarmUser.get();
                 List<Long> alarmIds = alarmUser1.getAlarmIds();
                 List<AlarmDto> alarmDtos = new ArrayList<>();
                 for (Long alarmId : alarmIds) {
-                    AlarmData alarmData = alarmDataRepository.findByAlarmId(alarmId);
-                    Integer category = alarmData.getCategory();
+                    Optional<AlarmData> alarmData = alarmDataRepository.findById(alarmId);
+                    AlarmData data = alarmData.get();
+                    Integer category = data.getCategory();
                     AlarmDto alarmDto = AlarmDto.builder().
                             alarmId(alarmId).
-                            category(alarmData.getCategory()).
-                            memo(alarmData.getMemo()).
+                            category(data.getCategory()).
+                            memo(data.getMemo()).
                             build();
                     if (category == 1) {
-                        alarmDto.setFollower(alarmData.getFollower());
+                        alarmDto.setFollower(data.getFollower());
                     } else if (category == 2) {
-                        alarmDto.setGalleryNo(alarmData.getGalleryNo());
+                        alarmDto.setGalleryNo(data.getGalleryNo());
                     } else if (category == 3) {
-                        alarmDto.setGeminiNo(alarmData.getGeminiNo());
+                        alarmDto.setGeminiNo(data.getGeminiNo());
                     } else if (category == 4) {
-                        alarmDto.setImageUrl(alarmData.getImageUrl());
+                        alarmDto.setImageUrl(data.getImageUrl());
                     }
                     alarmDtos.add(alarmDto);
                 }
@@ -334,9 +335,10 @@ public class AlarmServiceImpl implements AlarmService {
         UserInfo user = userInfo.get();
         if (alarm != null) {
             alarmRepository.delete(alarm);
-            AlarmData alarmData = alarmDataRepository.findByAlarmId(alarmId);
-            alarmDataRepository.delete(alarmData);
-            Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(user.getUserPk());
+            Optional<AlarmData> alarmData = alarmDataRepository.findById(alarmId);
+            AlarmData data = alarmData.get();
+            alarmDataRepository.delete(data);
+            Optional<AlarmUser> alarmUser = alarmUserRepository.findById(user.getUserPk());
             AlarmUser alarmUser1 = alarmUser.get();
             List<Long> alarmIds = alarmUser1.getAlarmIds();
             alarmIds.remove(alarmId);

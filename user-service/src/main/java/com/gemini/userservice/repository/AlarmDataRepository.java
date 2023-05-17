@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlarmDataRepository extends CrudRepository<AlarmData, Long> {
-
-    AlarmData findByAlarmId(Long alarmId);
 }
