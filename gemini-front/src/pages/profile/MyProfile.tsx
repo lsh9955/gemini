@@ -34,6 +34,7 @@ import MyGeminiDetail from "../../components/geminiDetail/MyGeminiDetail";
 import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
 import { AppStore } from "../../store/store";
 import MyProfileContentBodyR from "../../components/profile/myprofile/MyProfileContentBodyR";
+import PayModal from "../../components/profile/pay/modal/PayModal";
 // import { MyProfileWrapper } from "../../components/profile/myprofile/MyProfileComp.styles";
 
 const MyProfile: FC = () => {
@@ -183,6 +184,20 @@ const MyProfile: FC = () => {
     setIsModalOpen(false);
   };
   // for Modal component 😀
+
+  // 페이 모달
+  const [payModal, showPayModal] = useState(false);
+  const [paymentResult, setPaymentResult] = useState<number>(starPoint);
+
+  const openPayModal = () => {
+    showPayModal(true);
+  };
+
+  const closePayModal = () => {
+    showPayModal(false);
+    console.log(paymentResult);
+  };
+
   return (
     <>
       <MyProfileWrapper minHeight={minHeight}>
@@ -194,7 +209,6 @@ const MyProfile: FC = () => {
               {/* AriesDummyProfile */}
               <EditPenButton></EditPenButton>
             </MyProfileImg>
-
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
@@ -213,13 +227,13 @@ const MyProfile: FC = () => {
                   팔로잉
                 </NumText>
                 <NumText>
-                  {starPoint}
+                  {paymentResult}
                   <br />
                   별조각
                 </NumText>
               </FollowingTextWrapper>
               {/* <PayButton /> */}
-              <OpenPayModalButton />
+              <OpenPayModalButton openPayModal={openPayModal} />
             </FollowingAndPayWrappter>
           </MyInfoContentWrapper>
         </MyInfoWrapper>
@@ -249,6 +263,9 @@ const MyProfile: FC = () => {
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>
+      {payModal && (
+        <PayModal onClose={closePayModal} setPaymentResult={setPaymentResult} />
+      )}
     </>
   );
 };
