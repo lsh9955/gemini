@@ -6,6 +6,7 @@ import com.gemini.userservice.dto.Alarm.GeminiAlarmDto;
 import com.gemini.userservice.dto.Alarm.LikeAlarmDto;
 import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
+import com.gemini.userservice.dto.response.ResponseGetAllAlarmsDto;
 import com.gemini.userservice.entity.Alarm;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -22,6 +23,9 @@ public interface AlarmService {
     ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto);
 
     ResponseAlarmDto createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto, SseEmitter emitter);
+
+    ResponseGetAllAlarmsDto getAllAlarms(String username);
+
 
     String deleteAlarm(String username, Long alarmId);
 

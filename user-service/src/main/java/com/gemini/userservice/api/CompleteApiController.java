@@ -39,6 +39,7 @@ public class CompleteApiController {
     private final CompleteService completeService;
 
     private final AlarmService alarmService;
+
     private final AlarmRepository alarmRepository;
 
     @PostMapping("/gemini")
@@ -53,7 +54,7 @@ public class CompleteApiController {
             GeminiAlarmDto geminiAlarmDto = new GeminiAlarmDto();
             geminiAlarmDto.setGeminiNo(res);
             geminiAlarmDto.setUsername(requestCompleteGeminiDto.getUsername());
-
+            geminiAlarmDto.setImageUrl(requestCompleteGeminiDto.getImageUrl());
             alarmService.createGeminiAlarm(geminiAlarmDto);
         }
 

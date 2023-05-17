@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
+import com.gemini.userservice.dto.response.ResponseGetAllAlarmsDto;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
@@ -59,15 +60,14 @@ public class AlarmApiController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAllAlarms(@RequestHeader("X-Username") String username) {
+    public ResponseEntity<ResponseGetAllAlarmsDto> getAllAlarms(@RequestHeader("X-Username") String username) {
 
-        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
-        if (!userInfo.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        ResponseGetAllAlarmsDto responseGetAllAlarmsDto = alarmService.getAllAlarms(username);
+        if (responseGetAllAlarmsDto == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(userInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(responseGetAllAlarmsDto);
     }
-
 
     @PostMapping("/gemini")
     public ResponseEntity<?> contractGemini(@RequestHeader("X-Username") String username,
