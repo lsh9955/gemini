@@ -44,7 +44,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     });
 
     chatSocket?.on("chat", function (data: any) {
-      setChatList([...chatList, data]);
+      setChatList((prev) => [...prev, data]);
     });
 
     chatSocket?.on("picCreateResponse", function (data: any) {
