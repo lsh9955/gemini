@@ -100,7 +100,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
       );
       const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
         `/user-service/gallery/enrollment`,
-        { geminiPk: selectedImagePk, isPublic: isPublic }
+        { geminiPk: selectedImagePk, isPublic: !isPublic }
       );
       console.log(GalleryPublicRes);
 
