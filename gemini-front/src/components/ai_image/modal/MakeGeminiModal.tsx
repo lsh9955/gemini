@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CompleteAiImage from "../../../assets/img/CompleteAiImage.png";
 import axios from "axios";
+import axiosInstanceWithAccessToken from "../../../utils/AxiosInstanceWithAccessToken";
 
 // styled-components
 import {
@@ -17,14 +18,14 @@ import {
 import SuccessGeminiModal from "../modal/SuccessGeminiModal";
 
 interface TagIds {
-  genreTagId: number;
-  presetTagId: number;
-  genderTagId: number;
-  hairColorTagId: number;
-  eyeColorTagId: number;
-  hairStyleTagId: number;
-  emotionTagId: number;
-  costumeTagId: number;
+  genreTagId: any;
+  presetTagId: any;
+  genderTagId: any;
+  hairColorTagId: any;
+  eyeColorTagId: any;
+  hairStyleTagId: any;
+  emotionTagId: any;
+  costumeTagId: any;
 }
 
 export interface Props {
@@ -48,7 +49,7 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
       tagIds.hairStyleTagId,
       tagIds.emotionTagId,
       tagIds.costumeTagId,
-    ],
+    ].filter((tagId) => tagId !== null),
   };
 
   // 여기서 axios가 성공했을 때 successgeminimodal로 보내기
@@ -57,13 +58,13 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
     // axios 성공시에 아래 성공 모달을 집어 넣는다. 그리고 반환된 별개수를 리덕스에 저장한다.
     // onClose();
     setCurrentModal(<SuccessGeminiModal tagIds={tagIds} onClose={onClose} />);
-    axios
-      .post("http://192.168.31.73:8081/user-service/gemini", data, {
+    axiosInstanceWithAccessToken
+      .post("/user-service/generate/gemini", data, {
         headers,
       })
       .then((response) => {
         console.log(response);
-        alert(`${response.data.star} 제미니가 제작의뢰가 들어갔다`);
+        alert(`제미니의 제작의뢰가 들어갔다`);
       })
       .catch((error) => {
         console.log(error);

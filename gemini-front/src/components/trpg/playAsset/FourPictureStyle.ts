@@ -1,36 +1,41 @@
 import styled from "styled-components";
 
-export const MusicWrap = styled.div<{ playerStyle: boolean }>`
+export const DiceWrap = styled.div<{ playerStyle: boolean }>`
   background: rgba(0, 0, 0, 0.45);
 
-  width: 30%;
+  width: 50%;
   height: 50%;
   position: absolute;
-  left: 20%;
+  left: 10%;
   top: 15%;
+  padding: 2% 0;
   display: ${(props) => (props.playerStyle ? "none" : "flex")};
   border-radius: 4px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
-export const MusicTitle = styled.div`
+export const DiceTitle = styled.div`
   font-size: 120%;
   color: white;
-  margin-bottom: 4%;
+  margin-bottom: 3%;
 `;
-export const MusicInput = styled.input`
-  width: 80%;
-  height: 8%;
-  margin-bottom: 4%;
+export const DiceStart = styled.button`
+  width: 20%;
+  height: 15%;
+
+  color: white;
+  font-size: 110%;
+  border: 1px solid white;
+  border-radius: 4px;
 `;
 export const SizeButton = styled.button`
-  width: 50%;
-  height: 8%;
-  margin-top: 4%;
+  width: 10%;
+  height: auto;
   color: white;
-  font-size: 120%;
+  font-size: 90%;
   border-radius: 4px;
   background-color: transparent;
   border: 1px solid white;
+  cursor: pointer;
 `;

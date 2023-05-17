@@ -44,6 +44,7 @@ const UserProfile: FC = () => {
   const history = useHistory();
 
   // const [nickname, setNickname] = useState<string>("닉네임");
+  const [profileImg, setProfileImg] = useState<string>(AriesDummyProfile);
   const [desc, setDesc] = useState<string>(
     "자기소개 부분: 내가 좋아하는 세계관, 캐릭터 등등을 적어보자 자  최대 몇글자로 하는게 좋을까? 넘기면 ...으로 만들까?"
   );
@@ -63,6 +64,7 @@ const UserProfile: FC = () => {
     setTotalGallery(res.data.geminis.length);
     setDesc(res.data.description);
     setIsFollowing(res.data.isFollowing);
+    setProfileImg(res.data.profileUrl);
   };
 
   useEffect(() => {
@@ -93,20 +95,29 @@ const UserProfile: FC = () => {
 
   const loadMoreImages = useCallback(async () => {
     try {
-      const response = await axiosInstanceWithAccessToken.get(
-        "/user-service/profile/usergeminis",
+      const response = await axiosInstanceWithAccessToken.post(
+        "/user-service/gallery/usergalleries",
+        {
+          nickname: nickname,
+        },
         {
           params: {
-            nickname: nickname,
             page: page,
             size: 16,
           },
         }
       );
 
+      console.log(response);
+
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
-          (item: any) => item.imageUrl
+          (item: any) => ({
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
+          })
+
+          // (item: any) => item.imageUrl
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         setPage((prevPage) => prevPage + 1);
@@ -146,7 +157,7 @@ const UserProfile: FC = () => {
           <MyBgImg></MyBgImg>
           <MyInfoSpace></MyInfoSpace>
           <MyInfoContentWrapper>
-            <MyProfileImg imgUrl={AriesDummyProfile}></MyProfileImg>
+            <MyProfileImg imgUrl={profileImg}></MyProfileImg>
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
               <Desc>{desc}</Desc>
@@ -180,10 +191,8 @@ const UserProfile: FC = () => {
         </MyInfoWrapper>
         <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
-            <MyProfileContentTitle>닉네임님의 Gemini</MyProfileContentTitle>
-            <MyProfileContentTitle>
-              닉네임님의 TRPG 추억로그
-            </MyProfileContentTitle>
+            <MyProfileContentTitle>{nickname}님의 Gemini</MyProfileContentTitle>
+            <MyProfileContentTitle>TRPG 추억로그</MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
             <MyProfileContentBody

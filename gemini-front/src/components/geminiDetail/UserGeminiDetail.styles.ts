@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import HeartAnime from "../../assets/img/HeartAnime.gif";
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -448,4 +449,18 @@ export const GeminiInfoButton = styled.div`
   &:active {
     background-color: rgba(255, 255, 255, 0.3);
   }
+`;
+
+interface HeartImgProps {
+  animationVisible: boolean;
+}
+
+export const HeartImg = styled.div<HeartImgProps>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(${HeartAnime});
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: ${({ animationVisible }) => (animationVisible ? "block" : "none")};
 `;

@@ -66,7 +66,7 @@ export const PasswordInput = styled.input<{ passwordOpen: boolean }>`
   font-size: 140%;
   margin-bottom: 5%;
 `;
-export const MakeRoombtn = styled.input`
+export const CheckPwButton = styled.button`
   width: 100%;
   height: 10%;
   font-size: 150%;

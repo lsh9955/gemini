@@ -38,7 +38,7 @@ interface ImageData {
   geminiPk: number;
 }
 
-interface ImageData2 {
+interface RankingImageData {
   imageUrl: string;
   galleryNo: number;
 }
@@ -65,21 +65,42 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     // ...
   ];
 
-  const [images, setImages] = useState<ImageData[]>([...dummyImgs]);
+  const [images, setImages] = useState<ImageData[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
 
-  const [weeklyTop5, setWeeklyTop5] = useState<ImageData[]>([...dummyImgs]);
-  const [monthlyTop5, setMonthlyTop5] = useState<ImageData[]>([...dummyImgs]);
+  const dummyRankingImgs = [
+    { imageUrl: "http://placeimg.com/150/200/tech", galleryNo: 1 },
+    { imageUrl: "http://placeimg.com/150/200/tech", galleryNo: 2 },
+    { imageUrl: "http://placeimg.com/150/200/tech", galleryNo: 3 },
+    { imageUrl: "http://placeimg.com/150/200/tech", galleryNo: 4 },
+    { imageUrl: "http://placeimg.com/150/200/tech", galleryNo: 5 },
+    // ...
+  ];
+  const [weeklyTop5, setWeeklyTop5] = useState<RankingImageData[]>([
+    ...dummyRankingImgs,
+  ]);
+  const [monthlyTop5, setMonthlyTop5] = useState<RankingImageData[]>([
+    ...dummyRankingImgs,
+  ]);
+
+  const fetchRankingData = async () => {
+    const dailyRes = await axiosInstanceWithAccessToken.get(
+      "/user-service/gallery/daily"
+    );
+
+    const weeklyRes = await axiosInstanceWithAccessToken.get(
+      "/user-service/gallery/weekly"
+    );
+    console.log("랭킹 데이터 가져옵니다.");
+    console.log(dailyRes);
+    console.log(weeklyRes);
+    console.log("여기까지!");
+  };
 
   useEffect(() => {
     console.log("일간, 주간 갤러리 요청");
-    const dailyRes = axiosInstanceWithAccessToken.get(
-      "/user-service/gallery/daily"
-    );
-    const weeklyRes = axiosInstanceWithAccessToken.get(
-      "/user-service/gallery/weekly"
-    );
+    fetchRankingData();
 
     // Dto 보니까 아래처럼 들어와서 바꿔야함.
     // interface ImageData2 {
@@ -107,10 +128,17 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
           },
         }
       );
+      console.log("아래가 결과임");
+      console.log(`${response.data.length}개`);
+      console.log(response);
+      console.log("위가 결과임");
 
       if (response.status === 200) {
         const newImages = response.data.galleryPage.content.map(
-          (item: any) => item.imageUrl
+          (item: any) => ({
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
+          })
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         setPage((prevPage) => prevPage + 1);
@@ -194,8 +222,8 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
             <StyledImg
               key={index}
               imageUrl={imageData.imageUrl}
-              geminiPk={imageData.geminiPk}
-              onClick={() => handleImageClick(imageData.geminiPk)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
+              geminiPk={imageData.galleryNo}
+              onClick={() => handleImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
@@ -205,8 +233,8 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
             <StyledImg
               key={index}
               imageUrl={imageData.imageUrl}
-              geminiPk={imageData.geminiPk}
-              onClick={() => handleImageClick(imageData.geminiPk)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
+              geminiPk={imageData.galleryNo}
+              onClick={() => handleImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
