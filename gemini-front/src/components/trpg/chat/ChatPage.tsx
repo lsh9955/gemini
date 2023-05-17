@@ -15,6 +15,27 @@ const ChatPage = ({
 }) => {
   const [nowMsgType, setNowMsgType] = useState("룸 채팅");
   const [typingStatus, setTypingStatus] = useState("");
+  const [notReadMsg, setNotReadMsg] = useState({
+    "룸 채팅": 0,
+    정보: 0,
+    잡담: 0,
+    개인채팅: 0,
+  });
+  useEffect(() => {
+    if (messages?.length > 0) {
+      if (messages[messages.length - 1].type !== nowMsgType) {
+        const newNotRead: any = notReadMsg;
+        newNotRead[messages[messages.length - 1].type] =
+          newNotRead[messages[messages.length - 1].type] + 1;
+        setNotReadMsg(newNotRead);
+      }
+    }
+  }, [messages]);
+  useEffect(() => {
+    const newNotRead: any = notReadMsg;
+    newNotRead[nowMsgType] = 0;
+    setNotReadMsg(newNotRead);
+  }, [nowMsgType]);
 
   const nowMsgTypeHandler = (data: string) => {
     setNowMsgType(data);
@@ -34,9 +55,11 @@ const ChatPage = ({
       </ChatBodyWrap>
 
       <ChatFooter
+        notReadMsg={notReadMsg}
         chatSocket={chatSocket}
         nowMsgTypeHandler={nowMsgTypeHandler}
         userList={userList}
+        nowMsgType={nowMsgType}
       />
     </ChatWrap>
   );
