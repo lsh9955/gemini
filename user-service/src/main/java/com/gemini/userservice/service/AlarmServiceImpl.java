@@ -31,6 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 @RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService {
+    private final UserPoseRepository userPoseRepository;
 
 
     @Autowired
@@ -57,7 +58,11 @@ public class AlarmServiceImpl implements AlarmService {
     private final EmitterRepository emitterRepository;
 
     @Override
-    public SseEmitter subscribe(String username) {
+    public SseEmitter subscribe(String nickname) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByNickname(nickname);
+        UserInfo user = userInfo.get();
+        String username = user.getUsername();
         // 새로운 SseEmitter를 만든다
         SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
 

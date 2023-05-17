@@ -50,10 +50,10 @@ public class AlarmApiController {
     // 인코딩 에러 고침
 
     @GetMapping("/subscribe")
-    public ResponseEntity<SseEmitter> subscribe(@RequestHeader("X-Username") String username) {
+    public ResponseEntity<SseEmitter> subscribe(@RequestParam("nickname")String nickname) {
         // Authentication을 UserDto로 업캐스팅
 
-        SseEmitter res = alarmService.subscribe(username);
+        SseEmitter res = alarmService.subscribe(nickname);
 
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
