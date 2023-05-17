@@ -15,6 +15,7 @@ import {
   LikeWrapper,
   LinkProfileWrapper,
   NameInputWrapper,
+  ProfileChangeButton,
   TagArea,
   TagBlockWrapper,
   Tags,
@@ -102,7 +103,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
       console.log(isPublic);
       const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
         `/user-service/gallery/enrollment`,
-        { geminiPk: selectedImagePk, isPublic: !isPublic }
+        { geminiPk: selectedImagePk, isPublic: isPublic }
       );
       console.log(GalleryPublicRes);
 
@@ -158,7 +159,9 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
               <MyLikeWrapper>
                 <HeartIcon>❤️</HeartIcon>
                 <LikeCount>{likeCount}개의 좋아요</LikeCount>
-                <div onClick={profileImgUpdate}>프사 변경버튼</div>
+                <ProfileChangeButton onClick={profileImgUpdate}>
+                  프로필사진 변경
+                </ProfileChangeButton>
               </MyLikeWrapper>
             </LikeNicknameWrapper>
           </GeminiDetailImgWrapper>
