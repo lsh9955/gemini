@@ -18,14 +18,14 @@ import {
 import SuccessGeminiModal from "../modal/SuccessGeminiModal";
 
 interface TagIds {
-  genreTagId: number;
-  presetTagId: number;
-  genderTagId: number;
-  hairColorTagId: number;
-  eyeColorTagId: number;
-  hairStyleTagId: number;
-  emotionTagId: number;
-  costumeTagId: number;
+  genreTagId: any;
+  presetTagId: any;
+  genderTagId: any;
+  hairColorTagId: any;
+  eyeColorTagId: any;
+  hairStyleTagId: any;
+  emotionTagId: any;
+  costumeTagId: any;
 }
 
 export interface Props {
