@@ -97,9 +97,11 @@ public class AlarmServiceImpl implements AlarmService {
         // 유저 ID로 SseEmitter를 찾아 이벤트를 발생 시킨다.
         emitterRepository.get(username).ifPresentOrElse(sseEmitter -> {
             try {
+                System.out.println("보내기보내기보내기");
                 sseEmitter.send(SseEmitter.event().id(alarmId.toString()).name(NOTIFICATION_NAME).data(responseAlarmDto));
             } catch (IOException exception) {
                 // IOException이 발생하면 저장된 SseEmitter를 삭제하고 예외를 발생시킨다.
+                System.out.println(exception);
                 emitterRepository.delete(username);
             }
         }, () -> log.info("No emitter found"));
