@@ -71,7 +71,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   const profileImgUpdate = async () => {
     try {
       const profileUpdateRes = await axiosInstanceWithAccessToken.post(
-        `user-service/profile/profileImage`,
+        `/user-service/profile/profileImage`,
         { geminiPk: selectedImagePk }
       );
       setProfileImg(geminiImg);
@@ -95,8 +95,11 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     // alert("변경사항이 반영되었습니다.");
     // closeModal();
     try {
+      console.log(
+        `보낸다 ${{ geminiPk: selectedImagePk, isPublic: isPublic }}`
+      );
       const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
-        `user-service/gallery/enrollment`,
+        `/user-service/gallery/enrollment`,
         { geminiPk: selectedImagePk, isPublic: isPublic }
       );
       console.log(GalleryPublicRes);
