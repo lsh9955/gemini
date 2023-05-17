@@ -8,10 +8,14 @@ const ChatFooter = ({
   nowMsgTypeHandler,
   chatSocket,
   userList,
+  nowMsgType,
+  notReadMsg,
 }: {
   nowMsgTypeHandler: any;
   chatSocket: Socket;
   userList: Array<string>;
+  nowMsgType: any;
+  notReadMsg: any;
 }) => {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -74,6 +78,18 @@ const ChatFooter = ({
           }}
         >
           룸 채팅
+          <div
+            style={{
+              position: "absolute",
+              width: "5%",
+              height: "5%",
+              borderRadius: "80px",
+              color: "white",
+              backgroundColor: "darkred",
+            }}
+          >
+            {notReadMsg["룸 채팅"]}
+          </div>
         </button>
         <button
           onClick={() => {
@@ -81,6 +97,18 @@ const ChatFooter = ({
           }}
         >
           정보
+          <div
+            style={{
+              position: "absolute",
+              width: "5%",
+              height: "5%",
+              borderRadius: "80px",
+              color: "white",
+              backgroundColor: "darkred",
+            }}
+          >
+            {notReadMsg["정보"]}
+          </div>
         </button>
         <button
           onClick={() => {
@@ -88,6 +116,18 @@ const ChatFooter = ({
           }}
         >
           잡담
+          <div
+            style={{
+              position: "absolute",
+              width: "5%",
+              height: "5%",
+              borderRadius: "80px",
+              color: "white",
+              backgroundColor: "darkred",
+            }}
+          >
+            {notReadMsg["잡담"]}
+          </div>
         </button>
         <button
           onClick={() => {
@@ -95,6 +135,18 @@ const ChatFooter = ({
           }}
         >
           개인채팅
+          <div
+            style={{
+              position: "absolute",
+              width: "5%",
+              height: "5%",
+              borderRadius: "80px",
+              color: "white",
+              backgroundColor: "darkred",
+            }}
+          >
+            {notReadMsg["개인채팅"]}
+          </div>
         </button>
       </ChatStatuButtonWrap>
       <ChatInputWrap>
