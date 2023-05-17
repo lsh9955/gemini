@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import { GetPictureTitle, GetPictureWrap, SizeButton } from "./GetPictureStyle";
 import { useSelector } from "react-redux";
+import { PicUser } from "./RandomPickStyle";
 
 const RandomPick = ({
   chatSocket,
@@ -17,7 +18,9 @@ const RandomPick = ({
   const userSeq = useSelector((state: any) => state.user);
   const [voteArr, setVoteArr] = useState<string[]>([]);
   const [isVoted, setIsvoted] = useState<boolean>(false);
+  const [isPicked, setIsPicked] = useState(false);
   const [voteResult, setVoteResult] = useState<any>(null);
+  const [ranPickUser, setRanPickUser] = useState<any>([]);
   useEffect(() => {
     if (!voteInfo) {
       setVoteArr([]);
@@ -58,16 +61,14 @@ const RandomPick = ({
   const startVote = () => {
     console.log(voteInfo);
     chatSocket?.emit("randomPick", {
+      ranPick: ranPickUser,
       roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
     });
+    setRanPickUser([]);
+    setIsPicked(false);
   };
   const pickUser = (e: any) => {
-    setIsvoted(true);
-    console.log(e);
-    chatSocket.emit("pickUser", {
-      pickUser: e,
-      roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
-    });
+    setRanPickUser((prev: any) => [...prev, e]);
   };
 
   function findMostFrequentElement(arr: Array<string>) {
@@ -117,13 +118,67 @@ const RandomPick = ({
     <>
       <GetPictureWrap playerStyle={playTarget !== "randompick"}>
         <GetPictureTitle>
-          {!voteInfo && !voteResult && (
+          {!voteInfo && !voteResult && !isPicked && (
             <>
               <p style={{ marginTop: "5%", fontSize: "160%" }}>
                 랜덤으로 한 명을 선택하시겠어요?
               </p>
               <button
-                onClick={startVote}
+                onClick={() => {
+                  setIsPicked(true);
+                }}
+                style={{
+                  marginTop: "15%",
+                  fontSize: "140%",
+                  color: "white",
+                  border: "1px solid white",
+                  backgroundColor: "transparent",
+                }}
+              >
+                시작하기
+              </button>
+            </>
+          )}
+          {isPicked && (
+            <>
+              <p style={{ marginTop: "5%", fontSize: "160%" }}>
+                랜덤으로 뽑을 사람들을 정해주세요
+              </p>
+              <div
+                style={{
+                  marginTop: "5%",
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  width: "80%",
+                  height: "50%",
+                }}
+              ></div>
+              {voteInfo[0].userarr
+                .filter((v: any) => v !== voteInfo[0].owner)
+                .map((k: any) => {
+                  return (
+                    <PicUser
+                      pickedUser={ranPickUser.indexOf(k) === -1}
+                      onClick={() => {
+                        ranPickUser.indexOf(k) === -1
+                          ? pickUser(k)
+                          : setRanPickUser(
+                              ranPickUser
+                                .slice()
+                                .splice(ranPickUser.indexOf(k), 1)
+                            );
+                      }}
+                    >
+                      {k}
+                    </PicUser>
+                  );
+                })}
+              <button
+                onClick={() => {
+                  startVote();
+                }}
                 style={{
                   marginTop: "15%",
                   fontSize: "140%",
