@@ -47,4 +47,12 @@ public class EmitterRepository {
     private String getKey(String username) {
         return "Emitter:UID:" + username;
     }
+
+    public Boolean contains(String username) {
+        String key = getKey(username);
+        if (emitterMap.containsKey(key)) {
+            return true;
+        }
+        return false;
+    }
 }
