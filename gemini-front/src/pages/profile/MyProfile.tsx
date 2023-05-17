@@ -336,11 +336,17 @@ const MyProfile: FC = () => {
         </MyInfoWrapper>
         <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
-            <MyProfileContentTitle onClick={handleGeminiClick}>
+            <MyProfileContentTitle
+              active={currentView === "Gemini"}
+              onClick={handleGeminiClick}
+            >
               {nickname}님의 Gemini
             </MyProfileContentTitle>
             {/* <MyProfileContentTitle>|</MyProfileContentTitle> */}
-            <MyProfileContentTitle onClick={handleTRPGClick}>
+            <MyProfileContentTitle
+              active={currentView === "TRPG"}
+              onClick={handleTRPGClick}
+            >
               TRPG 추억로그
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>

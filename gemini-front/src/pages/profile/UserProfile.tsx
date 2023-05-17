@@ -150,6 +150,10 @@ const UserProfile: FC = () => {
   };
   // for modal component 😉
 
+  const [currentView, setCurrentView] = useState<"Gemini" | "TRPG">("Gemini");
+  const handleGeminiClick = () => setCurrentView("Gemini");
+  const handleTRPGClick = () => setCurrentView("TRPG");
+
   return (
     <>
       <MyProfileWrapper minHeight={minHeight}>
@@ -191,8 +195,18 @@ const UserProfile: FC = () => {
         </MyInfoWrapper>
         <MyProfileContentWrapper minHeight={minHeight}>
           <MyProfileContentTitleWrapper>
-            <MyProfileContentTitle>{nickname}님의 Gemini</MyProfileContentTitle>
-            <MyProfileContentTitle>TRPG 추억로그</MyProfileContentTitle>
+            <MyProfileContentTitle
+              active={currentView === "Gemini"}
+              onClick={handleGeminiClick}
+            >
+              {nickname}님의 Gemini
+            </MyProfileContentTitle>
+            <MyProfileContentTitle
+              active={currentView === "TRPG"}
+              onClick={handleTRPGClick}
+            >
+              TRPG 추억로그
+            </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
             <MyProfileContentBody
