@@ -77,7 +77,7 @@ public class AlarmServiceImpl implements AlarmService {
         try {
             sseEmitter.send(SseEmitter.event().id("").name(NOTIFICATION_NAME).data("Connection completed"));
         } catch (IOException exception) {
-
+            throw new RuntimeException("Failed to send SSE event", exception);
         }
         return sseEmitter;
     }
