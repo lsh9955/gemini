@@ -113,30 +113,30 @@ const AppRoutes = () => {
     (state: AppStore) => state.user.nickname
   );
 
-  useEffect(() => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://mygemini.co.kr/user-service/alarms");
-    // xhr.open("GET", "http://192.168.31.221:8081/alarms");
-    // xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-    xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
-    xhr.withCredentials = true;
-    xhr.send();
+  // useEffect(() => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open("GET", "https://mygemini.co.kr/user-service/alarms");
+  //   // xhr.open("GET", "http://192.168.31.221:8081/alarms");
+  //   // xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+  //   xhr.responseType = "text"; // 텍스트 응답을 받을 수 있도록 설정
+  //   xhr.withCredentials = true;
+  //   xhr.send();
 
-    const url = `https://mygemini.co.kr/user-service/alarms?nickname=${reduxNickname}`;
-    // const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
-    const eventSource = new EventSource(url, {
-      withCredentials: true,
-    });
-    eventSource.onmessage = (event) => {
-      const newAlarm = JSON.parse(event.data);
-      setAlarmList(newAlarm);
-    };
-    return () => {
-      eventSource.close();
-      xhr.abort();
-    };
-  }, []);
-  console.log(alarmList);
+  //   const url = `https://mygemini.co.kr/user-service/alarms?nickname=${reduxNickname}`;
+  //   // const url = "http://192.168.31.221:8081/alarms?nickname=yeji";
+  //   const eventSource = new EventSource(url, {
+  //     withCredentials: true,
+  //   });
+  //   eventSource.onmessage = (event) => {
+  //     const newAlarm = JSON.parse(event.data);
+  //     setAlarmList(newAlarm);
+  //   };
+  //   return () => {
+  //     eventSource.close();
+  //     xhr.abort();
+  //   };
+  // }, []);
+  // console.log(alarmList);
 
   return (
     <>
