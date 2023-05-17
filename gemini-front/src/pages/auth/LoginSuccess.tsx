@@ -98,7 +98,9 @@ const LoginSuccess: FC = () => {
         return () => {
           // 컴포넌트가 언마운트될 때 SSE 연결 종료
 
-          eventSource.close();
+          if (eventSource) {
+            eventSource.close();
+          }
         };
       };
       alarmSubscribe();
