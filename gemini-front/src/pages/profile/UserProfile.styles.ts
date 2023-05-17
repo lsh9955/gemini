@@ -189,6 +189,7 @@ export const MyProfileContentWrapper = styled.div<MyProfileContentBodyWrapperPro
   padding-left: 5.2vw;
   padding-right: 5.2vw;
   background-color: #ffffff99; // 수정 필요😀
+  z-index: 11;
 `;
 
 // export const MyProfileContentBodyWrapper = styled.div`
@@ -201,18 +202,26 @@ export const MyProfileContentWrapper = styled.div<MyProfileContentBodyWrapperPro
 export const MyProfileContentBodyWrapper = styled.div<MyProfileContentBodyWrapperProps>`
   min-height: ${({ minHeight }) => minHeight};
   //   background-color: #ffffff99; // 바꿀까? 😀
+  z-index: 12;
 `;
 
 export const MyProfileContentTitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  // justify-content: space-around;
+  margin-bottom: 1.5vw; // 😀 타이틀이랑 간격 수정가능
 `;
 
 export const MyProfileContentTitle = styled.div`
   //   height: ${myProfileContentWrapperHeight};
   font-size: 1.3rem;
   //   background-color: #ffffff99;
-  margin-right: 2vw;
+  margin-right: 4vw;
+  // margin-left: 2vw;
+  cursor: pointer;
+  z-index: 10;
+  // color: #858585;
+  border-bottom: 2px solid black;
 `;
 
 // export const EditPenButton = styled.div`

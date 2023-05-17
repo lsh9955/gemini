@@ -89,7 +89,33 @@ export const TextArea = styled.textarea`
 export const CharacterContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  align-items: center;
   // margin-bottom: 16px;
+  margin-top: 5%;
+  margin-bottom: 1.5%;
+  // padding-left: 10%;
+  margin-left: 10%;
+  width: 100%;
+`;
+
+export const PairchildName = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  // margin-bottom: 16px;
+  margin-top: 5%;
+  margin-bottom: 1.5%;
+  color: white;
+  white-space: pre-wrap;
+`;
+
+export const PairchildNameContainer = styled.div`
+  position: absolute;
+  top: 60%;
+  left: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   margin-top: 5%;
   margin-bottom: 1.5%;
 `;
