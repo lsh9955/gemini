@@ -32,7 +32,7 @@ interface Props {
 
 const NeedPayModal: React.FC<Props> = ({ onClose }) => {
   const [numberValue, setNumberValue] = useState("");
-  const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
+  // const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
   const dispatch = useDispatch();
 
   // 숫자 외 입력 불가
@@ -74,10 +74,12 @@ const NeedPayModal: React.FC<Props> = ({ onClose }) => {
           console.log(response);
           const updatedStar = response.data.star;
           dispatch(updateStar(updatedStar)); // updateStar 액션 dispatch
+          onClose();
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         })
         .catch((error) => {
           console.log(error);
+          onClose();
           // setCurrentModal(<MakeGeminiModal onClose={onClose} />);
         });
     }
@@ -85,32 +87,32 @@ const NeedPayModal: React.FC<Props> = ({ onClose }) => {
 
   return (
     <>
-      {currentModal ? (
+      {/* {currentModal ? (
         currentModal
-      ) : (
-        <Overlay onClick={onClose} aria-hidden>
-          <div aria-hidden onClick={(e) => e.stopPropagation()}>
-            <ModalContainer>
-              <ModalForm>
-                <PayTitle>별조각 1개당 1000원이 결제됩니다.</PayTitle>
-                <InputContainer>
-                  <Input
-                    type="text"
-                    value={numberValue}
-                    onChange={handleInputChange}
-                  />
-                  <InputSpan>별조각</InputSpan>
-                </InputContainer>
-                <PayButton onClick={onClickPayment}>
-                  <LogoImage src={KakaoLogo} alt="logo"></LogoImage>
-                  구매하기
-                </PayButton>
-              </ModalForm>
-              <ModalBackground src={CompleteAiImage} alt="modal-background" />
-            </ModalContainer>
-          </div>
-        </Overlay>
-      )}
+      ) : ( */}
+      <Overlay onClick={onClose} aria-hidden>
+        <div aria-hidden onClick={(e) => e.stopPropagation()}>
+          <ModalContainer>
+            <ModalForm>
+              <PayTitle>별조각 1개당 1000원이 결제됩니다.</PayTitle>
+              <InputContainer>
+                <Input
+                  type="text"
+                  value={numberValue}
+                  onChange={handleInputChange}
+                />
+                <InputSpan>별조각</InputSpan>
+              </InputContainer>
+              <PayButton onClick={onClickPayment}>
+                <LogoImage src={KakaoLogo} alt="logo"></LogoImage>
+                구매하기
+              </PayButton>
+            </ModalForm>
+            <ModalBackground src={CompleteAiImage} alt="modal-background" />
+          </ModalContainer>
+        </div>
+      </Overlay>
+      {/* )} */}
     </>
   );
 };
