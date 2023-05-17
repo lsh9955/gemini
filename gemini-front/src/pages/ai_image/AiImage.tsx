@@ -416,14 +416,16 @@ const AiImage: FC = () => {
   const [showGeminiModal, setShowGeminiModal] = useState(false);
   const [showNeedStarModal, setShowNeedStarModal] = useState(false);
 
-  const headers = {
-    "X-Username": "google_109918724409380589068",
-  };
+  // const headers = {
+  // "X-Username": "google_109918724409380589068",
+  // };
   const openGeminiModal = () => {
-    axios
-      .get("http://192.168.31.73:8081/user-service/gemini", {
-        headers,
-      })
+    axiosInstanceWithAccessToken
+      .get(`/user-service/generate`)
+      // axios
+      // .get("http://192.168.31.73:8081/user-service/gemini", {
+      // headers,
+      // })
       .then((response) => {
         console.log(response);
         if (response.data === 0) {
