@@ -102,7 +102,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     if (msg.type === "룸 채팅") {
       setGameMsg([...gameMsg, msg]);
     }
-    setMsgData([...msgData, msg]);
+    setMsgData((prev) => [...prev, msg]);
     console.log(gameMsg, msg);
   }, [msg]);
 
