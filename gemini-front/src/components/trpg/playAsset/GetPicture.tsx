@@ -222,7 +222,7 @@ const GetPicture = ({
                 <img
                   src={loading}
                   alt=""
-                  style={{ width: "100%", height: "auto" }}
+                  style={{ width: "60%", height: "auto" }}
                 />
               )}
             </BackImgWrap>
