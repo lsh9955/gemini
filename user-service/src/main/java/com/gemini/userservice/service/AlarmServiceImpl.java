@@ -4,14 +4,13 @@ import com.gemini.userservice.dto.Alarm.BackgroundAlarmDto;
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.Alarm.GeminiAlarmDto;
 import com.gemini.userservice.dto.Alarm.LikeAlarmDto;
+import com.gemini.userservice.dto.AlarmDto;
 import com.gemini.userservice.dto.request.RequestContractGeminiDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
-import com.gemini.userservice.entity.Alarm;
+import com.gemini.userservice.dto.response.ResponseGetAllAlarmsDto;
+import com.gemini.userservice.entity.*;
 
-import com.gemini.userservice.entity.Gallery;
-import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.*;
-import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.AlarmRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,20 +31,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 @RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService {
+
     private final UserPoseRepository userPoseRepository;
 
+    private final UserInfoRepository userInfoRepository;
 
-    @Autowired
-    private UserInfoRepository userInfoRepository;
+    private final GalleryRepository galleryRepository;
 
-    @Autowired
-    private GalleryRepository galleryRepository;
+    private final GeminiRepository geminiRepository;
 
-    @Autowired
-    private GeminiRepository geminiRepository;
-
-    @Autowired
-    private GalleryService galleryService;
+    private final GalleryService galleryService;
 
     private final static Long DEFAULT_TIMEOUT = 3600000L;
 
@@ -52,7 +48,12 @@ public class AlarmServiceImpl implements AlarmService {
 
     private final AlarmRepository alarmRepository;
 
+    private final AlarmDataRepository alarmDataRepository;
+
+    private final AlarmUserRepository alarmUserRepository;
+
     private final EmitterRepository emitterRepository;
+
 
     @Override
     public SseEmitter subscribe(String nickname) {
@@ -119,9 +120,6 @@ public class AlarmServiceImpl implements AlarmService {
 
 
         Alarm alarm = Alarm.builder()
-                .follower(userInfo.getNickname())
-                .memo(encodedMessage)
-                .category(1)
                 .build();
         alarmRepository.save(alarm);
 
@@ -167,11 +165,6 @@ public class AlarmServiceImpl implements AlarmService {
 
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
-                .geminiNo(gallery.getGemini().getGeminiNo())
-                .memo(encodedMessage)
-//                .userInfo(userInfo)
-                .category(2)
-//                .nickname(gallery.getGemini().getUserInfo().getNickname())
                 .build();
         alarmRepository.save(alarm);
 
@@ -192,8 +185,6 @@ public class AlarmServiceImpl implements AlarmService {
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(geminiAlarmDto.getUsername());
         UserInfo userInfo = userInfo2.get();
-        String nickname = userInfo.getNickname();
-        geminiAlarmDto.setNickname(nickname);
 
         // 인코딩한 메세지 넣기
         String messege = "Gemini 소환이 완료되었습니다.";
@@ -201,32 +192,44 @@ public class AlarmServiceImpl implements AlarmService {
 
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
-                .memo(encodedMessage)
-                .geminiNo(geminiAlarmDto.getGeminiNo())
-//                .userInfo(userInfo)
-                .category(3)
-//                .nickname(nickname)
                 .build();
         alarmRepository.save(alarm);
+        Long alarmId = alarm.getAlarmId();
+        AlarmData alarmData = AlarmData.builder().
+                alarmId(alarmId).
+                category(3).
+                geminiNo(geminiAlarmDto.getGeminiNo()).
+                memo(encodedMessage).
+                build();
+        alarmDataRepository.save(alarmData);
+
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userInfo.getUserPk());
+        if (alarmUser.isPresent()) {
+            AlarmUser alarmUser1 = alarmUser.get();
+            List<Long> alarmIds = alarmUser1.getAlarmIds();
+            alarmIds.add(alarmId);
+            alarmUser1.update(alarmIds);
+            alarmUserRepository.save(alarmUser1);
+        }
+        else {
+            List<Long> alarmIds = new ArrayList<>();
+            alarmIds.add(alarmId);
+            AlarmUser alarmUser1 = AlarmUser.builder().
+                    userNo(userInfo.getUserPk()).
+                    alarmIds(alarmIds).
+                    build();
+            alarmUserRepository.save(alarmUser1);
+        }
 
         // 새로운 알람 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
         ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
                 .memo(encodedMessage)
+                .category(3)
+                .geminiNo(geminiAlarmDto.getGeminiNo())
+                .imageUrl(geminiAlarmDto.getImageUrl())
                 .build();
 
         send(userInfo.getUsername(), alarm.getAlarmId(), responseAlarmDto);
-
-
-//        for (SseEmitter sseEmitter : emitters) {
-//            try {
-//                sseEmitter.send(responseAlarmDto);
-//            } catch (IOException ex) {
-//                // SSE 클라이언트 연결이 종료된 경우, 리스트에서 제거
-//                emitters.remove(emitter);
-//            }
-//
-//        }
-
 
         return responseAlarmDto;
 
@@ -246,11 +249,6 @@ public class AlarmServiceImpl implements AlarmService {
 
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
-                .memo(encodedMessage)
-//                .userInfo(userInfo)
-                .category(4)
-//                .nickname(nickname)
-                .imageUrl(backgroundAlarmDto.getImageUrl())
                 .build();
         alarmRepository.save(alarm);
 
@@ -265,6 +263,44 @@ public class AlarmServiceImpl implements AlarmService {
 
     }
 
+    @Override
+    public ResponseGetAllAlarmsDto getAllAlarms(String username) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        if (userInfo.isPresent()) {
+            UserInfo user = userInfo.get();
+            Long userNo = user.getUserPk();
+            Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userNo);
+            if (alarmUser.isPresent()) {
+                AlarmUser alarmUser1 = alarmUser.get();
+                List<Long> alarmIds = alarmUser1.getAlarmIds();
+                List<AlarmDto> alarmDtos = new ArrayList<>();
+                for (Long alarmId : alarmIds) {
+                    AlarmData alarmData = alarmDataRepository.findByAlarmId(alarmId);
+                    Integer category = alarmData.getCategory();
+                    AlarmDto alarmDto = AlarmDto.builder().
+                            alarmId(alarmId).
+                            category(alarmData.getCategory()).
+                            memo(alarmData.getMemo()).
+                            build();
+                    if (category == 1) {
+                        alarmDto.setFollower(alarmData.getFollower());
+                    } else if (category == 2) {
+                        alarmDto.setGalleryNo(alarmData.getGalleryNo());
+                    } else if (category == 3) {
+                        alarmDto.setGeminiNo(alarmData.getGeminiNo());
+                    } else if (category == 4) {
+                        alarmDto.setImageUrl(alarmData.getImageUrl());
+                    }
+                    alarmDtos.add(alarmDto);
+                }
+                ResponseGetAllAlarmsDto responseGetAllAlarmsDto = new ResponseGetAllAlarmsDto(alarmDtos);
+                return responseGetAllAlarmsDto;
+            }
+            return null;
+        }
+        return null;
+    }
 
     @Override
     public String contractGemini(String username, RequestContractGeminiDto requestContractGeminiDto) {

@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 public class ResponseAlarmDto {
 
     private Long alarmId;
-    // 내 닉네임
-    private String nickname;
-    // 알람 메세지
+
     private String memo;
     // 알람 종류
     private Integer category;
