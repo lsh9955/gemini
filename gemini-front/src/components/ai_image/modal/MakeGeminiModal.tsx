@@ -16,6 +16,8 @@ import {
   First,
 } from "./ModalStyle";
 import SuccessGeminiModal from "../modal/SuccessGeminiModal";
+import { updateStar } from "../../../store/UserSlice";
+import { useDispatch } from "react-redux";
 
 interface TagIds {
   genreTagId: any;
@@ -57,6 +59,7 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
     // 제미니 생성 post axios 하고 백서버에선 별개수를 반환해준다.
     // axios 성공시에 아래 성공 모달을 집어 넣는다. 그리고 반환된 별개수를 리덕스에 저장한다.
     // onClose();
+    const dispatch = useDispatch();
     setCurrentModal(<SuccessGeminiModal tagIds={tagIds} onClose={onClose} />);
     axiosInstanceWithAccessToken
       .post("/user-service/generate/gemini", data, {
@@ -64,6 +67,8 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
       })
       .then((response) => {
         console.log(response);
+        const updatedStar = response.data.star;
+        dispatch(updateStar(updatedStar)); // updateStar 액션 dispatch
         alert(`제미니의 제작의뢰가 들어갔다`);
       })
       .catch((error) => {
