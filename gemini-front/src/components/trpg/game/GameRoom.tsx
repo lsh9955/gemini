@@ -31,6 +31,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
   const [pickUserImg, SetPickUserImg] = useState<any>(null);
   const [alarmList, setAlarmList] = useState<any>(null);
   const [changeBg, setChangeBg] = useState<any>(null);
+  const [fourpi, setFourPi] = useState(null);
   //알림 받기
 
   useEffect(() => {
@@ -89,6 +90,9 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
     chatSocket?.on("changeBgImgResponse", function (data: any) {
       setChangeBg(data);
     });
+    chatSocket?.on("makeFourPicResponse", function (data: any) {
+      setFourPi(data);
+    });
 
     return () => {
       chatSocket?.off("join");
@@ -100,6 +104,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
       chatSocket?.off("musicPlayResponse");
       chatSocket?.off("diceRollResponse");
       chatSocket?.off("changeBgImgResponse");
+      chatSocket?.off("makeFourPicResponse");
     };
   }, [chatSocket]);
 
@@ -221,6 +226,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
         playTarget={playTarget}
         playHandler={playHandler}
         chatSocket={chatSocket}
+        fourpi={fourpi}
       />
     </RoomWrap>
   );
