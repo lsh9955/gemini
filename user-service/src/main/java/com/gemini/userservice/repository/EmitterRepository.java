@@ -23,6 +23,7 @@ public class EmitterRepository {
             emitterMap.put(key, sseEmitter);
             log.info("Saved SseEmitter for {}", username);
         } else {
+            log.info("SseEmitter for {} already exists", username);
             SseEmitter existingEmitter = emitterMap.get(key);
             existingEmitter.complete(); // 기존 값 제거
             emitterMap.put(key, sseEmitter);
