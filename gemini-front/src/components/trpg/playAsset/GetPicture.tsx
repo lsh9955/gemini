@@ -65,12 +65,6 @@ const GetPicture = ({
     );
     const result = await response;
     setCreateImg(result.data.imageUrl);
-    try {
-      const a = axios.get(result.data.imageUrl);
-      console.log(a);
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const changeBgImg = (targetImg: string) => {
@@ -181,7 +175,6 @@ const GetPicture = ({
             </BackImgWrap>
           </>
         )}
-        {createImg && <img src={createImg} />}
         <SizeButton onClick={sizeHandler}>닫기</SizeButton>
       </GetPictureWrap>
     </>
