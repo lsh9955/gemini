@@ -252,7 +252,9 @@ const MyProfile: FC = () => {
         "/generate/pose"
       );
       console.log("인생네컷 메모리 데이터 가져왔습니다.");
+      console.log(MemoryRes);
       console.log(MemoryRes.data);
+      console.log(MemoryRes.data.data);
       setMemories(MemoryRes.data);
     };
     fetchMemoryRes();
