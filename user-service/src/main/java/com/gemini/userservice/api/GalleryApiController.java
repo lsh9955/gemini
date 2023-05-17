@@ -150,11 +150,12 @@ public class GalleryApiController {
     }
 //
 //
-    @GetMapping("/usergalleries") // Dto에 geminiPk말고, galleryPk를 담음.
-    public ResponseEntity<?> getUserGalleryPage(@RequestParam String nickname, @RequestParam Integer page, @RequestParam Integer size) {
+    @PostMapping("/usergalleries") // responseDto에 geminiPk말고, galleryPk를 담음.
+    public ResponseEntity<?> getUserGalleryPage(@RequestParam Integer page, @RequestParam Integer size, @RequestBody Map<String, String> galleryMap) {
         /*
 
          */
+        String nickname = galleryMap.get("nickname");
         ResponseGalleryPageDto responseGalleryPageDto = galleryService.getUserGalleryPage(nickname, page, size);
         if (responseGalleryPageDto.getGalleryPage() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no content");

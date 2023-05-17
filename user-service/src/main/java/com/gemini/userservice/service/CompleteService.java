@@ -13,4 +13,6 @@ public interface CompleteService {
     String completeBackground(RequestCompleteBackgroundDto requestCompleteBackgroundDto);
 
     List<String> completePose(RequestCompletePoseDto requestCompletePoseDto);
+
+    String checkBackground(String imageUrl);
 }
