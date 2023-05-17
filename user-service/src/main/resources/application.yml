@@ -34,7 +34,7 @@ spring:
   redis:
     host: mygemini.co.kr
     port: 6379
-    password: b106106
+    password: b106b106
 
   data:
     mongodb:
