@@ -28,7 +28,7 @@ import MakeGeminiModal from "../../components/ai_image/modal/MakeGeminiModal";
 import NeedStarModal from "../../components/ai_image/modal/NeedStarModal";
 
 interface Tag {
-  tagId: number;
+  tagId: any;
   img: string;
   koreanName: string;
 }
@@ -42,20 +42,20 @@ const headers = {
 
 // 자식에서 보내주는 data의 타입
 interface Data {
-  tagId: number;
+  tagId: any;
   imgUrl: string;
   koreanName: string;
 }
 
 interface TagIds {
-  genreTagId: number;
-  presetTagId: number;
-  genderTagId: number;
-  hairColorTagId: number;
-  eyeColorTagId: number;
-  hairStyleTagId: number;
-  emotionTagId: number;
-  costumeTagId: number;
+  genreTagId: any;
+  presetTagId: any;
+  genderTagId: any;
+  hairColorTagId: any;
+  eyeColorTagId: any;
+  hairStyleTagId: any;
+  emotionTagId: any;
+  costumeTagId: any;
 }
 
 // 갤러리에서 보내주는 갤러리pk 타입
@@ -64,14 +64,14 @@ interface GalleryLocationState {
 }
 
 interface GalleryTags {
-  genre: { tagId: number; genreKorean: string };
-  preset: { tagId: number; presetKorean: string };
-  gender: { tagId: number; genderKorean: string };
-  hairColor: { tagId: number; hairColorKorean: string };
-  eyeColor: { tagId: number; eyeColorKorean: string };
-  hairStyle: { tagId: number; hairStyleKorean: string };
-  emotion: { tagId: number; emotionKorean: string };
-  costume: { tagId: number; costumeKorean: string };
+  genre: { tagId: any; genreKorean: string };
+  preset: { tagId: any; presetKorean: string };
+  gender: { tagId: any; genderKorean: string };
+  hairColor: { tagId: any; hairColorKorean: string };
+  eyeColor: { tagId: any; eyeColorKorean: string };
+  hairStyle: { tagId: any; hairStyleKorean: string };
+  emotion: { tagId: any; emotionKorean: string };
+  costume: { tagId: any; costumeKorean: string };
 }
 
 const AiImage: FC = () => {
@@ -336,28 +336,28 @@ const AiImage: FC = () => {
   //////////////////////////////////////////////////////////////////////////////////////////
 
   // 자식 컴포넌트에서 부모에게 props를 보내줌
-  const [genreTagId, setGenreTagId] = useState(0);
+  const [genreTagId, setGenreTagId] = useState(null);
   const [genreKorean, setGenreKorean] = useState("장르를 선택해주세요");
   const handleGenre = (genre: Data) => {
     setGenreTagId(genre.tagId);
     setGenreKorean(genre.koreanName);
   };
 
-  const [presetTagId, setPresetTagId] = useState(0);
+  const [presetTagId, setPresetTagId] = useState(null);
   const [presetKorean, setPresetKorean] = useState("프리셋을 선택해주세요");
   const handlePreset = (preset: Data) => {
     setPresetTagId(preset.tagId);
     setPresetKorean(preset.koreanName);
   };
 
-  const [genderTagId, setGenderTagId] = useState(0);
+  const [genderTagId, setGenderTagId] = useState(null);
   const [genderKorean, setGenderKorean] = useState("성별을 선택해주세요");
   const handleGender = (gender: Data) => {
     setGenderTagId(gender.tagId);
     setGenderKorean(gender.koreanName);
   };
 
-  const [hairColorTagId, setHairColorTagId] = useState(0);
+  const [hairColorTagId, setHairColorTagId] = useState(null);
   const [hairColorKorean, setHairColorKorean] =
     useState("머리카락 색상을 선택해주세요");
   const handleHairColor = (hairColor: Data) => {
@@ -365,7 +365,7 @@ const AiImage: FC = () => {
     setHairColorKorean(hairColor.koreanName);
   };
 
-  const [eyeColorTagId, setEyeColorTagId] = useState(0);
+  const [eyeColorTagId, setEyeColorTagId] = useState(null);
   const [eyeColorKorean, setEyeColorKorean] =
     useState("눈동자 색상을 선택해주세요");
   const handleEyeColor = (eyeColor: Data) => {
@@ -373,7 +373,7 @@ const AiImage: FC = () => {
     setEyeColorKorean(eyeColor.koreanName);
   };
 
-  const [hairStyleTagId, setHairStyleTagId] = useState(0);
+  const [hairStyleTagId, setHairStyleTagId] = useState(null);
   const [hairStyleKorean, setHairStyleKorean] =
     useState("머리 스타일을 선택해주세요");
   const handleHairStyle = (hairStyle: Data) => {
@@ -386,14 +386,14 @@ const AiImage: FC = () => {
     setHairStyleKorean(maleHairStyle.koreanName);
   };
 
-  const [emotionTagId, setEmotionTagId] = useState(0);
+  const [emotionTagId, setEmotionTagId] = useState(null);
   const [emotionKorean, setEmotionKorean] = useState("표정을 선택해주세요");
   const handleEmotion = (emotion: Data) => {
     setEmotionTagId(emotion.tagId);
     setEmotionKorean(emotion.koreanName);
   };
 
-  const [costumeTagId, setCostumeTagId] = useState(0);
+  const [costumeTagId, setCostumeTagId] = useState(null);
   const [costumeKorean, setCostumeKorean] = useState("의상을 선택해주세요");
   const handleCostume = (costume: Data) => {
     setCostumeTagId(costume.tagId);
