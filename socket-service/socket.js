@@ -145,9 +145,7 @@ module.exports = (server, app, sessionMiddleware) => {
 
       socket.on("randomPick", async (voteData) => {
         const voteStartRoom = await Room.find({ _id: voteData.roomId });
-        let userArray = voteStartRoom[0].userarr.filter(
-          (v) => v !== voteStartRoom[0].owner
-        );
+        let userArray = voteData.ranPick;
         let ranCount = Math.floor(userArray.length * Math.random());
         io.to(voteData.roomId).emit("randomPickResponse", userArray[ranCount]);
       });
