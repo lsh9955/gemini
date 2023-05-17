@@ -79,7 +79,7 @@ const SelectPairchildComp: FC = () => {
 
   const validateNickname = (inputNickname: string) => {
     // 닉네임 정규표현식 검증 코드 작성
-    const regex = /^[가-힣A-Za-z0-9_\s]{2,15}$/; // 한글, 알파벳, 숫자, _, 공백 허용 2~15글자
+    const regex = /^[가-힣A-Za-z0-9_\s]{2,20}$/; // 한글, 알파벳, 숫자, _, 공백 허용 2~15글자
     console.log("정규표현식 검증시작");
     console.log(regex.test(inputNickname));
     return regex.test(inputNickname);
