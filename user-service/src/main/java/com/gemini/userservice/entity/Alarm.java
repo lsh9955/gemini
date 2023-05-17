@@ -12,7 +12,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-//@RedisHash("alarm")
 @Entity
 public class Alarm {
 
@@ -21,14 +20,6 @@ public class Alarm {
     @Column(name = "alarm_id")
     private Long alarmId;
 
-    private Integer category;
 
-    private String imageUrl;
-
-    private Long geminiNo;
-
-    private String memo;
-
-    private String follower;
 
 }

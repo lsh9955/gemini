@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GeminiAlarmDto {
-    // 만들어진 gemini_no
+
     private Long geminiNo;
-    // 만든사람 nickname
-    private String nickname;
-    // 만든사람 username
+
     private String username;
+
+    private String imageUrl;
 }
