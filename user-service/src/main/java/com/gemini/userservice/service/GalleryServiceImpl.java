@@ -177,7 +177,6 @@ public class GalleryServiceImpl implements GalleryService{
             RankingDto rankingDto = RankingDto.builder().
                     galleryNo(galleryNo).
                     imageUrl(gallery.getGemini().getImageUrl()).
-                    emotions(daily.getEmotionUrls()).
                     build();
             rankingDtos.add(rankingDto);
         }
@@ -195,12 +194,35 @@ public class GalleryServiceImpl implements GalleryService{
             RankingDto rankingDto = RankingDto.builder().
                     galleryNo(galleryNo).
                     imageUrl(gallery.getGemini().getImageUrl()).
-                    emotions(weekly.getEmotionUrls()).
                     build();
             rankingDtos.add(rankingDto);
         }
         ResponseRankingDto responseRankingDto = new ResponseRankingDto(rankingDtos);
         return responseRankingDto;
+    }
+
+    public ResponseEmotionDto getDailyEmotion(Long galleryNo) {
+
+        Optional<Daily> daily = dailyRepository.findById(galleryNo);
+        if(!daily.isPresent()) {
+            return null;
+        }
+        Daily dailyGallery = daily.get();
+        List<String> emotions = dailyGallery.getEmotionUrls();
+        ResponseEmotionDto responseEmotionDto = new ResponseEmotionDto(emotions);
+        return responseEmotionDto;
+    }
+
+    public ResponseEmotionDto getWeeklyEmotion(Long galleryNo) {
+
+        Optional<Weekly> weekly = weeklyRepository.findById(galleryNo);
+        if(!weekly.isPresent()) {
+            return null;
+        }
+        Weekly weeklyGallery = weekly.get();
+        List<String> emotions = weeklyGallery.getEmotionUrls();
+        ResponseEmotionDto responseEmotionDto = new ResponseEmotionDto(emotions);
+        return responseEmotionDto;
     }
 
     public ResponseGalleryDetailDto getGalleryDetail(String username, Long galleryNo) {
