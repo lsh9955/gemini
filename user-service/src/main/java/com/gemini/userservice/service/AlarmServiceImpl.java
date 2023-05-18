@@ -109,30 +109,46 @@ public class AlarmServiceImpl implements AlarmService {
 
 
     @Override
-    public ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter) {
+    public void createFollowAlarm(String username, FollowAlarmDto alarmDto) {
 
         // 회원정보 찾아오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(username);
-
         UserInfo userInfo = userInfo2.get();
 
         // 인코딩 한 메세지 넣기
         String message = userInfo.getNickname() + "님이 회원님을 팔로우 했습니다.";
         String encodedMessage = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
-
         Alarm alarm = Alarm.builder()
                 .build();
         alarmRepository.save(alarm);
 
-        // 새로운 알림 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
-        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                .memo(encodedMessage)
-                .build();
+        Long alarmId = alarm.getAlarmId();
+        AlarmData alarmData = AlarmData.builder().
+                alarmId(alarmId).
+                category(1).
+                follower(userInfo.getNickname()).
+                memo(encodedMessage).
+                build();
+        alarmDataRepository.save(alarmData);
 
-
-
-        return responseAlarmDto;
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userInfo.getUserPk());
+        if (alarmUser.isPresent()) {
+            AlarmUser alarmUser1 = alarmUser.get();
+            List<Long> alarmIds = alarmUser1.getAlarmIds();
+            alarmIds.add(alarmId);
+            alarmUser1.update(alarmIds);
+            alarmUserRepository.save(alarmUser1);
+        }
+        else {
+            List<Long> alarmIds = new ArrayList<>();
+            alarmIds.add(alarmId);
+            AlarmUser alarmUser1 = AlarmUser.builder().
+                    userNo(userInfo.getUserPk()).
+                    alarmIds(alarmIds).
+                    build();
+            alarmUserRepository.save(alarmUser1);
+        }
     }
 
 
