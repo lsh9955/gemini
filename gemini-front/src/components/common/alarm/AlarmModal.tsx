@@ -45,14 +45,17 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   const handleAlarmClick = async (alarmId: number, category: number) => {
     // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
     const selectAlarmList = alarmList.find(
       (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
     );
+
     if (selectAlarmList) {
+      console.log(selectAlarmList.geminiNo);
+      console.log(selectAlarmList.category);
       switch (category) {
         case 1:
           history.push(`/userProfile/${selectAlarmList.follower}`);
