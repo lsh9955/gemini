@@ -58,10 +58,13 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
   };
 
   const contractGemini = async () => {
+    console.log(
+      `바디로 들어오는거. ${selectedImagePk} ${geminiName} ${desc} ${isPublic}`
+    );
     const contractRes = await axiosInstanceWithAccessToken.post(
       "/user-service/alarms/gemini",
       {
-        gemini_no: selectedImagePk,
+        geminiNo: selectedImagePk,
         name: geminiName,
         description: desc,
         isPublic: isPublic,
@@ -85,10 +88,12 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
     // 처음에 알람이 왔을때 클릭을 하면 prop이용, geminiPk로 줄것임.
     // 마지막 버튼에 patch요청 보내서 갤러리에 생성을 하면 됨.
     const fetchNewGeminiInfo = async () => {
+      console.log(`${selectedImagePk}번 제미니pk로 요청보냄. 계약해달라고!`);
       const geminiRes = await axiosInstanceWithAccessToken.get(
         `/user-service/gallery/gemini/${selectedImagePk}`
       );
       const geminiInfoData = geminiRes.data;
+      console.log(geminiRes);
       setGeminiImg(geminiInfoData.geminiImage);
       setGeminiName("");
       setDesc("");
