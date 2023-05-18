@@ -37,6 +37,8 @@ import {
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { updateHeaderProfileImg } from "../../store/UserSlice";
 import { useDispatch } from "react-redux";
+import { DescInput } from "./NewGeminiDetail.styles";
+import { useHistory } from "react-router-dom";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
@@ -50,6 +52,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   setProfileImg,
 }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [isPublic, setIsPublic] = useState<boolean>(true);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
@@ -61,11 +64,10 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     "무사",
   ]);
   const [likeCount, setLikeCount] = useState<number>(0);
-  const [geminiName, setGeminiName] = useState<string>("나나키타 미즈키");
+  const [geminiName, setGeminiName] = useState<string>("제미니 이름");
   const [desc, setDesc] = useState<string>("소개글");
-  const [geminiImg, setGeminiImg] = useState<string>(
-    "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
-  );
+  const [geminiImg, setGeminiImg] = useState<string>("");
+  // "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
 
   const handleClick = () => {
     setIsPublic(!isPublic);
@@ -84,6 +86,14 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
       console.error(error);
       // 오류 처리
     }
+  };
+
+  const deleteGemini = async () => {
+    const deleteRes = await axiosInstanceWithAccessToken.delete(
+      `/user-service/gallery/gemini/${selectedImagePk}`
+    );
+    console.log("삭제 완료");
+    alert("제미니가 삭제되었습니다.");
   };
 
   const updateGalleryOnPublic = async () => {
@@ -158,6 +168,14 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     fetchGeminiInfo();
   }, []);
 
+  // 제미니넘버를 이용해서 보낼거니까.
+  const useThisRecipeHandler = () => {
+    history.push({
+      pathname: "/aiImage",
+      state: { galleryPk: selectedImagePk }, // 받는쪽에서 이렇게 받아서 처리했음.
+    });
+  };
+
   return (
     <>
       <MyGeminiFlipContainerWrapper onClick={closeModal}>
@@ -189,18 +207,23 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
             </ToggleWrapper>
             <NameInputWrapper>
               <FormLabel>이름</FormLabel>
-              <TextInputDiv
-              // type="text"
-              // id="nickname"
-              // value={nickname}
-              // onChange={(e) => setNickname(e.target.value)}
-              >
-                {geminiName}
-              </TextInputDiv>
+              {/* <TextInputDiv>{geminiName}</TextInputDiv> */}
+              <TextInput
+                type="text"
+                id="nickname"
+                value={geminiName}
+                onChange={(e) => setGeminiName(e.target.value)}
+                placeholder="15글자 이하 한글, 영어, 숫자만 입력가능"
+              ></TextInput>
             </NameInputWrapper>
             <DescBlockWrapper>
               <FormLabel>소개</FormLabel>
-              <DescArea>{desc}</DescArea>
+              {/* <DescArea>{desc}</DescArea> */}
+              <DescInput
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="GEMINI의 소개를 입력해주세요."
+              ></DescInput>
             </DescBlockWrapper>
             <TagBlockWrapper>
               <FormLabel>키워드</FormLabel>
@@ -211,10 +234,12 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
               </TagArea>
             </TagBlockWrapper>
             <ButtonWrapper>
-              <GeminiInfoButton>이 레시피 사용하기</GeminiInfoButton>
+              <GeminiInfoButton onClick={useThisRecipeHandler}>
+                이 레시피 사용하기
+              </GeminiInfoButton>
               <EditButtonWrapper>
-                <EditButton>수정</EditButton>
-                <EditButton onClick={updateGalleryOnPublic}>저장</EditButton>
+                <EditButton onClick={updateGalleryOnPublic}>수정</EditButton>
+                <EditButton onClick={deleteGemini}>삭제</EditButton>
               </EditButtonWrapper>
             </ButtonWrapper>
           </GeminiDetialInfoWrapper>
