@@ -30,7 +30,6 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
-        enable_lazy_load_no_trans: true
     open-in-view: false
 
   redis:
