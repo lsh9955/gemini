@@ -1,6 +1,7 @@
 package com.gemini.rankingservice.config;
 
 import com.gemini.rankingservice.dto.GenerateEmotionDto;
+import com.gemini.rankingservice.dto.ResponseGenerateEmotionDto;
 import com.gemini.rankingservice.entity.*;
 import com.gemini.rankingservice.repository.DailyRepository;
 import com.gemini.rankingservice.repository.TagRepository;
@@ -65,7 +66,7 @@ public class SchedulerConfig {
     @Qualifier("weeklyJob_batchBuild")
     private Job weeklyJob;
 
-//    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void runDailyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
@@ -74,7 +75,7 @@ public class SchedulerConfig {
         addReward("daily");
     }
 
-//    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 */20 * * * *")
     public void runWeeklyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
@@ -119,25 +120,25 @@ public class SchedulerConfig {
                     defaultPrompt = defaultPrompt + tag.getPrompt() + ",";
                 }
             }
-            List<String> emotionUrls = new ArrayList<>();
+
+            List<String> prompts = new ArrayList<>();
             for (String emotion : emotions) {
                 String prompt = defaultPrompt + emotion;
-                GenerateEmotionDto generateEmotionDto = new GenerateEmotionDto(prompt, "redis", geminiTag.getTagIds(), geminiNo);
-                generateEmotionDto.setSeed(gemini.getSeed());
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                String sdUrl = String.format(env.getProperty("sd.url")) + "/makegemini";
-                HttpEntity<GenerateEmotionDto> request = new HttpEntity<>(generateEmotionDto, headers);
-                ResponseEntity<String> responseUrl = restTemplate.postForEntity(sdUrl, request, String.class);
-                System.out.println(responseUrl);
-                emotionUrls.add(responseUrl.getBody());
+                prompts.add(prompt);
             }
+            GenerateEmotionDto generateEmotionDto = new GenerateEmotionDto(prompts, gemini.getSeed(), geminiNo, check);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            String sdUrl = String.format(env.getProperty("sd.url")) + "/emotion";
+            HttpEntity<GenerateEmotionDto> request = new HttpEntity<>(generateEmotionDto, headers);
+            ResponseEntity<ResponseGenerateEmotionDto> response = restTemplate.postForEntity(sdUrl, request, ResponseGenerateEmotionDto.class);
+            ResponseGenerateEmotionDto res = response.getBody();
             if (check == "daily") {
-                Daily daily = new Daily(geminiNo, emotionUrls);
+                Daily daily = new Daily(res.getGeminiNo(), res.getImageUrls());
                 dailyRepository.save(daily);
             }
             else {
-                Weekly weekly = new Weekly(geminiNo, emotionUrls);
+                Weekly weekly = new Weekly(res.getGeminiNo(), res.getImageUrls());
                 weeklyRepository.save(weekly);
             }
         }
