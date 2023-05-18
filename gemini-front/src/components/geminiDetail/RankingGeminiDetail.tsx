@@ -91,12 +91,12 @@ const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
       ); // 수정 필요😀 -> galleryPK입니다.
 
       const emotionFourCutRes = await axiosInstanceWithAccessToken.get(
-        `/user-service/gallery/${fetchUrlPeriod}`,
-        {
-          params: {
-            galleryNo: selectedImagePk,
-          },
-        }
+        `/user-service/gallery/${fetchUrlPeriod}/selectedImagePk`
+        // {
+        //   params: {
+        //     galleryNo: selectedImagePk,
+        //   },
+        // }
       );
       console.log("표정4컷 보여주세요.");
       console.log(emotionFourCutRes);
