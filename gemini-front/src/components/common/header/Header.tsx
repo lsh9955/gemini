@@ -29,8 +29,9 @@ const Header: FC<Props> = () => {
     if (startMakeGemini) {
       const timer = setTimeout(() => {
         dispatch(endGenerate());
+        setShowGeminiAlarm(true);
       }, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
-      setShowGeminiAlarm(true);
+
       return () => clearTimeout(timer);
     }
   }, [startMakeGemini]);
