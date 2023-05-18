@@ -135,7 +135,7 @@ public class SchedulerConfig {
             HttpEntity<GenerateEmotionDto> request = new HttpEntity<>(generateEmotionDto, headers);
             ResponseEntity<ResponseGenerateEmotionDto> response = restTemplate.postForEntity(sdUrl, request, ResponseGenerateEmotionDto.class);
             ResponseGenerateEmotionDto res = response.getBody();
-            if (check == "daily") {
+            if (check.equals("daily")) {
                 Daily daily = new Daily(res.getGeminiNo(), res.getImageUrls());
                 dailyRepository.save(daily);
             }
