@@ -126,7 +126,8 @@ public class SchedulerConfig {
                 String prompt = defaultPrompt + emotion;
                 prompts.add(prompt);
             }
-            GenerateEmotionDto generateEmotionDto = new GenerateEmotionDto(prompts, gemini.getSeed(), geminiNo, check);
+//            GenerateEmotionDto generateEmotionDto = new GenerateEmotionDto(prompts, gemini.getSeed(), geminiNo, check);
+            GenerateEmotionDto generateEmotionDto = new GenerateEmotionDto(prompts, gemini.getSeed(), gallery.getGalleryNo(), check);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             String sdUrl = String.format(env.getProperty("sd.url")) + "/emotion";

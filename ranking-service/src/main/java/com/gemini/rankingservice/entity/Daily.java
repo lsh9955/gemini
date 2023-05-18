@@ -13,7 +13,7 @@ import java.util.List;
 public class Daily {
 
     @Id
-    private Long geminiNo;
+    private Long galleryNo;
 
     private List<String> emotionUrls;
 }
