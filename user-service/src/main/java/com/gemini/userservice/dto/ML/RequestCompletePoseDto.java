@@ -16,4 +16,6 @@ public class RequestCompletePoseDto {
     private List<Long> geminis;
 
     private List<String> imageUrls;
+
+    private String backgroundUrl;
 }

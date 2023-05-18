@@ -78,7 +78,6 @@ public class AlarmApiController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
-
     }
 
 

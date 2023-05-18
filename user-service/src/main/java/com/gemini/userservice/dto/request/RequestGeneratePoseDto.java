@@ -13,7 +13,7 @@ public class RequestGeneratePoseDto {
 
     private List<Long> geminis;
 
-    private List<String> users;
-
     private Integer sample;
+
+    private String backgroundUrl;
 }
