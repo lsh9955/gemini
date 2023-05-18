@@ -116,7 +116,7 @@ public class AlarmServiceImpl implements AlarmService {
         UserInfo userInfo = userInfo2.get();
 
         // 인코딩 한 메세지 넣기
-        String message = userInfo.getNickname() + "님이 회원님을 팔로우 했습니다.";
+        String message = username + "님이 회원님을 팔로우 했습니다.";
         String encodedMessage = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
         Alarm alarm = Alarm.builder()
@@ -127,7 +127,7 @@ public class AlarmServiceImpl implements AlarmService {
         AlarmData alarmData = AlarmData.builder().
                 alarmId(alarmId).
                 category(1).
-                follower(alarmDto.getSendAlarmUserName()).
+                follower(username).
                 memo(encodedMessage).
                 build();
         alarmDataRepository.save(alarmData);
