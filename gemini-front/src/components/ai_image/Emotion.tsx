@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   EmotionBox,
   EmotionContainer,
   EmotionImage,
   EmotionText,
+  PickedEmotionContainer,
 } from "./Emotion.styles";
 
 // import AngryFace from "../../assets/img/ai/emotion/AngryFace.png";
@@ -96,6 +97,7 @@ const Emotion: FC<Props> = ({ data, handleEmotion }) => {
   //     koreanName: emotion.koreanName,
   //   });
   // };
+  const [pickedEmo, setPickedEmo] = useState<any>(null);
   const handleEmotionClick = (item: Data) => {
     handleEmotion({
       tagId: item.tagId,
@@ -106,15 +108,31 @@ const Emotion: FC<Props> = ({ data, handleEmotion }) => {
   return (
     <>
       <EmotionBox>
-        {data?.map((item) => (
-          <EmotionContainer
-            key={item.tagId}
-            onClick={() => handleEmotionClick(item)}
-          >
-            <EmotionText>{item.koreanName}</EmotionText>
-            <EmotionImage src={item.imgUrl} alt={item.koreanName} />
-          </EmotionContainer>
-        ))}
+        {data?.map((item) =>
+          pickedEmo === item.koreanName ? (
+            <PickedEmotionContainer
+              key={item.tagId}
+              onClick={() => {
+                handleEmotionClick(item);
+                setPickedEmo(item.koreanName);
+              }}
+            >
+              <EmotionText>{item.koreanName}</EmotionText>
+              <EmotionImage src={item.imgUrl} alt={item.koreanName} />
+            </PickedEmotionContainer>
+          ) : (
+            <EmotionContainer
+              key={item.tagId}
+              onClick={() => {
+                handleEmotionClick(item);
+                setPickedEmo(item.koreanName);
+              }}
+            >
+              <EmotionText>{item.koreanName}</EmotionText>
+              <EmotionImage src={item.imgUrl} alt={item.koreanName} />
+            </EmotionContainer>
+          )
+        )}
       </EmotionBox>
     </>
   );

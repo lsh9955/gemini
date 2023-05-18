@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   EyeColorBox,
   EyeColorContainer,
   EyeColorImage,
   EyeColorText,
+  PickedEyeColorContainer,
 } from "./EyeColor.style";
 
 interface Data {
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const EyeColor: FC<Props> = ({ data, handleEyeColor }) => {
+  const [pickedEye, setPickedEye] = useState<any>(null);
   const handleEyeColorClick = (item: Data) => {
     handleEyeColor({
       tagId: item.tagId,
@@ -28,15 +30,31 @@ const EyeColor: FC<Props> = ({ data, handleEyeColor }) => {
   return (
     <>
       <EyeColorBox>
-        {data?.map((item) => (
-          <EyeColorContainer
-            key={item.tagId}
-            onClick={() => handleEyeColorClick(item)}
-          >
-            <EyeColorText>{item.koreanName}</EyeColorText>
-            <EyeColorImage src={item.imgUrl} alt={item.koreanName} />
-          </EyeColorContainer>
-        ))}
+        {data?.map((item) =>
+          pickedEye === item.koreanName ? (
+            <PickedEyeColorContainer
+              key={item.tagId}
+              onClick={() => {
+                handleEyeColorClick(item);
+                setPickedEye(item.koreanName);
+              }}
+            >
+              <EyeColorText>{item.koreanName}</EyeColorText>
+              <EyeColorImage src={item.imgUrl} alt={item.koreanName} />
+            </PickedEyeColorContainer>
+          ) : (
+            <EyeColorContainer
+              key={item.tagId}
+              onClick={() => {
+                handleEyeColorClick(item);
+                setPickedEye(item.koreanName);
+              }}
+            >
+              <EyeColorText>{item.koreanName}</EyeColorText>
+              <EyeColorImage src={item.imgUrl} alt={item.koreanName} />
+            </EyeColorContainer>
+          )
+        )}
       </EyeColorBox>
     </>
   );
