@@ -169,7 +169,7 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.on("inputfourPic", async (userImg) => {
         const willupdateRoom = await Room.find({ _id: userImg.roomId });
         let changeUserArr = willupdateRoom[0].fourpic.slice();
-        if (userImg.userImg !== willupdateRoom[0].owner) {
+        if (changeUserArr.length <= 3) {
           changeUserArr.push(userImg.userImg);
           await Room.updateOne(
             { _id: userImg.roomId },
