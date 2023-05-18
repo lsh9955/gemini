@@ -21,6 +21,7 @@ const ProfileModal: React.FC<Props> = ({ onClose }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const moveToMypage = () => {
+    window.scrollTo(0, 0); // 무한스크롤 버그 잡기 위해서 해두었습니다. 😥
     history.push("/myProfile");
     onClose();
   };

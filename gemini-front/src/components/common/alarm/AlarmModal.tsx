@@ -60,6 +60,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
       console.log(selectAlarmList.category);
       switch (selectAlarmList.category) {
         case 1:
+          window.scrollTo(0, 0); // 무한스크롤 버그 잡기 위해서 해두었습니다. 😥
           history.push(`/userProfile/${selectAlarmList.follower}`);
           try {
             await axiosInstanceWithAccessToken.delete(
