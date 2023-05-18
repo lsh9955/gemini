@@ -191,7 +191,7 @@ public class AlarmServiceImpl implements AlarmService {
         // 인코딩한 메세지 넣기
         String messege = "Gemini 소환이 완료되었습니다.";
         String encodedMessage = new String(messege.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-
+        log.info(encodedMessage);
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
                 .build();
@@ -230,18 +230,17 @@ public class AlarmServiceImpl implements AlarmService {
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(backgroundAlarmDto.getUsername());
         UserInfo userInfo = userInfo2.get();
-        String nickname = userInfo.getNickname();
-        backgroundAlarmDto.setNickkname(nickname);
 
         // 인코딩한 메세지 넣기
         String messege = "배경 생성이 완료되었습니다.";
         String encodedMessage = new String(messege.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-
+        log.info(encodedMessage);
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
                 .build();
         alarmRepository.save(alarm);
         Long alarmId = alarm.getAlarmId();
+        System.out.println(alarmId);
         AlarmData alarmData = AlarmData.builder().
                 alarmId(alarmId).
                 category(4).
