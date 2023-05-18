@@ -30,7 +30,9 @@ const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
 
   useEffect(() => {
     if (showAlert) {
-      const timer = setTimeout(() => {}, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
+      const timer = setTimeout(() => {
+        setShowGeminiAlarm(true);
+      }, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
 
       return () => clearTimeout(timer);
     }
