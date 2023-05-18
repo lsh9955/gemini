@@ -8,11 +8,13 @@ const FourPicture = ({
   playTarget,
   playHandler,
   fourpi,
+  bgimg,
 }: {
   chatSocket: any;
   playTarget: any;
   playHandler: any;
   fourpi: any;
+  bgimg: any;
 }) => {
   const [diceStart, setDiceStart] = useState<boolean>(false);
   const [fourPic, setFourPic] = useState(null);
@@ -32,6 +34,7 @@ const FourPicture = ({
         {
           sample: 0,
           geminis: fourpi,
+          backgroundUrl: bgimg,
         },
         {
           headers: {
