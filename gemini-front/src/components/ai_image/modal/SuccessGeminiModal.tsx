@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Props as ParentProps } from "../modal/MakeGeminiModal";
 import CompleteAiImage from "../../../assets/img/CompleteAiImage.png";
 import GeminiAlarmModal from "../../common/alarm/GeminiAlarmModal";
@@ -15,7 +16,7 @@ import {
   First,
   SmallLetter,
 } from "./ModalStyle";
-
+import { startGenerate } from "../../../store/CreateGeminiSlice";
 interface SuccessGeminiModalProps extends ParentProps {
   onClose: () => void;
 }
@@ -24,6 +25,8 @@ const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
   const [showGeminiAlarm, setShowGeminiAlarm] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [modalDisplay, setModalDisplay] = useState(false);
+  const dispatch = useDispatch();
+
   const handleConfirm = () => {
     setShowAlert(true);
     setModalDisplay(true);
@@ -31,11 +34,8 @@ const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
 
   useEffect(() => {
     if (showAlert) {
-      const timer = setTimeout(() => {
-        setShowGeminiAlarm(true);
-      }, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
-
-      return () => clearTimeout(timer);
+      dispatch(startGenerate());
+      // 20초 후에 GeminiAlarmModal을 나타냄
     }
   }, [showAlert]);
 
