@@ -1,5 +1,10 @@
 import React, { FC } from "react";
-import { GenderBox, GenderContainer, GenderImage } from "./Gender.style";
+import {
+  GenderBox,
+  GenderContainer,
+  GenderImage,
+  GenderText,
+} from "./Gender.style";
 
 // import Female from "../../assets/img/ai/gender/Female.png";
 // import Male from "../../assets/img/ai/gender/Male.png";
@@ -50,6 +55,7 @@ const Gender: FC<Props> = ({ data, handleGender }) => {
             key={item.tagId}
             onClick={() => handleGenderClick(item)}
           >
+            <GenderText>{item.koreanName}</GenderText>
             <GenderImage src={item.imgUrl} alt={item.koreanName} />
           </GenderContainer>
         ))}

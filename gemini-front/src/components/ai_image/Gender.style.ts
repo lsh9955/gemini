@@ -16,8 +16,23 @@ export const GenderContainer = styled.div`
   margin: 2%;
   border: 1px solid;
   border-radius: 20px;
-  &:hover {
+  & p {
+    display: none;
+  }
+  :hover {
     cursor: pointer;
+    & p {
+      top: 45%;
+      left: 30%;
+
+      display: inline-block;
+      position: absolute;
+      z-index: 90;
+    }
+    & img {
+      cursor: pointer;
+      filter: brightness(50%);
+    }
   }
 `;
 
@@ -30,4 +45,9 @@ export const GenderImage = styled.img`
     cursor: pointer;
     filter: brightness(50%);
   }
+`;
+
+export const GenderText = styled.p`
+  font-size: 15px;
+  color: white;
 `;

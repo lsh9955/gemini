@@ -146,7 +146,7 @@ const HairStyle: FC<Props> = ({ data, handleHairStyle }) => {
             key={item.tagId}
             onClick={() => handleHairStyleClick(item)}
           >
-            {/* <HairStyleText>{item.koreanName}</HairStyleText> */}
+            <HairStyleText>{item.koreanName}</HairStyleText>
             <HairStyleImage src={item.imgUrl} alt={item.koreanName} />
           </HairStyleContainer>
         ))}
