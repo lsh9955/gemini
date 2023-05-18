@@ -73,7 +73,7 @@ const AppRoutes = () => {
     // setIsNotFoundPage(!validPaths.includes(location.pathname));
     // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정
     const isValidPath = validPaths.some((path) => {
-      const regexPath = path.replace(/:\w+/g, "\\w+");
+      const regexPath = path.replace(/:\w+/g, "[^/]+");
       const regex = new RegExp(`^${regexPath}$`, "i");
       return regex.test(location.pathname);
     });
