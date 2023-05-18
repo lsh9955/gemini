@@ -200,15 +200,17 @@ public class GalleryServiceImpl implements GalleryService{
         Optional<Like> isLiked = likeRepository.findByUserInfoAndGemini(me.get(), gemini);
         Boolean liked = isLiked.isPresent();
         UserInfo producer = gemini.getUserInfo();
+        List<String> tags = getTagNames(gemini.getGeminiNo());
+        ResponseGalleryDetailDto responseGalleryDetailDto = new ResponseGalleryDetailDto(producer, gemini, liked, tags);
 
-        ResponseGalleryDetailDto responseGalleryDetailDto = new ResponseGalleryDetailDto(producer, gemini, liked);
         return responseGalleryDetailDto;
     }
 
     public ResponseGeminiDetailDto getGeminiDetail(String username, Long geminiNo) {
+
         Optional<UserInfo> owner = userInfoRepository.findByUsername(username);
         Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
-//        List<Tag> tags = gemini.get
+        List<String> tags = getTagNames(geminiNo);
 
         return ResponseGeminiDetailDto.builder()
                 .geminiName(gemini.getName())
@@ -216,10 +218,8 @@ public class GalleryServiceImpl implements GalleryService{
                 .geminiImage(gemini.getImageUrl())
                 .isPublic(gemini.getIsPublic())
                 .totalLike(gemini.getTotalLike())
-//                .tags(tags) // 😀수정 필요
+                .tags(tags) // 😀수정 필요
                 .build();
-
-
     }
 
 
@@ -268,22 +268,19 @@ public class GalleryServiceImpl implements GalleryService{
         return "fail";
     }
 
-    public GeminiTagDto getGeminiTags(Long geminiNo) {
+    public List<String> getTagNames(Long geminiNo) {
 
         GeminiTag geminiTag = mongoTemplate.findOne(
                 Query.query(Criteria.where("gemini_no").is(geminiNo)),
                 GeminiTag.class
         );
-        List<TagDto> tagDtos = new ArrayList<>();
+        List<String> tagNames = new ArrayList<>();
         for(Long tagId: geminiTag.getTagIds()) {
             Tag tag = tagRepository.findByTagNo(tagId);
-            TagDto tagDto = new TagDto(tag);
-            tagDtos.add(tagDto);
+            String tagName = tag.getName();
+            tagNames.add(tagName);
         }
-        GeminiTagDto geminiTagDto = GeminiTagDto.builder()
-                .tagDtos(tagDtos)
-                .build();
-        return geminiTagDto;
+        return tagNames;
     }
 
 

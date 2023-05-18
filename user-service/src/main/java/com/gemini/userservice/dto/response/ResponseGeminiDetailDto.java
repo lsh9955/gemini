@@ -23,6 +23,6 @@ public class ResponseGeminiDetailDto {
 
     private Boolean isPublic;
 
-    private List<Tag> tags; //몽고
+    private List<String> tags; //몽고
 
 }
