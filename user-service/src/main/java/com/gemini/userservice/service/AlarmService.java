@@ -16,7 +16,7 @@ public interface AlarmService {
 
     SseEmitter subscribe(String username);
 
-    ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter);
+    void createFollowAlarm(String username, FollowAlarmDto alarmDto);
 
     ResponseAlarmDto createLikeAlarm(String username, LikeAlarmDto likeAlarmDto, SseEmitter emitter);
 
