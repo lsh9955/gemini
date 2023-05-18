@@ -250,6 +250,7 @@ const MyProfile: FC = () => {
   const [memories, setMemories] = useState<memoriesData[]>([...dummyMemories]);
   const [hasMoreMemories, setHasMoreMemories] = useState(true);
   const handleMemoryClick = () => {};
+
   useEffect(() => {
     const fetchMemoryRes = async () => {
       const MemoryRes = await axiosInstanceWithAccessToken.get(

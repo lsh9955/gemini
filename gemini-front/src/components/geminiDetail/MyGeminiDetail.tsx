@@ -110,7 +110,8 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
       const { method, updated } = GalleryPublicRes.data;
 
       if (updated) {
-        alert(`변경사항이 정상적으로 반영되었습니다. ${method}.`);
+        // ${method}.
+        alert(`변경사항이 정상적으로 반영되었습니다.`);
       } else {
         // alert(`No action was performed. The gallery was already ${method === "created" ? "public" : "private"}.`); // 변경사항 없으면 그냥 닫음.
       }

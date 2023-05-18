@@ -61,7 +61,41 @@ export const TextInput = styled.input`
 //   font-size: 0.8rem;
 // `;
 
-export const DescInput = styled.div.attrs({ contentEditable: true })`
+// export const DescInput = styled.div.attrs({ contentEditable: true })`
+// export const DescInput = styled.div.attrs({ contentEditable: true })`
+//   width: 100%;
+//   height: 100%;
+//   background-color: white;
+//   border-radius: 10px;
+//   padding: 3%;
+//   font-size: 0.9rem;
+//   line-height: 1.2;
+//   overflow-y: auto; // 스크롤바 추가
+
+//   // 웹킷 기반 브라우저 (Chrome, Safari 등)용 스크롤바 스타일
+//   &::-webkit-scrollbar {
+//     width: 0; // 스크롤바 너비를 0으로 설정하여 숨김
+//     background: transparent; // 스크롤바 배경을 투명하게 설정
+//   }
+//   //
+
+//   // 기본 테두리 제거
+//   border: none;
+//   outline: none;
+//   resize: none;
+
+//   // Focus 상태에서 테두리 변경
+//   &:focus {
+//     border: none;
+//     outline: none;
+//     box-shadow: none;
+//   }
+
+//   font-family: "NanumSquareNeoTTF-Regular", "sans-serif";
+//   font-size: 0.8rem;
+// `;
+
+export const DescInput = styled.textarea`
   width: 100%;
   height: 100%;
   background-color: white;
@@ -69,21 +103,17 @@ export const DescInput = styled.div.attrs({ contentEditable: true })`
   padding: 3%;
   font-size: 0.9rem;
   line-height: 1.2;
-  overflow-y: auto; // 스크롤바 추가
+  overflow-y: auto;
 
-  // 웹킷 기반 브라우저 (Chrome, Safari 등)용 스크롤바 스타일
   &::-webkit-scrollbar {
-    width: 0; // 스크롤바 너비를 0으로 설정하여 숨김
-    background: transparent; // 스크롤바 배경을 투명하게 설정
+    width: 0;
+    background: transparent;
   }
-  //
 
-  // 기본 테두리 제거
   border: none;
   outline: none;
   resize: none;
 
-  // Focus 상태에서 테두리 변경
   &:focus {
     border: none;
     outline: none;
