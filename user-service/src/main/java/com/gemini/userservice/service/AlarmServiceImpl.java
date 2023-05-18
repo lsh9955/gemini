@@ -280,6 +280,9 @@ public class AlarmServiceImpl implements AlarmService {
                 AlarmUser alarmUser1 = alarmUser.get();
                 List<Long> alarmIds = alarmUser1.getAlarmIds();
                 List<AlarmDto> alarmDtos = new ArrayList<>();
+                if (alarmIds.size() == 0) {
+                    return null;
+                }
                 for (Long alarmId : alarmIds) {
                     Optional<AlarmData> alarmData = alarmDataRepository.findById(alarmId);
                     AlarmData data = alarmData.get();
