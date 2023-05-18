@@ -17,30 +17,7 @@ const Dialogue = ({ gameMsg }: { gameMsg: any }) => {
   const [nowTxtPage, setNowTxtPage] = useState<number>(0);
   const el = useRef(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  //   useEffect(() => {
-  //     chatSocket.on("messageResponse", (data: any) => {
-  //       console.log("채팅다이얼로그에서 받았습니다");
-  //       if (data.type === "룸 채팅") {
-  //         setGameMsg([...gameMsg, data]);
-  //       }
-  //     });
-  //     return () => {
-  //       chatSocket.off("messageResponse");
-  //     };
-  //   }, [chatSocket, gameMsg]);
-  // 원본
-  //   useEffect(() => {
-  //     if (gameMsg.length >= 1 && gameMsg[gameMsg.length - 1].type === "룸 채팅") {
-  //       lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  //       const typed = new Typed(el.current, {
-  //         strings: [`${gameMsg[gameMsg.length - 1].text}`],
-  //         typeSpeed: 50,
-  //       });
-  //       return () => {
-  //         typed.destroy();
-  //       };
-  //     }
-  //   }, [gameMsg]);
+
   useEffect(() => {
     if (gameMsg.length === 1) {
       lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });

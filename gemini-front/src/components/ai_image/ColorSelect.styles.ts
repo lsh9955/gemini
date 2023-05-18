@@ -37,6 +37,29 @@ export const ColorContainer = styled.div`
   }
 `;
 
+//선택된 헤어 컬러 컴포넌트 스타일
+export const ClickedColorContainer = styled.div`
+  position: relative;
+  width: 17%;
+  height: auto;
+  margin: 1%;
+  border: 1px solid;
+  border-radius: 20px;
+  cursor: pointer;
+  & p {
+    top: 45%;
+    left: 30%;
+
+    display: inline-block;
+    position: absolute;
+    z-index: 90;
+  }
+  & img {
+    cursor: pointer;
+    filter: brightness(50%);
+  }
+`;
+
 export const ColorImage = styled.img`
   width: 100%;
   height: 100%;
