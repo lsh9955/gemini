@@ -32,7 +32,7 @@ public class Orders {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", nullable = false)
     private UserInfo userInfo;
 
