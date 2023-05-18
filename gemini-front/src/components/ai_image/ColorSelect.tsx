@@ -59,13 +59,14 @@ const ColorSelect: FC<Props> = ({ handleColor, parentId }) => {
   return (
     <>
       <ColorWrapper>
-        {colors.map((color) =>
-          color.koreanName === pickColor ? (
+        {colors.map((color) => {
+          return color.koreanName === pickColor ? (
             <ClickedColorContainer
               key={color.name}
               onClick={() => {
                 handleColorClick(color);
                 setPickColor(color.koreanName);
+                console.log(color.koreanName);
               }}
             >
               <ColorText>{color.koreanName}</ColorText>
@@ -77,13 +78,14 @@ const ColorSelect: FC<Props> = ({ handleColor, parentId }) => {
               onClick={() => {
                 handleColorClick(color);
                 setPickColor(color.koreanName);
+                console.log(color.koreanName);
               }}
             >
               <ColorText>{color.koreanName}</ColorText>
               <ColorImage src={color.image} alt={color.name} />
             </ColorContainer>
-          )
-        )}
+          );
+        })}
       </ColorWrapper>
     </>
   );
