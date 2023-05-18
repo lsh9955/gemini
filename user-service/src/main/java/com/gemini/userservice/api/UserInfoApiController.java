@@ -52,16 +52,17 @@ public class UserInfoApiController {
     public ResponseEntity<Void> followUser(@RequestHeader("X-Username") String currentUsername, @RequestBody RequestFollowDto requestFollowDto) throws IOException, InterruptedException {
 
 
-        userService.followUser(currentUsername, requestFollowDto);
+        String res = userService.followUser(currentUsername, requestFollowDto);
 
-
-        //알람 메세지를 만들기 위해 FollowAlarmDto에 넣어준다.
-        FollowAlarmDto followAlarmDto = new FollowAlarmDto();
-        //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!! (팔로우를 보내는 사람의 닉네임을 저장한다)
-        followAlarmDto.setGetAlarmNickName(requestFollowDto.getNickname()); // nickname도 고유한거라서 닉네임을 보내준다. 😥 이게 진짜에요.
-        //알람을 보내는 사람 => 팔로우 한 사람
-        followAlarmDto.setSendAlarmUserName(currentUsername);
-        alarmService.createFollowAlarm(currentUsername, followAlarmDto);
+        if (res == "follow") {
+            //알람 메세지를 만들기 위해 FollowAlarmDto에 넣어준다.
+            FollowAlarmDto followAlarmDto = new FollowAlarmDto();
+            //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!! (팔로우를 보내는 사람의 닉네임을 저장한다)
+            followAlarmDto.setGetAlarmNickName(requestFollowDto.getNickname()); // nickname도 고유한거라서 닉네임을 보내준다. 😥 이게 진짜에요.
+            //알람을 보내는 사람 => 팔로우 한 사람
+            followAlarmDto.setSendAlarmUserName(currentUsername);
+            alarmService.createFollowAlarm(currentUsername, followAlarmDto);
+        }
 
         return ResponseEntity.ok().build();
     }
