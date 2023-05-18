@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useHistory, Router } from "react-router-dom";
 import "./App.css";
 import { logoutAccount } from "./store/UserSlice";
 import { logout } from "./store/Cookie";
 import axios from "axios";
 import AppRoutes from "./AppRoutes";
 import BlockBackButtonRouter from "./BlockBackButtonRouter";
+import axiosInstanceWithAccessToken from "./utils/AxiosInstanceWithAccessToken";
+import { createBrowserHistory } from "history";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-
-  // const handleResize = () => {
-  //   const vh = window.innerHeight * 0.01;
-  //   document.documentElement.style.setProperty("--vh", `${vh}px`);
-  // };
-  // useEffect(() => {
-  //   handleResize();
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
+  // const history = useHistory();
+  const history = createBrowserHistory();
 
   useEffect(() => {
     if (!accessToken) {
@@ -33,7 +27,8 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    // <BrowserRouter>
+    <Router history={history}>
       {/* <BlockBackButtonRouter> */}
       <style>{`
         body::-webkit-scrollbar {
@@ -46,7 +41,8 @@ const App: React.FC = () => {
       `}</style>
       <AppRoutes />
       {/* </BlockBackButtonRouter> */}
-    </BrowserRouter>
+    </Router>
+    // </BrowserRouter>
   );
 };
 
