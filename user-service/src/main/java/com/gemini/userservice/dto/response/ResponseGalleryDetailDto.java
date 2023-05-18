@@ -4,10 +4,7 @@ import com.gemini.userservice.entity.Gallery;
 import com.gemini.userservice.entity.Gemini;
 import com.gemini.userservice.entity.Tag;
 import com.gemini.userservice.entity.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class ResponseGalleryDetailDto {
 
     private String nickname;
@@ -31,9 +29,9 @@ public class ResponseGalleryDetailDto {
 
     private Boolean isLiked;
 
-    private List<Tag> tags; //몽고
+    private List<String> tags; //몽고
 
-    public ResponseGalleryDetailDto(UserInfo userInfo, Gemini gemini, Boolean isLiked) {
+    public ResponseGalleryDetailDto(UserInfo userInfo, Gemini gemini, Boolean isLiked, List<String> tags) {
 
         this.nickname = userInfo.getNickname();
         this.profileImage = userInfo.getProfileImgUrl();
@@ -42,5 +40,6 @@ public class ResponseGalleryDetailDto {
         this.geminiDescription = gemini.getDescription();
         this.totalLike = gemini.getTotalLike();
         this.isLiked = isLiked;
+        this.tags = tags;
     }
 }
