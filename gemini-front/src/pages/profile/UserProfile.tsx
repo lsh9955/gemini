@@ -109,7 +109,7 @@ const UserProfile: FC = () => {
         {
           params: {
             page: currentPage,
-            size: 16,
+            size: 500,
           },
         }
       );
@@ -135,9 +135,14 @@ const UserProfile: FC = () => {
     }
   }, [page]);
 
-  useEffect(() => {
-    loadMoreImages();
-  }, [loadMoreImages]);
+  useEffect(
+    () => {
+      loadMoreImages();
+    },
+    [
+      // loadMoreImages
+    ]
+  );
   // for infinite scroll 😀
 
   // for modal component 😉
