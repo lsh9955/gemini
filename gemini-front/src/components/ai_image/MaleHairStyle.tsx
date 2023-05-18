@@ -34,7 +34,7 @@ const MaleHairStyle: FC<Props> = ({ data, handleMaleHairStyle }) => {
             key={item.tagId}
             onClick={() => handleMaleHairStyleClick(item)}
           >
-            {/* <MaleHairStyleText>{item.koreanName}</MaleHairStyleText> */}
+            <MaleHairStyleText>{item.koreanName}</MaleHairStyleText>
             <MaleHairStyleImage src={item.imgUrl} alt={item.koreanName} />
           </MaleHairStyleContainer>
         ))}
