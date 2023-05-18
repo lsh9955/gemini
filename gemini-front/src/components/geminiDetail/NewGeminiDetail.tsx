@@ -159,7 +159,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
               <DescInput
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
-                placeholder="데이터를 받아오면 이름과 함께 비워집니다."
+                placeholder="GEMINI의 소개를 입력해주세요."
               >
                 {desc}
               </DescInput>

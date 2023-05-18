@@ -48,7 +48,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   selectedImagePk,
   setProfileImg,
 }) => {
-  const [isPublic, setIsPublic] = useState<boolean>(false);
+  const [isPublic, setIsPublic] = useState<boolean>(true);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
     "여성",
@@ -169,8 +169,8 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
           <GeminiDetialInfoWrapper>
             <ToggleWrapper>
               <ToggleText>공개</ToggleText>
-              <ToggleButtonContainer onClick={handleClick} isOn={isPublic}>
-                <ToggleButtonCircle isOn={isPublic} />
+              <ToggleButtonContainer onClick={handleClick} isOn={!isPublic}>
+                <ToggleButtonCircle isOn={!isPublic} />
               </ToggleButtonContainer>
               <ToggleText>비공개</ToggleText>
             </ToggleWrapper>
