@@ -39,25 +39,25 @@ public class UserInfo {
     private String username;
 
     // 1:N relation 😀😀
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<Gemini> geminis;
 
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follow> followers = new HashSet<>();
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follow> followings = new HashSet<>();
 
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<Orders> orders;
 
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<Like> likes;
 //
 //    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<Alarm> alarms;
 
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<UserPose> userPoses;
 
     // 별 구매 시 총 별 개수 변경

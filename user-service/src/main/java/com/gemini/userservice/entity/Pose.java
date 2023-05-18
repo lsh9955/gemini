@@ -21,6 +21,6 @@ public class Pose {
     @Column(name = "pose_no")
     private Long poseNo;
 
-    @OneToMany(mappedBy = "pose", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pose", cascade = CascadeType.ALL)
     private List<UserPose> userPoses;
 }
