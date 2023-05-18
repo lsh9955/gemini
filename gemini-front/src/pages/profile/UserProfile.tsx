@@ -94,11 +94,6 @@ const UserProfile: FC = () => {
   const infScrollImgLength = getInfScrollImgLength(images.length);
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
 
-  // const loadMoreImages = useCallback(async () => {
-  //   const currentPage = page;
-  //   if (currentPage > 0) { // 페이지가 0이 아닐 때만 요청을 보냅니다.
-  // try {
-
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
     try {
@@ -123,8 +118,6 @@ const UserProfile: FC = () => {
             imageUrl: item.imageUrl,
             geminiPk: item.galleryNo,
           })
-
-          // (item: any) => item.imageUrl
         );
         setImages((prevImages) => [...prevImages, ...newImages]);
         setPage((prevPage) => prevPage + 1);
@@ -136,7 +129,7 @@ const UserProfile: FC = () => {
       console.error(error);
       setHasMore(false);
     }
-  }, [page, nickname]);
+  }, [page]);
 
   useEffect(() => {
     loadMoreImages();
