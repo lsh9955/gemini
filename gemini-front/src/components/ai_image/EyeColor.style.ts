@@ -17,8 +17,23 @@ export const EyeColorContainer = styled.div`
   border: 1px solid;
 
   border-radius: 20px;
-  &:hover {
+  & p {
+    display: none;
+  }
+  :hover {
     cursor: pointer;
+    & p {
+      top: 45%;
+      left: 30%;
+
+      display: inline-block;
+      position: absolute;
+      z-index: 90;
+    }
+    & img {
+      cursor: pointer;
+      filter: brightness(50%);
+    }
   }
 `;
 
@@ -31,4 +46,9 @@ export const EyeColorImage = styled.img`
     cursor: pointer;
     filter: brightness(50%);
   }
+`;
+
+export const EyeColorText = styled.p`
+  font-size: 15px;
+  color: white;
 `;
