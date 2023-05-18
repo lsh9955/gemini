@@ -20,4 +20,6 @@ public class GeneratePoseDto {
     private List<Long> gemini_seed;
 
     private Integer pose_id;
+
+    private String background_url;
 }
