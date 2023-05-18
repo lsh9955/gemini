@@ -46,15 +46,14 @@ export const ClickedColorContainer = styled.div`
   border: 1px solid;
   border-radius: 20px;
   cursor: pointer;
-  & p {
+  & > p {
     top: 45%;
     left: 30%;
-
     display: inline-block;
     position: absolute;
     z-index: 90;
   }
-  & img {
+  & > img {
     cursor: pointer;
     filter: brightness(50%);
   }
