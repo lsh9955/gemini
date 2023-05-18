@@ -18,6 +18,10 @@ public interface GalleryService {
 
     ResponseRankingDto getWeeklyGallery();
 
+    ResponseEmotionDto getDailyEmotion(Long galleryNo);
+
+    ResponseEmotionDto getWeeklyEmotion(Long galleryNo);
+
     ResponseGalleryDetailDto getGalleryDetail(String username, Long galleryNo);
 
     ResponseGeminiDetailDto getGeminiDetail(String username, Long geminiNo);

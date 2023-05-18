@@ -67,6 +67,26 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(responseRankingDto);
     }
 
+    @GetMapping("/daily/emotion")
+    public ResponseEntity<ResponseEmotionDto> getDailyEmotion(@RequestParam("galleryNo") Long galleryNo) {
+
+        ResponseEmotionDto responseEmotionDto = galleryService.getDailyEmotion(galleryNo);
+        if (responseEmotionDto == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseEmotionDto);
+    }
+
+    @GetMapping("/weekly/emotion")
+    public ResponseEntity<ResponseEmotionDto> getWeeklyEmotion(@RequestParam("galleryNo") Long galleryNo) {
+
+        ResponseEmotionDto responseEmotionDto = galleryService.getWeeklyEmotion(galleryNo);
+        if (responseEmotionDto == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseEmotionDto);
+    }
+
     @GetMapping("/{galleryNo}") // galleryNo로 조회 (유저페이지, 일반 게시판전용)
     public ResponseEntity<ResponseGalleryDetailDto> getGalleryDetail(@RequestHeader("X-Username") String username,
                                                                      @PathVariable("galleryNo") Long galleryNo) {

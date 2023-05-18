@@ -14,6 +14,4 @@ public class RankingDto {
     private Long galleryNo;
 
     private String imageUrl;
-
-    private List<String> emotions;
 }
