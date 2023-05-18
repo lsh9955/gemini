@@ -10,7 +10,7 @@ public interface UserService {
 
     void updateProfile(UpdateProfileRequestDto requestDto, String username);
 
-    void followUser(String currentUsername, RequestFollowDto requestFollowDto);
+    String followUser(String currentUsername, RequestFollowDto requestFollowDto);
 
     void unfollowUser(String currentUsername, RequestFollowDto requestFollowDto);
 
