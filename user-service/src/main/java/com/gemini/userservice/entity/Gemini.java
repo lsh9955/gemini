@@ -58,4 +58,15 @@ public class Gemini {
         this.userInfo = userInfo;
     }
 
+    public void updateIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
 }
