@@ -93,7 +93,7 @@ public class SchedulerConfig {
             weeklyRepository.deleteAll();
         }
         long start = 0;
-        long end = 9;
+        long end = 4;
         RedisSerializer<Gallery> gallerySerializer = new Jackson2JsonRedisSerializer<>(Gallery.class);
         redisTemplate.setValueSerializer(gallerySerializer);
         Set<Gallery> galleries = redisTemplate.execute((RedisCallback<Set<Gallery>>) connection -> {
