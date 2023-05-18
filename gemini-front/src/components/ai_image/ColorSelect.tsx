@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   ColorWrapper,
   ColorContainer,
   ColorImage,
   ColorText,
+  ClickedColorContainer,
 } from "./ColorSelect.styles";
 
 // 색상 종류
@@ -50,21 +51,39 @@ interface Props {
 }
 
 const ColorSelect: FC<Props> = ({ handleColor, parentId }) => {
+  const [pickColor, setPickColor] = useState<any>(null);
+
   const handleColorClick = (color: Color) => {
     handleColor({ name: color.name, koreanName: color.koreanName }, parentId);
   };
   return (
     <>
       <ColorWrapper>
-        {colors.map((color) => (
-          <ColorContainer
-            key={color.name}
-            onClick={() => handleColorClick(color)}
-          >
-            <ColorText>{color.koreanName}</ColorText>
-            <ColorImage src={color.image} alt={color.name} />
-          </ColorContainer>
-        ))}
+        {colors.map((color) =>
+          color.koreanName === pickColor ? (
+            <ClickedColorContainer
+              key={color.name}
+              onClick={() => {
+                handleColorClick(color);
+                setPickColor(color.koreanName);
+              }}
+            >
+              <ColorText>{color.koreanName}</ColorText>
+              <ColorImage src={color.image} alt={color.name} />
+            </ClickedColorContainer>
+          ) : (
+            <ColorContainer
+              key={color.name}
+              onClick={() => {
+                handleColorClick(color);
+                setPickColor(color.koreanName);
+              }}
+            >
+              <ColorText>{color.koreanName}</ColorText>
+              <ColorImage src={color.image} alt={color.name} />
+            </ColorContainer>
+          )
+        )}
       </ColorWrapper>
     </>
   );
