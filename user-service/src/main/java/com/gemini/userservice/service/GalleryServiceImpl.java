@@ -31,9 +31,10 @@ public class GalleryServiceImpl implements GalleryService{
 
     private final GeminiRepository geminiRepository;
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Gallery> redisTemplate;
 
     private final MongoTemplate mongoTemplate;
+
     private final TagRepository tagRepository;
 
     private final DailyRepository dailyRepository;
@@ -171,6 +172,8 @@ public class GalleryServiceImpl implements GalleryService{
 
         Iterable<Daily> dailyList = dailyRepository.findAll();
         List<RankingDto> rankingDtos = new ArrayList<>();
+        System.out.println("daily: 1111111111111111111111111111111111111" );
+        System.out.println(dailyList);
         for (Daily daily : dailyList) {
             Long galleryNo = daily.getGalleryNo();
             Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);

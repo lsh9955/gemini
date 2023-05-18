@@ -67,8 +67,8 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(responseRankingDto);
     }
 
-    @GetMapping("/daily")
-    public ResponseEntity<ResponseEmotionDto> getDailyEmotion(@RequestParam("galleryNo") Long galleryNo) {
+    @GetMapping("/daily/{galleryNo}")
+    public ResponseEntity<ResponseEmotionDto> getDailyEmotion(@PathVariable("galleryNo") Long galleryNo) {
 
         ResponseEmotionDto responseEmotionDto = galleryService.getDailyEmotion(galleryNo);
         if (responseEmotionDto == null) {
@@ -77,8 +77,8 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(responseEmotionDto);
     }
 
-    @GetMapping("/weekly")
-    public ResponseEntity<ResponseEmotionDto> getWeeklyEmotion(@RequestParam("galleryNo") Long galleryNo) {
+    @GetMapping("/weekly/{galleryNo}")
+    public ResponseEntity<ResponseEmotionDto> getWeeklyEmotion(@PathVariable("galleryNo") Long galleryNo) {
 
         ResponseEmotionDto responseEmotionDto = galleryService.getWeeklyEmotion(galleryNo);
         if (responseEmotionDto == null) {
