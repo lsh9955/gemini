@@ -89,9 +89,12 @@ const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
       const galleryRes = await axiosInstanceWithAccessToken.get(
         `/user-service/gallery/${selectedImagePk}`
       ); // 수정 필요😀 -> galleryPK입니다.
+      console.log("랭킹제미니의 기본정보를 잘 받아오는지 보자.");
+      console.log(galleryRes);
+      console.log(galleryRes.data);
 
       const emotionFourCutRes = await axiosInstanceWithAccessToken.get(
-        `/user-service/gallery/${fetchUrlPeriod}/selectedImagePk`
+        `/user-service/gallery/${fetchUrlPeriod}/${selectedImagePk}`
         // {
         //   params: {
         //     galleryNo: selectedImagePk,
