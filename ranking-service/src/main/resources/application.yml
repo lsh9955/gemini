@@ -64,4 +64,4 @@ spring:
       enabled: false
 
 sd:
-  url: http://43.201.232.211/ml_api
+  url: http://13.124.20.123/ml_api
