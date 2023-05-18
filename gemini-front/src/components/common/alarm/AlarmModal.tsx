@@ -129,6 +129,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
       }
     }
   };
+  console.log(alarmStatus);
 
   return (
     <>
