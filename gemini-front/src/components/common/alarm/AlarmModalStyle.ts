@@ -212,8 +212,8 @@ export const BackgroundContainer = styled.div`
   left: 25%;
   z-index: 1002;
   background-color: rgba(0, 0, 0, 0.5);
-  width: 750px;
-  height: 600px;
+  width: 1060px;
+  height: 700px;
   text-align: center;
 `;
 
