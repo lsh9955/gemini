@@ -79,10 +79,10 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     { imageUrl: "http://placeimg.com/150/200/tech", galleryNo: 5 },
     // ...
   ];
-  const [weeklyTop5, setWeeklyTop5] = useState<RankingImageData[]>([
+  const [dailyTop5, setDailyTop5] = useState<RankingImageData[]>([
     ...dummyRankingImgs,
   ]);
-  const [monthlyTop5, setMonthlyTop5] = useState<RankingImageData[]>([
+  const [weeklyTop5, setWeeklyTop5] = useState<RankingImageData[]>([
     ...dummyRankingImgs,
   ]);
 
@@ -95,8 +95,10 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
       "/user-service/gallery/weekly"
     );
     console.log("랭킹 데이터 가져옵니다.");
-    console.log(dailyRes);
-    console.log(weeklyRes);
+    console.log(dailyRes.data.rankingDtos);
+    console.log(weeklyRes.data.rankingDtos);
+    setDailyTop5(dailyRes.data.rankingDtos);
+    setWeeklyTop5(weeklyRes.data.rankingDtos);
     console.log("여기까지! 이제 뿌려주자.");
   };
 
@@ -198,7 +200,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
       <ContentWrap>
         <GalleryTitleName ref={ref}>일간 TOP 5</GalleryTitleName>
         <ImgWrap>
-          {weeklyTop5.slice(0, 5).map((imageData, index) => (
+          {dailyTop5.slice(0, 5).map((imageData, index) => (
             <StyledImg
               key={index}
               imageUrl={imageData.imageUrl}
@@ -212,7 +214,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
         </ImgWrap>
         <GalleryTitleName>주간 TOP 5</GalleryTitleName>
         <ImgWrap>
-          {monthlyTop5.slice(0, 5).map((imageData, index) => (
+          {weeklyTop5.slice(0, 5).map((imageData, index) => (
             <StyledImg
               key={index}
               imageUrl={imageData.imageUrl}
