@@ -36,6 +36,7 @@ import {
 } from "./MyGeminiDetail.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { updateHeaderProfileImg } from "../../store/UserSlice";
+import { useDispatch } from "react-redux";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
@@ -48,6 +49,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   selectedImagePk,
   setProfileImg,
 }) => {
+  const dispatch = useDispatch();
   const [isPublic, setIsPublic] = useState<boolean>(true);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
@@ -76,7 +78,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
         { geminiPk: selectedImagePk }
       );
       setProfileImg(geminiImg);
-      updateHeaderProfileImg(geminiImg);
+      dispatch(updateHeaderProfileImg(geminiImg));
     } catch (error) {
       console.error(error);
       // 오류 처리
@@ -97,13 +99,23 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     // closeModal();
     try {
       console.log(
-        `보낸다 ${{ geminiPk: selectedImagePk, isPublic: isPublic }}`
+        `보낸다 ${{
+          geminiPk: selectedImagePk,
+          name: geminiName,
+          description: desc,
+          isPublic: isPublic,
+        }}`
       );
       console.log(selectedImagePk);
       console.log(isPublic);
-      const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
+      const GalleryPublicRes = await axiosInstanceWithAccessToken.patch(
         `/user-service/gallery/enrollment`,
-        { geminiPk: selectedImagePk, isPublic: isPublic }
+        {
+          geminiPk: selectedImagePk,
+          name: geminiName,
+          description: desc,
+          isPublic: isPublic,
+        }
       );
       console.log(GalleryPublicRes);
 
