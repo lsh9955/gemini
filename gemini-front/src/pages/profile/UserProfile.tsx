@@ -173,9 +173,9 @@ const UserProfile: FC = () => {
     }
   }, [page, nickname, axiosInstanceWithAccessToken]);
 
-  // useEffect(() => {
-  //   loadMoreImages();
-  // }, [loadMoreImages]);
+  useEffect(() => {
+    loadMoreImages();
+  }, [loadMoreImages]);
   // for infinite scroll 😀
 
   // for modal component 😉
