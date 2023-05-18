@@ -1,5 +1,10 @@
 import React, { FC } from "react";
-import { PresetBox, PresetContainer, PresetImage } from "./Preset.style";
+import {
+  PresetBox,
+  PresetContainer,
+  PresetImage,
+  PresetText,
+} from "./Preset.style";
 
 // import Ari from "../../assets/img/ai/preset/Ari.png";
 // import Elric from "../../assets/img/ai/preset/Elric.png";
@@ -72,6 +77,7 @@ const Preset: FC<Props> = ({ data, handlePreset }) => {
             key={item.tagId}
             onClick={() => handlePresetClick(item)}
           >
+            <PresetText>{item.koreanName}</PresetText>
             <PresetImage src={item.imgUrl} alt={item.koreanName} />
           </PresetContainer>
         ))}
