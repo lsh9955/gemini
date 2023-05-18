@@ -20,4 +20,6 @@ public class PoseImage {
     private Long poseNo;
 
     private List<String> images;
+
+    private String background;
 }

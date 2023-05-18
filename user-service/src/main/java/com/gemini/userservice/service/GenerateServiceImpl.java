@@ -199,6 +199,7 @@ public class GenerateServiceImpl implements GenerateService {
             PoseDto poseDto = PoseDto.builder().
                     poseNo(poseImage.getPoseNo()).
                     poseImages(poseImage.getImages()).
+                    background(poseImage.getBackground()).
                     build();
             poseDtos.add(poseDto);
         }
