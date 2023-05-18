@@ -37,9 +37,6 @@ export interface Props {
 const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
   const dispatch = useDispatch();
-  const headers = {
-    "X-Username": "google_109918724409380589068",
-  };
   const data = {
     tagIds: [
       tagIds.genreTagId,
