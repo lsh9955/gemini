@@ -170,10 +170,15 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   };
 
   // history.push 통해서 데이터보내기.
-  const sendGalleryPkHandler = () => {
+  const useThisRecipeHandler = async () => {
+    const geminiNoRes = await axiosInstanceWithAccessToken.get(
+      `/user-service/generate/default/gemini/${selectedImagePk}`
+    ); // 갤러리PK를 이용, 제미니PK를 얻을 수 있는 요청
+    const geminiNo = geminiNoRes.data;
+
     history.push({
       pathname: "/aiImage",
-      state: { galleryPk: selectedImagePk },
+      state: { galleryPk: geminiNo },
     });
   };
 
@@ -245,7 +250,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                   </TagArea>
                 </TagBlockWrapper>
                 <ButtonWrapper>
-                  <GeminiInfoButton onClick={sendGalleryPkHandler}>
+                  <GeminiInfoButton onClick={useThisRecipeHandler}>
                     이 레시피 사용하기
                   </GeminiInfoButton>
                 </ButtonWrapper>
