@@ -23,12 +23,6 @@ exports.renderRoom = async (req, res) => {
   res.json({ room: rooms });
 };
 
-const userPicList = [
-  "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/user1.png?alt=media&token=34af8408-0782-44b2-aca5-4ce903676aa7",
-  "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/user2.png?alt=media&token=50319500-e428-473c-b7f5-b5812977f0c2",
-  "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/user3.png?alt=media&token=058ffe29-b1c5-495f-a649-5a10d5488e15",
-  "https://firebasestorage.googleapis.com/v0/b/crudtest-e658b.appspot.com/o/user4.png?alt=media&token=1f8ab0c3-b74f-42f5-bd89-63f36740bb75",
-];
 //방 생성
 exports.createRoom = async (req, res, next) => {
   console.log("유저가 방 생성, 입장 전");
