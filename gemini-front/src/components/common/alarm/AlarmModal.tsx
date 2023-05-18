@@ -141,7 +141,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
               <AlarmContentWrapper
                 style={{
                   maxHeight: "25vh",
-                  overflowY: alarmList.length >= 6 ? "auto" : "visible",
+                  // overflowY: alarmList.length >= 6 ? "auto" : "visible",
                 }}
               >
                 {alarmStatus === 204 ? (
