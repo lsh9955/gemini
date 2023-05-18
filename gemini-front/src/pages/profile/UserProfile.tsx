@@ -52,6 +52,9 @@ const UserProfile: FC = () => {
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const increaseFollowingNum = () => setFollowingNum(followingNum + 1);
+  const decreaseFollowingNum = () => setFollowingNum(followingNum - 1);
+
   const [totalGallery, setTotalGallery] = useState<number>(5);
 
   const fetchUserInfo = async () => {
@@ -92,7 +95,8 @@ const UserProfile: FC = () => {
   const [page, setPage] = useState(0);
 
   const infScrollImgLength = getInfScrollImgLength(images.length);
-  const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
+  // const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
+  const minHeight = `${100 + infScrollImgLength * 20}vh`;
 
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
@@ -266,6 +270,8 @@ const UserProfile: FC = () => {
               <FollowButton
                 isFollowing={isFollowing}
                 setIsFollowing={setIsFollowing}
+                increaseFollowingNum={increaseFollowingNum}
+                decreaseFollowingNum={decreaseFollowingNum}
                 nickname={nickname}
               />
             </FollowingAndPayWrappter>

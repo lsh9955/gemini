@@ -82,9 +82,16 @@ const AppRoutes = () => {
   // const shouldShowHeader =
   //   !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
 
+  // const shouldShowHeader =
+  //   !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
+  //   !isNotFoundPage;
+
+  // 😀아래 바꾸지마세요. 헤더 고쳐놨는데 또 고장내면 나 힘들어..
   const shouldShowHeader =
-    !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
-    !isNotFoundPage;
+    !pathsWithoutHeader.some((path) => {
+      const regex = new RegExp(`^${path}`);
+      return regex.test(location.pathname);
+    }) && !isNotFoundPage;
 
   console.log("url경로를 보여줌");
   console.log(location.pathname);
