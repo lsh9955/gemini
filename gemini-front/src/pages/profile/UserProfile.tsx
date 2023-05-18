@@ -94,6 +94,7 @@ const UserProfile: FC = () => {
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
 
   const loadMoreImages = useCallback(async () => {
+    const currentPage = page;
     try {
       const response = await axiosInstanceWithAccessToken.post(
         "/user-service/gallery/usergalleries",
@@ -102,7 +103,7 @@ const UserProfile: FC = () => {
         },
         {
           params: {
-            page: page,
+            page: currentPage,
             size: 16,
           },
         }
