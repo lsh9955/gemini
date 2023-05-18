@@ -162,7 +162,7 @@ public class GalleryApiController {
         return ResponseEntity.status(HttpStatus.OK).body(responseGalleryPageDto);
     }
 
-    @PostMapping("/enrollment") // isPublic을 받아서 현재상태와 비교한 후, 갤러리에 등록/삭제 분기처리
+    @PatchMapping("/enrollment") // isPublic을 받아서 현재상태와 비교한 후, 갤러리에 등록/삭제 분기처리
     public ResponseEntity<?> updateGemini(@RequestHeader("X-Username") String username, @RequestBody RequestUpdateGeminiDto requestUpdateGeminiDto) {
 
         String res = galleryService.updateGemini(requestUpdateGeminiDto);
