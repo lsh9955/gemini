@@ -36,6 +36,28 @@ export const EyeColorContainer = styled.div`
     }
   }
 `;
+export const PickedEyeColorContainer = styled.div`
+  position: relative;
+  width: 31%;
+  height: auto;
+  margin: 1%;
+  border: 1px solid;
+
+  border-radius: 20px;
+  cursor: pointer;
+  & p {
+    top: 45%;
+    left: 30%;
+
+    display: inline-block;
+    position: absolute;
+    z-index: 90;
+  }
+  & img {
+    cursor: pointer;
+    filter: brightness(50%);
+  }
+`;
 
 export const EyeColorImage = styled.img`
   width: 100%;
