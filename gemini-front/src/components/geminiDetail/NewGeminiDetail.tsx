@@ -96,6 +96,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
       if (geminiInfoData.tags) {
         setTagContents(geminiInfoData.tags);
       }
+      fetchNewGeminiInfo();
 
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
