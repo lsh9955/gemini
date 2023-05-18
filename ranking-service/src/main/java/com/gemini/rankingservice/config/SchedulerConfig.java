@@ -75,7 +75,8 @@ public class SchedulerConfig {
         addReward("daily");
     }
 
-    @Scheduled(cron = "0 0 0 ? * SUN")
+//    @Scheduled(cron = "0 0 0 ? * SUN")
+    @Scheduled(cron = "0 */10 * * * *")
     public void runWeeklyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
@@ -92,7 +93,7 @@ public class SchedulerConfig {
             weeklyRepository.deleteAll();
         }
         long start = 0;
-        long end = 4;
+        long end = 9;
         RedisSerializer<Gallery> gallerySerializer = new Jackson2JsonRedisSerializer<>(Gallery.class);
         redisTemplate.setValueSerializer(gallerySerializer);
         Set<Gallery> galleries = redisTemplate.execute((RedisCallback<Set<Gallery>>) connection -> {
