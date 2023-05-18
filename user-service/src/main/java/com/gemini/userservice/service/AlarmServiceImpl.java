@@ -127,12 +127,15 @@ public class AlarmServiceImpl implements AlarmService {
         AlarmData alarmData = AlarmData.builder().
                 alarmId(alarmId).
                 category(1).
-                follower(userInfo.getNickname()).
+                follower(alarmDto.getSendAlarmUserName()).
                 memo(encodedMessage).
                 build();
         alarmDataRepository.save(alarmData);
 
-        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userInfo.getUserPk());
+        Optional<UserInfo> getAlarmUserInfo = userInfoRepository.findByNickname(alarmDto.getGetAlarmNickName());
+        UserInfo getAlarmUser = getAlarmUserInfo.get();
+
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(getAlarmUser.getUserPk());
         if (alarmUser.isPresent()) {
             AlarmUser alarmUser1 = alarmUser.get();
             List<Long> alarmIds = alarmUser1.getAlarmIds();
