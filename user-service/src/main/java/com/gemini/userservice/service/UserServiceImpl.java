@@ -1,7 +1,7 @@
 // UserService implementation
 package com.gemini.userservice.service;
 
-import com.gemini.userservice.dto.FollowRequestDto;
+import com.gemini.userservice.dto.request.RequestFollowDto;
 import com.gemini.userservice.dto.UpdateProfileRequestDto;
 import com.gemini.userservice.dto.UserDto;
 import com.gemini.userservice.entity.Follow;
@@ -9,9 +9,10 @@ import com.gemini.userservice.entity.UserInfo;
 import com.gemini.userservice.repository.FollowRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import com.gemini.userservice.repository.UserRepository;
-import com.gemini.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -76,25 +77,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void followUser(String currentUsername, FollowRequestDto followRequestDto) {
+    public void followUser(String currentUsername, RequestFollowDto requestFollowDto) {
+
         UserInfo follower = userInfoRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("Current user not found"));
-        UserInfo following = userInfoRepository.findByNickname(followRequestDto.getNickname())
+        UserInfo following = userInfoRepository.findByNickname(requestFollowDto.getNickname())
                 .orElseThrow(() -> new RuntimeException("User to follow not found"));
-
-        Follow follow = Follow.builder()
-                .follower(follower)
-                .following(following)
-                .build();
-
-        followRepository.save(follow);
+        if (follower != following) {
+            Optional<Follow> isFollowed = followRepository.findByFollowerAndFollowing(follower, following);
+            if (!isFollowed.isPresent()) {
+                Follow follow = Follow.builder()
+                        .follower(follower)
+                        .following(following)
+                        .build();
+                followRepository.save(follow);
+            }
+        }
     }
 
     @Override
-    public void unfollowUser(String currentUsername, FollowRequestDto followRequestDto) {
+    public void unfollowUser(String currentUsername, RequestFollowDto requestFollowDto) {
         UserInfo follower = userInfoRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("Current user not found"));
-        UserInfo following = userInfoRepository.findByNickname(followRequestDto.getNickname())
+        UserInfo following = userInfoRepository.findByNickname(requestFollowDto.getNickname())
                 .orElseThrow(() -> new RuntimeException("User to unfollow not found"));
 
         Follow follow = followRepository.findByFollowerAndFollowing(follower, following)

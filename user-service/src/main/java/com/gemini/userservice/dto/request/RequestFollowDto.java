@@ -1,4 +1,4 @@
-package com.gemini.userservice.dto;
+package com.gemini.userservice.dto.request;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowRequestDto {
+public class RequestFollowDto {
 
     // if pk needed, revise it. 😶
     //    private Long userPk;
