@@ -68,6 +68,7 @@ const AppRoutes = () => {
   const [isNotFoundPage, setIsNotFoundPage] = React.useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0); // 스크롤 맨 위로 강제 고정. 무한스크롤 버그 해결
     // // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정
     // setIsNotFoundPage(!validPaths.includes(location.pathname));
     // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정

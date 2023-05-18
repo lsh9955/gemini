@@ -95,8 +95,8 @@ const UserProfile: FC = () => {
   const [page, setPage] = useState(0);
 
   const infScrollImgLength = getInfScrollImgLength(images.length);
-  // const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
-  const minHeight = `${100 + infScrollImgLength * 20}vh`;
+  const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
+  // const minHeight = `${100 + infScrollImgLength * 20}vh`;
 
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
