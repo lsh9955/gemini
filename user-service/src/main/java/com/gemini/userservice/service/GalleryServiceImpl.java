@@ -353,9 +353,14 @@ public class GalleryServiceImpl implements GalleryService{
 
     public String deleteGemini(String username, Long geminiNo) {
 
+
+
         Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
         if (gemini.getUserInfo().getUsername() != username) {
-            return "invalid user";
+            System.out.println(username);
+            System.out.println(gemini.getUserInfo().getUsername());
+
+            return username+gemini.getUserInfo().getUsername();
         }
         geminiRepository.delete(gemini);
         return "ok";
