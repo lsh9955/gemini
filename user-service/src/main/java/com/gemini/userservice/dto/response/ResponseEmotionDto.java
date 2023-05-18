@@ -13,5 +13,5 @@ import java.util.List;
 @Setter
 public class ResponseEmotionDto {
 
-    List<String> emotions;
+    private List<String> emotions;
 }
