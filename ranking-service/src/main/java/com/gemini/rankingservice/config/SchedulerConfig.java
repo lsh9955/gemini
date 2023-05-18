@@ -86,7 +86,7 @@ public class SchedulerConfig {
 
     public void addReward(String check) {
         String key = "gallery:" + check + "_like";
-        if (check == "daily") {
+        if (check.equals("daily")) {
             dailyRepository.deleteAll();
         }
         else {
