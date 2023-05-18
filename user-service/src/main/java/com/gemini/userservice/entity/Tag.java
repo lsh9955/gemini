@@ -26,7 +26,7 @@ public class Tag {
     @Column(name = "prompt")
     private String prompt;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no")
     private Category categoryNo;
 }

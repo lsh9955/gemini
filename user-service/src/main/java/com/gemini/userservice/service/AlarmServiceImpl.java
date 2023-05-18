@@ -231,7 +231,7 @@ public class AlarmServiceImpl implements AlarmService {
                 .imageUrl(geminiAlarmDto.getImageUrl())
                 .build();
 
-        send(userInfo.getUsername(), alarm.getAlarmId(), responseAlarmDto);
+//        send(userInfo.getUsername(), alarm.getAlarmId(), responseAlarmDto);
 
         return responseAlarmDto;
 
