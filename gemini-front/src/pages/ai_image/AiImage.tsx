@@ -491,10 +491,10 @@ const AiImage: FC = () => {
             <p>{genreKorean}</p>
           </GenreSelectBox>
 
-          {/* <AiSelectTitle>프리셋</AiSelectTitle>
+          <AiSelectTitle>프리셋</AiSelectTitle>
           <GenreSelectBox onClick={handlePresetSelectBoxClick}>
             <p>{presetKorean}</p>
-          </GenreSelectBox> */}
+          </GenreSelectBox>
 
           <AiSelectTitle>성별</AiSelectTitle>
           <GenreSelectBox onClick={handleGenderSelectBoxClick}>
