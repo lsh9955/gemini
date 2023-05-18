@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   HairColorBox,
   HairColorContainer,
   HairColorImage,
   HairColorText,
+  PickedHairColorContainer,
 } from "./HairColor.style";
 
 interface Data {
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const HairColor: FC<Props> = ({ data, handleHairColor }) => {
+  const [pickColor, setPickColor] = useState<any>(null);
   const handleHairColorClick = (item: Data) => {
     handleHairColor({
       tagId: item.tagId,
@@ -28,15 +30,31 @@ const HairColor: FC<Props> = ({ data, handleHairColor }) => {
   return (
     <>
       <HairColorBox>
-        {data?.map((item) => (
-          <HairColorContainer
-            key={item.tagId}
-            onClick={() => handleHairColorClick(item)}
-          >
-            <HairColorText>{item.koreanName}</HairColorText>
-            <HairColorImage src={item.imgUrl} alt={item.koreanName} />
-          </HairColorContainer>
-        ))}
+        {data?.map((item) =>
+          pickColor === item.koreanName ? (
+            <PickedHairColorContainer
+              key={item.tagId}
+              onClick={() => {
+                handleHairColorClick(item);
+                setPickColor(item.koreanName);
+              }}
+            >
+              <HairColorText>{item.koreanName}</HairColorText>
+              <HairColorImage src={item.imgUrl} alt={item.koreanName} />
+            </PickedHairColorContainer>
+          ) : (
+            <HairColorContainer
+              key={item.tagId}
+              onClick={() => {
+                handleHairColorClick(item);
+                setPickColor(item.koreanName);
+              }}
+            >
+              <HairColorText>{item.koreanName}</HairColorText>
+              <HairColorImage src={item.imgUrl} alt={item.koreanName} />
+            </HairColorContainer>
+          )
+        )}
       </HairColorBox>
     </>
   );

@@ -31,15 +31,17 @@ interface Props {
 const AlarmModal: React.FC<Props> = ({ onClose }) => {
   const history = useHistory();
   const [currentModal, setCurrentModal] = useState<React.ReactNode>("");
-  const [showGeminiDetail, setShowGeminiDetail] = useState(false);
-  const [selectedGemini, setSelectedGemini] = useState<any>(null);
+  // const [showGeminiDetail, setShowGeminiDetail] = useState(false);
+  // const [selectedGemini, setSelectedGemini] = useState<any>(null);
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
+  const [alarmStatus, setAlarmStatus] = useState<any>();
 
   useEffect(() => {
     axiosInstanceWithAccessToken
       .get(`/user-service/alarms`)
       .then((res) => {
         console.log(res);
+        setAlarmStatus(res.status);
         setAlarmList(res.data.alarmDtos);
       })
       .catch((err) => {
@@ -141,7 +143,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
                   overflowY: alarmList.length >= 6 ? "auto" : "visible",
                 }}
               >
-                {alarmList.length === 0 ? (
+                {alarmStatus === 204 ? (
                   <NoAlarmContent>받은 알람이 없습니다.</NoAlarmContent>
                 ) : (
                   alarmList.map((alarm: any, idx: any) => (
