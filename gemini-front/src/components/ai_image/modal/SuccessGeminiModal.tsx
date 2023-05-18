@@ -23,16 +23,17 @@ interface SuccessGeminiModalProps extends ParentProps {
 const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
   const [showGeminiAlarm, setShowGeminiAlarm] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [modalDisplay, setModalDisplay] = useState(false);
   const handleConfirm = () => {
-    // onClose();
     setShowAlert(true);
+    setModalDisplay(true);
   };
 
   useEffect(() => {
     if (showAlert) {
       const timer = setTimeout(() => {
         setShowGeminiAlarm(true);
-      }, 2000); // 20초 후에 GeminiAlarmModal을 나타냄
+      }, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
 
       return () => clearTimeout(timer);
     }
@@ -46,7 +47,10 @@ const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
 
   return (
     <>
-      <Overlay onClick={onClose} aria-hidden>
+      <Overlay
+        aria-hidden
+        style={{ display: `${modalDisplay ? "none" : "block"}` }}
+      >
         <div aria-hidden onClick={(e) => e.stopPropagation()}>
           <ModalContainer>
             <ModalForm>
