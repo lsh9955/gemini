@@ -250,13 +250,15 @@ public class GenerateServiceImpl implements GenerateService {
             seeds.add(gemini.getSeed());
             prompts.add(geminiTag.getPrompt());
         }
-
         GeneratePoseDto generatePoseDto = GeneratePoseDto.builder().
                 geminis(requestGeneratePoseDto.getGeminis()).
                 gemini_prompt(prompts).
                 gemini_seed(seeds).
                 pose_id(requestGeneratePoseDto.getSample()).
                 build();
+        if (requestGeneratePoseDto.getBackgroundUrl() != null) {
+            generatePoseDto.setBackground_url(requestGeneratePoseDto.getBackgroundUrl());
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/pose";
