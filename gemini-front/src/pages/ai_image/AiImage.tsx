@@ -539,10 +539,10 @@ const AiImage: FC = () => {
           )}
 
           <AiSampleBox>
-            {showNoneBox && <NoneSampleBox />}
-            {showGenreImage && (
-              <GenreImage data={data} handleGenre={handleGenre} />
-            )}
+            {/* {showNoneBox && <NoneSampleBox />} */}
+            {/* {showGenreImage && ( */}
+            <GenreImage data={data} handleGenre={handleGenre} />
+            {/* )} */}
             {showHairColor && (
               <HairColor data={data} handleHairColor={handleHairColor} />
             )}
