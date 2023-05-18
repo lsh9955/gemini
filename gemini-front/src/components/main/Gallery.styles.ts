@@ -96,3 +96,19 @@ export const StyledImg = styled.img.attrs<StyledImgProps>((props) => ({
 }))<StyledImgProps>`
   // 여기에 필요한 스타일을 적용하십시오.
 `;
+
+interface StyledRankingProps {
+  imageUrl: string;
+  galleryNo: number;
+  emotions: string[];
+  onClick: (geminiPk: number) => void; // 클릭 이벤트를 처리하는 함수를 추가합니다.
+}
+
+export const StyledRankingImg = styled.img.attrs<StyledRankingProps>(
+  (props) => ({
+    src: props.imageUrl,
+    alt: `Image ${props.galleryNo}`,
+  })
+)<StyledRankingProps>`
+  // 여기에 필요한 스타일을 적용하십시오.
+`;
