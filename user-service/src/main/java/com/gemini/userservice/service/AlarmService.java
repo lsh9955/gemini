@@ -20,9 +20,9 @@ public interface AlarmService {
 
     ResponseAlarmDto createLikeAlarm(String username, LikeAlarmDto likeAlarmDto, SseEmitter emitter);
 
-    ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto);
+    void createGeminiAlarm(GeminiAlarmDto geminiAlarmDto);
 
-    ResponseAlarmDto createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto, SseEmitter emitter);
+    void createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto);
 
     ResponseGetAllAlarmsDto getAllAlarms(String username);
 
