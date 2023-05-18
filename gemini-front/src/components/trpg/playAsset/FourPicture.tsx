@@ -18,10 +18,12 @@ const FourPicture = ({
   const [fourPic, setFourPic] = useState(null);
   const [makePic, setMakePic] = useState(false);
   useEffect(() => {
-    chatSocket?.emit("makeFourPic", {
-      roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
-    });
-  }, []);
+    if (playTarget === "photo") {
+      chatSocket?.emit("makeFourPic", {
+        roomId: new URL(window.location.href).pathname.split("/").at(-1) ?? "",
+      });
+    }
+  }, [playTarget]);
 
   const getFourUser = () => {
     const imgCreateHandler = async () => {
