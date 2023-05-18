@@ -3,6 +3,7 @@ import {
   HairColorBox,
   HairColorContainer,
   HairColorImage,
+  HairColorText,
 } from "./HairColor.style";
 
 interface Data {
@@ -32,6 +33,7 @@ const HairColor: FC<Props> = ({ data, handleHairColor }) => {
             key={item.tagId}
             onClick={() => handleHairColorClick(item)}
           >
+            <HairColorText>{item.koreanName}</HairColorText>
             <HairColorImage src={item.imgUrl} alt={item.koreanName} />
           </HairColorContainer>
         ))}
