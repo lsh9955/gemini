@@ -92,6 +92,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     const deleteRes = await axiosInstanceWithAccessToken.delete(
       `/user-service/gallery/gemini/${selectedImagePk}`
     );
+    console.log(deleteRes);
     console.log("삭제 완료");
     alert("제미니가 삭제되었습니다.");
   };
