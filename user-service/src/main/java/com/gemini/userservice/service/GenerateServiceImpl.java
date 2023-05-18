@@ -49,11 +49,20 @@ public class GenerateServiceImpl implements GenerateService {
 
     private final GalleryRepository galleryRepository;
 
+
     @Override
-    public ResponseDefaultDto getDefault(Long galleryNo) {
+    public Long getGalleryToGeminiNo(Long galleryNo) {
 
         Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
         Gemini gemini = gallery.getGemini();
+        Long geminiNo = gemini.getGeminiNo();
+        return geminiNo;
+    }
+
+    @Override
+    public ResponseDefaultDto getDefault(Long geminiNo) {
+
+        Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
         GeminiTag geminiTag = mongoTemplate.findOne(
                 Query.query(Criteria.where("geminiNo").is(gemini.getGeminiNo())),
                 GeminiTag.class
