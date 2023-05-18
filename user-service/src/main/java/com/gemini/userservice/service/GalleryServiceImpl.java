@@ -271,7 +271,7 @@ public class GalleryServiceImpl implements GalleryService{
     public List<String> getTagNames(Long geminiNo) {
 
         GeminiTag geminiTag = mongoTemplate.findOne(
-                Query.query(Criteria.where("gemini_no").is(geminiNo)),
+                Query.query(Criteria.where("geminiNo").is(geminiNo)),
                 GeminiTag.class
         );
         List<String> tagNames = new ArrayList<>();
