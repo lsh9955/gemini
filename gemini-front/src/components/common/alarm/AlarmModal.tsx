@@ -16,8 +16,11 @@ import BackgroundAlarmModal from "./BackgroundAlarmModal";
 type Alarm = {
   alarmId: number;
   memo: string;
-  checked: boolean;
   category: number;
+  follower: String;
+  geminiNo: number;
+  imageUrl: string;
+  galleryNo: number;
 };
 
 interface Props {
@@ -37,103 +40,87 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
       .get(`/user-service/alarms`)
       .then((res) => {
         console.log(res);
+        setAlarmList(res.data.alarmDtos);
       })
       .catch((err) => {
         console.log(err);
       });
   });
 
-  // const handleAlarmClick = async (alarmId: number, category: number) => {
-  //   // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
-  //     const selectAlarmList = alarmList.find(
-  //       (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
-  //     );
-  //     switch (category) {
-  //       case 1:
-  //         // 팔로우 했을 때
-  //         history.push(`/userProfile/${selectAlarmList.follower}`);
-  //         // 알람 삭제 요청 보내기
-  //         try {
-  //           await axiosInstanceWithAccessToken.delete(
-  //             `/user-service/alarms/${selectAlarmList.alarmId}`
-  //           );
-  //           // await axios.delete(`/alarms/${alarmId}`, {
-  //           //   headers: {
-  //           //     "X-username": "yyj", // 토큰을 사용하는 경우 예시입니다
-  //           //   },
-  //           // });
-  //         } catch (error) {
-  //           console.error("알람 삭제 실패:", error);
-  //         }
-  //         break;
-  //       case 2:
-  //         // 좋아요 눌렸을 때
-  //         if (selectAlarmList) {
-  //           const GeminiDetailModal = (
-  //             <UserGeminiDetail
-  //               closeModal={() => setCurrentModal("")}
-  //               selectedImagePk={selectAlarmList.geminiNo}
-  //             />
-  //           );
-  //           setCurrentModal(GeminiDetailModal);
-  //         }
-  //         // 알람 삭제 요청 보내기
-  //         try {
-  //           await axiosInstanceWithAccessToken.delete(
-  //             `/user-service/alarms/${selectAlarmList.alarmId}`
-  //           );
-  //         } catch (error) {
-  //           console.error("알람 삭제 실패:", error);
-  //         }
-  //         break;
-  //       case 3:
-  //         // 제미니 생성
-  //         if (selectAlarmList) {
-  //           const NewGeminiDetailModal = (
-  //             <NewGeminiDetail
-  //               closeModal={() => {
-  //                 setCurrentModal(null);
-  //                 onClose();
-  //               }}
-  //               selectedImagePk={selectAlarmList.geminiNo}
-  //             />
-  //           );
-  //           setCurrentModal(NewGeminiDetailModal);
-  //         }
-  //         // 알람 삭제 요청 보내기
-  //         try {
-  //           await axiosInstanceWithAccessToken.delete(
-  //             `/user-service/alarms/${selectAlarmList.alarmId}`
-  //           );
-  //         } catch (error) {
-  //           console.error("알람 삭제 실패:", error);
-  //         }
-  //         break;
-  //       case 4:
-  //         // 배경 생성
-  //         if (selectAlarmList) {
-  //           const NewBackgroundDetailModal = (
-  //             <BackgroundAlarmModal
-  //               closeModal={() => {
-  //                 setCurrentModal(null);
-  //                 onClose();
-  //               }}
-  //               selectedImageUrl={selectAlarmList.imageUrl}
-  //             />
-  //           );
-  //           setCurrentModal(NewBackgroundDetailModal);
-  //         }
-  //         // 알람 삭제 요청 보내기
-  //         try {
-  //           await axiosInstanceWithAccessToken.delete(
-  //             `/user-service/alarms/${selectAlarmList.alarmId}`
-  //           );
-  //         } catch (error) {
-  //           console.error("알람 삭제 실패:", error);
-  //         }
-  //         break;
-  //     }
-  // };
+  const handleAlarmClick = async (alarmId: number, category: number) => {
+    // 카테고리에 따라 페이지 이동이나 모달 표시를 다르게 처리합니다.
+    const selectAlarmList = alarmList.find(
+      (alarm: any) => alarm.alarmId === alarmId && alarm.category === category
+    );
+    if (selectAlarmList) {
+      switch (category) {
+        case 1:
+          history.push(`/userProfile/${selectAlarmList.follower}`);
+          try {
+            await axiosInstanceWithAccessToken.delete(
+              `/user-service/alarms/${selectAlarmList.alarmId}`
+            );
+          } catch (error) {
+            console.error("알람 삭제 실패:", error);
+          }
+          break;
+        case 2:
+          const GeminiDetailModal = (
+            <UserGeminiDetail
+              closeModal={() => setCurrentModal("")}
+              selectedImagePk={selectAlarmList.galleryNo}
+            />
+          );
+          setCurrentModal(GeminiDetailModal);
+          try {
+            await axiosInstanceWithAccessToken.delete(
+              `/user-service/alarms/${selectAlarmList.alarmId}`
+            );
+          } catch (error) {
+            console.error("알람 삭제 실패:", error);
+          }
+          break;
+        case 3:
+          const NewGeminiDetailModal = (
+            <NewGeminiDetail
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
+              selectedImagePk={selectAlarmList.geminiNo}
+            />
+          );
+          setCurrentModal(NewGeminiDetailModal);
+          try {
+            await axiosInstanceWithAccessToken.delete(
+              `/user-service/alarms/${selectAlarmList.alarmId}`
+            );
+          } catch (error) {
+            console.error("알람 삭제 실패:", error);
+          }
+          break;
+        case 4:
+          const NewBackgroundDetailModal = (
+            <BackgroundAlarmModal
+              closeModal={() => {
+                setCurrentModal(null);
+                onClose();
+              }}
+              selectedImageUrl={selectAlarmList.imageUrl}
+            />
+          );
+          setCurrentModal(NewBackgroundDetailModal);
+          try {
+            await axiosInstanceWithAccessToken.delete(
+              `/user-service/alarms/${selectAlarmList.alarmId}`
+            );
+          } catch (error) {
+            console.error("알람 삭제 실패:", error);
+          }
+          break;
+      }
+    }
+  };
 
   return (
     <>
@@ -142,7 +129,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
           <div aria-hidden onClick={(e) => e.stopPropagation()}>
             <ModalContainer>
               <AlarmTitle>알림</AlarmTitle>
-              {/* <AlarmContentWrapper
+              <AlarmContentWrapper
                 style={{
                   maxHeight: "25vh",
                   overflowY: alarmList.length >= 6 ? "auto" : "visible",
@@ -163,7 +150,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
                     </AlarmContent>
                   ))
                 )}
-              </AlarmContentWrapper> */}
+              </AlarmContentWrapper>
             </ModalContainer>
           </div>
         </Overlay>
