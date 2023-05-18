@@ -72,6 +72,7 @@ public class CompleteServiceImpl implements CompleteService{
         List<Long> geminis = requestCompletePoseDto.getGeminis();
         PoseImage poseImage = PoseImage.builder()
                 .poseNo(poseNo)
+                .background(requestCompletePoseDto.getBackgroundUrl())
                 .images(imageUrls)
                 .build();
         mongoTemplate.insert(poseImage, "pose_image");

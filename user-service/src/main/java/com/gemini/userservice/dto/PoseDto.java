@@ -17,4 +17,6 @@ public class PoseDto {
 
     private List<String> poseImages;
 
+    private String background;
+
 }
