@@ -8,7 +8,7 @@ from modules.paths import script_path
 
 class TestImg2ImgWorking(unittest.TestCase):
     def setUp(self):
-        self.url_img2img = "http://localhost:7860/api/img2img"
+        self.url_img2img = "http://localhost:7860/sdapi/v1/img2img"
         self.simple_img2img = {
             "init_images": [encode_pil_to_base64(Image.open(os.path.join(script_path, r"test/test_files/img2img_basic.png")))],
             "resize_mode": 0,
@@ -41,7 +41,7 @@ class TestImg2ImgWorking(unittest.TestCase):
             "s_tmin": 0,
             "s_noise": 1,
             "override_settings": {},
-            "sampler_index": "DPM++ 2M Karras",
+            "sampler_index": "Euler a",
             "include_init_images": False
             }
 

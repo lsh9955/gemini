@@ -97,24 +97,135 @@ class PydanticModelGenerator:
         DynamicModel.__config__.allow_mutation = True
         return DynamicModel
 
+
 StableDiffusionTxt2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingTxt2Img",
     StableDiffusionProcessingTxt2Img,
     [
-        {"key": "sampler_index", "type": str, "default": "DPM++ 2M Karras"},
+        {"key": "username", "type": str, "default": "TestUser"},
+        {"key": "user_id", "type": str, "default": "TestUser"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
         {"key": "script_name", "type": str, "default": None},
         {"key": "script_args", "type": list, "default": []},
         {"key": "send_images", "type": bool, "default": True},
-        {"key": "save_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
         {"key": "alwayson_scripts", "type": dict, "default": {}},
     ]
 ).generate_model()
+
+
+StableDiffusionTxt2GeminiProcessingAPI = PydanticModelGenerator(
+    "StableDiffusionProcessingTxt2Gemini",
+    StableDiffusionProcessingTxt2Img,
+    [
+        {"key": "user_id", "type": str, "default": "TestUser"},
+        {"key": "tag_ids", "type": list, "default": []},
+        {"key": "width", "type": int, "default": 507},
+        {"key": "height", "type": int, "default": 676},
+        {"key": "negative_prompt", "type": str,
+         "default": "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw))"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
+        {"key": "script_name", "type": str, "default": None},
+        {"key": "script_args", "type": list, "default": []},
+        {"key": "send_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
+        {"key": "alwayson_scripts", "type": dict, "default": {}},
+    ]
+).generate_model()
+
+
+StableDiffusionTxt2BackgroundProcessingAPI = PydanticModelGenerator(
+    "StableDiffusionProcessingTxt2Background",
+    StableDiffusionProcessingTxt2Img,
+    [
+        {"key": "user_id", "type": str, "default": "TestBackground"},
+        {"key": "width", "type": int, "default": 960},
+        {"key": "height", "type": int, "default": 540},
+        {"key": "negative_prompt", "type": str, "default": "((human)), man, men, woman, 1girl, 2girls, 3girls, 4girls, 5girls, multiple girls, 1boy, 2boys, 3boys, 4boys, 5boys, multiple boys,text,extra digits, fewer digits,worst quality, low quality, normal quality, jpeg, ((jpeg artifacts)), ((nsfw)),"},
+        {"key": "description", "type": str, "default": "별들이 잔뜩 있는 밤 하늘"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
+        {"key": "script_name", "type": str, "default": None},
+        {"key": "script_args", "type": list, "default": []},
+        {"key": "send_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
+        {"key": "alwayson_scripts", "type": dict, "default": {}},
+    ]
+).generate_model()
+
+
+StableDiffusionEmotionProcessingAPI = PydanticModelGenerator(
+    "StableDiffusionEmotionProcessingAPI",
+    StableDiffusionProcessingTxt2Img,
+    [
+        {"key": "user_id", "type": str, "default": "TestUser"},
+        {"key": "gemini_prompt", "type": list, "default": []},
+        {"key": "seed", "type": int, "default": -1},
+        {"key": "gemini_number", "type": int, "default": 0},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
+        {"key": "width", "type": int, "default": 507},
+        {"key": "height", "type": int, "default": 676},
+        {"key": "negative_prompt", "type": str,
+         "default": "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw))"},
+        {"key": "script_name", "type": str, "default": None},
+        {"key": "script_args", "type": list, "default": []},
+        {"key": "send_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
+        {"key": "alwayson_scripts", "type": dict, "default": {}},
+    ]
+).generate_model()
+
+
+with open("./sample64.txt", "r") as file:
+    sample_pose = file.read()
+
+base_model = "(best quality),(masterpiece),(high resolution),(1boy:1.3),(Extremely detailed and beautiful face:1.5),perfect anatomy,perfect finger,hyper detail,ultra detailed cloths,Incredibly detailed,red upper reather wear,red hair,short cut hair,silver plate armor,blue jean,blue eyes"
+base_seed = 3120790884
+
+
+StableDiffusionMakePoseProcessingAPI = PydanticModelGenerator(
+    "StableDiffusionProcessingMakePose",
+    StableDiffusionProcessingTxt2Img,
+    [
+        {"key": "geminis", "type": list, "default": [0, 0, 0, 0]},
+        {"key": "gemini_prompt", "type": list, "default": [base_model,base_model,base_model,base_model]},
+        {"key": "gemini_seed", "type": list, "default": [base_seed,base_seed,base_seed,base_seed]},
+        {"key": "pose_id", "type": int, "default": 0},
+        {"key": "width", "type": int, "default": 676},
+        {"key": "height", "type": int, "default": 507},
+        {"key": "negative_prompt", "type": str,
+         "default": "lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw))"},
+        {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
+        {"key": "script_name", "type": str, "default": None},
+        {"key": "script_args", "type": list, "default": []},
+        {"key": "send_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
+        {"key": "alwayson_scripts", "type": dict, "default": {
+            "controlnet": {
+                "args": [
+                    {
+                        "enabled": True,
+                        "preprocessor": "depth_midas",
+                        "module": "depth",
+                        "model": "control_v11f1p_sd15_depth [cfd03158]",
+                        "weight": 0.8,
+                        "starting/ending": "(0, 1)",
+                        "input_image": str(sample_pose),
+                        "resize mode": "Resize and Fill",
+                        "control mode": "My prompt is more important",
+                    }
+                        ]
+                            }
+            }
+         },
+    ]
+).generate_model()
+
 
 StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingImg2Img",
     StableDiffusionProcessingImg2Img,
     [
-        {"key": "sampler_index", "type": str, "default": "DPM++ 2M Karras"},
+        {"key": "sampler_index", "type": str, "default": "Euler"},
         {"key": "init_images", "type": list, "default": None},
         {"key": "denoising_strength", "type": float, "default": 0.75},
         {"key": "mask", "type": str, "default": None},
@@ -122,10 +233,29 @@ StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
         {"key": "script_name", "type": str, "default": None},
         {"key": "script_args", "type": list, "default": []},
         {"key": "send_images", "type": bool, "default": True},
-        {"key": "save_images", "type": bool, "default": True},
+        {"key": "save_images", "type": bool, "default": False},
         {"key": "alwayson_scripts", "type": dict, "default": {}},
     ]
 ).generate_model()
+
+### Gemini용 클래스
+class GetSampleResponse(BaseModel):
+    url: str
+
+class TextToGeminiResponse(BaseModel):
+    imageUrl: str = Field(default=None)
+
+class TextToBackgroundResponse(BaseModel):
+    imageUrl: str = Field(default=None)
+
+class GeminiPoseResponse(BaseModel):
+    geminis: list = Field(default=[])
+    imageUrls: list = Field(default=[])
+
+class GeminiFaceResponse(BaseModel):
+    userId = str
+    geminiId = str
+    info: str
 
 class TextToImageResponse(BaseModel):
     images: List[str] = Field(default=None, title="Image", description="The generated image in base64 format.")
