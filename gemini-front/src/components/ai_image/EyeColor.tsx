@@ -3,6 +3,7 @@ import {
   EyeColorBox,
   EyeColorContainer,
   EyeColorImage,
+  EyeColorText,
 } from "./EyeColor.style";
 
 interface Data {
@@ -32,6 +33,7 @@ const EyeColor: FC<Props> = ({ data, handleEyeColor }) => {
             key={item.tagId}
             onClick={() => handleEyeColorClick(item)}
           >
+            <EyeColorText>{item.koreanName}</EyeColorText>
             <EyeColorImage src={item.imgUrl} alt={item.koreanName} />
           </EyeColorContainer>
         ))}

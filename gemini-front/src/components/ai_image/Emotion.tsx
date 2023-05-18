@@ -1,5 +1,10 @@
 import React, { FC } from "react";
-import { EmotionBox, EmotionContainer, EmotionImage } from "./Emotion.styles";
+import {
+  EmotionBox,
+  EmotionContainer,
+  EmotionImage,
+  EmotionText,
+} from "./Emotion.styles";
 
 // import AngryFace from "../../assets/img/ai/emotion/AngryFace.png";
 // import BrightSmileFace from "../../assets/img/ai/emotion/BrightSmileFace.png";
@@ -106,6 +111,7 @@ const Emotion: FC<Props> = ({ data, handleEmotion }) => {
             key={item.tagId}
             onClick={() => handleEmotionClick(item)}
           >
+            <EmotionText>{item.koreanName}</EmotionText>
             <EmotionImage src={item.imgUrl} alt={item.koreanName} />
           </EmotionContainer>
         ))}
