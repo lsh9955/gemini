@@ -136,7 +136,7 @@ const MyProfile: FC = () => {
         {
           params: {
             page: currentPage,
-            size: 500,
+            size: 16,
           },
         }
       );
@@ -179,14 +179,9 @@ const MyProfile: FC = () => {
     }
   }, [page]);
 
-  useEffect(
-    () => {
-      loadMoreImages();
-    },
-    [
-      // loadMoreImages
-    ]
-  ); // 그냥 한번에 다 불러오자 😥
+  useEffect(() => {
+    loadMoreImages();
+  }, [loadMoreImages]); // 그냥 한번에 다 불러오자 😥
   // for infinite scroll 😀
 
   // for switching Inf scroll content 🙄
