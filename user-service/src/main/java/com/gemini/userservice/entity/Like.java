@@ -18,11 +18,11 @@ public class Like {
     @Column(name = "like_pk", unique = true, nullable = false)
     private Long likePk;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gemini_id", nullable = false)
     private Gemini gemini;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_info_id", nullable = false)
     private UserInfo userInfo;
 
