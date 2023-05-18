@@ -197,7 +197,7 @@ public class GenerateServiceImpl implements GenerateService {
         if (!userInfo.isPresent()) {
             return null;
         }
-        List<UserPose> userPoses = userPoseRepository.findByUserInfo(userInfo.get());
+        List<UserPose> userPoses = userPoseRepository.findByUserInfoByOrderByUserPoseNoDesc(userInfo.get());
         List<PoseDto> poseDtos = new ArrayList<>();
         for (UserPose userPose : userPoses) {
             Long poseNo = userPose.getPose().getPoseNo();
