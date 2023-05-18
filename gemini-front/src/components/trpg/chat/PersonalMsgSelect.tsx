@@ -21,14 +21,24 @@ function PersonalMsgSelect({
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">유저 선택</InputLabel>
+    <FormControl
+      sx={{ m: 1, minWidth: 120 }}
+      size="small"
+      style={{ color: "black", backgroundColor: "white" }}
+    >
+      <InputLabel
+        id="demo-select-small-label"
+        style={{ color: "black", backgroundColor: "white" }}
+      >
+        유저 선택
+      </InputLabel>
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
         value={targetUser}
         label="유저 선택"
         onChange={handleChange}
+        style={{ color: "black", backgroundColor: "white" }}
       >
         {userList
           .filter((value: string) => value !== userSeq.nickname)
