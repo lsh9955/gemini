@@ -36,9 +36,9 @@ interface Tag {
 interface TagsResponse {
   tags: Tag[];
 }
-const headers = {
-  "X-Username": "google_109918724409380589068",
-};
+// const headers = {
+//   "X-Username": "google_109918724409380589068",
+// };
 
 // 자식에서 보내주는 data의 타입
 interface Data {
@@ -84,8 +84,9 @@ const AiImage: FC = () => {
   // url 만들어지면 수정하기
   useEffect(() => {
     if (galleryPk) {
+      console.log("galleryPk 있나?");
       axiosInstanceWithAccessToken
-        .get<GalleryTags>(`/user-service/generate/${galleryPk}`, { headers })
+        .get<GalleryTags>(`/user-service/generate/default/${galleryPk}`)
         .then((response) => {
           console.log(response.data);
           setGalleryInfo(response.data);
@@ -98,9 +99,11 @@ const AiImage: FC = () => {
 
   // 갤러리 디테일에서 가져온 태그값들을 담아줌
   if (galleryInfo.defaultSetting) {
+    console.log(galleryInfo.defaultSetting);
     galleryInfo.defaultSetting.forEach((item: any) => {
+      console.log("for문으로 들어왔나?");
       const { tagId, koreanName, categoryId } = item;
-      if (categoryId === 1 && tagId !== null && koreanName !== null) {
+      if (categoryId === 1 && tagId !== null) {
         setGenreTagId(item.tagId);
         setGenreKorean(koreanName);
       } else if (categoryId === 2 && tagId !== null && koreanName !== null) {
@@ -144,10 +147,10 @@ const AiImage: FC = () => {
         .get<TagsResponse>(
           // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
           // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
-          `/user-service/generate/${categoryNum}`,
-          {
-            headers,
-          }
+          `/user-service/generate/${categoryNum}`
+          // {
+          //   headers,
+          // }
         )
         .then((response) => {
           console.log(response.data);
