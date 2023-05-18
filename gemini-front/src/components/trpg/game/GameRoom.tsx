@@ -227,6 +227,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
         playHandler={playHandler}
         chatSocket={chatSocket}
         fourpi={fourpi}
+        bgimg={changeBg}
       />
     </RoomWrap>
   );
