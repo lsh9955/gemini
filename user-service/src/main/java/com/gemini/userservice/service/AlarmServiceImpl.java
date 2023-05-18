@@ -315,6 +315,7 @@ public class AlarmServiceImpl implements AlarmService {
 
             gemini.setDescription(requestContractGeminiDto.getDescription());
             gemini.setName(requestContractGeminiDto.getName());
+            gemini.setIsPublic(requestContractGeminiDto.getIsPublic());
 
             gemini.contract(user);
             geminiRepository.save(gemini);
