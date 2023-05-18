@@ -85,8 +85,7 @@ public class GalleryServiceImpl implements GalleryService{
             // 예: 예외를 던지거나 빈 ResponseGalleryPageDto를 반환
         }
         UserInfo userInfo = optionalUserInfo.get();
-
-        List<Gemini> myGeminis = geminiRepository.findByUserInfo(userInfo); //mypage니까 다 가져옴.
+        List<Gemini> myGeminis = geminiRepository.findByUserInfoOrderByGeminiNoDesc(userInfo);
 
 //        List<Gallery> galleries = galleryRepository.findByGemini_UserInfo(userInfo);
 
