@@ -64,11 +64,10 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     "무사",
   ]);
   const [likeCount, setLikeCount] = useState<number>(0);
-  const [geminiName, setGeminiName] = useState<string>("나나키타 미즈키");
+  const [geminiName, setGeminiName] = useState<string>("제미니 이름");
   const [desc, setDesc] = useState<string>("소개글");
-  const [geminiImg, setGeminiImg] = useState<string>(
-    "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
-  );
+  const [geminiImg, setGeminiImg] = useState<string>("");
+  // "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
 
   const handleClick = () => {
     setIsPublic(!isPublic);
