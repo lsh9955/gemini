@@ -17,9 +17,10 @@ interface Image {
 
 interface FourCutsProps {
   backModal: () => void;
+  emotions: string[];
 }
 
-const FourCuts: React.FC<FourCutsProps> = ({ backModal }) => {
+const FourCuts: React.FC<FourCutsProps> = ({ backModal, emotions }) => {
   const [emotionCuts, setEmotionCuts] = useState<Image[]>([]);
   const handleClick = () => {
     backModal(); // 모달 닫기 함수 호출
@@ -33,10 +34,10 @@ const FourCuts: React.FC<FourCutsProps> = ({ backModal }) => {
     <ContainerWrapper onClick={handleClick}>
       <MyGeminiText>MyGemini</MyGeminiText>
       <Container>
-        <Image image={Adol1by1Dummy} />
-        <Image image={Adol1by1Dummy} />
-        <Image image={Adol1by1Dummy} />
-        <Image image={Adol1by1Dummy} />
+        <Image image={emotions ? emotions[0] : Adol1by1Dummy} />
+        <Image image={emotions ? emotions[1] : Adol1by1Dummy} />
+        <Image image={emotions ? emotions[2] : Adol1by1Dummy} />
+        <Image image={emotions ? emotions[3] : Adol1by1Dummy} />
       </Container>
     </ContainerWrapper>
   );

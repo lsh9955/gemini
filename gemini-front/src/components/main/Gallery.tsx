@@ -97,7 +97,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     console.log("랭킹 데이터 가져옵니다.");
     console.log(dailyRes);
     console.log(weeklyRes);
-    console.log("여기까지!");
+    console.log("여기까지! 이제 뿌려주자.");
   };
 
   useEffect(() => {
@@ -191,28 +191,36 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
   };
   // for model component 😉
 
+  const [fetchUrlPeriod, setFetchUrlPeriod] = useState("");
+
   return (
     <GalleryWrap>
       <ContentWrap>
         <GalleryTitleName ref={ref}>일간 TOP 5</GalleryTitleName>
         <ImgWrap>
-          {weeklyTop5.map((imageData, index) => (
+          {weeklyTop5.slice(0, 5).map((imageData, index) => (
             <StyledImg
               key={index}
               imageUrl={imageData.imageUrl}
               geminiPk={imageData.galleryNo}
-              onClick={() => handleRankingImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
+              onClick={() => {
+                setFetchUrlPeriod("daily");
+                handleRankingImageClick(imageData.galleryNo);
+              }} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
         <GalleryTitleName>주간 TOP 5</GalleryTitleName>
         <ImgWrap>
-          {monthlyTop5.map((imageData, index) => (
+          {monthlyTop5.slice(0, 5).map((imageData, index) => (
             <StyledImg
               key={index}
               imageUrl={imageData.imageUrl}
               geminiPk={imageData.galleryNo}
-              onClick={() => handleRankingImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
+              onClick={() => {
+                setFetchUrlPeriod("weekly");
+                handleRankingImageClick(imageData.galleryNo);
+              }} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
@@ -243,6 +251,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
           <RankingGeminiDetail
             closeModal={closeRankingModal}
             selectedImagePk={selectedImagePk}
+            fetchUrlPeriod={fetchUrlPeriod}
           />
         </>
       )}
