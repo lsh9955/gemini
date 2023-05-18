@@ -285,12 +285,12 @@ const UserProfile: FC = () => {
             >
               {nickname}님의 Gemini
             </MyProfileContentTitle>
-            <MyProfileContentTitle
+            {/* <MyProfileContentTitle
               active={currentView === "TRPG"}
               onClick={handleTRPGClick}
             >
               TRPG 추억로그
-            </MyProfileContentTitle>
+            </MyProfileContentTitle> */}
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
             {currentView === "Gemini" ? (
