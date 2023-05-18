@@ -44,6 +44,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
     "묶은 머리",
     "무사",
   ]);
+  console.log("잘왔나?", selectedImagePk);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [geminiName, setGeminiName] = useState<string>("나나키타 미즈키");
   const [desc, setDesc] = useState<string>(
