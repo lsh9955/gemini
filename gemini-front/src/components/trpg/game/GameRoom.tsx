@@ -133,7 +133,7 @@ const GameRoom = ({ chatSocket }: { chatSocket: Socket }) => {
           },
           params: {
             page: 0,
-            size: 2,
+            size: 999,
           },
         }
       );
