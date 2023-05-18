@@ -23,7 +23,7 @@ export const GenderContainer = styled.div`
     cursor: pointer;
     & p {
       top: 45%;
-      left: 30%;
+      left: 35%;
 
       display: inline-block;
       position: absolute;
@@ -48,6 +48,6 @@ export const GenderImage = styled.img`
 `;
 
 export const GenderText = styled.p`
-  font-size: 15px;
+  font-size: 30px;
   color: white;
 `;
