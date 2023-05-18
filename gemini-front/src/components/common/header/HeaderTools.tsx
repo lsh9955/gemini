@@ -61,6 +61,7 @@ const HeaderTools: FC = () => {
   console.log(reduxProfileImage);
 
   const showProfileModalHandler = () => {
+    window.scrollTo(0, 0);
     history.push("/myProfile");
     // setShowAlarmModal(false);
     // // setShowMessegeModal(false);
