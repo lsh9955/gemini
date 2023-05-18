@@ -37,6 +37,7 @@ public class UserInfoApiController {
 
     @Autowired
     private EmitterService emitterService;
+
     @Autowired
     private GeminiRepository geminiRepository;
 
@@ -50,7 +51,6 @@ public class UserInfoApiController {
 
     @PostMapping // test complete 😀 exception for following myself needed, duplicated request also should be handled.
     public ResponseEntity<Void> followUser(@RequestHeader("X-Username") String currentUsername, @RequestBody RequestFollowDto requestFollowDto) throws IOException, InterruptedException {
-
 
         String res = userService.followUser(currentUsername, requestFollowDto);
 
