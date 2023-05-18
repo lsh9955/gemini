@@ -95,83 +95,48 @@ const UserProfile: FC = () => {
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
 
   // const loadMoreImages = useCallback(async () => {
-  //     const currentPage = page;
-  //     try {
-  //     const response = await axiosInstanceWithAccessToken.post(
-  //       "/user-service/gallery/usergalleries",
-  //       {
-  //         nickname: nickname,
-  //       },
-  //       {
-  //         params: {
-  //           page: currentPage,
-  //           size: 16,
-  //         },
-  //       }
-  //     );
-
-  //     console.log(response);
-
-  //     if (response.status === 200) {
-  //       const newImages = response.data.galleryPage.content.map(
-  //         (item: any) => ({
-  //           imageUrl: item.imageUrl,
-  //           geminiPk: item.galleryNo,
-  //         })
-
-  //         // (item: any) => item.imageUrl
-  //       );
-  //       setImages((prevImages) => [...prevImages, ...newImages]);
-  //       setPage((prevPage) => prevPage + 1);
-  //       setHasMore(newImages.length > 0);
-  //     } else {
-  //       setHasMore(false);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     setHasMore(false);
-  //   }
-  // }, [page, nickname]);
+  //   const currentPage = page;
+  //   if (currentPage > 0) { // 페이지가 0이 아닐 때만 요청을 보냅니다.
+  // try {
 
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
-    if (currentPage > 0) {
-      // 페이지가 0이 아닐 때만 요청을 보냅니다.
-      try {
-        const response = await axiosInstanceWithAccessToken.post(
-          "/user-service/gallery/usergalleries",
-          {
-            nickname: nickname,
+    try {
+      const response = await axiosInstanceWithAccessToken.post(
+        "/user-service/gallery/usergalleries",
+        {
+          nickname: nickname,
+        },
+        {
+          params: {
+            page: currentPage,
+            size: 16,
           },
-          {
-            params: {
-              page: currentPage,
-              size: 16,
-            },
-          }
-        );
-
-        console.log(response);
-
-        if (response.status === 200) {
-          const newImages = response.data.galleryPage.content.map(
-            (item: any) => ({
-              imageUrl: item.imageUrl,
-              geminiPk: item.galleryNo,
-            })
-          );
-          setImages((prevImages) => [...prevImages, ...newImages]);
-          setPage((prevPage) => prevPage + 1);
-          setHasMore(newImages.length > 0);
-        } else {
-          setHasMore(false);
         }
-      } catch (error) {
-        console.error(error);
+      );
+
+      console.log(response);
+
+      if (response.status === 200) {
+        const newImages = response.data.galleryPage.content.map(
+          (item: any) => ({
+            imageUrl: item.imageUrl,
+            geminiPk: item.galleryNo,
+          })
+
+          // (item: any) => item.imageUrl
+        );
+        setImages((prevImages) => [...prevImages, ...newImages]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMore(newImages.length > 0);
+      } else {
         setHasMore(false);
       }
+    } catch (error) {
+      console.error(error);
+      setHasMore(false);
     }
-  }, [page, nickname, axiosInstanceWithAccessToken]);
+  }, [page, nickname]);
 
   useEffect(() => {
     loadMoreImages();
