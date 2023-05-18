@@ -23,6 +23,7 @@ import { ImageWrapper } from "../profile/myprofile/MyProfileContentBody.styles";
 import { Backdrop } from "../geminiDetail/UserGeminiDetail.styles";
 import UserGeminiDetail from "../geminiDetail/UserGeminiDetail";
 import { number } from "yargs";
+import RankingGeminiDetail from "../geminiDetail/RankingGeminiDetail";
 
 interface Image {
   galleryNo: number;
@@ -54,6 +55,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
 
   const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRankingModalOpen, setIsRankingModalOpen] = useState(false);
 
   // 무한 스크롤 😀
   const dummyImgs = [
@@ -115,6 +117,11 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
     setIsModalOpen(true);
   };
 
+  const handleRankingImageClick = (pk: number) => {
+    setSelectedImagePk(pk);
+    setIsRankingModalOpen(true);
+  };
+
   // 무한스크롤 불러오기
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
@@ -170,52 +177,22 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
       });
   }, []);
 
-  // 스크롤 이벤트 핸들러
-  // const handleScroll = () => {
-  //   // 스크롤이 바닥에 닿았을 때
-  //   if (
-  //     window.innerHeight + window.scrollY >=
-  //     document.body.offsetHeight * 0.8
-  //   ) {
-  //     fetchMoreImages();
-  //   }
-  // };
-
-  // 추가 이미지 불러오기
-  // const fetchMoreImages = () => {
-  //   setPage((prevPage) => prevPage + 1);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
-
   interface ImageProps {
     imageUrl: string;
     pk: number;
     onClick: () => void;
   }
 
-  // for model component 😉 commented out below are already exist
-  // const [selectedImagePk, setSelectedImagePk] = useState<number | null>(null);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const handleImageClick = (pk: number) => {
-  //   setSelectedImagePk(pk);
-  //   setIsModalOpen(true);
-  // };
-
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+  const closeRankingModal = () => {
+    setIsRankingModalOpen(false);
   };
   // for model component 😉
 
   return (
     <GalleryWrap>
-      {/* <GalleryTitle ref={ref}>
-        전체 둘러보기 {totalGallery}개의 이미지
-      </GalleryTitle> */}
       <ContentWrap>
         <GalleryTitleName ref={ref}>일간 TOP 5</GalleryTitleName>
         <ImgWrap>
@@ -224,7 +201,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
               key={index}
               imageUrl={imageData.imageUrl}
               geminiPk={imageData.galleryNo}
-              onClick={() => handleImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
+              onClick={() => handleRankingImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
@@ -235,7 +212,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
               key={index}
               imageUrl={imageData.imageUrl}
               geminiPk={imageData.galleryNo}
-              onClick={() => handleImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
+              onClick={() => handleRankingImageClick(imageData.galleryNo)} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
         </ImgWrap>
@@ -256,6 +233,15 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
           <Backdrop onClick={closeModal} /> {/*  이부분 추가.*/}
           <UserGeminiDetail
             closeModal={closeModal}
+            selectedImagePk={selectedImagePk}
+          />
+        </>
+      )}
+      {isRankingModalOpen && (
+        <>
+          <Backdrop onClick={closeRankingModal} /> {/*  랭킹모달 */}
+          <RankingGeminiDetail
+            closeModal={closeRankingModal}
             selectedImagePk={selectedImagePk}
           />
         </>
