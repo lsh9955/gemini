@@ -14,7 +14,6 @@ function PersonalMsgSelect({
 }) {
   const userSeq = useSelector((state: any) => state.user);
   const [targetUser, setTargetUser] = useState("");
-  console.log(userList);
   const handleChange = (event: SelectChangeEvent) => {
     setTargetUser(event.target.value);
     sendtargetHandler(event.target.value);
