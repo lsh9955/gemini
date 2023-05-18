@@ -32,4 +32,6 @@ public interface GalleryService {
     String cancelGalleryLike(String username, Long galleryNo);
 
     String updateGemini(RequestUpdateGeminiDto requestUpdateGeminiDto);
+
+    String deleteGemini(String username, Long geminiNo);
 }
