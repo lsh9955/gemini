@@ -57,6 +57,8 @@ const HeaderTools: FC = () => {
   const reduxProfileImage = useSelector(
     (state: AppStore) => state.user.profileImgUrl
   );
+  console.log("리덕스 프로필 이미지");
+  console.log(reduxProfileImage);
 
   const showProfileModalHandler = () => {
     history.push("/myProfile");
