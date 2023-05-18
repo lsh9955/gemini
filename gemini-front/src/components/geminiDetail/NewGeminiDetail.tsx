@@ -101,7 +101,6 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
       if (geminiInfoData.tags) {
         setTagContents(geminiInfoData.tags);
       }
-      fetchNewGeminiInfo();
 
       // const res = await fetch(/* your API endpoint */);
       // const data = await res.json();
@@ -109,6 +108,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
       // setDesc(data.desc)
       // setGeminiImg(data.imgUrl)
     };
+    fetchNewGeminiInfo();
     // setTagContents(res); // 이걸 바탕으로..
   }, []);
 
