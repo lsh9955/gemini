@@ -18,7 +18,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,10 @@ public class GalleryServiceImpl implements GalleryService{
 
     private final MongoTemplate mongoTemplate;
     private final TagRepository tagRepository;
+
+    private final DailyRepository dailyRepository;
+
+    private final WeeklyRepository weeklyRepository;
 
     public Long getTotal() {
         Long total = galleryRepository.count();
@@ -164,32 +167,40 @@ public class GalleryServiceImpl implements GalleryService{
     }
 
 
-    public ResponseGalleryRankingDto getDailyGallery() {
+    public ResponseRankingDto getDailyGallery() {
 
-        ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
-        return responseGalleryRankingDto;
+        Iterable<Daily> dailyList = dailyRepository.findAll();
+        List<RankingDto> rankingDtos = new ArrayList<>();
+        for (Daily daily : dailyList) {
+            Long galleryNo = daily.getGalleryNo();
+            Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
+            RankingDto rankingDto = RankingDto.builder().
+                    galleryNo(galleryNo).
+                    imageUrl(gallery.getGemini().getImageUrl()).
+                    emotions(daily.getEmotionUrls()).
+                    build();
+            rankingDtos.add(rankingDto);
+        }
+        ResponseRankingDto responseRankingDto = new ResponseRankingDto(rankingDtos);
+        return responseRankingDto;
     }
 
-    public ResponseGalleryRankingDto getWeeklyGallery() {
+    public ResponseRankingDto getWeeklyGallery() {
 
-        String key = "weekly";
-        long start = 0;
-        long end = -1;
-
-        Set<Object> galleries = redisTemplate.execute((RedisCallback<Set<Object>>) connection -> {
-            Set<Object> weeklySet = new LinkedHashSet<>();
-            Set<byte[]> bytesSet = connection.zRange(key.getBytes(), start, end);
-            for (byte[] bytes : bytesSet) {
-                weeklySet.add(redisTemplate.getValueSerializer().deserialize(bytes));
-            }
-            return weeklySet;
-        });
-
-        for (Object gallery : galleries) {
-            System.out.println("gallery: " + gallery);
+        Iterable<Weekly> weeklyList = weeklyRepository.findAll();
+        List<RankingDto> rankingDtos = new ArrayList<>();
+        for (Weekly weekly : weeklyList) {
+            Long galleryNo = weekly.getGalleryNo();
+            Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
+            RankingDto rankingDto = RankingDto.builder().
+                    galleryNo(galleryNo).
+                    imageUrl(gallery.getGemini().getImageUrl()).
+                    emotions(weekly.getEmotionUrls()).
+                    build();
+            rankingDtos.add(rankingDto);
         }
-        ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
-        return responseGalleryRankingDto;
+        ResponseRankingDto responseRankingDto = new ResponseRankingDto(rankingDtos);
+        return responseRankingDto;
     }
 
     public ResponseGalleryDetailDto getGalleryDetail(String username, Long galleryNo) {
