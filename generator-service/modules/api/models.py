@@ -154,13 +154,14 @@ StableDiffusionTxt2BackgroundProcessingAPI = PydanticModelGenerator(
 
 
 StableDiffusionEmotionProcessingAPI = PydanticModelGenerator(
-    "StableDiffusionEmotionProcessingAPI",
+    "StableDiffusionEmotionProcessing",
     StableDiffusionProcessingTxt2Img,
     [
         {"key": "user_id", "type": str, "default": "TestUser"},
+        {"key": "period", "type": str, "default": "daily"},
         {"key": "gemini_prompt", "type": list, "default": []},
         {"key": "seed", "type": int, "default": -1},
-        {"key": "gemini_number", "type": int, "default": 0},
+        {"key": "gemini_number", "type": int, "default": 1},
         {"key": "sampler_index", "type": str, "default": "DPM++ SDE Karras"},
         {"key": "width", "type": int, "default": 507},
         {"key": "height", "type": int, "default": 676},
@@ -253,9 +254,8 @@ class GeminiPoseResponse(BaseModel):
     imageUrls: list = Field(default=[])
 
 class GeminiFaceResponse(BaseModel):
-    userId = str
-    geminiId = str
-    info: str
+    geminiNo: int = Field(default=1)
+    imageUrls: list = Field(default=[])
 
 class TextToImageResponse(BaseModel):
     images: List[str] = Field(default=None, title="Image", description="The generated image in base64 format.")

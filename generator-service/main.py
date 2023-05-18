@@ -53,8 +53,8 @@ async def pose(req: StableDiffusionTxt2BackgroundProcessingAPI, background_tasks
     return Api.makebackgroundapi(req, background_tasks)
 
 @app.post("/ml_api/emotion")
-async def emotion(req: StableDiffusionTxt2BackgroundProcessingAPI):
-    return Api.makefaceapi(req)
+async def emotion(req: StableDiffusionEmotionProcessingAPI, background_tasks: BackgroundTasks):
+    return Api.makefaceapi(req, background_tasks)
 
 
 # if __name__ == "__main__":
