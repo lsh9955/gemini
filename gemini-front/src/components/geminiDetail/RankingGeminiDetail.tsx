@@ -48,11 +48,13 @@ import HeartCssEffect from "./HeartCssEffect";
 interface RankingGeminiDetailProps {
   closeModal: () => void;
   selectedImagePk: number | null;
+  fetchUrlPeriod: string | null;
 }
 // const RankingGeminiDetail = () => {
 const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
   closeModal,
   selectedImagePk,
+  fetchUrlPeriod,
 }) => {
   const history = useHistory();
   const [isOn, setIsOn] = useState<boolean>(false);
@@ -76,6 +78,8 @@ const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
   );
   const [userNickname, setUserNickname] = useState<string>("이세계 공주");
 
+  const [emotionsArr, setEmotionsArr] = useState<string[]>([]);
+
   const handleClick = () => {
     setIsOn(!isOn);
   };
@@ -84,7 +88,20 @@ const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
     const fetchGeminiInfo = async () => {
       const galleryRes = await axiosInstanceWithAccessToken.get(
         `/user-service/gallery/${selectedImagePk}`
-      ); // 수정 필요😀
+      ); // 수정 필요😀 -> galleryPK입니다.
+
+      const emotionFourCutRes = await axiosInstanceWithAccessToken.get(
+        `/user-service/gallery/${fetchUrlPeriod}`,
+        {
+          params: {
+            galleryNo: selectedImagePk,
+          },
+        }
+      );
+      console.log("표정4컷 보여주세요.");
+      console.log(emotionFourCutRes);
+      setEmotionsArr(emotionFourCutRes.data.emotions);
+
       const galleryInfoData = galleryRes.data;
       setGeminiImg(galleryInfoData.geminiImage);
       setuserProfileImg(galleryInfoData.profileImage);
@@ -189,7 +206,7 @@ const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           {isFlipped ? (
-            <FourCuts backModal={backModal} />
+            <FourCuts backModal={backModal} emotions={emotionsArr} />
           ) : (
             <Flipper isFront={true}>
               {/* <HeartImg animationVisible={true}></HeartImg> */}
