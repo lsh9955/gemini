@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import BoyManga from "../../assets/img/ai/BoyManga.png";
 import GameGraphic from "../../assets/img/ai/GameGraphic.png";
 import Illustration from "../../assets/img/ai/Illustration.png";
+import Romance from "../../assets/img/ai/Romance.png";
 
 import {
   GenreSampleImageBox,
@@ -44,6 +45,7 @@ const GenreImage: FC<Props> = ({ data, handleGenre }) => {
               />
             );
           })}
+        <GenreSampleImageLock src={Romance} alt="Romance" />
         <GenreSampleImageLock src={Illustration} alt="Illustration" />
         <GenreSampleImageLock src={GameGraphic} alt="GameGraphic" />
         <GenreSampleImageLock src={BoyManga} alt="BoyManga" />
