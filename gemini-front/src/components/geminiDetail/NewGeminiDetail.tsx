@@ -46,12 +46,11 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
   ]);
   console.log("잘왔나?", selectedImagePk);
   const [likeCount, setLikeCount] = useState<number>(0);
-  const [geminiName, setGeminiName] = useState<string>("나나키타 미즈키");
-  const [desc, setDesc] = useState<string>(
-    "나나키타 미즈키의 설명을 입력해주세요. 데이터를 받아오면 이름과 함께 비워집니다."
-  );
+  const [geminiName, setGeminiName] = useState<string>("새로운 제미니 이름");
+  const [desc, setDesc] = useState<string>("소개글을 입력해주세요.");
   const [geminiImg, setGeminiImg] = useState<string>(
-    "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
+    ""
+    // "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
   );
 
   const handleClick = () => {

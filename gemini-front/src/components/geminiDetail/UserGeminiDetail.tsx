@@ -66,11 +66,10 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
     "무사",
   ]);
   const [likeCount, setLikeCount] = useState<number>(0);
-  const [geminiName, setGeminiName] = useState<string>("나나키타 미즈키");
-  const [desc, setDesc] = useState<string>("방랑무사 나나키타 미즈키입니다. ");
-  const [geminiImg, setGeminiImg] = useState<string>(
-    "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
-  );
+  const [geminiName, setGeminiName] = useState<string>("제미니 이름");
+  const [desc, setDesc] = useState<string>("소개글");
+  const [geminiImg, setGeminiImg] = useState<string>("");
+  // "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
 
   const [userProfileImg, setuserProfileImg] = useState<string>(
     "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
@@ -170,10 +169,15 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   };
 
   // history.push 통해서 데이터보내기.
-  const sendGalleryPkHandler = () => {
+  const useThisRecipeHandler = async () => {
+    const geminiNoRes = await axiosInstanceWithAccessToken.get(
+      `/user-service/generate/default/gemini/${selectedImagePk}`
+    ); // 갤러리PK를 이용, 제미니PK를 얻을 수 있는 요청
+    const geminiNo = geminiNoRes.data;
+
     history.push({
       pathname: "/aiImage",
-      state: { galleryPk: selectedImagePk },
+      state: { galleryPk: geminiNo },
     });
   };
 
@@ -245,7 +249,7 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
                   </TagArea>
                 </TagBlockWrapper>
                 <ButtonWrapper>
-                  <GeminiInfoButton onClick={sendGalleryPkHandler}>
+                  <GeminiInfoButton onClick={useThisRecipeHandler}>
                     이 레시피 사용하기
                   </GeminiInfoButton>
                 </ButtonWrapper>
