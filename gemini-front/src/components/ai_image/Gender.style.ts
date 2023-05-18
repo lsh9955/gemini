@@ -35,6 +35,27 @@ export const GenderContainer = styled.div`
     }
   }
 `;
+export const PickedGenderContainer = styled.div`
+  position: relative;
+  width: 46%;
+  height: auto;
+  margin: 2%;
+  border: 1px solid;
+  border-radius: 20px;
+  cursor: pointer;
+  & p {
+    top: 45%;
+    left: 35%;
+
+    display: inline-block;
+    position: absolute;
+    z-index: 90;
+  }
+  & img {
+    cursor: pointer;
+    filter: brightness(50%);
+  }
+`;
 
 export const GenderImage = styled.img`
   width: 100%;
