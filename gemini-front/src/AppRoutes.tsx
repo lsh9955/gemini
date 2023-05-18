@@ -80,13 +80,6 @@ const AppRoutes = () => {
     setIsNotFoundPage(!isValidPath);
   }, [location.pathname]);
 
-  // const shouldShowHeader =
-  //   !pathsWithoutHeader.includes(location.pathname) && !isNotFoundPage;
-
-  // const shouldShowHeader =
-  //   !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
-  //   !isNotFoundPage;
-
   // 😀아래 바꾸지마세요. 헤더 고쳐놨는데 또 고장내면 나 힘들어..
   const shouldShowHeader =
     !pathsWithoutHeader.some((path) => {
@@ -96,11 +89,6 @@ const AppRoutes = () => {
 
   console.log("url경로를 보여줌");
   console.log(location.pathname);
-  // const shouldShowHeader =
-  //   !pathsWithoutHeader.some((path) => location.pathname.startsWith(path)) &&
-  //   !isNotFoundPage &&
-  //   !location.pathname.startsWith("/userProfile/") &&
-  //   !location.pathname.startsWith("/userprofile/");
 
   //alarm 불러오기
   // const [alarmList, setAlarmList] = useState<Alarm[]>([]);

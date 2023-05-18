@@ -1,9 +1,13 @@
+import { createBrowserHistory } from "history";
 import axios, { AxiosError } from "axios";
 import Cookies from "universal-cookie";
 import { RequestAccessTokenWithRefreshToken } from "./api/login-http";
+import { useHistory } from "react-router-dom";
+
 // import Cookies from 'js-cookie';
 
 const cookies = new Cookies();
+const history = createBrowserHistory(); // history 객체 생성
 
 const axiosInstanceWithAccessToken = axios.create({
   baseURL: `${process.env.REACT_APP_API_USER_BASE_URL}`, // 로컬테스트 끝나고 일반적인 포트 없는걸로 변경 😀
@@ -39,6 +43,7 @@ axiosInstanceWithAccessToken.interceptors.response.use(
       } catch (reissueError: any) {
         if (reissueError.response.status === 401) {
           alert("세션이 만료되었습니다. 재로그인이 필요합니다.");
+          history.push("/loginPage"); // 로그인 페이지로 이동
 
           return Promise.reject(reissueError);
         }
