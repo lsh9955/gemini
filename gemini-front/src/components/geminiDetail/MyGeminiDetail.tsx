@@ -78,6 +78,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
         { geminiPk: selectedImagePk }
       );
       setProfileImg(geminiImg);
+      console.log(updateHeaderProfileImg(geminiImg));
       dispatch(updateHeaderProfileImg(geminiImg));
     } catch (error) {
       console.error(error);
