@@ -6,7 +6,7 @@ import Header from "./components/common/header/Header";
 import Main from "./pages/main/Main";
 import Login from "./pages/auth/Login";
 import LoginSuccess from "./pages/auth/LoginSuccess";
-
+import { useSelector } from "react-redux";
 import SelectPairchild from "./pages/auth/SelectPairchild";
 import MyProfile from "./pages/profile/MyProfile";
 import AiImage from "./pages/ai_image/AiImage";
@@ -19,9 +19,6 @@ import SocketMain from "./components/trpg/SocketMain";
 import PrivacyRule from "./pages/PrivacyRule";
 
 import NotFoundPage from "./pages/404/NotFoundPage";
-
-import { useSelector } from "react-redux";
-import { AppStore } from "../src/store/store";
 
 type Alarm = {
   alarmId: number;
@@ -66,7 +63,6 @@ const AppRoutes = () => {
 
   // NotFoundPage를 위한 state 변수
   const [isNotFoundPage, setIsNotFoundPage] = React.useState(false);
-
   useEffect(() => {
     // window.scrollTo(0, 0); // 스크롤 맨 위로 강제 고정. 무한스크롤 버그 해결
     // // 현재 경로가 validPaths에 포함되어 있지 않다면 isNotFoundPage를 true로 설정
@@ -141,9 +137,6 @@ const AppRoutes = () => {
   // }, []);
   // console.log(alarmList);
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
-  const reduxNickname: any = useSelector(
-    (state: AppStore) => state.user.nickname
-  );
 
   // // 알람 구독
   // useEffect(() => {
