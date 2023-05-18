@@ -77,7 +77,7 @@ public class CompleteApiController {
             backgroundAlarmDto.setUsername(requestCompleteBackgroundDto.getUsername());
 
             // background 알람 생성
-//            alarmService.createBackgroundAlarm(backgroundAlarmDto, emitter);
+            alarmService.createBackgroundAlarm(backgroundAlarmDto);
         }
 
 
