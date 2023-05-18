@@ -306,7 +306,7 @@ const MyProfile: FC = () => {
           <MyInfoContentWrapper>
             <MyProfileImg imgUrl={profileImg}>
               {/* AriesDummyProfile */}
-              <EditPenButton></EditPenButton>
+              {/* <EditPenButton></EditPenButton> */}
             </MyProfileImg>
             <MyProfileTextWrapper>
               <Nickname>{nickname}</Nickname>
