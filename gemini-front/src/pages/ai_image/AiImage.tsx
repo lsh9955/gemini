@@ -128,7 +128,7 @@ const AiImage: FC = () => {
   // 갤러리 디테일에서 가져온 태그값들을 담아줌
   if (galleryInfo.defaultSetting) {
     console.log(galleryInfo.defaultSetting);
-    galleryInfo.defaultSetting.forEach((item: any) => {
+    galleryInfo.defaultSetting.map((item: any, idx: any) => {
       console.log("for문으로 들어왔나?");
       const { tagId, koreanName, categoryId } = item;
       if (categoryId === 1 && tagId !== null) {
