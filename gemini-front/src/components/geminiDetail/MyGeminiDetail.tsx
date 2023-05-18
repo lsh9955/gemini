@@ -36,6 +36,7 @@ import {
 } from "./MyGeminiDetail.styles";
 import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessToken";
 import { updateHeaderProfileImg } from "../../store/UserSlice";
+import { useDispatch } from "react-redux";
 
 interface MyGeminiDetailProps {
   closeModal: () => void;
@@ -48,6 +49,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
   selectedImagePk,
   setProfileImg,
 }) => {
+  const dispatch = useDispatch();
   const [isPublic, setIsPublic] = useState<boolean>(true);
   const [tagContents, setTagContents] = useState<string[]>([
     "인간",
@@ -76,7 +78,7 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
         { geminiPk: selectedImagePk }
       );
       setProfileImg(geminiImg);
-      updateHeaderProfileImg(geminiImg);
+      dispatch(updateHeaderProfileImg(geminiImg));
     } catch (error) {
       console.error(error);
       // 오류 처리
