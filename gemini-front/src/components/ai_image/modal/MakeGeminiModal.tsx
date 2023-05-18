@@ -66,7 +66,7 @@ const MakeGeminiModal: React.FC<Props> = ({ onClose, tagIds }) => {
         console.log(response);
         const updatedStar = response.data.star;
         dispatch(updateStar(updatedStar));
-        alert(`제미니의 제작의뢰가 들어갔다`);
+        // alert(`제미니의 제작의뢰가 들어갔다`);
       })
       .catch((error) => {
         console.log(error);

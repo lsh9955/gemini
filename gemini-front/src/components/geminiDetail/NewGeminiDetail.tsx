@@ -153,7 +153,14 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
             </NameInputWrapper>
             <DescBlockWrapper>
               <FormLabel>소개</FormLabel>
-              <DescInput onInput={(e) => setDesc(e.currentTarget.innerText)}>
+              {/* <DescInput onInput={(e) => setDesc(e.currentTarget.innerText)}>
+                {desc}
+              </DescInput> */}
+              <DescInput
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="데이터를 받아오면 이름과 함께 비워집니다."
+              >
                 {desc}
               </DescInput>
             </DescBlockWrapper>
