@@ -110,13 +110,14 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void createFollowAlarm(String username, FollowAlarmDto alarmDto) {
-
+        log.info("팔로우 누른 사람: " + username);
+        log.info("팔로우 당한 사람: " + alarmDto.getGetAlarmNickName());
         // 회원정보 찾아오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(username);
-        UserInfo userInfo = userInfo2.get();
+        UserInfo me = userInfo2.get();
 
         // 인코딩 한 메세지 넣기
-        String message = username + "님이 회원님을 팔로우 했습니다.";
+        String message = me.getNickname() + "님이 회원님을 팔로우 했습니다.";
         String encodedMessage = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
         Alarm alarm = Alarm.builder()
@@ -127,15 +128,15 @@ public class AlarmServiceImpl implements AlarmService {
         AlarmData alarmData = AlarmData.builder().
                 alarmId(alarmId).
                 category(1).
-                follower(username).
+                follower(me.getNickname()).
                 memo(encodedMessage).
                 build();
         alarmDataRepository.save(alarmData);
 
         Optional<UserInfo> getAlarmUserInfo = userInfoRepository.findByNickname(alarmDto.getGetAlarmNickName());
-        UserInfo getAlarmUser = getAlarmUserInfo.get();
-
-        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(getAlarmUser.getUserPk());
+        UserInfo you = getAlarmUserInfo.get();
+        log.info("팔로우 당한 사람 2트: " + you.getNickname());
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(you.getUserPk());
         if (alarmUser.isPresent()) {
             AlarmUser alarmUser1 = alarmUser.get();
             List<Long> alarmIds = alarmUser1.getAlarmIds();
@@ -147,7 +148,7 @@ public class AlarmServiceImpl implements AlarmService {
             List<Long> alarmIds = new ArrayList<>();
             alarmIds.add(alarmId);
             AlarmUser alarmUser1 = AlarmUser.builder().
-                    userNo(userInfo.getUserPk()).
+                    userNo(you.getUserPk()).
                     alarmIds(alarmIds).
                     build();
             alarmUserRepository.save(alarmUser1);
