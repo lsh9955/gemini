@@ -182,7 +182,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto) {
+    public void createGeminiAlarm(GeminiAlarmDto geminiAlarmDto) {
 
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(geminiAlarmDto.getUsername());
@@ -222,23 +222,11 @@ public class AlarmServiceImpl implements AlarmService {
                     build();
             alarmUserRepository.save(alarmUser1);
         }
-
-        // 새로운 알람 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
-        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                .memo(encodedMessage)
-                .category(3)
-                .geminiNo(geminiAlarmDto.getGeminiNo())
-                .imageUrl(geminiAlarmDto.getImageUrl())
-                .build();
-
 //        send(userInfo.getUsername(), alarm.getAlarmId(), responseAlarmDto);
-
-        return responseAlarmDto;
-
     }
 
     @Override
-    public ResponseAlarmDto createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto, SseEmitter emitter) {
+    public void createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto) {
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(backgroundAlarmDto.getUsername());
         UserInfo userInfo = userInfo2.get();
@@ -253,16 +241,32 @@ public class AlarmServiceImpl implements AlarmService {
         Alarm alarm = Alarm.builder()
                 .build();
         alarmRepository.save(alarm);
+        Long alarmId = alarm.getAlarmId();
+        AlarmData alarmData = AlarmData.builder().
+                alarmId(alarmId).
+                category(4).
+                imageUrl(backgroundAlarmDto.getImageUrl()).
+                memo(encodedMessage).
+                build();
+        alarmDataRepository.save(alarmData);
 
-        // 새로운 알람 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
-        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                .memo(encodedMessage)
-                .build();
-
-
-        return responseAlarmDto;
-
-
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userInfo.getUserPk());
+        if (alarmUser.isPresent()) {
+            AlarmUser alarmUser1 = alarmUser.get();
+            List<Long> alarmIds = alarmUser1.getAlarmIds();
+            alarmIds.add(alarmId);
+            alarmUser1.update(alarmIds);
+            alarmUserRepository.save(alarmUser1);
+        }
+        else {
+            List<Long> alarmIds = new ArrayList<>();
+            alarmIds.add(alarmId);
+            AlarmUser alarmUser1 = AlarmUser.builder().
+                    userNo(userInfo.getUserPk()).
+                    alarmIds(alarmIds).
+                    build();
+            alarmUserRepository.save(alarmUser1);
+        }
     }
 
     @Override
