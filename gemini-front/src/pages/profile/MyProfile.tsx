@@ -124,7 +124,8 @@ const MyProfile: FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const infScrollImgLength = getInfScrollImgLength(images.length);
-  const minHeight = `${39.2 + infScrollImgLength * 20}vh`; // 동적높이적용
+  // const minHeight = `${39.2 + infScrollImgLength * 20}vh`; // 동적높이적용
+  const minHeight = `${100 + infScrollImgLength * 20}vh`; // 동적높이적용
 
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
