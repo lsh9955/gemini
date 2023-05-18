@@ -13,7 +13,9 @@ import java.util.List;
 
 public interface GenerateService {
 
-    ResponseDefaultDto getDefault(Long galleryNo);
+    Long getGalleryToGeminiNo(Long galleryNo);
+
+    ResponseDefaultDto getDefault(Long geminiNo);
 
     ResponseTagDto getTag(Long tagId);
 
