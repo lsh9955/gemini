@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void followUser(String currentUsername, RequestFollowDto requestFollowDto) {
+    public String followUser(String currentUsername, RequestFollowDto requestFollowDto) {
 
         UserInfo follower = userInfoRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("Current user not found"));
@@ -91,8 +91,10 @@ public class UserServiceImpl implements UserService {
                         .following(following)
                         .build();
                 followRepository.save(follow);
+                return "follow";
             }
         }
+        return null;
     }
 
     @Override
@@ -102,9 +104,11 @@ public class UserServiceImpl implements UserService {
         UserInfo following = userInfoRepository.findByNickname(requestFollowDto.getNickname())
                 .orElseThrow(() -> new RuntimeException("User to unfollow not found"));
 
-        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
-                .orElseThrow(() -> new RuntimeException("Follow relationship not found"));
-
-        followRepository.delete(follow);
+        if (follower != following) {
+            Optional<Follow> isFollowed = followRepository.findByFollowerAndFollowing(follower, following);
+            if (isFollowed.isPresent()) {
+                followRepository.delete(isFollowed.get());
+            }
+        }
     }
 }
