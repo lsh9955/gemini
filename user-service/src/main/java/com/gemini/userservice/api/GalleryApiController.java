@@ -48,23 +48,23 @@ public class GalleryApiController {
     }
 
     @GetMapping("/daily")
-    public ResponseEntity<ResponseGalleryRankingDto> getDailyGallery() {
+    public ResponseEntity<ResponseRankingDto> getDailyGallery() {
 
-        ResponseGalleryRankingDto responseGalleryRankingDto = galleryService.getDailyGallery();
-        if (responseGalleryRankingDto.getGalleryDtos() == null) {
+        ResponseRankingDto responseRankingDto = galleryService.getDailyGallery();
+        if (responseRankingDto.getRankingDtos() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryRankingDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRankingDto);
     }
 
     @GetMapping("/weekly")
-    public ResponseEntity<ResponseGalleryRankingDto> getWeeklyGallery() {
+    public ResponseEntity<ResponseRankingDto> getWeeklyGallery() {
 
-        ResponseGalleryRankingDto responseGalleryRankingDto = galleryService.getWeeklyGallery();
-        if (responseGalleryRankingDto.getGalleryDtos() == null) {
+        ResponseRankingDto responseRankingDto = galleryService.getWeeklyGallery();
+        if (responseRankingDto.getRankingDtos() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryRankingDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRankingDto);
     }
 
     @GetMapping("/{galleryNo}") // galleryNo로 조회 (유저페이지, 일반 게시판전용)
