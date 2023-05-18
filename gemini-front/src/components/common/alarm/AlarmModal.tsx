@@ -56,7 +56,7 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
     if (selectAlarmList) {
       console.log(selectAlarmList.geminiNo);
       console.log(selectAlarmList.category);
-      switch (category) {
+      switch (selectAlarmList.category) {
         case 1:
           history.push(`/userProfile/${selectAlarmList.follower}`);
           try {
@@ -84,6 +84,9 @@ const AlarmModal: React.FC<Props> = ({ onClose }) => {
           }
           break;
         case 3:
+          console.log("case 3으로 들어오나?");
+          console.log(selectAlarmList.geminiNo);
+          console.log(selectAlarmList.category);
           const NewGeminiDetailModal = (
             <NewGeminiDetail
               closeModal={() => {
