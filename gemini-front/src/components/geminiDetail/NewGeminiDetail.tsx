@@ -153,7 +153,9 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
             </NameInputWrapper>
             <DescBlockWrapper>
               <FormLabel>소개</FormLabel>
-              <DescInput>{desc}</DescInput>
+              <DescInput onInput={(e) => setDesc(e.currentTarget.innerText)}>
+                {desc}
+              </DescInput>
             </DescBlockWrapper>
             <TagBlockWrapper>
               <FormLabel>키워드</FormLabel>
