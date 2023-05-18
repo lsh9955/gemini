@@ -117,13 +117,14 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
 
   // 무한스크롤 불러오기
   const loadMoreImages = useCallback(async () => {
+    const currentPage = page;
     try {
       console.log("무한스크롤 요청 /user-service/gallery");
       const response = await axiosInstanceWithAccessToken.get(
         "/user-service/gallery",
         {
           params: {
-            page: page,
+            page: currentPage,
             size: 16,
           },
         }
