@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface GalleryRepository extends JpaRepository<Gallery, Long> {
 
+    List<Gallery> findAllByOrderByGalleryNoDesc();
+
     Gallery findByGalleryNo(Long galleryNo);
 
     List<Gallery> findByGemini_UserInfo(UserInfo userInfo);

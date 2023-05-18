@@ -46,7 +46,7 @@ public class GalleryServiceImpl implements GalleryService{
     // 반환해주는게 갤러리 pk인가? 제미니 pk인가? -> 제미니 pk여야함. 😀 확인필요. 제미니 pk를 보내고 있는지 갤러리 pk를 보내고 있는지
     public ResponseGalleryPageDto getGalleryPage(Integer page, Integer size) {
 
-        List<Gallery> galleries = galleryRepository.findAll();
+        List<Gallery> galleries = galleryRepository.findAllByOrderByGalleryNoDesc();
         if (galleries.size() > 0) {
             if (galleries.size() < size) {
                 size = galleries.size();
