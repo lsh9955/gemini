@@ -184,85 +184,61 @@ const UserGeminiDetail: FC<UserGeminiDetailProps> = ({
   return (
     <>
       <FlipContainerWrapper onClick={closeModal}>
-        <FlipContainer
-          isFlipped={isFlipped}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {isFlipped ? (
-            <FourCuts backModal={backModal} />
-          ) : (
-            <Flipper isFront={true}>
-              {/* <HeartImg animationVisible={true}></HeartImg> */}
-              {/* <HeartCssEffect
-                id={selectedImagePk ? selectedImagePk.toString() : ""}
-                visible={animationVisible}
-                onAnimationEnd={() => setAnimationVisible(false)}
-              /> */}
-              {/* 하트 포기. */}
-              <GeminiDetailImgWrapper
-                backgroundImage={geminiImg}
-                onClick={flip}
-              >
-                <LikeNicknameWrapper>
-                  <ProfileWrapper
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      history.push(`/userprofile/${userNickname}`);
-                    }}
-                  >
-                    <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
-                    <Nickname>{userNickname}</Nickname>
-                  </ProfileWrapper>
-                  <LikeWrapper
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleHeartClick();
-                    }}
-                  >
-                    <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
-                    <LikeCount>{likeCount}개의 좋아요</LikeCount>
-                  </LikeWrapper>
-                </LikeNicknameWrapper>
-              </GeminiDetailImgWrapper>
-              <GeminiDetialInfoWrapper>
-                <ToggleWrapper hideToggle={true}>
-                  <ToggleText>공개</ToggleText>
-                  <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
-                    <ToggleButtonCircle isOn={isOn} />
-                  </ToggleButtonContainer>
-                  <ToggleText>비공개</ToggleText>
-                </ToggleWrapper>
-                <NameInputWrapper>
-                  <FormLabel>이름</FormLabel>
-                  <TextInputDiv>{geminiName}</TextInputDiv>
-                </NameInputWrapper>
-                <DescBlockWrapper hideToggle={true}>
-                  <FormLabel>소개</FormLabel>
-                  <DescArea>{desc}</DescArea>
-                </DescBlockWrapper>
-                <TagBlockWrapper hideToggle={true}>
-                  <FormLabel>키워드</FormLabel>
-                  <TagArea>
-                    {tagContents.map((tag, index) => (
-                      <Tags key={index}>{tag}</Tags>
-                    ))}
-                  </TagArea>
-                </TagBlockWrapper>
-                <ButtonWrapper>
-                  <GeminiInfoButton onClick={useThisRecipeHandler}>
-                    이 레시피 사용하기
-                  </GeminiInfoButton>
-                </ButtonWrapper>
-              </GeminiDetialInfoWrapper>
-            </Flipper>
-          )}
-          {/* <Flipper isFront={isFlipped}>
-          <Confirm ref={confirmRef}>
-            <ConfirmContent className="confirm-content">
-              <FourCuts closeModal={backModal}></FourCuts>
-            </ConfirmContent>
-          </Confirm>
-        </Flipper> */}
+        <FlipContainer isFlipped={false} onClick={(e) => e.stopPropagation()}>
+          <Flipper isFront={true}>
+            <GeminiDetailImgWrapper backgroundImage={geminiImg} onClick={flip}>
+              <LikeNicknameWrapper>
+                <ProfileWrapper
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    history.push(`/userprofile/${userNickname}`);
+                  }}
+                >
+                  <ProfileImg backgroundImage={userProfileImg}></ProfileImg>
+                  <Nickname>{userNickname}</Nickname>
+                </ProfileWrapper>
+                <LikeWrapper
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleHeartClick();
+                  }}
+                >
+                  <HeartIcon>{isLike ? <FaHeart /> : <FiHeart />}</HeartIcon>
+                  <LikeCount>{likeCount}개의 좋아요</LikeCount>
+                </LikeWrapper>
+              </LikeNicknameWrapper>
+            </GeminiDetailImgWrapper>
+            <GeminiDetialInfoWrapper>
+              <ToggleWrapper hideToggle={true}>
+                <ToggleText>공개</ToggleText>
+                <ToggleButtonContainer onClick={handleClick} isOn={isOn}>
+                  <ToggleButtonCircle isOn={isOn} />
+                </ToggleButtonContainer>
+                <ToggleText>비공개</ToggleText>
+              </ToggleWrapper>
+              <NameInputWrapper>
+                <FormLabel>이름</FormLabel>
+                <TextInputDiv>{geminiName}</TextInputDiv>
+              </NameInputWrapper>
+              <DescBlockWrapper hideToggle={true}>
+                <FormLabel>소개</FormLabel>
+                <DescArea>{desc}</DescArea>
+              </DescBlockWrapper>
+              <TagBlockWrapper hideToggle={true}>
+                <FormLabel>키워드</FormLabel>
+                <TagArea>
+                  {tagContents.map((tag, index) => (
+                    <Tags key={index}>{tag}</Tags>
+                  ))}
+                </TagArea>
+              </TagBlockWrapper>
+              <ButtonWrapper>
+                <GeminiInfoButton onClick={useThisRecipeHandler}>
+                  이 레시피 사용하기
+                </GeminiInfoButton>
+              </ButtonWrapper>
+            </GeminiDetialInfoWrapper>
+          </Flipper>
         </FlipContainer>
       </FlipContainerWrapper>
     </>
