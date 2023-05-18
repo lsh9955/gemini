@@ -17,14 +17,14 @@ interface MemoriesDataProps {
   poseNo: number;
   background: string;
   poseImages: string[];
-  onClick: () => void;
+  // onClick: () => void;
 }
 
 const TRPGImage: FC<MemoriesDataProps> = ({
   poseNo,
   background,
   poseImages,
-  onClick,
+  // onClick,
 }) => {
   useEffect(() => {
     console.log(`MyProfileContentBodyTRPG로 들어가는 images`);
@@ -37,7 +37,10 @@ const TRPGImage: FC<MemoriesDataProps> = ({
   }, []);
 
   return (
-    <TRPGImageWrapper onClick={onClick} background={background}>
+    <TRPGImageWrapper
+      // onClick={onClick}
+      background={background}
+    >
       {poseImages.map((imageUrl, index) => (
         <TRPGImageItem
           key={index}
@@ -53,7 +56,7 @@ interface MyProfileContentBodyTRPGProps {
     poseNo: number;
     background: string;
     poseImages: string[];
-    onClick: () => void;
+    // onClick: () => void;
   }[];
 
   // for modal 😀
@@ -63,7 +66,7 @@ interface MyProfileContentBodyTRPGProps {
 const MyProfileContentBodyTRPG: FC<MyProfileContentBodyTRPGProps> = ({
   images,
 
-  onImageClick, // 괜찮은지 봐야함.
+  // onImageClick, // 괜찮은지 봐야함.
 }) => {
   useEffect(() => {
     console.log(`MyProfileContentBodyTRPG로 들어가는 images`);
@@ -76,7 +79,7 @@ const MyProfileContentBodyTRPG: FC<MyProfileContentBodyTRPGProps> = ({
           poseNo={imageObj.poseNo}
           background={imageObj.background}
           poseImages={imageObj.poseImages}
-          onClick={() => onImageClick(imageObj.poseNo)}
+          // onClick={() => onImageClick(imageObj.poseNo)}
         />
       ))}
     </StyledMyProfileTRPGContentBody>

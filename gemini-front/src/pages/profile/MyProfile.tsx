@@ -193,7 +193,7 @@ const MyProfile: FC = () => {
     poseNo: number;
     background: string;
     poseImages: string[];
-    onClick: () => void;
+    // onClick: () => void;
   }
 
   const dummyMemories = [
@@ -207,7 +207,7 @@ const MyProfile: FC = () => {
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
       ],
-      onClick: () => {},
+      // onClick: () => {},
     },
     {
       poseNo: 2,
@@ -219,7 +219,7 @@ const MyProfile: FC = () => {
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
       ],
-      onClick: () => {},
+      // onClick: () => {},
     },
     {
       poseNo: 3,
@@ -231,7 +231,7 @@ const MyProfile: FC = () => {
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
       ],
-      onClick: () => {},
+      // onClick: () => {},
     },
     {
       poseNo: 4,
@@ -244,7 +244,7 @@ const MyProfile: FC = () => {
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
         "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
       ],
-      onClick: () => {},
+      // onClick: () => {},
     },
 
     // ...
