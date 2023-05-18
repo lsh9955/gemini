@@ -1,6 +1,7 @@
 package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.*;
+import com.gemini.userservice.dto.request.RequestUpdateGeminiDto;
 import com.gemini.userservice.dto.response.*;
 import com.gemini.userservice.entity.*;
 import com.gemini.userservice.repository.*;
@@ -285,7 +286,8 @@ public class GalleryServiceImpl implements GalleryService{
 
 
 
-    public Gallery createGallery(Long geminiNo) {
+    public void createGallery(Long geminiNo) {
+
         Gemini gemini = geminiRepository.findById(geminiNo)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid geminiNo: " + geminiNo));
         gemini.setIsPublic(true);
@@ -296,8 +298,7 @@ public class GalleryServiceImpl implements GalleryService{
                 .weeklyLike(0)
                 .gemini(gemini)
                 .build();
-
-        return galleryRepository.save(gallery);
+        galleryRepository.save(gallery);
     }
 
 
@@ -318,34 +319,36 @@ public class GalleryServiceImpl implements GalleryService{
         }
     }
 
-    public ResponseGalleryEnrollmentDto updateGalleryEnrollment(Long geminiPk, Boolean intendedIsPublic) {
-        // 갤러리가 있는지 여부 파악. -> param의 isPublic과 다르다? create/delete액션. 그에 맞는 DB 조작. 어떤 액션을 했는지, updated 여부 return
-        Gemini gemini = geminiRepository.findByGeminiNo(geminiPk);
-        Boolean currentIsPublic = gemini.getIsPublic();
-        ResponseGalleryEnrollmentDto response;
-        if (!currentIsPublic.equals(intendedIsPublic)) {
-            if (intendedIsPublic) {
-                // Create Gallery
-                this.createGallery(gemini.getGeminiNo());
-                response = ResponseGalleryEnrollmentDto.builder()
-                        .method("created")
-                        .updated(true)
-                        .build();
-            } else {
-                // Delete Gallery
-                this.deleteGallery(gemini.getGeminiNo());
-                response = ResponseGalleryEnrollmentDto.builder()
-                        .method("deleted")
-                        .updated(true)
-                        .build();
+    public String updateGemini(RequestUpdateGeminiDto requestUpdateGeminiDto) {
+
+        Gemini gemini = geminiRepository.findByGeminiNo(requestUpdateGeminiDto.getGeminiPk());
+        Boolean isPublic = requestUpdateGeminiDto.getIsPublic();
+        Gallery gallery = galleryRepository.findByGemini(gemini);
+        if (gallery == null) {
+            if (isPublic == Boolean.TRUE) {
+                Gallery gallery1 = Gallery.builder().
+                        gemini(gemini).
+                        weeklyLike(0).
+                        dailyLike(0).
+                        build();
+                galleryRepository.save(gallery1);
+                gemini.updateIsPublic(Boolean.TRUE);
             }
-        } else {
-            response = ResponseGalleryEnrollmentDto.builder()
-                    .method("no action")
-                    .updated(false)
-                    .build();
         }
-        return response;
+        else {
+            if (isPublic == Boolean.FALSE) {
+                gemini.updateIsPublic(Boolean.FALSE);
+                galleryRepository.delete(gallery);
+            }
+        }
+        if (requestUpdateGeminiDto.getName() != null) {
+            gemini.updateName(requestUpdateGeminiDto.getName());
+        }
+        if (requestUpdateGeminiDto.getDescription() != null) {
+            gemini.updateDescription(requestUpdateGeminiDto.getDescription());
+        }
+        geminiRepository.save(gemini);
+        return "ok";
     }
 
 }
