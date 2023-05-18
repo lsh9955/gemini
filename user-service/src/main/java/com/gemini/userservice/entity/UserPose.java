@@ -20,11 +20,11 @@ public class UserPose {
     @Column(name = "user_pose_no")
     private Long userPoseNo;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userInfo", nullable = false)
     private UserInfo userInfo;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pose", nullable = false)
     private Pose pose;
 }

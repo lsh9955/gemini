@@ -43,10 +43,10 @@ public class Gemini {
     private UserInfo userInfo;
 
     // 1:N relation 😀
-    @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes;
 
-    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_no")
     private Gallery gallery;
 
