@@ -47,8 +47,7 @@ const ChatBody = ({ messages, lastMessageRef, nowMsgType }: any) => {
                   </div>
                 </Messagechats>
                 <ChatUserName>
-                  <p>{message.name}</p>
-                  <p>(나)</p>
+                  <p>{message.name}(나)</p>
                 </ChatUserName>
               </>
             ) : (
