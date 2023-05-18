@@ -12,7 +12,10 @@ import lombok.NoArgsConstructor;
 public class RequestContractGeminiDto {
 
     private Long geminiNo;
+
     private String name;
+
     private String description;
+
     private Boolean isPublic;
 }
