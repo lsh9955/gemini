@@ -75,7 +75,8 @@ public class SchedulerConfig {
         addReward("daily");
     }
 
-    @Scheduled(cron = "0 0 0 ? * SUN")
+//    @Scheduled(cron = "0 0 0 ? * SUN")
+    @Scheduled(cron = "0 */10 * * * *")
     public void runWeeklyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
