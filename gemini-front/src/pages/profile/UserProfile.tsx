@@ -52,8 +52,8 @@ const UserProfile: FC = () => {
   const [followerNum, setFollowerNum] = useState<number>(0);
   const [followingNum, setFollowingNum] = useState<number>(0);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
-  const increaseFollowingNum = () => setFollowingNum(followingNum + 1);
-  const decreaseFollowingNum = () => setFollowingNum(followingNum - 1);
+  const increaseFollowerNum = () => setFollowerNum(followerNum + 1);
+  const decreaseFollowerNum = () => setFollowerNum(followerNum - 1);
 
   const [totalGallery, setTotalGallery] = useState<number>(5);
 
@@ -270,8 +270,8 @@ const UserProfile: FC = () => {
               <FollowButton
                 isFollowing={isFollowing}
                 setIsFollowing={setIsFollowing}
-                increaseFollowingNum={increaseFollowingNum}
-                decreaseFollowingNum={decreaseFollowingNum}
+                increaseFollowerNum={increaseFollowerNum}
+                decreaseFollowerNum={decreaseFollowerNum}
                 nickname={nickname}
               />
             </FollowingAndPayWrappter>

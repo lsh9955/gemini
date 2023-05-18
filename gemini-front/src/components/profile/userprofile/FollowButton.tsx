@@ -8,16 +8,16 @@ interface FollowButtonProps {
   nickname: string;
   setIsFollowing: (value: boolean) => void;
 
-  increaseFollowingNum: () => void;
-  decreaseFollowingNum: () => void;
+  increaseFollowerNum: () => void;
+  decreaseFollowerNum: () => void;
 }
 
 const FollowButton: FC<FollowButtonProps> = ({
   isFollowing,
   nickname,
   setIsFollowing,
-  increaseFollowingNum,
-  decreaseFollowingNum,
+  increaseFollowerNum,
+  decreaseFollowerNum,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -32,7 +32,7 @@ const FollowButton: FC<FollowButtonProps> = ({
           });
           console.log("Unfollow request sent successfully");
           setIsFollowing(false);
-          decreaseFollowingNum();
+          decreaseFollowerNum();
         } catch (error) {
           console.error("Failed to send unfollow request: ", error);
         }
@@ -44,7 +44,7 @@ const FollowButton: FC<FollowButtonProps> = ({
           });
           console.log("Follow request sent successfully");
           setIsFollowing(true);
-          increaseFollowingNum();
+          increaseFollowerNum();
         } catch (error) {
           console.error("Failed to send follow request: ", error);
         }
