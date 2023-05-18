@@ -169,4 +169,14 @@ public class GalleryApiController {
         return ResponseEntity.ok(res);
     }
 
+    @DeleteMapping("/gemini/{geminiNo}")
+    public ResponseEntity<?> deleteGemini(@RequestHeader("X-Username") String username,
+                                          @PathVariable("geminiNo") Long geminiNo) {
+        
+        String res = galleryService.deleteGemini(username, geminiNo);
+        if (res == "invalid user") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        }
+        return ResponseEntity.ok(res);
+    }
 }
