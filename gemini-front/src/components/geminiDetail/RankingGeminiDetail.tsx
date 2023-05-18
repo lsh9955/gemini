@@ -96,17 +96,17 @@ const RankingGeminiDetail: FC<RankingGeminiDetailProps> = ({
       // 정보 기본으로 띄우기
       const galleryInfoData = galleryRes.data;
       console.log(galleryInfoData.geminiImage);
-      setGeminiImg(galleryInfoData.geminiImage);
       console.log(galleryInfoData.profileImage);
-      setuserProfileImg(galleryInfoData.profileImage);
       console.log(galleryInfoData.nickname);
-      setUserNickname(galleryInfoData.nickname);
       console.log(galleryInfoData.geminiName);
-      setGeminiName(galleryInfoData.geminiName);
       console.log(galleryInfoData.geminiDescription);
+      console.log(galleryInfoData.totalLike);
+      setGeminiImg(galleryInfoData.geminiImage);
+      setuserProfileImg(galleryInfoData.profileImage);
+      setUserNickname(galleryInfoData.nickname);
+      setGeminiName(galleryInfoData.geminiName);
       setDesc(galleryInfoData.geminiDescription);
       // setTagContents(galleryInfoData.tags);
-      console.log(galleryInfoData.totalLike);
       setLikeCount(galleryInfoData.totalLike);
       setIsLike(galleryInfoData.isLiked);
       if (galleryInfoData.tags) {
