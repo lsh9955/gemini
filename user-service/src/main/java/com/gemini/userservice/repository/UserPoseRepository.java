@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface UserPoseRepository extends JpaRepository<UserPose, Long> {
 
-    List<UserPose> findByUserInfo(UserInfo userInfo);
+    List<UserPose> findByUserInfoByOrderByUserPoseNoDesc(UserInfo userInfo);
 }
