@@ -216,8 +216,8 @@ const AiImage: FC = () => {
   //////////////////////////////////////////////////////////////////////////////////////////
 
   // 왼쪽 select 컴포넌트를 클릭했을 때, 오른쪽 이미지 컴포넌트를 보여줄 트리거
-  const [showNoneBox, setShowNoneBox] = useState(true);
-  const [showGenreImage, setShowGenreImage] = useState(false);
+  // const [showNoneBox, setShowNoneBox] = useState(true);
+  const [showGenreImage, setShowGenreImage] = useState(true);
   const [showPreset, setShowPreset] = useState(false);
   const [showGender, setShowGender] = useState(false);
   const [showHairColor, setShowHairColor] = useState(false);
@@ -234,7 +234,7 @@ const AiImage: FC = () => {
   // 장르
   const handleGenreSelectBoxClick = () => {
     // axios 요청을 바꿔줌
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowHairColor(false);
     setShowHairStyle(false);
     setShowEyeColor(false);
@@ -250,7 +250,7 @@ const AiImage: FC = () => {
 
   // 프리셋
   const handlePresetSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowHairColor(false);
     setShowEyeColor(false);
@@ -266,7 +266,7 @@ const AiImage: FC = () => {
 
   // 성별
   const handleGenderSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowHairColor(false);
     setShowEyeColor(false);
@@ -282,7 +282,7 @@ const AiImage: FC = () => {
 
   // 머리색
   const handleHairColorSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowPreset(false);
     setShowHairStyle(false);
@@ -298,7 +298,7 @@ const AiImage: FC = () => {
 
   // 눈동자색
   const handleEyeColorSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowPreset(false);
     setShowHairStyle(false);
@@ -314,7 +314,7 @@ const AiImage: FC = () => {
 
   // 머리스타일
   const handleHairStyleSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowHairColor(false);
     setShowEyeColor(false);
@@ -336,7 +336,7 @@ const AiImage: FC = () => {
 
   // 감정
   const handleEmotionSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowHairColor(false);
     setShowEyeColor(false);
@@ -352,7 +352,7 @@ const AiImage: FC = () => {
 
   // 의상
   const handleCostumeSelectBoxClick = () => {
-    setShowNoneBox(false);
+    // setShowNoneBox(false);
     setShowGenreImage(false);
     setShowHairColor(false);
     setShowEyeColor(false);
@@ -540,6 +540,7 @@ const AiImage: FC = () => {
 
           <AiSampleBox>
             {/* {showNoneBox && <NoneSampleBox />} */}
+            {/* <GenreImage data={data} handleGenre={handleGenre} /> */}
             {showGenreImage && (
               <GenreImage data={data} handleGenre={handleGenre} />
             )}
