@@ -191,6 +191,24 @@ const AiImage: FC = () => {
         });
     }
   }, [categoryNum]);
+  useEffect(() => {
+    axiosInstanceWithAccessToken
+      .get<TagsResponse>(
+        // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
+        // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
+        `/user-service/generate/${categoryNum}`
+        // {
+        //   headers,
+        // }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setData(response.data.tags);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // useEffect(() => {
   //   if (categoryNum !== 0) {
@@ -491,10 +509,10 @@ const AiImage: FC = () => {
             <p>{genreKorean}</p>
           </GenreSelectBox>
 
-          <AiSelectTitle>프리셋</AiSelectTitle>
+          {/* <AiSelectTitle>프리셋</AiSelectTitle>
           <GenreSelectBox onClick={handlePresetSelectBoxClick}>
             <p>{presetKorean}</p>
-          </GenreSelectBox>
+          </GenreSelectBox> */}
 
           <AiSelectTitle>성별</AiSelectTitle>
           <GenreSelectBox onClick={handleGenderSelectBoxClick}>
