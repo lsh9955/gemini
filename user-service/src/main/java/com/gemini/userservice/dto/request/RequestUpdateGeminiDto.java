@@ -10,8 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestGalleryEnrollmentDto {
+public class RequestUpdateGeminiDto {
     private Long geminiPk;
-    private Boolean isPublic;
 
+    private String name;
+
+    private String description;
+
+    private Boolean isPublic;
 }
