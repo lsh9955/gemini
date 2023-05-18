@@ -22,7 +22,6 @@ const ChatPage = ({
     개인채팅: 0,
   });
   useEffect(() => {
-    console.log("메세지가 오고있어요", messages);
     if (messages?.length > 0) {
       if (messages[messages.length - 1].type !== nowMsgType) {
         if (
@@ -33,13 +32,11 @@ const ChatPage = ({
           const newNotRead: any = notReadMsg;
           newNotRead[messages[messages.length - 1].type] =
             newNotRead[messages[messages.length - 1].type] + 1;
-          console.log("메세지 쌓일 때 ", newNotRead);
           setNotReadMsg(newNotRead);
         } else if (messages[messages.length - 1].type !== "개인채팅") {
           const newNotRead: any = notReadMsg;
           newNotRead[messages[messages.length - 1].type] =
             newNotRead[messages[messages.length - 1].type] + 1;
-          console.log("메세지 쌓일 때 ", newNotRead);
           setNotReadMsg(newNotRead);
         }
       }
@@ -51,7 +48,6 @@ const ChatPage = ({
     let newNotRead: any = JSON.stringify(notReadMsg);
     newNotRead = JSON.parse(newNotRead);
     newNotRead[data] = 0;
-    console.log("메뉴 바꿀 떄", newNotRead);
     setNotReadMsg(newNotRead);
   };
 
