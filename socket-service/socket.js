@@ -169,15 +169,17 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.on("inputfourPic", async (userImg) => {
         const willupdateRoom = await Room.find({ _id: userImg.roomId });
         let changeUserArr = willupdateRoom[0].fourpic.slice();
-        changeUserArr.push(userImg.userImg);
-        await Room.updateOne(
-          { _id: userImg.roomId },
-          {
-            $set: {
-              fourpic: changeUserArr,
-            },
-          }
-        );
+        if (userImg.userImg !== willupdateRoom[0].owner) {
+          changeUserArr.push(userImg.userImg);
+          await Room.updateOne(
+            { _id: userImg.roomId },
+            {
+              $set: {
+                fourpic: changeUserArr,
+              },
+            }
+          );
+        }
       });
       socket.on("makeFourPic", async (userImg) => {
         const willupdateRoom = await Room.find({ _id: userImg.roomId });
