@@ -42,10 +42,10 @@ axiosInstanceWithAccessToken.interceptors.response.use(
         return axiosInstanceWithAccessToken(originalRequest);
       } catch (reissueError: any) {
         if (reissueError.response.status === 401) {
-          alert("세션이 만료되었습니다. 재로그인이 필요합니다.");
+          // alert("세션이 만료되었습니다. 재로그인이 필요합니다.");
           history.push("/loginPage"); // 로그인 페이지로 이동
 
-          // return Promise.reject(reissueError);
+          return Promise.reject(reissueError);
         }
       }
     }
