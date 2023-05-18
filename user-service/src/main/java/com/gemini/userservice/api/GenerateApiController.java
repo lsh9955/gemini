@@ -47,9 +47,9 @@ public class GenerateApiController {
     }
 
     @GetMapping("/default/{geminiNo}")
-    public ResponseEntity<?> getDefault(@PathVariable("galleryNo") Long galleryNo) {
+    public ResponseEntity<?> getDefault(@PathVariable("geminiNo") Long geminiNo) {
 
-        ResponseDefaultDto responseDefaultDto = generateService.getDefault(galleryNo);
+        ResponseDefaultDto responseDefaultDto = generateService.getDefault(geminiNo);
         return ResponseEntity.status(HttpStatus.OK).body(responseDefaultDto);
     }
 
