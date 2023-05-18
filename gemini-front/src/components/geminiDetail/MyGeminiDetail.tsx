@@ -97,13 +97,23 @@ const MyGeminiDetail: FC<MyGeminiDetailProps> = ({
     // closeModal();
     try {
       console.log(
-        `보낸다 ${{ geminiPk: selectedImagePk, isPublic: isPublic }}`
+        `보낸다 ${{
+          geminiPk: selectedImagePk,
+          name: geminiName,
+          description: desc,
+          isPublic: isPublic,
+        }}`
       );
       console.log(selectedImagePk);
       console.log(isPublic);
-      const GalleryPublicRes = await axiosInstanceWithAccessToken.post(
+      const GalleryPublicRes = await axiosInstanceWithAccessToken.patch(
         `/user-service/gallery/enrollment`,
-        { geminiPk: selectedImagePk, isPublic: isPublic }
+        {
+          geminiPk: selectedImagePk,
+          name: geminiName,
+          description: desc,
+          isPublic: isPublic,
+        }
       );
       console.log(GalleryPublicRes);
 
