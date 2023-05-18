@@ -4,6 +4,7 @@ import {
   HairStyleContainer,
   HairStyleImage,
   HairStyleText,
+  PickedHairStyleContainer,
 } from "./HairStyle.style";
 
 // import LongCur from "../../assets/img/ai/hair/LongCur.png";
@@ -129,7 +130,7 @@ const HairStyle: FC<Props> = ({ data, handleHairStyle }) => {
   //   });
   //   setClickHairStyle(hairStyle.name);
   // };
-
+  const [pickedHair, setPickedHair] = useState<any>(null);
   const handleHairStyleClick = (item: Data) => {
     handleHairStyle({
       tagId: item.tagId,
@@ -141,15 +142,31 @@ const HairStyle: FC<Props> = ({ data, handleHairStyle }) => {
   return (
     <>
       <HairStyleBox>
-        {data?.map((item) => (
-          <HairStyleContainer
-            key={item.tagId}
-            onClick={() => handleHairStyleClick(item)}
-          >
-            <HairStyleText>{item.koreanName}</HairStyleText>
-            <HairStyleImage src={item.imgUrl} alt={item.koreanName} />
-          </HairStyleContainer>
-        ))}
+        {data?.map((item) =>
+          pickedHair === item.koreanName ? (
+            <PickedHairStyleContainer
+              key={item.tagId}
+              onClick={() => {
+                handleHairStyleClick(item);
+                setPickedHair(item.koreanName);
+              }}
+            >
+              <HairStyleText>{item.koreanName}</HairStyleText>
+              <HairStyleImage src={item.imgUrl} alt={item.koreanName} />
+            </PickedHairStyleContainer>
+          ) : (
+            <HairStyleContainer
+              key={item.tagId}
+              onClick={() => {
+                handleHairStyleClick(item);
+                setPickedHair(item.koreanName);
+              }}
+            >
+              <HairStyleText>{item.koreanName}</HairStyleText>
+              <HairStyleImage src={item.imgUrl} alt={item.koreanName} />
+            </HairStyleContainer>
+          )
+        )}
       </HairStyleBox>
     </>
   );

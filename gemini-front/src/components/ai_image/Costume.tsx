@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   CostumeBox,
   CostumeContainer,
   CostumeImage,
   CostumeText,
+  PickedCostumeContainer,
 } from "./Costume.styles";
 
 // import Hanbok from "../../assets/img/ai/costume/Hanbok.png";
@@ -46,6 +47,8 @@ interface Props {
 }
 
 const Costume: FC<Props> = ({ data, handleCostume }) => {
+  const [pickedCostume, setPickedCostume] = useState<any>(null);
+
   const handleCostumeClick = (item: Data) => {
     handleCostume({
       tagId: item.tagId,
@@ -56,15 +59,31 @@ const Costume: FC<Props> = ({ data, handleCostume }) => {
   return (
     <>
       <CostumeBox>
-        {data?.map((item) => (
-          <CostumeContainer
-            key={item.tagId}
-            onClick={() => handleCostumeClick(item)}
-          >
-            <CostumeText>{item.koreanName}</CostumeText>
-            <CostumeImage src={item.imgUrl} alt={item.koreanName} />
-          </CostumeContainer>
-        ))}
+        {data?.map((item) =>
+          pickedCostume === item.koreanName ? (
+            <PickedCostumeContainer
+              key={item.tagId}
+              onClick={() => {
+                handleCostumeClick(item);
+                setPickedCostume(item.koreanName);
+              }}
+            >
+              <CostumeText>{item.koreanName}</CostumeText>
+              <CostumeImage src={item.imgUrl} alt={item.koreanName} />
+            </PickedCostumeContainer>
+          ) : (
+            <CostumeContainer
+              key={item.tagId}
+              onClick={() => {
+                handleCostumeClick(item);
+                setPickedCostume(item.koreanName);
+              }}
+            >
+              <CostumeText>{item.koreanName}</CostumeText>
+              <CostumeImage src={item.imgUrl} alt={item.koreanName} />
+            </CostumeContainer>
+          )
+        )}
       </CostumeBox>
     </>
   );

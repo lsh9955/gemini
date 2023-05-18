@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   GenderBox,
   GenderContainer,
   GenderImage,
   GenderText,
+  PickedGenderContainer,
 } from "./Gender.style";
 
 // import Female from "../../assets/img/ai/gender/Female.png";
@@ -40,6 +41,7 @@ interface Props {
 }
 
 const Gender: FC<Props> = ({ data, handleGender }) => {
+  const [genClick, setGenClick] = useState<any>(null);
   const handleGenderClick = (item: Data) => {
     handleGender({
       tagId: item.tagId,
@@ -50,15 +52,33 @@ const Gender: FC<Props> = ({ data, handleGender }) => {
   return (
     <>
       <GenderBox>
-        {data?.map((item) => (
-          <GenderContainer
-            key={item.tagId}
-            onClick={() => handleGenderClick(item)}
-          >
-            <GenderText>{item.koreanName}</GenderText>
-            <GenderImage src={item.imgUrl} alt={item.koreanName} />
-          </GenderContainer>
-        ))}
+        {data?.map((item) =>
+          genClick === item.koreanName ? (
+            <PickedGenderContainer
+              key={item.tagId}
+              onClick={() => {
+                handleGenderClick(item);
+
+                setGenClick(item.koreanName);
+              }}
+            >
+              <GenderText>{item.koreanName}</GenderText>
+              <GenderImage src={item.imgUrl} alt={item.koreanName} />
+            </PickedGenderContainer>
+          ) : (
+            <GenderContainer
+              key={item.tagId}
+              onClick={() => {
+                handleGenderClick(item);
+
+                setGenClick(item.koreanName);
+              }}
+            >
+              <GenderText>{item.koreanName}</GenderText>
+              <GenderImage src={item.imgUrl} alt={item.koreanName} />
+            </GenderContainer>
+          )
+        )}
       </GenderBox>
     </>
   );
