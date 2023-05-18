@@ -25,9 +25,11 @@ const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
 
   const handleConfirm = () => {
     setTimeout(() => {
+      console.log("settimeout에 들어왔나?");
       setShowGeminiAlarm(true);
+      console.log("아직 괜찮을껄?");
     }, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
-
+    console.log("아니..그냥 나가버렸어...");
     onClose(); // 원래 모달을 닫음
   };
 
