@@ -126,41 +126,43 @@ const AiImage: FC = () => {
   }, []);
 
   // 갤러리 디테일에서 가져온 태그값들을 담아줌
-  if (galleryInfo.defaultSetting) {
-    console.log(galleryInfo.defaultSetting);
-    galleryInfo.defaultSetting.map((item: any, idx: any) => {
-      console.log("for문으로 들어왔나?");
-      const { tagId, koreanName, categoryId } = item;
-      if (categoryId === 1 && tagId !== null) {
-        setGenreTagId(item.tagId);
-        setGenreKorean(koreanName);
-      } else if (categoryId === 2 && tagId !== null && koreanName !== null) {
-        setPresetTagId(tagId);
-        setPresetKorean(koreanName);
-      } else if (categoryId === 3 && tagId !== null && koreanName !== null) {
-        setGenderTagId(tagId);
-        setGenderKorean(koreanName);
-      } else if (categoryId === 4 && tagId !== null && koreanName !== null) {
-        setHairColorTagId(tagId);
-        setHairColorKorean(koreanName);
-      } else if (categoryId === 5 && tagId !== null && koreanName !== null) {
-        setEyeColorTagId(tagId);
-        setEyeColorKorean(koreanName);
-      } else if (categoryId === 6 && tagId !== null && koreanName !== null) {
-        setHairStyleTagId(tagId);
-        setHairStyleKorean(koreanName);
-      } else if (categoryId === 7 && tagId !== null && koreanName !== null) {
-        setEmotionTagId(tagId);
-        setEmotionKorean(koreanName);
-      } else if (categoryId === 8 && tagId !== null && koreanName !== null) {
-        setCostumeTagId(tagId);
-        setCostumeKorean(koreanName);
-      } else if (categoryId === 9 && tagId !== null && koreanName !== null) {
-        setHairStyleTagId(tagId);
-        setHairStyleKorean(koreanName);
-      }
-    });
-  }
+  useEffect(() => {
+    if (galleryInfo.defaultSetting) {
+      console.log(galleryInfo.defaultSetting);
+      galleryInfo.defaultSetting.forEach((item: any) => {
+        console.log("for문으로 들어왔나?");
+        const { tagId, koreanName, categoryId } = item;
+        if (categoryId === 1 && tagId !== null) {
+          setGenreTagId(item.tagId);
+          setGenreKorean(koreanName);
+        } else if (categoryId === 2 && tagId !== null && koreanName !== null) {
+          setPresetTagId(tagId);
+          setPresetKorean(koreanName);
+        } else if (categoryId === 3 && tagId !== null && koreanName !== null) {
+          setGenderTagId(tagId);
+          setGenderKorean(koreanName);
+        } else if (categoryId === 4 && tagId !== null && koreanName !== null) {
+          setHairColorTagId(tagId);
+          setHairColorKorean(koreanName);
+        } else if (categoryId === 5 && tagId !== null && koreanName !== null) {
+          setEyeColorTagId(tagId);
+          setEyeColorKorean(koreanName);
+        } else if (categoryId === 6 && tagId !== null && koreanName !== null) {
+          setHairStyleTagId(tagId);
+          setHairStyleKorean(koreanName);
+        } else if (categoryId === 7 && tagId !== null && koreanName !== null) {
+          setEmotionTagId(tagId);
+          setEmotionKorean(koreanName);
+        } else if (categoryId === 8 && tagId !== null && koreanName !== null) {
+          setCostumeTagId(tagId);
+          setCostumeKorean(koreanName);
+        } else if (categoryId === 9 && tagId !== null && koreanName !== null) {
+          setHairStyleTagId(tagId);
+          setHairStyleKorean(koreanName);
+        }
+      });
+    }
+  }, [galleryInfo.defaultSetting]);
 
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
