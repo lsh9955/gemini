@@ -168,7 +168,7 @@ const AiImage: FC = () => {
   const [data, setData] = useState<any>(null);
 
   // axios 보낼 카테고리
-  const [categoryNum, setCategoryNum] = useState(0);
+  const [categoryNum, setCategoryNum] = useState(1);
 
   // 태그 이미지 DB에서 가져오기
   useEffect(() => {
@@ -191,24 +191,6 @@ const AiImage: FC = () => {
         });
     }
   }, [categoryNum]);
-  useEffect(() => {
-    axiosInstanceWithAccessToken
-      .get<TagsResponse>(
-        // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
-        // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
-        `/user-service/generate/${categoryNum}`
-        // {
-        //   headers,
-        // }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setData(response.data.tags);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   // useEffect(() => {
   //   if (categoryNum !== 0) {
