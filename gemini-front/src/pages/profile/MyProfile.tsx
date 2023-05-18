@@ -262,7 +262,7 @@ const MyProfile: FC = () => {
       console.log(MemoryRes);
       console.log(MemoryRes.data);
       console.log(MemoryRes.data.data);
-      setMemories(MemoryRes.data);
+      setMemories(MemoryRes.data.poseDtos);
     };
     fetchMemoryRes();
   }, []);
