@@ -31,8 +31,6 @@ public class GalleryServiceImpl implements GalleryService{
 
     private final GeminiRepository geminiRepository;
 
-    private final RedisTemplate<String, Gallery> redisTemplate;
-
     private final MongoTemplate mongoTemplate;
 
     private final TagRepository tagRepository;
