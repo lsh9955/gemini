@@ -112,7 +112,6 @@ public class GenerateApiController {
     @GetMapping("/pose/{poseNo}")
     public ResponseEntity<PoseDto> getPose(@PathVariable("poseNo") Long poseNo) {
 
-
         PoseDto res = generateService.getPose(poseNo);
         if (res == null) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
