@@ -127,12 +127,13 @@ const MyProfile: FC = () => {
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`; // 동적높이적용
 
   const loadMoreImages = useCallback(async () => {
+    const currentPage = page;
     try {
       const response = await axiosInstanceWithAccessToken.get(
         "/user-service/gallery/mygeminis",
         {
           params: {
-            page: page,
+            page: currentPage,
             size: 16,
           },
         }
@@ -249,6 +250,7 @@ const MyProfile: FC = () => {
   const [memories, setMemories] = useState<memoriesData[]>([...dummyMemories]);
   const [hasMoreMemories, setHasMoreMemories] = useState(true);
   const handleMemoryClick = () => {};
+
   useEffect(() => {
     const fetchMemoryRes = async () => {
       const MemoryRes = await axiosInstanceWithAccessToken.get(

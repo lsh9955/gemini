@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Props as ParentProps } from "../modal/MakeGeminiModal";
 import CompleteAiImage from "../../../assets/img/CompleteAiImage.png";
+import GeminiAlarmModal from "../../common/alarm/GeminiAlarmModal";
 
 // styled-components
 import {
@@ -20,6 +21,27 @@ interface SuccessGeminiModalProps extends ParentProps {
 }
 
 const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
+  const [showGeminiAlarm, setShowGeminiAlarm] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const handleConfirm = () => {
+    onClose();
+    setShowAlert(true);
+  };
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {}, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {}, 20000); // 20초 후에 GeminiAlarmModal을 나타냄
+
+  //   return () => clearTimeout(timer);
+  // }, [onClose]);
+
   return (
     <>
       <Overlay onClick={onClose} aria-hidden>
@@ -33,13 +55,16 @@ const SuccessGeminiModal: React.FC<SuccessGeminiModalProps> = ({ onClose }) => {
                 </SmallLetter>
               </ModalTitle>
               <Interval>
-                <OneConfirmButton onClick={onClose}>확인</OneConfirmButton>
+                <OneConfirmButton onClick={handleConfirm}>
+                  확인
+                </OneConfirmButton>
               </Interval>
             </ModalForm>
             <ModalBackground src={CompleteAiImage} alt="modal-background" />
           </ModalContainer>
         </div>
       </Overlay>
+      {showGeminiAlarm && <GeminiAlarmModal onClose={onClose} />}
     </>
   );
 };

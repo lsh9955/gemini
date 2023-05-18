@@ -44,13 +44,13 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
     "묶은 머리",
     "무사",
   ]);
+  console.log("잘왔나?", selectedImagePk);
   const [likeCount, setLikeCount] = useState<number>(0);
-  const [geminiName, setGeminiName] = useState<string>("나나키타 미즈키");
-  const [desc, setDesc] = useState<string>(
-    "나나키타 미즈키의 설명을 입력해주세요. 데이터를 받아오면 이름과 함께 비워집니다."
-  );
+  const [geminiName, setGeminiName] = useState<string>("새로운 제미니 이름");
+  const [desc, setDesc] = useState<string>("소개글을 입력해주세요.");
   const [geminiImg, setGeminiImg] = useState<string>(
-    "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
+    ""
+    // "https://mygemini.s3.amazonaws.com/gemini/20230508_132357723467_TestUser.png"
   );
 
   const handleClick = () => {
@@ -58,10 +58,13 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
   };
 
   const contractGemini = async () => {
+    console.log(
+      `바디로 들어오는거. ${selectedImagePk} ${geminiName} ${desc} ${isPublic}`
+    );
     const contractRes = await axiosInstanceWithAccessToken.post(
       "/user-service/alarms/gemini",
       {
-        gemini_no: selectedImagePk,
+        geminiNo: selectedImagePk,
         name: geminiName,
         description: desc,
         isPublic: isPublic,
@@ -85,10 +88,12 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
     // 처음에 알람이 왔을때 클릭을 하면 prop이용, geminiPk로 줄것임.
     // 마지막 버튼에 patch요청 보내서 갤러리에 생성을 하면 됨.
     const fetchNewGeminiInfo = async () => {
+      console.log(`${selectedImagePk}번 제미니pk로 요청보냄. 계약해달라고!`);
       const geminiRes = await axiosInstanceWithAccessToken.get(
         `/user-service/gallery/gemini/${selectedImagePk}`
       );
       const geminiInfoData = geminiRes.data;
+      console.log(geminiRes);
       setGeminiImg(geminiInfoData.geminiImage);
       setGeminiName("");
       setDesc("");
@@ -103,6 +108,7 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
       // setDesc(data.desc)
       // setGeminiImg(data.imgUrl)
     };
+    fetchNewGeminiInfo();
     // setTagContents(res); // 이걸 바탕으로..
   }, []);
 
@@ -146,7 +152,16 @@ const NewGeminiDetail: FC<MyGeminiDetailProps> = ({
             </NameInputWrapper>
             <DescBlockWrapper>
               <FormLabel>소개</FormLabel>
-              <DescInput>{desc}</DescInput>
+              {/* <DescInput onInput={(e) => setDesc(e.currentTarget.innerText)}>
+                {desc}
+              </DescInput> */}
+              <DescInput
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="GEMINI의 소개를 입력해주세요."
+              >
+                {desc}
+              </DescInput>
             </DescBlockWrapper>
             <TagBlockWrapper>
               <FormLabel>키워드</FormLabel>

@@ -36,9 +36,9 @@ interface Tag {
 interface TagsResponse {
   tags: Tag[];
 }
-const headers = {
-  "X-Username": "google_109918724409380589068",
-};
+// const headers = {
+//   "X-Username": "google_109918724409380589068",
+// };
 
 // 자식에서 보내주는 data의 타입
 interface Data {
@@ -81,11 +81,40 @@ const AiImage: FC = () => {
   // 갤러리 pk를 통해 get으로 불러온 값
   const [galleryInfo, setGalleryInfo] = useState<any>([]);
 
+  // usestate
+  const [genreTagId, setGenreTagId] = useState(null);
+  const [genreKorean, setGenreKorean] = useState("장르를 선택해주세요");
+
+  const [presetTagId, setPresetTagId] = useState(null);
+  const [presetKorean, setPresetKorean] = useState("프리셋을 선택해주세요");
+
+  const [genderTagId, setGenderTagId] = useState(null);
+  const [genderKorean, setGenderKorean] = useState("성별을 선택해주세요");
+
+  const [hairColorTagId, setHairColorTagId] = useState(null);
+  const [hairColorKorean, setHairColorKorean] =
+    useState("머리카락 색상을 선택해주세요");
+
+  const [eyeColorTagId, setEyeColorTagId] = useState(null);
+  const [eyeColorKorean, setEyeColorKorean] =
+    useState("눈동자 색상을 선택해주세요");
+
+  const [hairStyleTagId, setHairStyleTagId] = useState(null);
+  const [hairStyleKorean, setHairStyleKorean] =
+    useState("머리 스타일을 선택해주세요");
+
+  const [emotionTagId, setEmotionTagId] = useState(null);
+  const [emotionKorean, setEmotionKorean] = useState("표정을 선택해주세요");
+
+  const [costumeTagId, setCostumeTagId] = useState(null);
+  const [costumeKorean, setCostumeKorean] = useState("의상을 선택해주세요");
+
   // url 만들어지면 수정하기
   useEffect(() => {
     if (galleryPk) {
+      console.log("galleryPk 있나?");
       axiosInstanceWithAccessToken
-        .get<GalleryTags>(`/user-service/generate/${galleryPk}`, { headers })
+        .get<GalleryTags>(`/user-service/generate/default/${galleryPk}`)
         .then((response) => {
           console.log(response.data);
           setGalleryInfo(response.data);
@@ -97,39 +126,43 @@ const AiImage: FC = () => {
   }, []);
 
   // 갤러리 디테일에서 가져온 태그값들을 담아줌
-  if (galleryInfo.defaultSetting) {
-    galleryInfo.defaultSetting.forEach((item: any) => {
-      const { tagId, koreanName, categoryId } = item;
-      if (categoryId === 1 && tagId !== null && koreanName !== null) {
-        setGenreTagId(item.tagId);
-        setGenreKorean(koreanName);
-      } else if (categoryId === 2 && tagId !== null && koreanName !== null) {
-        setPresetTagId(tagId);
-        setPresetKorean(koreanName);
-      } else if (categoryId === 3 && tagId !== null && koreanName !== null) {
-        setGenderTagId(tagId);
-        setGenderKorean(koreanName);
-      } else if (categoryId === 4 && tagId !== null && koreanName !== null) {
-        setHairColorTagId(tagId);
-        setHairColorKorean(koreanName);
-      } else if (categoryId === 5 && tagId !== null && koreanName !== null) {
-        setEyeColorTagId(tagId);
-        setEyeColorKorean(koreanName);
-      } else if (categoryId === 6 && tagId !== null && koreanName !== null) {
-        setHairStyleTagId(tagId);
-        setHairStyleKorean(koreanName);
-      } else if (categoryId === 7 && tagId !== null && koreanName !== null) {
-        setEmotionTagId(tagId);
-        setEmotionKorean(koreanName);
-      } else if (categoryId === 8 && tagId !== null && koreanName !== null) {
-        setCostumeTagId(tagId);
-        setCostumeKorean(koreanName);
-      } else if (categoryId === 9 && tagId !== null && koreanName !== null) {
-        setHairStyleTagId(tagId);
-        setHairStyleKorean(koreanName);
-      }
-    });
-  }
+  useEffect(() => {
+    if (galleryInfo.defaultSetting) {
+      console.log(galleryInfo.defaultSetting);
+      galleryInfo.defaultSetting.forEach((item: any) => {
+        console.log("for문으로 들어왔나?");
+        const { tagId, koreanName, categoryId } = item;
+        if (categoryId === 1 && tagId !== null) {
+          setGenreTagId(item.tagId);
+          setGenreKorean(koreanName);
+        } else if (categoryId === 2 && tagId !== null && koreanName !== null) {
+          setPresetTagId(tagId);
+          setPresetKorean(koreanName);
+        } else if (categoryId === 3 && tagId !== null && koreanName !== null) {
+          setGenderTagId(tagId);
+          setGenderKorean(koreanName);
+        } else if (categoryId === 4 && tagId !== null && koreanName !== null) {
+          setHairColorTagId(tagId);
+          setHairColorKorean(koreanName);
+        } else if (categoryId === 5 && tagId !== null && koreanName !== null) {
+          setEyeColorTagId(tagId);
+          setEyeColorKorean(koreanName);
+        } else if (categoryId === 6 && tagId !== null && koreanName !== null) {
+          setHairStyleTagId(tagId);
+          setHairStyleKorean(koreanName);
+        } else if (categoryId === 7 && tagId !== null && koreanName !== null) {
+          setEmotionTagId(tagId);
+          setEmotionKorean(koreanName);
+        } else if (categoryId === 8 && tagId !== null && koreanName !== null) {
+          setCostumeTagId(tagId);
+          setCostumeKorean(koreanName);
+        } else if (categoryId === 9 && tagId !== null && koreanName !== null) {
+          setHairStyleTagId(tagId);
+          setHairStyleKorean(koreanName);
+        }
+      });
+    }
+  }, [galleryInfo.defaultSetting]);
 
   // DB에서 가져올 태그들의 데이터들
   const [data, setData] = useState<any>(null);
@@ -144,10 +177,10 @@ const AiImage: FC = () => {
         .get<TagsResponse>(
           // `http://192.168.31.73:8081/user-service/generate/${categoryNum}`,
           // `http://172.30.1.62:8081/user-service/generate/${categoryNum}`,
-          `/user-service/generate/${categoryNum}`,
-          {
-            headers,
-          }
+          `/user-service/generate/${categoryNum}`
+          // {
+          //   headers,
+          // }
         )
         .then((response) => {
           console.log(response.data);
@@ -336,46 +369,46 @@ const AiImage: FC = () => {
   //////////////////////////////////////////////////////////////////////////////////////////
 
   // 자식 컴포넌트에서 부모에게 props를 보내줌
-  const [genreTagId, setGenreTagId] = useState(null);
-  const [genreKorean, setGenreKorean] = useState("장르를 선택해주세요");
+  // const [genreTagId, setGenreTagId] = useState(null);
+  // const [genreKorean, setGenreKorean] = useState("장르를 선택해주세요");
   const handleGenre = (genre: Data) => {
     setGenreTagId(genre.tagId);
     setGenreKorean(genre.koreanName);
   };
 
-  const [presetTagId, setPresetTagId] = useState(null);
-  const [presetKorean, setPresetKorean] = useState("프리셋을 선택해주세요");
+  // const [presetTagId, setPresetTagId] = useState(null);
+  // const [presetKorean, setPresetKorean] = useState("프리셋을 선택해주세요");
   const handlePreset = (preset: Data) => {
     setPresetTagId(preset.tagId);
     setPresetKorean(preset.koreanName);
   };
 
-  const [genderTagId, setGenderTagId] = useState(null);
-  const [genderKorean, setGenderKorean] = useState("성별을 선택해주세요");
+  // const [genderTagId, setGenderTagId] = useState(null);
+  // const [genderKorean, setGenderKorean] = useState("성별을 선택해주세요");
   const handleGender = (gender: Data) => {
     setGenderTagId(gender.tagId);
     setGenderKorean(gender.koreanName);
   };
 
-  const [hairColorTagId, setHairColorTagId] = useState(null);
-  const [hairColorKorean, setHairColorKorean] =
-    useState("머리카락 색상을 선택해주세요");
+  // const [hairColorTagId, setHairColorTagId] = useState(null);
+  // const [hairColorKorean, setHairColorKorean] =
+  //   useState("머리카락 색상을 선택해주세요");
   const handleHairColor = (hairColor: Data) => {
     setHairColorTagId(hairColor.tagId);
     setHairColorKorean(hairColor.koreanName);
   };
 
-  const [eyeColorTagId, setEyeColorTagId] = useState(null);
-  const [eyeColorKorean, setEyeColorKorean] =
-    useState("눈동자 색상을 선택해주세요");
+  // const [eyeColorTagId, setEyeColorTagId] = useState(null);
+  // const [eyeColorKorean, setEyeColorKorean] =
+  //   useState("눈동자 색상을 선택해주세요");
   const handleEyeColor = (eyeColor: Data) => {
     setEyeColorTagId(eyeColor.tagId);
     setEyeColorKorean(eyeColor.koreanName);
   };
 
-  const [hairStyleTagId, setHairStyleTagId] = useState(null);
-  const [hairStyleKorean, setHairStyleKorean] =
-    useState("머리 스타일을 선택해주세요");
+  // const [hairStyleTagId, setHairStyleTagId] = useState(null);
+  // const [hairStyleKorean, setHairStyleKorean] =
+  //   useState("머리 스타일을 선택해주세요");
   const handleHairStyle = (hairStyle: Data) => {
     setHairStyleTagId(hairStyle.tagId);
     setHairStyleKorean(hairStyle.koreanName);
@@ -386,15 +419,15 @@ const AiImage: FC = () => {
     setHairStyleKorean(maleHairStyle.koreanName);
   };
 
-  const [emotionTagId, setEmotionTagId] = useState(null);
-  const [emotionKorean, setEmotionKorean] = useState("표정을 선택해주세요");
+  // const [emotionTagId, setEmotionTagId] = useState(null);
+  // const [emotionKorean, setEmotionKorean] = useState("표정을 선택해주세요");
   const handleEmotion = (emotion: Data) => {
     setEmotionTagId(emotion.tagId);
     setEmotionKorean(emotion.koreanName);
   };
 
-  const [costumeTagId, setCostumeTagId] = useState(null);
-  const [costumeKorean, setCostumeKorean] = useState("의상을 선택해주세요");
+  // const [costumeTagId, setCostumeTagId] = useState(null);
+  // const [costumeKorean, setCostumeKorean] = useState("의상을 선택해주세요");
   const handleCostume = (costume: Data) => {
     setCostumeTagId(costume.tagId);
     setCostumeKorean(costume.koreanName);

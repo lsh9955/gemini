@@ -1,5 +1,10 @@
 import React, { FC } from "react";
-import { CostumeBox, CostumeContainer, CostumeImage } from "./Costume.styles";
+import {
+  CostumeBox,
+  CostumeContainer,
+  CostumeImage,
+  CostumeText,
+} from "./Costume.styles";
 
 // import Hanbok from "../../assets/img/ai/costume/Hanbok.png";
 // import Kimono from "../../assets/img/ai/costume/Kimono.png";
@@ -56,6 +61,7 @@ const Costume: FC<Props> = ({ data, handleCostume }) => {
             key={item.tagId}
             onClick={() => handleCostumeClick(item)}
           >
+            <CostumeText>{item.koreanName}</CostumeText>
             <CostumeImage src={item.imgUrl} alt={item.koreanName} />
           </CostumeContainer>
         ))}
