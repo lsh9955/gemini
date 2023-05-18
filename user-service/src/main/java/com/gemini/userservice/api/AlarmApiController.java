@@ -1,26 +1,9 @@
 package com.gemini.userservice.api;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.gemini.userservice.dto.request.RequestContractGeminiDto;
-import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
 import com.gemini.userservice.dto.response.ResponseGetAllAlarmsDto;
-import com.gemini.userservice.entity.UserInfo;
-import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
-import com.gemini.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 // UserService interface
 package com.gemini.userservice.service;
 
-import com.gemini.userservice.dto.FollowRequestDto;
+import com.gemini.userservice.dto.request.RequestFollowDto;
 import com.gemini.userservice.dto.UpdateProfileRequestDto;
 import com.gemini.userservice.dto.UserDto;
 
@@ -10,9 +10,9 @@ public interface UserService {
 
     void updateProfile(UpdateProfileRequestDto requestDto, String username);
 
-    void followUser(String currentUsername, FollowRequestDto followRequestDto);
+    void followUser(String currentUsername, RequestFollowDto requestFollowDto);
 
-    void unfollowUser(String currentUsername, FollowRequestDto followRequestDto);
+    void unfollowUser(String currentUsername, RequestFollowDto requestFollowDto);
 
 
 
