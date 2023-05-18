@@ -29,6 +29,7 @@ import axiosInstanceWithAccessToken from "../../utils/AxiosInstanceWithAccessTok
 import { async } from "q";
 import UserGeminiDetail from "../../components/geminiDetail/UserGeminiDetail";
 import { Backdrop } from "../../components/geminiDetail/UserGeminiDetail.styles";
+import MyProfileContentBodyTRPG from "../../components/profile/myprofile/MyProfileContentBodyTRPG";
 
 type UserProfileParams = {
   nickname: string;
@@ -93,48 +94,88 @@ const UserProfile: FC = () => {
   const infScrollImgLength = getInfScrollImgLength(images.length);
   const minHeight = `${39.2 + infScrollImgLength * 20}vh`;
 
+  // const loadMoreImages = useCallback(async () => {
+  //     const currentPage = page;
+  //     try {
+  //     const response = await axiosInstanceWithAccessToken.post(
+  //       "/user-service/gallery/usergalleries",
+  //       {
+  //         nickname: nickname,
+  //       },
+  //       {
+  //         params: {
+  //           page: currentPage,
+  //           size: 16,
+  //         },
+  //       }
+  //     );
+
+  //     console.log(response);
+
+  //     if (response.status === 200) {
+  //       const newImages = response.data.galleryPage.content.map(
+  //         (item: any) => ({
+  //           imageUrl: item.imageUrl,
+  //           geminiPk: item.galleryNo,
+  //         })
+
+  //         // (item: any) => item.imageUrl
+  //       );
+  //       setImages((prevImages) => [...prevImages, ...newImages]);
+  //       setPage((prevPage) => prevPage + 1);
+  //       setHasMore(newImages.length > 0);
+  //     } else {
+  //       setHasMore(false);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setHasMore(false);
+  //   }
+  // }, [page, nickname]);
+
   const loadMoreImages = useCallback(async () => {
     const currentPage = page;
-    try {
-      const response = await axiosInstanceWithAccessToken.post(
-        "/user-service/gallery/usergalleries",
-        {
-          nickname: nickname,
-        },
-        {
-          params: {
-            page: currentPage,
-            size: 16,
+    if (currentPage > 0) {
+      // 페이지가 0이 아닐 때만 요청을 보냅니다.
+      try {
+        const response = await axiosInstanceWithAccessToken.post(
+          "/user-service/gallery/usergalleries",
+          {
+            nickname: nickname,
           },
-        }
-      );
-
-      console.log(response);
-
-      if (response.status === 200) {
-        const newImages = response.data.galleryPage.content.map(
-          (item: any) => ({
-            imageUrl: item.imageUrl,
-            geminiPk: item.galleryNo,
-          })
-
-          // (item: any) => item.imageUrl
+          {
+            params: {
+              page: currentPage,
+              size: 16,
+            },
+          }
         );
-        setImages((prevImages) => [...prevImages, ...newImages]);
-        setPage((prevPage) => prevPage + 1);
-        setHasMore(newImages.length > 0);
-      } else {
+
+        console.log(response);
+
+        if (response.status === 200) {
+          const newImages = response.data.galleryPage.content.map(
+            (item: any) => ({
+              imageUrl: item.imageUrl,
+              geminiPk: item.galleryNo,
+            })
+          );
+          setImages((prevImages) => [...prevImages, ...newImages]);
+          setPage((prevPage) => prevPage + 1);
+          setHasMore(newImages.length > 0);
+        } else {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error(error);
         setHasMore(false);
       }
-    } catch (error) {
-      console.error(error);
-      setHasMore(false);
     }
-  }, [page]);
+  }, [page, nickname, axiosInstanceWithAccessToken]);
 
-  useEffect(() => {
-    loadMoreImages();
-  }, [loadMoreImages]);
+  // useEffect(() => {
+  //   loadMoreImages();
+  // }, [loadMoreImages]);
   // for infinite scroll 😀
 
   // for modal component 😉
@@ -154,6 +195,84 @@ const UserProfile: FC = () => {
   const [currentView, setCurrentView] = useState<"Gemini" | "TRPG">("Gemini");
   const handleGeminiClick = () => setCurrentView("Gemini");
   const handleTRPGClick = () => setCurrentView("TRPG");
+
+  interface memoriesData {
+    poseNo: number;
+    background: string;
+    poseImages: string[];
+    onClick: () => void;
+  }
+
+  const dummyMemories = [
+    {
+      poseNo: 1,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+    {
+      poseNo: 2,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+    {
+      poseNo: 3,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+    {
+      poseNo: 4,
+      background:
+        "https://mygemini.s3.amazonaws.com/gemini/20230516_042947103333_background.png",
+
+      poseImages: [
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+        "https://mygemini.s3.ap-northeast-2.amazonaws.com/gemini/pairchild/odri.png",
+      ],
+      onClick: () => {},
+    },
+
+    // ...
+  ];
+  const [memories, setMemories] = useState<memoriesData[]>([...dummyMemories]);
+  const [hasMoreMemories, setHasMoreMemories] = useState(true);
+  const handleMemoryClick = () => {};
+
+  useEffect(() => {
+    const fetchMemoryRes = async () => {
+      const MemoryRes = await axiosInstanceWithAccessToken.get(
+        "/user-service/generate/pose"
+      );
+      console.log("인생네컷 메모리 데이터 가져왔습니다.");
+      console.log(MemoryRes);
+      console.log(MemoryRes.data);
+      console.log(MemoryRes.data.data);
+      setMemories(MemoryRes.data);
+    };
+    fetchMemoryRes();
+  }, []);
 
   return (
     <>
@@ -210,12 +329,20 @@ const UserProfile: FC = () => {
             </MyProfileContentTitle>
           </MyProfileContentTitleWrapper>
           <MyProfileContentBodyWrapper minHeight={minHeight}>
-            <MyProfileContentBody
-              images={images}
-              hasMore={hasMore}
-              loadMoreImages={loadMoreImages}
-              onImageClick={handleImageClick} // 이 부분을 추가하세요.
-            />
+            {currentView === "Gemini" ? (
+              <MyProfileContentBody
+                images={images}
+                hasMore={hasMore}
+                loadMoreImages={loadMoreImages}
+                onImageClick={handleImageClick} // 이 부분을 추가하세요.
+              />
+            ) : (
+              <MyProfileContentBodyTRPG
+                images={memories}
+                onImageClick={handleMemoryClick}
+                // TRPGComponent에 필요한 props
+              />
+            )}
           </MyProfileContentBodyWrapper>
         </MyProfileContentWrapper>
       </MyProfileWrapper>
