@@ -12,6 +12,7 @@ import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.CompleteService;
 import com.gemini.userservice.service.EmitterService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/user-service/complete")
 public class CompleteApiController {
@@ -64,10 +66,10 @@ public class CompleteApiController {
     @PostMapping("/background")
     public ResponseEntity<?> completeBackground(@RequestBody RequestCompleteBackgroundDto requestCompleteBackgroundDto) {
 
+        log.info("배경 생성 완료 응답");
+        log.info("username: " + requestCompleteBackgroundDto.getUsername());
+        log.info("image: " + requestCompleteBackgroundDto.getImageUrl());
         String res = completeService.completeBackground(requestCompleteBackgroundDto);
-
-        SseEmitter emitter = new SseEmitter();
-        emitterService.addEmitter(emitter);
 
         // res가 null 값이 아니면 알람 생성
         if (res != null) {
