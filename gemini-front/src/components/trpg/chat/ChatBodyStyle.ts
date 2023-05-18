@@ -43,7 +43,7 @@ export const ChatUserImg = styled.img`
 export const ChatUserName = styled.div`
   display: flex;
   align-items: center;
-  width: 15%;
+  width: 75%;
   flex-direction: column;
   margin: 2% 0;
   & > p {
