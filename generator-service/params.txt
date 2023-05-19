@@ -1,0 +1,4 @@
+pink hair girl
+Negative prompt: lowres, ((bad anatomy)), ((bad hands)), text, missing finger, extra digits, fewer digits, blurry, ((mutated hands and fingers)), (poorly drawn face), ((mutation)), ((deformed face)), (ugly), ((bad proportions)), ((extra limbs)), extra face, (double head), (extra head), ((extra feet)), monster, logo, cropped, worst quality, low quality, normal quality, jpeg, humpbacked, long body, long neck, ((jpeg artifacts)), ((nsfw))
+Steps: 13, Sampler: DPM++ SDE Karras, CFG scale: 7.0, Seed: 131234141, Size: 676x507, Model hash: 7f96a1a9ca, Model: AnythingV5V3_v5PrtRE, Seed resize from: -1x-1, Denoising strength: 0, 
+ControlNet: "preprocessor: depth, model: control_v11f1p_sd15_depth [cfd03158], weight: 0.8, starting/ending: (0.0, 1.0), resize mode: ResizeMode.INNER_FIT, pixel perfect: False, control mode: ControlMode.BALANCED, preprocessor params: (512, 64, 64)"
