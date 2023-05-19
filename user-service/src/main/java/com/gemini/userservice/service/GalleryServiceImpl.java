@@ -362,6 +362,8 @@ public class GalleryServiceImpl implements GalleryService{
 
             return "invalid user";
         }
+        Gallery gallery = galleryRepository.findByGemini(gemini);
+        galleryRepository.delete(gallery);
         geminiRepository.delete(gemini);
         return "ok";
     }
