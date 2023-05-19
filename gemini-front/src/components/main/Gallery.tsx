@@ -212,7 +212,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
             />
           ))}
         </ImgWrap>
-        {/* <GalleryTitleName>주간 TOP 5</GalleryTitleName>
+        <GalleryTitleName>주간 TOP 5</GalleryTitleName>
         <ImgWrap>
           {weeklyTop5.slice(0, 5).map((imageData, index) => (
             <StyledImg
@@ -225,7 +225,7 @@ const Gallery = React.forwardRef<HTMLDivElement>((props, ref) => {
               }} // 이미지 클릭 시 handleImageClick 함수를 호출합니다.
             />
           ))}
-        </ImgWrap> */}
+        </ImgWrap>
         <GalleryTitleName>
           전체 둘러보기 {totalGallery ? totalGallery : 0}개의 이미지
         </GalleryTitleName>
