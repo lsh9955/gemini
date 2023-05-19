@@ -6,11 +6,10 @@ import uvicorn
 import gradio as gr
 from threading import Lock
 from io import BytesIO
-from gradio.processing_utils import decode_base64_to_file
 from fastapi import APIRouter, Depends, FastAPI, Request, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.exceptions import HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.encoders import jsonable_encoder
 from secrets import compare_digest
 
@@ -29,6 +28,40 @@ from modules import devices
 from typing import List
 import piexif
 import piexif.helper
+
+### 신규 서비스용 Import 목록입니당
+from fastapi import BackgroundTasks
+from dotenv import load_dotenv
+import boto3
+import os
+from datetime import datetime
+
+
+### S3와 연동하기 위해서 AWS 키와 좌표를 받아옵니다.
+load_dotenv()
+dotenv_path = os.path.join(os.getcwd(), '../../.env')
+load_dotenv(dotenv_path=dotenv_path)
+
+ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID")
+SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+
+s3 = boto3.client("s3", aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
+
+
+### 선언용 변수들
+
+# 배경의 기본 프롬프트 입니다.
+background_default_prompt = "(8k),((only background)),((masterpiece)),(best quality),(ultra-detailed),(best illustration)," \
+                            "(best quality),(high resolution),hyper detail,ultra detailed,Incredibly detailed,"
+
+# basic_url = "http://192.168.31.73:8081"
+# basic_url = "http://192.168.31.73:8081"
+
+
+# 포즈의 리스트 입니다.
+pose_list = ["sample", "shooting", "victory", "squad"]
+
 
 def upscaler_to_index(name: str):
     try:
@@ -111,7 +144,7 @@ def api_middleware(app: FastAPI):
         duration = str(round(time.time() - ts, 4))
         res.headers["X-Process-Time"] = duration
         endpoint = req.scope.get('path', 'err')
-        if shared.cmd_opts.api_log and endpoint.startswith('/api'):
+        if shared.cmd_opts.api_log and endpoint.startswith('/sdapi'):
             print('API {t} {code} {prot}/{ver} {method} {endpoint} {cli} {duration}'.format(
                 t = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"),
                 code = res.status_code,
@@ -131,8 +164,8 @@ def api_middleware(app: FastAPI):
             "body": vars(e).get('body', ''),
             "errors": str(e),
         }
-        print(f"API error: {request.method}: {request.url} {err}")
         if not isinstance(e, HTTPException): # do not print backtrace on known httpexceptions
+            print(f"API error: {request.method}: {request.url} {err}")
             if rich_available:
                 console.print_exception(show_locals=True, max_frames=2, extra_lines=1, suppress=[anyio, starlette], word_wrap=False, width=min([console.width, 200]))
             else:
@@ -167,39 +200,734 @@ class Api:
         self.app = app
         self.queue_lock = queue_lock
         api_middleware(self.app)
-        self.add_api_route("/api/txt2img", self.text2imgapi, methods=["POST"], response_model=TextToImageResponse)
-        self.add_api_route("/api/img2img", self.img2imgapi, methods=["POST"], response_model=ImageToImageResponse)
-        self.add_api_route("/api/extra-single-image", self.extras_single_image_api, methods=["POST"], response_model=ExtrasSingleImageResponse)
-        self.add_api_route("/api/extra-batch-images", self.extras_batch_images_api, methods=["POST"], response_model=ExtrasBatchImagesResponse)
-        self.add_api_route("/api/png-info", self.pnginfoapi, methods=["POST"], response_model=PNGInfoResponse)
-        self.add_api_route("/api/progress", self.progressapi, methods=["GET"], response_model=ProgressResponse)
-        self.add_api_route("/api/interrogate", self.interrogateapi, methods=["POST"])
-        self.add_api_route("/api/interrupt", self.interruptapi, methods=["POST"])
-        self.add_api_route("/api/skip", self.skip, methods=["POST"])
-        self.add_api_route("/api/options", self.get_config, methods=["GET"], response_model=OptionsModel)
-        self.add_api_route("/api/options", self.set_config, methods=["POST"])
-        self.add_api_route("/api/cmd-flags", self.get_cmd_flags, methods=["GET"], response_model=FlagsModel)
-        self.add_api_route("/api/samplers", self.get_samplers, methods=["GET"], response_model=List[SamplerItem])
-        self.add_api_route("/api/upscalers", self.get_upscalers, methods=["GET"], response_model=List[UpscalerItem])
-        self.add_api_route("/api/sd-models", self.get_sd_models, methods=["GET"], response_model=List[SDModelItem])
-        self.add_api_route("/api/hypernetworks", self.get_hypernetworks, methods=["GET"], response_model=List[HypernetworkItem])
-        self.add_api_route("/api/face-restorers", self.get_face_restorers, methods=["GET"], response_model=List[FaceRestorerItem])
-        self.add_api_route("/api/realesrgan-models", self.get_realesrgan_models, methods=["GET"], response_model=List[RealesrganItem])
-        self.add_api_route("/api/prompt-styles", self.get_prompt_styles, methods=["GET"], response_model=List[PromptStyleItem])
-        self.add_api_route("/api/embeddings", self.get_embeddings, methods=["GET"], response_model=EmbeddingsResponse)
-        self.add_api_route("/api/refresh-checkpoints", self.refresh_checkpoints, methods=["POST"])
-        self.add_api_route("/api/create/embedding", self.create_embedding, methods=["POST"], response_model=CreateResponse)
-        self.add_api_route("/api/create/hypernetwork", self.create_hypernetwork, methods=["POST"], response_model=CreateResponse)
-        self.add_api_route("/api/preprocess", self.preprocess, methods=["POST"], response_model=PreprocessResponse)
-        self.add_api_route("/api/train/embedding", self.train_embedding, methods=["POST"], response_model=TrainResponse)
-        self.add_api_route("/api/train/hypernetwork", self.train_hypernetwork, methods=["POST"], response_model=TrainResponse)
-        self.add_api_route("/api/memory", self.get_memory, methods=["GET"], response_model=MemoryResponse)
-        self.add_api_route("/api/unload-checkpoint", self.unloadapi, methods=["POST"])
-        self.add_api_route("/api/reload-checkpoint", self.reloadapi, methods=["POST"])
-        self.add_api_route("/api/scripts", self.get_scripts_list, methods=["GET"], response_model=ScriptsList)
+        ### 직접 작성한 Sample API
+        self.add_api_route("/ml_api/get_sample", self.getsampleapi, methods=["GET"], response_model=GetSampleResponse)
+        self.add_api_route("/ml_api/gemini", self.makegeminiapi, methods=["POST"], response_model=TextToGeminiResponse)
+        self.add_api_route("/ml_api/background", self.makebackgroundapi, methods=["POST"], response_model=TextToBackgroundResponse)
+        self.add_api_route("/ml_api/emotion", self.makefaceapi, methods=["POST"], response_model=GeminiFaceResponse)
+        self.add_api_route("/ml_api/pose", self.makeposeapi, methods=["POST"], response_model=GeminiPoseResponse)
+        self.add_api_route("/sdapi/v1/txt2img", self.text2imgapi, methods=["POST"], response_model=TextToImageResponse)
+        self.add_api_route("/sdapi/v1/img2img", self.img2imgapi, methods=["POST"], response_model=ImageToImageResponse)
+        self.add_api_route("/sdapi/v1/extra-single-image", self.extras_single_image_api, methods=["POST"], response_model=ExtrasSingleImageResponse)
+        self.add_api_route("/sdapi/v1/extra-batch-images", self.extras_batch_images_api, methods=["POST"], response_model=ExtrasBatchImagesResponse)
+        self.add_api_route("/sdapi/v1/png-info", self.pnginfoapi, methods=["POST"], response_model=PNGInfoResponse)
+        self.add_api_route("/sdapi/v1/progress", self.progressapi, methods=["GET"], response_model=ProgressResponse)
+        self.add_api_route("/sdapi/v1/interrogate", self.interrogateapi, methods=["POST"])
+        self.add_api_route("/sdapi/v1/interrupt", self.interruptapi, methods=["POST"])
+        self.add_api_route("/sdapi/v1/skip", self.skip, methods=["POST"])
+        self.add_api_route("/sdapi/v1/options", self.get_config, methods=["GET"], response_model=OptionsModel)
+        self.add_api_route("/sdapi/v1/options", self.set_config, methods=["POST"])
+        self.add_api_route("/sdapi/v1/cmd-flags", self.get_cmd_flags, methods=["GET"], response_model=FlagsModel)
+        self.add_api_route("/sdapi/v1/samplers", self.get_samplers, methods=["GET"], response_model=List[SamplerItem])
+        self.add_api_route("/sdapi/v1/upscalers", self.get_upscalers, methods=["GET"], response_model=List[UpscalerItem])
+        self.add_api_route("/sdapi/v1/sd-models", self.get_sd_models, methods=["GET"], response_model=List[SDModelItem])
+        self.add_api_route("/sdapi/v1/hypernetworks", self.get_hypernetworks, methods=["GET"], response_model=List[HypernetworkItem])
+        self.add_api_route("/sdapi/v1/face-restorers", self.get_face_restorers, methods=["GET"], response_model=List[FaceRestorerItem])
+        self.add_api_route("/sdapi/v1/realesrgan-models", self.get_realesrgan_models, methods=["GET"], response_model=List[RealesrganItem])
+        self.add_api_route("/sdapi/v1/prompt-styles", self.get_prompt_styles, methods=["GET"], response_model=List[PromptStyleItem])
+        self.add_api_route("/sdapi/v1/embeddings", self.get_embeddings, methods=["GET"], response_model=EmbeddingsResponse)
+        self.add_api_route("/sdapi/v1/refresh-checkpoints", self.refresh_checkpoints, methods=["POST"])
+        self.add_api_route("/sdapi/v1/create/embedding", self.create_embedding, methods=["POST"], response_model=CreateResponse)
+        self.add_api_route("/sdapi/v1/create/hypernetwork", self.create_hypernetwork, methods=["POST"], response_model=CreateResponse)
+        self.add_api_route("/sdapi/v1/preprocess", self.preprocess, methods=["POST"], response_model=PreprocessResponse)
+        self.add_api_route("/sdapi/v1/train/embedding", self.train_embedding, methods=["POST"], response_model=TrainResponse)
+        self.add_api_route("/sdapi/v1/train/hypernetwork", self.train_hypernetwork, methods=["POST"], response_model=TrainResponse)
+        self.add_api_route("/sdapi/v1/memory", self.get_memory, methods=["GET"], response_model=MemoryResponse)
+        self.add_api_route("/sdapi/v1/unload-checkpoint", self.unloadapi, methods=["POST"])
+        self.add_api_route("/sdapi/v1/reload-checkpoint", self.reloadapi, methods=["POST"])
+        self.add_api_route("/sdapi/v1/scripts", self.get_scripts_list, methods=["GET"], response_model=ScriptsList)
 
         self.default_script_arg_txt2img = []
         self.default_script_arg_img2img = []
+
+    ### Gemini용 함수 로직을 추가합니다.
+
+    ## 통신 세팅 확인용 Sample 입니다.
+    def getsampleapi(self):
+        return FileResponse("./asset/sample_img.png")
+
+    ## 제미니를 만드는 로직입니다. makegeminiapi -> back 으로 보내서 뒤에서 작업합니다.
+    def back_makegeminiapi(self, txt2geminireq:StableDiffusionTxt2GeminiProcessingAPI, object_name):
+        username = txt2geminireq.username
+        # scripts.scripts_txt2img를 가져와 script_runner 변수에 할당합니다.
+        script_runner = scripts.scripts_txt2img
+
+        # script_runner의 스크립트가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not script_runner.scripts:
+            script_runner.initialize_scripts(False)
+            ui.create_ui()
+
+        # default_script_arg_txt2img가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not self.default_script_arg_txt2img:
+            self.default_script_arg_txt2img = self.init_default_script_args(script_runner)
+
+        # txt2imgreq에서 선택 가능한 스크립트와 해당 인덱스를 가져옵니다.
+        selectable_scripts, selectable_script_idx = self.get_selectable_script(txt2geminireq.script_name, script_runner)
+
+        # txt2imgreq를 update하여 Sampler, save_images 및 grid 저장 여부를 재정의합니다.
+        populate = txt2geminireq.copy(update={
+            "sampler_name": "DPM++ SDE Karras",
+            "do_not_save_samples": not txt2geminireq.save_images,
+            "do_not_save_grid": not txt2geminireq.save_images,
+        })
+
+        # Sampler 이름이 지정된 경우 샘플러 인덱스를 None으로 설정하여 나중에 경고를 방지합니다.
+        if populate.sampler_name:
+            populate.sampler_index = None
+
+        # txt2imgreq의 script_name, script_args 및 alwayson_scripts를 제거합니다. 이후 pipeline에 바로 제공합니다.
+        args = vars(populate)
+        args.pop('script_name', None)
+        args.pop('script_args', None)
+        args.pop('alwayson_scripts', None)
+
+        # script_args를 가져와 초기화합니다.
+        script_args = self.init_script_args(txt2geminireq, self.default_script_arg_txt2img, selectable_scripts,
+                                            selectable_script_idx, script_runner)
+
+        # send_images와 save_images를 args에서 제거합니다.
+        send_images = args.pop('send_images', True)
+        args.pop('save_images', None)
+
+        # FastAPI 앱 인스턴스의 queue_lock을 사용하여 처리를 실행합니다.
+        with self.queue_lock:
+            print(f"=== Caution! {username}의 제미니를 생성하고 있어요. ===")
+            # StableDiffusionProcessingTxt2Img 인스턴스를 생성합니다.
+            p = StableDiffusionProcessingTxt2Img(sd_model=shared.sd_model, **args)
+            p.scripts = script_runner
+            p.outpath_grids = opts.outdir_txt2img_grids
+            p.outpath_samples = opts.outdir_txt2img_samples
+
+            # shared state를 시작합니다.
+            shared.state.begin()
+
+            # 선택 가능한 스크립트가 있는 경우 해당 스크립트를 실행합니다.
+            if selectable_scripts != None:
+                p.script_args = script_args
+                processed = scripts.scripts_txt2img.run(p, *p.script_args)  # Need to pass args as list here
+            # 선택 가능한 스크립트가 없는 경우 이미지 처리 함수를 실행합니다.
+            else:
+                p.script_args = tuple(script_args)  # Need to pass args as tuple here
+                processed = process_images(p)
+
+            # shared state를 종료합니다.
+            shared.state.end()
+        print("===========image_Done===============")
+        # processed에서 반환
+        shared.state.end()
+
+        # 이미지를 Base64로 인코딩하여 리스트에 저장합니다. -> S3에 업로드하고 링크를 전송합니다
+        # b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
+        if send_images:
+            print("===========Sending Start===============")
+            file = processed
+            file_extension = "png"
+            content_type = f"image/{file_extension}"
+
+            image_data = io.BytesIO()
+            processed.images[0].save(image_data, format='PNG')
+            image_data.seek(0)
+            print("=============Request Start===============")
+            response = s3.upload_fileobj(image_data, BUCKET_NAME, object_name, ExtraArgs={'ContentType': content_type})
+            print("=============Request Done=============")
+            print(f"response: {response}")
+            url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+            print("=============URL Catch=============")
+            print(f"url: {url}")
+        else:
+            url = []
+
+
+        import requests
+        import json
+
+        result = processed.js()
+        response_data = json.loads(result)
+        get_seed = response_data['seed']
+        print(f"==== seed :{get_seed} ======")
+        headers = {"Content-Type": "application/json"}
+        data = {
+            "username": txt2geminireq.username,
+            "tagIds": txt2geminireq.tag_ids,
+            "imageUrl": url,
+            "prompt": txt2geminireq.prompt,
+            "seed": get_seed
+        }
+
+        print(f"요청이 잘 반영되었어요! {username}의 제미니가 생성되었습니다!")
+        ### 완성되면 JAVA 백엔드 쪽으로 완성 되었다고, [유저 ID,
+        response = requests.post("https://mygemini.co.kr/user-service/complete/gemini", data=json.dumps(data), headers=headers)
+        # response = requests.post("http://192.168.31.73:8081/user-service/complete/gemini", data=json.dumps(data), headers=headers)
+        print(response)
+        print("### Make Gemmini 로직 완료! ###")
+
+    # @app.post("/task") -> API 통합용 데코레이터
+    def makegeminiapi(self, txt2geminireq:StableDiffusionTxt2GeminiProcessingAPI, background_tasks: BackgroundTasks):
+        username = txt2geminireq.username
+        tag_ids = txt2geminireq.tag_ids
+        print(tag_ids)
+        now = datetime.now()
+        timestamp = now.strftime("%Y%m%d_%H%M%S%f")
+        object_name = f"gemini/{timestamp}_{username}.png"
+        url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+        background_tasks.add_task(self.back_makegeminiapi, txt2geminireq, object_name)
+        print(url)
+        return {
+            "imageUrl": url
+        }
+        # return {
+        #     "prompt": txt2geminireq.prompt,
+        #     "tag_ids": tag_ids,
+        #     "info": f"{user_id}의 제미니가 생성되고 있어요!"
+        # }
+        ## 제미니를 만드는 로직입니다. makeapi -> back 으로 보내서 뒤에서 작업합니다.
+
+    ##############################
+    ### Make Gemmini 로직 작성! ###
+    ##############################
+
+
+### @app.post("/task") -> API 통합용 데코레이터
+    def back_makebackgoundapi(self, txt2backgroundreq : StableDiffusionTxt2BackgroundProcessingAPI,
+                              background_object_name, korean, description):
+
+        txt2backgroundreq.width = 960
+        txt2backgroundreq.height = 540
+        script_runner = scripts.scripts_txt2img
+
+        # script_runner의 스크립트가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not script_runner.scripts:
+            script_runner.initialize_scripts(False)
+            ui.create_ui()
+
+        # default_script_arg_txt2img가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not self.default_script_arg_txt2img:
+            self.default_script_arg_txt2img = self.init_default_script_args(script_runner)
+
+        # req에서 선택 가능한 스크립트와 해당 인덱스를 가져옵니다.
+        selectable_scripts, selectable_script_idx = self.get_selectable_script(txt2backgroundreq.script_name,
+                                                                               script_runner)
+
+        # txt2imgreq를 update하여 Sampler, save_images 및 grid 저장 여부를 재정의합니다.
+        populate = txt2backgroundreq.copy(update={
+            "sampler_name": "DPM++ SDE Karras",
+        })
+
+        # Sampler 이름이 지정된 경우 샘플러 인덱스를 None으로 설정하여 나중에 경고를 방지합니다.
+        if populate.sampler_name:
+            populate.sampler_index = None
+
+        # txt2imgreq의 script_name, script_args 및 alwayson_scripts를 제거합니다. 이후 pipeline에 바로 제공합니다.
+        args = vars(populate)
+        args.pop('script_name', None)
+        args.pop('script_args', None)
+        args.pop('alwayson_scripts', None)
+
+        # script_args를 가져와 초기화합니다.
+        script_args = self.init_script_args(txt2backgroundreq, self.default_script_arg_txt2img, selectable_scripts,
+                                            selectable_script_idx, script_runner)
+
+        # send_images와 save_images를 args에서 제거합니다.
+        send_images = args.pop('send_images', True)
+        args.pop('save_images', None)
+
+        # FastAPI 앱 인스턴스의 queue_lock을 사용하여 처리를 실행합니다.
+        with self.queue_lock:
+            # StableDiffusionProcessingTxt2Img 인스턴스를 생성합니다.
+            p = StableDiffusionProcessingTxt2Img(sd_model=shared.sd_model, **args)
+            p.scripts = script_runner
+            p.outpath_grids = opts.outdir_txt2img_grids
+            p.outpath_samples = opts.outdir_txt2img_samples
+
+            # shared state를 시작합니다.
+            shared.state.begin()
+
+            # 선택 가능한 스크립트가 있는 경우 해당 스크립트를 실행합니다.
+            if selectable_scripts != None:
+                p.script_args = script_args
+                processed = scripts.scripts_txt2img.run(p, *p.script_args)  # Need to pass args as list here
+            # 선택 가능한 스크립트가 없는 경우 이미지 처리 함수를 실행합니다.
+            else:
+                p.script_args = tuple(script_args)  # Need to pass args as tuple here
+                processed = process_images(p)
+
+            # shared state를 종료합니다.
+            shared.state.end()
+        print("===========image_Done===============")
+        # processed에서 반환
+        shared.state.end()
+
+        # 이미지를 Base64로 인코딩하여 리스트에 저장합니다. -> S3에 업로드하고 링크를 전송합니다
+        # b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
+        print("===========Sending Start===============")
+        file_extension = "png"
+        content_type = f"image/{file_extension}"
+
+        image_data = io.BytesIO()
+        processed.images[0].save(image_data, format='PNG')
+        image_data.seek(0)
+        print("=============Request Start===============")
+        response = s3.upload_fileobj(image_data, BUCKET_NAME, background_object_name, ExtraArgs={'ContentType': content_type})
+        url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{background_object_name}"
+
+        import requests
+        import json
+        headers = {"Content-Type": "application/json"}
+        data = {
+            "backgroundUrl": txt2backgroundreq.background_url,
+            "username": txt2backgroundreq.username,
+            "imageUrl": url,
+            "korean": korean,
+            "description": description,
+        }
+
+        ### 완성되면 JAVA 백엔드 쪽으로 완성 되었다고 보내주기
+        # response = requests.post("https://mygemini.co.kr/user-service/complete/background", data=json.dumps(data), headers=headers)
+        # response = requests.post("http://192.168.31.73:8081/user-service/complete/background", data=json.dumps(data), headers=headers)
+        print(response)
+        print("### Make background 로직 완료! ###")
+
+
+    def makebackgroundapi(self, txt2backgroundreq : StableDiffusionTxt2BackgroundProcessingAPI, background_tasks: BackgroundTasks):
+        import urllib.request
+        import urllib.parse
+        import re
+        import json
+        description = "입력 값 오류로 인한 디폴트 배경"
+        korean = "배경 관련 스크립트 미 입력"
+        if txt2backgroundreq.description == "":
+            print("prompt를 입력하지 않았어요! 기본 배경으로 생성됩니다!")
+            txt2backgroundreq.prompt = background_default_prompt + "night sky with a lot of stars"
+        else:
+            korean = str(txt2backgroundreq.description)
+            print("번역 로직을 들어가요!")
+            papago_client_id = "jLiBiaLoioA7J1K4WOuJ"  # 개발자센터에서 발급받은 Client ID 값
+            papago_client_secret = "bYUxVHCzNT"  # 개발자센터에서 발급받은 Client Secret 값
+            txt2backgroundreq.prompt = re.sub('[^ㄱ-ㅎㅏ-ㅣ가-힣0-9., ]', '', txt2backgroundreq.description)
+            print(f"정제된 스트링이야! {txt2backgroundreq.prompt}")
+            encText = urllib.parse.quote(txt2backgroundreq.prompt)
+            papago_data = "source=ko&target=en&text=" + encText
+            papago_url = "https://openapi.naver.com/v1/papago/n2mt"
+            request = urllib.request.Request(papago_url)
+            request.add_header("X-Naver-Client-Id", papago_client_id)
+            request.add_header("X-Naver-Client-Secret", papago_client_secret)
+            response = urllib.request.urlopen(request, data=papago_data.encode("utf-8"))
+            rescode = response.getcode()
+
+            print(response)
+            if (rescode == 200):
+                response_body = response.read().decode('utf-8')
+                response_data = json.loads(response_body)
+                translated_text = response_data['message']['result']['translatedText']
+                description = translated_text
+                description = description.replace(",", " and")
+                description = description.replace(".", ",")
+                print(f"정제된 원문: {txt2backgroundreq.prompt}")
+                print(f"prompt: {description} 으로 생성된 배경화면이예요!")
+                txt2backgroundreq.prompt = background_default_prompt + description
+                print("생성에 사용된 prompt야!")
+                print(txt2backgroundreq.prompt)
+            else:
+                print("Error Code:" + rescode)
+                print("잘못된 prompt를 입력했어요~ 기본 배경으로 생성됩니당~")
+                txt2backgroundreq.prompt = background_default_prompt + "night sky with a lot of stars"
+
+        print(f"원문 : {korean}")
+        print(f"번역 완료 : {description}")
+
+        now = datetime.now()
+        timestamp = now.strftime("%Y%m%d_%H%M%S%f")
+        background_object_name = f"gemini/{timestamp}_background.png"
+        url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{background_object_name}"
+        # scripts.scripts_txt2img를 가져와 script_runner 변수에 할당합니다.
+
+        background_tasks.add_task(self.back_makebackgoundapi, txt2backgroundreq, background_object_name, korean, description)
+
+        return {
+            "imageUrl": url
+        }
+
+    # headers = {"Content-Type": "application/json"}
+    # data = {
+    #     "imageUrl": url,
+    #     "description": description,
+    #     "korean": korean
+    # }
+
+    ################################
+    ### Make Background 로직 작성! ###
+    ################################
+
+
+    def back_makeposeapi(self, GeminiPosereq:StableDiffusionMakePoseProcessingAPI, object_name, make_pose, url_list, pose_idx):
+        pose_asset_dir = os.path.join(os.getcwd(), "pose_asset", pose_idx)
+        txt_files = ["0.txt", "1.txt", "2.txt", "3.txt"]
+
+        gemini_id = GeminiPosereq.geminis[make_pose]
+        pose_prompt = GeminiPosereq.gemini_prompt[make_pose]
+        pose_seed = GeminiPosereq.gemini_seed[make_pose]
+
+        with open(os.path.join(pose_asset_dir, txt_files[make_pose]), "r") as file:
+            txt_value = file.read()
+
+        GeminiPosereq.alwayson_scripts["controlnet"]["args"][0]["input_image"] = str(txt_value)
+        print(f"이거로 만들거야!!!!!! : {txt_files[make_pose]}")
+        now = datetime.now()
+        GeminiPosereq.prompt = pose_prompt
+        GeminiPosereq.seed = pose_seed
+
+
+
+        # scripts.scripts_txt2img를 가져와 script_runner 변수에 할당합니다.
+        script_runner = scripts.scripts_txt2img
+
+        # script_runner의 스크립트가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not script_runner.scripts:
+            script_runner.initialize_scripts(False)
+            ui.create_ui()
+
+        # default_script_arg_txt2img가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not self.default_script_arg_txt2img:
+            self.default_script_arg_txt2img = self.init_default_script_args(script_runner)
+
+        # txt2imgreq에서 선택 가능한 스크립트와 해당 인덱스를 가져옵니다.
+        selectable_scripts, selectable_script_idx = self.get_selectable_script(GeminiPosereq.script_name, script_runner)
+
+        # txt2imgreq를 update하여 Sampler, save_images 및 grid 저장 여부를 재정의합니다.
+        populate = GeminiPosereq.copy(update={
+            "sampler_name": "DPM++ SDE Karras",
+        })
+
+        # Sampler 이름이 지정된 경우 샘플러 인덱스를 None으로 설정하여 나중에 경고를 방지합니다.
+        if populate.sampler_name:
+            populate.sampler_index = None
+
+        # txt2imgreq의 script_name, script_args 및 alwayson_scripts를 제거합니다. 이후 pipeline에 바로 제공합니다.
+        args = vars(populate)
+        args.pop('script_name', None)
+        args.pop('script_args', None)
+        args.pop('alwayson_scripts', None)
+
+        # script_args를 가져와 초기화합니다.
+        script_args = self.init_script_args(GeminiPosereq, self.default_script_arg_txt2img, selectable_scripts,
+                                            selectable_script_idx, script_runner)
+
+        # send_images와 save_images를 args에서 제거합니다.
+        send_images = args.pop('send_images', True)
+        args.pop('save_images', None)
+
+        # FastAPI 앱 인스턴스의 queue_lock을 사용하여 처리를 실행합니다.
+        with self.queue_lock:
+            # StableDiffusionProcessingTxt2Img 인스턴스를 생성합니다.
+            p = StableDiffusionProcessingTxt2Img(sd_model=shared.sd_model, **args)
+            p.scripts = script_runner
+            p.outpath_grids = opts.outdir_txt2img_grids
+            p.outpath_samples = opts.outdir_txt2img_samples
+
+            # shared state를 시작합니다.
+            shared.state.begin()
+
+            # 선택 가능한 스크립트가 있는 경우 해당 스크립트를 실행합니다.
+            if selectable_scripts != None:
+                p.script_args = script_args
+                processed = scripts.scripts_txt2img.run(p, *p.script_args)  # Need to pass args as list here
+            # 선택 가능한 스크립트가 없는 경우 이미지 처리 함수를 실행합니다.
+            else:
+                p.script_args = tuple(script_args)  # Need to pass args as tuple here
+                processed = process_images(p)
+
+            # shared state를 종료합니다.
+            shared.state.end()
+        print("===========image_Done===============")
+        # processed에서 반환
+        shared.state.end()
+
+
+        # 이미지를 Base64로 인코딩하여 리스트에 저장합니다. -> S3에 업로드하고 링크를 전송합니다
+        # b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
+        print("===========Sending Start===============")
+        file_extension = "png"
+        content_type = f"image/{file_extension}"
+        image_data = io.BytesIO()
+        processed.images[0].save(image_data, format='PNG')
+        image_data.seek(0)
+        response = s3.upload_fileobj(image_data, BUCKET_NAME, object_name, ExtraArgs={'ContentType': content_type})
+        url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+        print(f"url: {url}")
+        print(f"make_pose: {make_pose}")
+        print(f"url_list: {url_list}")
+        if make_pose == 3:
+            import requests
+            import json
+            headers = {"Content-Type": "application/json"}
+            data = {
+                "backgroundUrl": GeminiPosereq.background_url,
+                "geminis": GeminiPosereq.geminis,
+                "imageUrls": url_list
+            }
+            print(data)
+            ### 완성되면 JAVA 백엔드 쪽으로 완성 되었다고 보내주기
+            response = requests.post("https://mygemini.co.kr/user-service/complete/pose", data=json.dumps(data),headers=headers)
+            # response = requests.post("http://192.168.31.73:8081/user-service/complete/pose", data=json.dumps(data),headers=headers)
+            print(response)
+            print("### Make pose 로직 완료! ###")
+
+
+### @app.post("/task") -> API 통합용 데코레이터
+    def makeposeapi(self, makeposereq:StableDiffusionMakePoseProcessingAPI, background_tasks: BackgroundTasks):
+
+        base_prompt = "(illustration),(portrait),(best quality), (masterpiece), (high resolution), (Extremely detailed and beautiful face:1.3), perfect anatomy, hyper detail, ultra detailed face, Incredibly detailed,1girl,long hair,black hair,"
+        base_seed = 3120790884
+
+        if len(makeposereq.geminis) < 4:
+            add_id = 4 - len(makeposereq.geminis)
+            for adding in range(add_id):
+                makeposereq.geminis.append(1)
+        elif len(makeposereq.geminis) > 4:
+            makeposereq.geminis = makeposereq.geminis[:4]
+
+        if len(makeposereq.gemini_prompt) < 4:
+            add_pt = 4 - len(makeposereq.gemini_prompt)
+            for adding in range(add_pt):
+                makeposereq.gemini_prompt.append(base_prompt)
+        elif len(makeposereq.gemini_prompt) > 4:
+            makeposereq.gemini_prompt = makeposereq.gemini_prompt[:4]
+
+        if len(makeposereq.gemini_seed) < 4:
+            add_pt = 4 - len(makeposereq.gemini_seed)
+            for adding in range(add_pt):
+                makeposereq.gemini_seed.append(base_seed)
+        elif len(makeposereq.gemini_seed) > 4:
+            makeposereq.gemini_seed = makeposereq.gemini_seed[:4]
+
+        url_list = []
+        if makeposereq.pose_id < 0 or makeposereq.pose_id > len(pose_list):
+            print("유효한 포즈 idx 값이 아닙니다.")
+            makeposereq.pose_id = 0
+            pose_idx = pose_list[makeposereq.pose_id]
+            print(f"잘못된 포즈 요청이 들어와서, 샘플 포즈의 제미니들이 생성되고 있어요!")
+        else:
+            pose_idx = pose_list[makeposereq.pose_id]
+            print(f"{pose_idx} 포즈의 제미니들이 생성되고 있어요!")
+
+
+
+        for make_pose in range(4):
+            gemini_id = makeposereq.geminis[make_pose]
+            now = datetime.now()
+            timestamp = now.strftime("%Y%m%d_%H%M%S%f")
+            object_name = f"gemini/{timestamp}_{gemini_id}.png"
+            url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+            url_list.append(url)
+            background_tasks.add_task(self.back_makeposeapi, makeposereq, object_name, make_pose, url_list, pose_idx)
+        print(f"Pose URL List : {url_list}")
+        return {
+            "backgroundUrl": makeposereq.background_url,
+            "geminis": makeposereq.geminis,
+            "imageUrls": url_list
+        }
+
+
+        ## 제미니를 만드는 로직입니다. makeapi -> back 으로 보내서 뒤에서 작업합니다.
+
+
+
+
+    ################################
+    ### Make Background 로직 작성! ###
+    ################################
+
+
+    ## 제미니를 만드는 로직입니다. makegeminiapi -> back 으로 보내서 뒤에서 작업합니다.
+
+    def back_makefaceapi(self, emotionreq: StableDiffusionEmotionProcessingAPI, object_name, make_emotion):
+
+        emotion_prompt = emotionreq.gemini_prompt[make_emotion]
+
+        emotionreq.prompt = emotion_prompt
+
+        # scripts.scripts_txt2img를 가져와 script_runner 변수에 할당합니다.
+        script_runner = scripts.scripts_txt2img
+
+        # script_runner의 스크립트가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not script_runner.scripts:
+            script_runner.initialize_scripts(False)
+            ui.create_ui()
+
+        # default_script_arg_txt2img가 초기화되지 않은 경우 초기화를 수행합니다.
+        if not self.default_script_arg_txt2img:
+            self.default_script_arg_txt2img = self.init_default_script_args(script_runner)
+
+        # txt2imgreq에서 선택 가능한 스크립트와 해당 인덱스를 가져옵니다.
+        selectable_scripts, selectable_script_idx = self.get_selectable_script(emotionreq.script_name, script_runner)
+
+        # txt2imgreq를 update하여 Sampler, save_images 및 grid 저장 여부를 재정의합니다.
+        populate = emotionreq.copy(update={
+            "sampler_name": "DPM++ SDE Karras",
+        })
+
+        # Sampler 이름이 지정된 경우 샘플러 인덱스를 None으로 설정하여 나중에 경고를 방지합니다.
+        if populate.sampler_name:
+            populate.sampler_index = None
+
+        # txt2imgreq의 script_name, script_args 및 alwayson_scripts를 제거합니다. 이후 pipeline에 바로 제공합니다.
+        args = vars(populate)
+        args.pop('script_name', None)
+        args.pop('script_args', None)
+        args.pop('alwayson_scripts', None)
+
+        # script_args를 가져와 초기화합니다.
+        script_args = self.init_script_args(emotionreq, self.default_script_arg_txt2img, selectable_scripts,
+                                            selectable_script_idx, script_runner)
+
+        # send_images와 save_images를 args에서 제거합니다.
+        send_images = args.pop('send_images', True)
+        args.pop('save_images', None)
+
+        # FastAPI 앱 인스턴스의 queue_lock을 사용하여 처리를 실행합니다.
+        with self.queue_lock:
+            # StableDiffusionProcessingTxt2Img 인스턴스를 생성합니다.
+            p = StableDiffusionProcessingTxt2Img(sd_model=shared.sd_model, **args)
+            p.scripts = script_runner
+            p.outpath_grids = opts.outdir_txt2img_grids
+            p.outpath_samples = opts.outdir_txt2img_samples
+
+            # shared state를 시작합니다.
+            shared.state.begin()
+
+            # 선택 가능한 스크립트가 있는 경우 해당 스크립트를 실행합니다.
+            if selectable_scripts != None:
+                p.script_args = script_args
+                processed = scripts.scripts_txt2img.run(p, *p.script_args)  # Need to pass args as list here
+            # 선택 가능한 스크립트가 없는 경우 이미지 처리 함수를 실행합니다.
+            else:
+                p.script_args = tuple(script_args)  # Need to pass args as tuple here
+                processed = process_images(p)
+
+            # shared state를 종료합니다.
+            shared.state.end()
+        print("===========image_Done===============")
+        # processed에서 반환
+        shared.state.end()
+
+        # 이미지를 Base64로 인코딩하여 리스트에 저장합니다. -> S3에 업로드하고 링크를 전송합니다
+        # b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
+        print("===========Sending Start===============")
+        file_extension = "png"
+        content_type = f"image/{file_extension}"
+        image_data = io.BytesIO()
+        processed.images[0].save(image_data, format='PNG')
+        image_data.seek(0)
+        response = s3.upload_fileobj(image_data, BUCKET_NAME, object_name, ExtraArgs={'ContentType': content_type})
+        url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+        print(f"url: {url}")
+        # if make_emotion == 3:
+        #     import requests
+        #     import json
+        #     headers = {"Content-Type": "application/json"}
+        #     data = {
+        #         "period": emotionreq.period,
+        #         "geminiNo": emotionreq.gemini_number,
+        #         "imageUrls": url_list
+        #     }
+        #     print(data)
+        #     ### 완성되면 JAVA 백엔드 쪽으로 완성 되었다고 보내주기
+        #     # response = requests.post("https://mygemini.co.kr/user-service/complete/emotion", data=json.dumps(data),headers=headers)
+        #     period_type = str(emotionreq.period)
+        #     response = requests.post("http://192.168.31.73:8081/user-service/complete/emotion/"+period_type, data=json.dumps(data),headers=headers)
+        #
+        #     print(response)
+        #     print("### Make pose 로직 완료! ###")
+
+    # @app.post("/task") -> API 통합용 데코레이터
+    def makefaceapi(self, emotionreq:StableDiffusionEmotionProcessingAPI, background_tasks: BackgroundTasks):
+        gemini_number = emotionreq.gemini_number
+        url_list = []
+        print(f"gemini_prompt: {emotionreq.gemini_prompt}")
+        for make_face in range(4):
+            now = datetime.now()
+            timestamp = now.strftime("%Y%m%d_%H%M%S%f")
+            object_name = f"gemini/{timestamp}_{gemini_number}.png"
+            url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+            url_list.append(url)
+            background_tasks.add_task(self.back_makefaceapi, emotionreq, object_name, make_face)
+        print(f"Pose URL List : {url_list}")
+        return {
+            "geminiNo": gemini_number,
+            "imageUrls": url_list
+        }
+
+        # now = datetime.now()
+        # timestamp = now.strftime("%Y%m%d_%H%M%S%f")
+        # object_name = f"gemini/{timestamp}_emotions.png"
+        # url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+        #
+        # ## 제미니를 만드는 로직입니다. makeapi -> back 으로 보내서 뒤에서 작업합니다.
+        # script_runner = scripts.scripts_txt2img
+        # if not script_runner.scripts:
+        #     script_runner.initialize_scripts(False)
+        #     ui.create_ui()
+        # if not self.default_script_arg_txt2img:
+        #     self.default_script_arg_txt2img = self.init_default_script_args(script_runner)
+        # selectable_scripts, selectable_script_idx = self.get_selectable_script(emotionreq.script_name, script_runner)
+        #
+        # populate = emotionreq.copy(update={
+        #     "sampler_name": "DPM++ SDE Karras",
+        #     "do_not_save_samples": False,
+        #     "do_not_save_grid": True,
+        # })
+        #
+        # if populate.sampler_name:
+        #     populate.sampler_index = None  # prevent a warning later on
+        #
+        # args = vars(populate)
+        # args.pop('script_name', None)
+        # args.pop('script_args', None) # will refeed them to the pipeline directly after initializing them
+        # args.pop('alwayson_scripts', None)
+        #
+        # script_args = self.init_script_args(emotionreq, self.default_script_arg_txt2img, selectable_scripts, selectable_script_idx, script_runner)
+        #
+        # send_images = args.pop('send_images', True)
+        # args.pop('save_images', None)
+        #
+        # with self.queue_lock:
+        #     p = StableDiffusionProcessingTxt2Img(sd_model=shared.sd_model, **args)
+        #     p.scripts = script_runner
+        #     p.outpath_grids = opts.outdir_txt2img_grids
+        #     p.outpath_samples = opts.outdir_txt2img_samples
+        #
+        #     shared.state.begin()
+        #     if selectable_scripts != None:
+        #         p.script_args = script_args
+        #         processed = scripts.scripts_txt2img.run(p, *p.script_args) # Need to pass args as list here
+        #     else:
+        #         p.script_args = tuple(script_args) # Need to pass args as tuple here
+        #         processed = process_images(p)
+        #     shared.state.end()
+        #
+        # print("===========Sending Start===============")
+        # file_extension = "png"
+        # content_type = f"image/{file_extension}"
+        #
+        # image_data = io.BytesIO()
+        # processed.images[0].save(image_data, format='PNG')
+        # image_data.seek(0)
+        # print("=============Request Start===============")
+        # response = s3.upload_fileobj(image_data, BUCKET_NAME, object_name, ExtraArgs={'ContentType': content_type})
+        # print("=============Request Done=============")
+        # print(f"response: {response}")
+        # url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
+        # print("=============URL Catch=============")
+        # print(f"url: {url}")
+        #
+        # return {
+        #     "status": 200,
+        #     "img_url": url
+        # }
+
+
+########################################################################################################################
+
 
     def add_api_route(self, path: str, endpoint, **kwargs):
         if shared.cmd_opts.api_auth:
@@ -272,7 +1000,9 @@ class Api:
                     raise HTTPException(status_code=422, detail=f"Cannot have a selectable script in the always on scripts params")
                 # always on script with no arg should always run so you don't really need to add them to the requests
                 if "args" in request.alwayson_scripts[alwayson_script_name]:
-                    script_args[alwayson_script.args_from:alwayson_script.args_to] = request.alwayson_scripts[alwayson_script_name]["args"]
+                    # min between arg length in scriptrunner and arg length in the request
+                    for idx in range(0, min((alwayson_script.args_to - alwayson_script.args_from), len(request.alwayson_scripts[alwayson_script_name]["args"]))):
+                        script_args[alwayson_script.args_from + idx] = request.alwayson_scripts[alwayson_script_name]["args"][idx]
         return script_args
 
     def text2imgapi(self, txt2imgreq: StableDiffusionTxt2ImgProcessingAPI):
@@ -395,16 +1125,11 @@ class Api:
     def extras_batch_images_api(self, req: ExtrasBatchImagesRequest):
         reqDict = setUpscalers(req)
 
-        def prepareFiles(file):
-            file = decode_base64_to_file(file.data, file_path=file.name)
-            file.orig_name = file.name
-            return file
-
-        reqDict['image_folder'] = list(map(prepareFiles, reqDict['imageList']))
-        reqDict.pop('imageList')
+        image_list = reqDict.pop('imageList', [])
+        image_folder = [decode_base64_to_image(x.data) for x in image_list]
 
         with self.queue_lock:
-            result = postprocessing.run_extras(extras_mode=1, image="", input_dir="", output_dir="", save_output=False, **reqDict)
+            result = postprocessing.run_extras(extras_mode=1, image_folder=image_folder, image="", input_dir="", output_dir="", save_output=False, **reqDict)
 
         return ExtrasBatchImagesResponse(images=list(map(encode_pil_to_base64, result[0])), html_info=result[1])
 
@@ -686,4 +1411,5 @@ class Api:
 
     def launch(self, server_name, port):
         self.app.include_router(self.router)
-        uvicorn.run(self.app, host=server_name, port=port)
+        uvicorn.run(self.app, host="0.0.0.0", port=port)
+

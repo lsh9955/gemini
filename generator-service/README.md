@@ -1,8 +1,19 @@
-# 0. 시작하기
+# 0. 시작하기 - 로컬에서 API 서버 편하게 시작하기.
 ### 1. Run start.bat
  - start.bat을 실행시키십시오.
 ### 2. docs 확인하기
  - fast api 기반 프로젝트이기에 127.0.0.1:7861/docs 로 접속하시면 스웨거 문서가 보입니다.
+
+# 0. API 서버 작동하는 법
+### 1. 환경 변수 세팅
+ - python -m venv venv
+ - source venv/Script/activate
+ - pip install -r requirement.txt
+ - pip install -r requirement_version.txt
+ - python launch.py
+
+### 2. Run python
+ - python main.py
 
 # 1. 서비스 설명
 
