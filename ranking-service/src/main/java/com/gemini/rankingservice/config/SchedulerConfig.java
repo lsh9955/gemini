@@ -66,7 +66,7 @@ public class SchedulerConfig {
     @Qualifier("weeklyJob_batchBuild")
     private Job weeklyJob;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+//    @Scheduled(cron = "0 0 0 * * ?")
     public void runDailyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
