@@ -190,6 +190,7 @@ StableDiffusionMakePoseProcessingAPI = PydanticModelGenerator(
         {"key": "geminis", "type": list, "default": [0, 0, 0, 0]},
         {"key": "gemini_prompt", "type": list, "default": [base_model,base_model,base_model,base_model]},
         {"key": "gemini_seed", "type": list, "default": [base_seed,base_seed,base_seed,base_seed]},
+        {"key": "background_url", "type": str, "default": "https://mygemini.s3.amazonaws.com/gemini/20230518_223453256657_background.png"},
         {"key": "pose_id", "type": int, "default": 0},
         {"key": "width", "type": int, "default": 676},
         {"key": "height", "type": int, "default": 507},
@@ -250,6 +251,7 @@ class TextToBackgroundResponse(BaseModel):
     imageUrl: str = Field(default=None)
 
 class GeminiPoseResponse(BaseModel):
+    backgroundUrl: str = Field(default="https://mygemini.s3.amazonaws.com/gemini/20230518_223453256657_background.png")
     geminis: list = Field(default=[])
     imageUrls: list = Field(default=[])
 

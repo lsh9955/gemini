@@ -474,6 +474,7 @@ class Api:
         import json
         headers = {"Content-Type": "application/json"}
         data = {
+            "backgroundUrl": txt2backgroundreq.background_url,
             "username": txt2backgroundreq.username,
             "imageUrl": url,
             "korean": korean,
@@ -481,7 +482,7 @@ class Api:
         }
 
         ### 완성되면 JAVA 백엔드 쪽으로 완성 되었다고 보내주기
-        response = requests.post("https://mygemini.co.kr/user-service/complete/background", data=json.dumps(data), headers=headers)
+        # response = requests.post("https://mygemini.co.kr/user-service/complete/background", data=json.dumps(data), headers=headers)
         # response = requests.post("http://192.168.31.73:8081/user-service/complete/background", data=json.dumps(data), headers=headers)
         print(response)
         print("### Make background 로직 완료! ###")
@@ -660,6 +661,7 @@ class Api:
             import json
             headers = {"Content-Type": "application/json"}
             data = {
+                "backgroundUrl": GeminiPosereq.background_url,
                 "geminis": GeminiPosereq.geminis,
                 "imageUrls": url_list
             }
@@ -720,6 +722,7 @@ class Api:
             background_tasks.add_task(self.back_makeposeapi, makeposereq, object_name, make_pose, url_list, pose_idx)
         print(f"Pose URL List : {url_list}")
         return {
+            "backgroundUrl": makeposereq.background_url,
             "geminis": makeposereq.geminis,
             "imageUrls": url_list
         }
@@ -737,7 +740,7 @@ class Api:
 
     ## 제미니를 만드는 로직입니다. makegeminiapi -> back 으로 보내서 뒤에서 작업합니다.
 
-    def back_makefaceapi(self, emotionreq: StableDiffusionMakePoseProcessingAPI, object_name, make_emotion, url_list):
+    def back_makefaceapi(self, emotionreq: StableDiffusionEmotionProcessingAPI, object_name, make_emotion):
 
         emotion_prompt = emotionreq.gemini_prompt[make_emotion]
 
@@ -840,14 +843,14 @@ class Api:
     def makefaceapi(self, emotionreq:StableDiffusionEmotionProcessingAPI, background_tasks: BackgroundTasks):
         gemini_number = emotionreq.gemini_number
         url_list = []
-
+        print(f"gemini_prompt: {emotionreq.gemini_prompt}")
         for make_face in range(4):
             now = datetime.now()
             timestamp = now.strftime("%Y%m%d_%H%M%S%f")
             object_name = f"gemini/{timestamp}_{gemini_number}.png"
             url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{object_name}"
             url_list.append(url)
-            background_tasks.add_task(self.back_makefaceapi, emotionreq, object_name, make_face, url_list)
+            background_tasks.add_task(self.back_makefaceapi, emotionreq, object_name, make_face)
         print(f"Pose URL List : {url_list}")
         return {
             "geminiNo": gemini_number,

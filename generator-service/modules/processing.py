@@ -107,7 +107,8 @@ class StableDiffusionProcessing:
     """
     def __init__(self, sd_model=None, outpath_samples=None, outpath_grids=None,
                  user_id: str = "", prompt: str = "", geminis: List[int] = None, gemini_prompt: List[str] = None,
-                 gemini_seed: List[int] = None, pose_id: int = 0, username: str = "",
+                 gemini_seed: List[int] = None, pose_id: int = 0, username: str = "", gemini_number: int = 1,
+                 period: str = "",
                  styles: List[str] = None, seed: int = -1, subseed: int = -1, subseed_strength: float = 0,
                  seed_resize_from_h: int = -1, seed_resize_from_w: int = -1, seed_enable_extras: bool = True,
                  sampler_name: str = None, batch_size: int = 1, n_iter: int = 1, steps: int = 13,
@@ -123,8 +124,10 @@ class StableDiffusionProcessing:
             print("sampler_index argument for StableDiffusionProcessing does not do anything; use sampler_name", file=sys.stderr)
 
         ### Gemini Added
+        self.period: str = period
         self.username: str = username
         self.geminis: list = geminis
+        self.gemini_number = gemini_number
         self.gemini_prompt: list = gemini_prompt
         self.gemini_seed: list = gemini_seed
         self.pose_id: int = pose_id
@@ -812,14 +815,16 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
     sampler = None
 
     def __init__(self, user_id: str = "", tag_ids: list = [], description: str = "", pose_id: str = "",
-                 enable_hr: bool = False,
+                 enable_hr: bool = False, gemini_prompt: list =[], background_url: str = "",
                  denoising_strength: float = 0.75, firstphase_width: int = 0, firstphase_height: int = 0,
                  hr_scale: float = 2.0, hr_upscaler: str = None, hr_second_pass_steps: int = 0, hr_resize_x: int = 0,
                  hr_resize_y: int = 0, **kwargs):
         super().__init__(**kwargs)
         self.user_id = user_id
+        self.background_url = background_url
         self.tag_ids = tag_ids
         self.description = description
+        self.gemini_prompt = gemini_prompt
         self.pose_id = pose_id
         self.enable_hr = enable_hr
         self.denoising_strength = denoising_strength
