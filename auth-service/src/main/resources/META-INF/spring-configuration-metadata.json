@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "custom.react.redirect_uri",
+      "type": "java.lang.String",
+      "description": "The React redirect URI after successful authentication."
+    },
+    {
+      "name": "custom.springboot.user_service_url",
+      "type": "java.lang.String",
+      "description": "The base URL for the user service."
+    }
+  ]
+}

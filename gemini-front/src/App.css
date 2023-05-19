@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+/* 스크롤바 */
+.scrollbar-thumb {
+  background: #051320;
+  border-radius: 10px;
+}
+
+.scrollbar-track {
+  background: rgba(33, 122, 244, 0.1);
+}
