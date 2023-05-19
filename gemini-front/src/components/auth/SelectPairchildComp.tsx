@@ -49,6 +49,11 @@ const SelectPairchildComp: FC = () => {
 
     console.log("보낼 url");
     console.log(urlsToSendProfileImg);
+    if (!nickname) {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+
     // 닉네임과 캐릭터 선택 여부 확인
     if (!validateNickname(nickname) || !selectedCharacter) {
       alert("닉네임과 캐릭터를 정확하게 선택해 주세요.");
