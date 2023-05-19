@@ -66,7 +66,7 @@ public class SchedulerConfig {
     @Qualifier("weeklyJob_batchBuild")
     private Job weeklyJob;
 
-//    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
     public void runDailyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
@@ -74,8 +74,7 @@ public class SchedulerConfig {
         jobLauncher.run(dailyJob, jobParameters);
         addReward("daily");
     }
-//    @Scheduled(cron = "0 */10 * * * *")
-    //@Scheduled(cron = "0 0 0 ? * SUN")
+    @Scheduled(cron = "0 0 0 ? * SUN")
     public void runWeeklyJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
