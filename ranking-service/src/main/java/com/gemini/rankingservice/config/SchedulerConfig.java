@@ -82,6 +82,7 @@ public class SchedulerConfig {
                 .addLong("time", System.currentTimeMillis())
                 .toJobParameters();
         jobLauncher.run(weeklyJob, jobParameters);
+        addReward("weekly");
     }
 
     public void addReward(String check) {
