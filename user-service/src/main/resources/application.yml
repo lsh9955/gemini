@@ -34,7 +34,7 @@ spring:
   redis:
     host: mygemini.co.kr
     port: 6379
-    password: starrail1@
+    password: b106b106
 
   data:
     mongodb:
@@ -50,4 +50,4 @@ server:
   port: 8081
 
 sd:
-  url: http://43.201.232.211:7860/ml_api
+  url: http://13.124.20.123/ml_api

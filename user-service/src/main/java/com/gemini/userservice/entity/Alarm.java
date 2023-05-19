@@ -1,17 +1,18 @@
 package com.gemini.userservice.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "ALARM")
-@Getter
-@Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Builder
+@Entity
 public class Alarm {
 
     @Id
@@ -19,24 +20,6 @@ public class Alarm {
     @Column(name = "alarm_id")
     private Long alarmId;
 
-    @Column(name = "memo", columnDefinition = "TEXT")
-    private String memo;
-
-    @Column(name = "checked")
-    private Boolean checked;
-
-    @Column(name = "category")
-    private Integer category;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "nickname")
-    private String nickname;
-
-    @ManyToOne
-    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")
-    private UserInfo userInfo;
 
 
 }

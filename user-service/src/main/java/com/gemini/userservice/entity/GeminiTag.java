@@ -18,4 +18,6 @@ public class GeminiTag {
     private Long geminiNo;
 
     private List<Long> tagIds;
+
+    private String prompt;
 }

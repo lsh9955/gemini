@@ -2,11 +2,13 @@ package com.gemini.userservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class GenerateGeminiDto {
@@ -23,7 +25,7 @@ public class GenerateGeminiDto {
 
     private String username;
 
-    private List<Long> tagIds;
+    private List<Long> tag_ids;
 
     private Long seed;
 
@@ -36,7 +38,7 @@ public class GenerateGeminiDto {
         this.width = 507;
         this.height = 676;
         this.username = username;
-        this.tagIds = tagIds;
+        this.tag_ids = tagIds;
     }
 
 

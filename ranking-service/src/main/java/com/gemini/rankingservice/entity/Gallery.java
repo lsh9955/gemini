@@ -1,5 +1,7 @@
 package com.gemini.rankingservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"gemini.gallery"})
 public class Gallery {
 
     @Id
@@ -33,4 +36,7 @@ public class Gallery {
         this.weeklyLike = weeklyLike;
     }
 
+    @OneToOne
+    @JoinColumn(name = "gemini_no")
+    private Gemini gemini;
 }

@@ -11,6 +11,7 @@ import com.gemini.userservice.repository.FollowRepository;
 import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.repository.UserInfoRepository;
 import com.gemini.userservice.repository.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,12 +82,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public OtherUserProfileResponseDto getOtherUserProfile(String nickname) {
+    public OtherUserProfileResponseDto getOtherUserProfile(String username, String nickname) {
+        UserInfo visitingUserInfo = userInfoRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Visiting user not found"));
 
-        UserInfo userInfo = userInfoRepository.findByNickname(nickname)
-                .orElseThrow(() -> new RuntimeException("User not found"));;
+        UserInfo profileOwnerUserInfo = userInfoRepository.findByNickname(nickname)
+                .orElseThrow(() -> new RuntimeException("Profile owner user not found"));
 
-        List<Gemini> publicGeminis = geminiRepository.findByUserInfoAndIsPublic(userInfo, true);
+
+        List<Gemini> publicGeminis = geminiRepository.findByUserInfoAndIsPublic(profileOwnerUserInfo, true);
 
         List<GeminiDto> geminiDtos = publicGeminis.stream()
                 .map(gemini -> GeminiDto.builder()
@@ -98,19 +102,22 @@ public class UserInfoServiceImpl implements UserInfoService {
         System.out.println("제발기도해4");
         System.out.println(geminiDtos);
 
-        long followerCount = followRepository.countByFollowing(userInfo);
+        long followerCount = followRepository.countByFollowing(profileOwnerUserInfo);
         System.out.println("제발기도해5");
         System.out.println(followerCount);
-        long followingCount = followRepository.countByFollower(userInfo);
+        long followingCount = followRepository.countByFollower(profileOwnerUserInfo);
         System.out.println("제발기도해6");
+        boolean isFollowing = followRepository.findByFollowerAndFollowing(visitingUserInfo, profileOwnerUserInfo).isPresent();
+
+
         return OtherUserProfileResponseDto.builder()
-                .nickname(userInfo.getNickname())
-                .description(userInfo.getDescription())
+                .nickname(profileOwnerUserInfo.getNickname())
+                .description(profileOwnerUserInfo.getDescription())
                 .follower(followerCount)
-//                .follower(1L)
                 .following(followingCount)
-//                .following(2L)
+                .isFollowing(isFollowing) // 여기 추가정보를 넣어야함.
 //                .star(userInfo.getStar()) // eliminated. watching other user's star is not allowed.
+                .profileUrl(profileOwnerUserInfo.getProfileImgUrl())
                 .geminis(geminiDtos)
                 .build();
     }
@@ -138,5 +145,20 @@ public class UserInfoServiceImpl implements UserInfoService {
         long followersCount = followRepository.countByFollowing(userInfo);
         long followingsCount = followRepository.countByFollower(userInfo);
         return new ResponseFollowCountDto(followersCount, followingsCount);
+    }
+
+    @Override
+    public String updateProfileImage(String username, Long geminiNo) {
+
+        Optional<UserInfo> userInfo = userInfoRepository.findByUsername(username);
+        if (!userInfo.isPresent()) {
+            return null;
+        }
+        UserInfo user = userInfo.get();
+        Gemini gemini = geminiRepository.findByGeminiNo(geminiNo);
+        String imageUrl = gemini.getImageUrl();
+        user.updateProfileImage(imageUrl);
+        userInfoRepository.save(user);
+        return imageUrl;
     }
 }

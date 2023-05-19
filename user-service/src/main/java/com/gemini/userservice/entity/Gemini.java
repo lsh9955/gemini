@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "GEMINI")
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Gemini {
@@ -35,7 +36,7 @@ public class Gemini {
     private Long seed;
 
     @Column(name = "is_public")
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")
@@ -45,7 +46,7 @@ public class Gemini {
     @OneToMany(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Like> likes;
 
-    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "gemini", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_no")
     private Gallery gallery;
 
@@ -55,5 +56,17 @@ public class Gemini {
 
     public void contract(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public void updateIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
     }
 }

@@ -18,10 +18,13 @@ public class TagDto {
 
     private String ImgUrl;
 
+    private Long categoryId;
+
     public TagDto(Tag tag){
 
         this.tagId = tag.getTagNo();
         this.koreanName = tag.getName();
         this.ImgUrl = tag.getImageUrl();
+        this.categoryId = tag.getCategoryNo().getCategoryNo();
     }
 }

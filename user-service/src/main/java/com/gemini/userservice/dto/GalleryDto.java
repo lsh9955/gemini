@@ -2,12 +2,12 @@ package com.gemini.userservice.dto;
 
 import com.gemini.userservice.entity.Gallery;
 import com.gemini.userservice.entity.Gemini;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 @Setter
 public class GalleryDto {
 

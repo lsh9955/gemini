@@ -11,9 +11,11 @@ public interface UserInfoService {
 
     UserInfoDto getUserInfoByUserPk(Long userPk);
 
-    OtherUserProfileResponseDto getOtherUserProfile(String nickname);
+    OtherUserProfileResponseDto getOtherUserProfile(String username, String nickname);
 
     UserInfoDto selectPairchild(String username, RequestSelectPairchildDto selectGeminiDto);
 
     ResponseFollowCountDto getFollowCounts(String nickname);
+
+    String updateProfileImage(String username, Long geminiNo);
 }
