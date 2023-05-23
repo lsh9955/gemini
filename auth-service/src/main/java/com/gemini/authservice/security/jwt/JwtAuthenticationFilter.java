@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -49,7 +50,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = jwtUtil.generateAccessToken(authResult);
         String refreshToken = jwtUtil.generateRefreshToken(authResult);
 
+        // Create a new cookie and set the refresh token
+        Cookie refreshTokenCookie = new Cookie("Refresh-Token", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true); // Set this to 'true' only if using HTTPS 배포해서 HTTPS를 사용시, true로 변경😀
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(Integer.parseInt("${jwt.refresh-token-expiration}")); // 7 days yml setting
+
+
         response.addHeader("Authorization", "Bearer " + accessToken);
-        response.addHeader("Refresh-Token", refreshToken);
+//        response.addHeader("Refresh-Token", refreshToken);
+        response.addCookie(refreshTokenCookie);
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 // redux-persist 설정
@@ -17,10 +17,9 @@ library.add(fas);
 
 export const persistor = persistStore(store);
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-root.render(
+const rootElement = document.getElementById("root");
+
+ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <React.StrictMode>
@@ -28,7 +27,8 @@ root.render(
         <App />
       </React.StrictMode>
     </PersistGate>
-  </Provider>
+  </Provider>,
+  rootElement
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
+import com.gemini.authservice.dto.UserDto;
+
 @Builder
 @Data
 @Entity
@@ -32,4 +34,12 @@ public class User {
     private String providerId;
     @CreationTimestamp
     private Timestamp createDate;
+
+    public UserDto toUserDto() {
+        return UserDto.builder()
+                .username(username)
+                .createDate(createDate)
+                .build();
+    }
+//
 }
