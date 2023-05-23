@@ -2,13 +2,12 @@ package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.*;
 
+import com.gemini.userservice.dto.request.RequestFollowDto;
 import com.gemini.userservice.dto.request.RequestNicknameDto;
 import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
-import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.dto.response.ResponseFollowCountDto;
-import com.gemini.userservice.dto.response.ResponseOrdersDto;
 import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.EmitterService;
@@ -19,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
@@ -40,6 +37,7 @@ public class UserInfoApiController {
 
     @Autowired
     private EmitterService emitterService;
+
     @Autowired
     private GeminiRepository geminiRepository;
 
@@ -52,35 +50,19 @@ public class UserInfoApiController {
     }
 
     @PostMapping // test complete 😀 exception for following myself needed, duplicated request also should be handled.
-    public ResponseEntity<Void> followUser(@RequestHeader("X-Username") String currentUsername, @RequestBody FollowRequestDto followRequestDto) throws IOException, InterruptedException {
-        System.out.println("follow test start@@@@@@@@@@@@@@@@@@@@");
-//        System.out.println(currentUsername);
-//        System.out.println(followRequestDto);
-        System.out.println("follow success");
-        SseEmitter emitter = new SseEmitter();
-        emitterService.addEmitter(emitter);
+    public ResponseEntity<Void> followUser(@RequestHeader("X-Username") String currentUsername, @RequestBody RequestFollowDto requestFollowDto) throws IOException, InterruptedException {
 
-        try {
-            userService.followUser(currentUsername, followRequestDto);
+        String res = userService.followUser(currentUsername, requestFollowDto);
+
+        if (res == "follow") {
             //알람 메세지를 만들기 위해 FollowAlarmDto에 넣어준다.
             FollowAlarmDto followAlarmDto = new FollowAlarmDto();
             //알람을 얻는 사람 => 즉 팔로우를 당한 사람 => 여기에 알람을 보내준다!! (팔로우를 보내는 사람의 닉네임을 저장한다)
-//            followAlarmDto.setGetAlarmPk(followRequestDto.getNickname()); // revised 😀 얘는 무시하셈.
-            followAlarmDto.setGetAlarmNickName(followRequestDto.getNickname()); // nickname도 고유한거라서 닉네임을 보내준다. 😥 이게 진짜에요.
+            followAlarmDto.setGetAlarmNickName(requestFollowDto.getNickname()); // nickname도 고유한거라서 닉네임을 보내준다. 😥 이게 진짜에요.
             //알람을 보내는 사람 => 팔로우 한 사람
             followAlarmDto.setSendAlarmUserName(currentUsername);
-
-//            // 팔로우 알림 생성
-//            alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
-
-            emitter.send(SseEmitter.event().name("COMPLETE").data("SUCCESS")); // success message
-        } catch (IOException e) { // IOException 뿐만 아니라 InterruptedException도 처리해 주어야 함
-            emitter.send(SseEmitter.event().name("ERROR").data(e.getMessage())); // error message
-        } finally {
-            emitter.complete(); // complete emitter
-            emitterService.removeEmitter(emitter); // remove emitter from emitterService
+            alarmService.createFollowAlarm(currentUsername, followAlarmDto);
         }
-
 
         return ResponseEntity.ok().build();
     }
@@ -89,13 +71,13 @@ public class UserInfoApiController {
     @DeleteMapping // test complete 😀
     public ResponseEntity<Void> unfollowUser(
             @RequestHeader("X-Username") String currentUsername,
-            @RequestBody FollowRequestDto followRequestDto) {
+            @RequestBody RequestFollowDto requestFollowDto) {
         System.out.println("unfollow test start@@@@@@@@@@@@@@@@@@@@");
 
         System.out.println("currentUsername"+ currentUsername);
-        System.out.println("userPkToUnfollow: "+ followRequestDto.toString());
+        System.out.println("userPkToUnfollow: "+ requestFollowDto.toString());
 
-        userService.unfollowUser(currentUsername, followRequestDto);
+        userService.unfollowUser(currentUsername, requestFollowDto);
         System.out.println("unfollow success");
         return ResponseEntity.noContent().build();
     }

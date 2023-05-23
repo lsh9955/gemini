@@ -1,16 +1,17 @@
 package com.gemini.userservice.dto.response;
 
-import com.gemini.userservice.dto.GalleryDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-public class ResponseGalleryRankingDto {
+@Setter
+public class ResponseEmotionDto {
 
-    private List<GalleryDto> galleryDtos;
+    private List<String> emotions;
 }

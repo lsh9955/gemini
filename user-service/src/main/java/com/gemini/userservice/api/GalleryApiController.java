@@ -48,23 +48,43 @@ public class GalleryApiController {
     }
 
     @GetMapping("/daily")
-    public ResponseEntity<ResponseGalleryRankingDto> getDailyGallery() {
+    public ResponseEntity<ResponseRankingDto> getDailyGallery() {
 
-        ResponseGalleryRankingDto responseGalleryRankingDto = galleryService.getDailyGallery();
-        if (responseGalleryRankingDto.getGalleryDtos() == null) {
+        ResponseRankingDto responseRankingDto = galleryService.getDailyGallery();
+        if (responseRankingDto.getRankingDtos() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryRankingDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRankingDto);
     }
 
     @GetMapping("/weekly")
-    public ResponseEntity<ResponseGalleryRankingDto> getWeeklyGallery() {
+    public ResponseEntity<ResponseRankingDto> getWeeklyGallery() {
 
-        ResponseGalleryRankingDto responseGalleryRankingDto = galleryService.getWeeklyGallery();
-        if (responseGalleryRankingDto.getGalleryDtos() == null) {
+        ResponseRankingDto responseRankingDto = galleryService.getWeeklyGallery();
+        if (responseRankingDto.getRankingDtos() == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(responseGalleryRankingDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseRankingDto);
+    }
+
+    @GetMapping("/daily/{galleryNo}")
+    public ResponseEntity<ResponseEmotionDto> getDailyEmotion(@PathVariable("galleryNo") Long galleryNo) {
+
+        ResponseEmotionDto responseEmotionDto = galleryService.getDailyEmotion(galleryNo);
+        if (responseEmotionDto == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseEmotionDto);
+    }
+
+    @GetMapping("/weekly/{galleryNo}")
+    public ResponseEntity<ResponseEmotionDto> getWeeklyEmotion(@PathVariable("galleryNo") Long galleryNo) {
+
+        ResponseEmotionDto responseEmotionDto = galleryService.getWeeklyEmotion(galleryNo);
+        if (responseEmotionDto == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseEmotionDto);
     }
 
     @GetMapping("/{galleryNo}") // galleryNo로 조회 (유저페이지, 일반 게시판전용)

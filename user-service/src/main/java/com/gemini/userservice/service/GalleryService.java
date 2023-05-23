@@ -2,7 +2,6 @@ package com.gemini.userservice.service;
 
 import com.gemini.userservice.dto.request.RequestUpdateGeminiDto;
 import com.gemini.userservice.dto.response.*;
-import com.gemini.userservice.entity.Gallery;
 
 public interface GalleryService {
 
@@ -15,9 +14,13 @@ public interface GalleryService {
 
     ResponseGalleryPageDto getUserGalleryPage(String nickname, Integer page, Integer size); // 😀 유저 갤러리
 
-    ResponseGalleryRankingDto getDailyGallery();
+    ResponseRankingDto getDailyGallery();
 
-    ResponseGalleryRankingDto getWeeklyGallery();
+    ResponseRankingDto getWeeklyGallery();
+
+    ResponseEmotionDto getDailyEmotion(Long galleryNo);
+
+    ResponseEmotionDto getWeeklyEmotion(Long galleryNo);
 
     ResponseGalleryDetailDto getGalleryDetail(String username, Long galleryNo);
 

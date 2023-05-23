@@ -197,7 +197,7 @@ public class GenerateServiceImpl implements GenerateService {
         if (!userInfo.isPresent()) {
             return null;
         }
-        List<UserPose> userPoses = userPoseRepository.findByUserInfo(userInfo.get());
+        List<UserPose> userPoses = userPoseRepository.findByUserInfoOrderByUserPoseNoDesc(userInfo.get());
         List<PoseDto> poseDtos = new ArrayList<>();
         for (UserPose userPose : userPoses) {
             Long poseNo = userPose.getPose().getPoseNo();
@@ -250,13 +250,15 @@ public class GenerateServiceImpl implements GenerateService {
             seeds.add(gemini.getSeed());
             prompts.add(geminiTag.getPrompt());
         }
-
         GeneratePoseDto generatePoseDto = GeneratePoseDto.builder().
                 geminis(requestGeneratePoseDto.getGeminis()).
                 gemini_prompt(prompts).
                 gemini_seed(seeds).
                 pose_id(requestGeneratePoseDto.getSample()).
                 build();
+        if (requestGeneratePoseDto.getBackgroundUrl() != null) {
+            generatePoseDto.setBackground_url(requestGeneratePoseDto.getBackgroundUrl());
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sdUrl = String.format(env.getProperty("sd.url")) + "/pose";

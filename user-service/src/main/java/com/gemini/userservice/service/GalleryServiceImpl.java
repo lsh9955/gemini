@@ -18,7 +18,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +31,13 @@ public class GalleryServiceImpl implements GalleryService{
 
     private final GeminiRepository geminiRepository;
 
-    private final RedisTemplate<String, Object> redisTemplate;
-
     private final MongoTemplate mongoTemplate;
+
     private final TagRepository tagRepository;
+
+    private final DailyRepository dailyRepository;
+
+    private final WeeklyRepository weeklyRepository;
 
     public Long getTotal() {
         Long total = galleryRepository.count();
@@ -46,7 +48,7 @@ public class GalleryServiceImpl implements GalleryService{
     // 반환해주는게 갤러리 pk인가? 제미니 pk인가? -> 제미니 pk여야함. 😀 확인필요. 제미니 pk를 보내고 있는지 갤러리 pk를 보내고 있는지
     public ResponseGalleryPageDto getGalleryPage(Integer page, Integer size) {
 
-        List<Gallery> galleries = galleryRepository.findAll();
+        List<Gallery> galleries = galleryRepository.findAllByOrderByGalleryNoDesc();
         if (galleries.size() > 0) {
             if (galleries.size() < size) {
                 size = galleries.size();
@@ -85,8 +87,7 @@ public class GalleryServiceImpl implements GalleryService{
             // 예: 예외를 던지거나 빈 ResponseGalleryPageDto를 반환
         }
         UserInfo userInfo = optionalUserInfo.get();
-
-        List<Gemini> myGeminis = geminiRepository.findByUserInfo(userInfo); //mypage니까 다 가져옴.
+        List<Gemini> myGeminis = geminiRepository.findByUserInfoOrderByGeminiNoDesc(userInfo);
 
 //        List<Gallery> galleries = galleryRepository.findByGemini_UserInfo(userInfo);
 
@@ -165,32 +166,64 @@ public class GalleryServiceImpl implements GalleryService{
     }
 
 
-    public ResponseGalleryRankingDto getDailyGallery() {
+    public ResponseRankingDto getDailyGallery() {
 
-        ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
-        return responseGalleryRankingDto;
+        Iterable<Daily> dailyList = dailyRepository.findAll();
+        List<RankingDto> rankingDtos = new ArrayList<>();
+        System.out.println("daily: 1111111111111111111111111111111111111" );
+        System.out.println(dailyList);
+        for (Daily daily : dailyList) {
+            Long galleryNo = daily.getGalleryNo();
+            Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
+            RankingDto rankingDto = RankingDto.builder().
+                    galleryNo(galleryNo).
+                    imageUrl(gallery.getGemini().getImageUrl()).
+                    build();
+            rankingDtos.add(rankingDto);
+        }
+        ResponseRankingDto responseRankingDto = new ResponseRankingDto(rankingDtos);
+        return responseRankingDto;
     }
 
-    public ResponseGalleryRankingDto getWeeklyGallery() {
+    public ResponseRankingDto getWeeklyGallery() {
 
-        String key = "weekly";
-        long start = 0;
-        long end = -1;
-
-        Set<Object> galleries = redisTemplate.execute((RedisCallback<Set<Object>>) connection -> {
-            Set<Object> weeklySet = new LinkedHashSet<>();
-            Set<byte[]> bytesSet = connection.zRange(key.getBytes(), start, end);
-            for (byte[] bytes : bytesSet) {
-                weeklySet.add(redisTemplate.getValueSerializer().deserialize(bytes));
-            }
-            return weeklySet;
-        });
-
-        for (Object gallery : galleries) {
-            System.out.println("gallery: " + gallery);
+        Iterable<Weekly> weeklyList = weeklyRepository.findAll();
+        List<RankingDto> rankingDtos = new ArrayList<>();
+        for (Weekly weekly : weeklyList) {
+            Long galleryNo = weekly.getGalleryNo();
+            Gallery gallery = galleryRepository.findByGalleryNo(galleryNo);
+            RankingDto rankingDto = RankingDto.builder().
+                    galleryNo(galleryNo).
+                    imageUrl(gallery.getGemini().getImageUrl()).
+                    build();
+            rankingDtos.add(rankingDto);
         }
-        ResponseGalleryRankingDto responseGalleryRankingDto = new ResponseGalleryRankingDto();
-        return responseGalleryRankingDto;
+        ResponseRankingDto responseRankingDto = new ResponseRankingDto(rankingDtos);
+        return responseRankingDto;
+    }
+
+    public ResponseEmotionDto getDailyEmotion(Long galleryNo) {
+
+        Optional<Daily> daily = dailyRepository.findById(galleryNo);
+        if(!daily.isPresent()) {
+            return null;
+        }
+        Daily dailyGallery = daily.get();
+        List<String> emotions = dailyGallery.getEmotionUrls();
+        ResponseEmotionDto responseEmotionDto = new ResponseEmotionDto(emotions);
+        return responseEmotionDto;
+    }
+
+    public ResponseEmotionDto getWeeklyEmotion(Long galleryNo) {
+
+        Optional<Weekly> weekly = weeklyRepository.findById(galleryNo);
+        if(!weekly.isPresent()) {
+            return null;
+        }
+        Weekly weeklyGallery = weekly.get();
+        List<String> emotions = weeklyGallery.getEmotionUrls();
+        ResponseEmotionDto responseEmotionDto = new ResponseEmotionDto(emotions);
+        return responseEmotionDto;
     }
 
     public ResponseGalleryDetailDto getGalleryDetail(String username, Long galleryNo) {

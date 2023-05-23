@@ -109,30 +109,50 @@ public class AlarmServiceImpl implements AlarmService {
 
 
     @Override
-    public ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter) {
-
+    public void createFollowAlarm(String username, FollowAlarmDto alarmDto) {
+        log.info("팔로우 누른 사람: " + username);
+        log.info("팔로우 당한 사람: " + alarmDto.getGetAlarmNickName());
         // 회원정보 찾아오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(username);
-
-        UserInfo userInfo = userInfo2.get();
+        UserInfo me = userInfo2.get();
 
         // 인코딩 한 메세지 넣기
-        String message = userInfo.getNickname() + "님이 회원님을 팔로우 했습니다.";
+        String message = me.getNickname() + "님이 회원님을 팔로우 했습니다.";
         String encodedMessage = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-
 
         Alarm alarm = Alarm.builder()
                 .build();
         alarmRepository.save(alarm);
 
-        // 새로운 알림 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
-        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                .memo(encodedMessage)
-                .build();
+        Long alarmId = alarm.getAlarmId();
+        AlarmData alarmData = AlarmData.builder().
+                alarmId(alarmId).
+                category(1).
+                follower(me.getNickname()).
+                memo(encodedMessage).
+                build();
+        alarmDataRepository.save(alarmData);
 
-
-
-        return responseAlarmDto;
+        Optional<UserInfo> getAlarmUserInfo = userInfoRepository.findByNickname(alarmDto.getGetAlarmNickName());
+        UserInfo you = getAlarmUserInfo.get();
+        log.info("팔로우 당한 사람 2트: " + you.getNickname());
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(you.getUserPk());
+        if (alarmUser.isPresent()) {
+            AlarmUser alarmUser1 = alarmUser.get();
+            List<Long> alarmIds = alarmUser1.getAlarmIds();
+            alarmIds.add(alarmId);
+            alarmUser1.update(alarmIds);
+            alarmUserRepository.save(alarmUser1);
+        }
+        else {
+            List<Long> alarmIds = new ArrayList<>();
+            alarmIds.add(alarmId);
+            AlarmUser alarmUser1 = AlarmUser.builder().
+                    userNo(you.getUserPk()).
+                    alarmIds(alarmIds).
+                    build();
+            alarmUserRepository.save(alarmUser1);
+        }
     }
 
 
@@ -182,7 +202,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto) {
+    public void createGeminiAlarm(GeminiAlarmDto geminiAlarmDto) {
 
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(geminiAlarmDto.getUsername());
@@ -191,7 +211,7 @@ public class AlarmServiceImpl implements AlarmService {
         // 인코딩한 메세지 넣기
         String messege = "Gemini 소환이 완료되었습니다.";
         String encodedMessage = new String(messege.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-
+        log.info(encodedMessage);
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
                 .build();
@@ -222,47 +242,50 @@ public class AlarmServiceImpl implements AlarmService {
                     build();
             alarmUserRepository.save(alarmUser1);
         }
-
-        // 새로운 알람 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
-        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                .memo(encodedMessage)
-                .category(3)
-                .geminiNo(geminiAlarmDto.getGeminiNo())
-                .imageUrl(geminiAlarmDto.getImageUrl())
-                .build();
-
 //        send(userInfo.getUsername(), alarm.getAlarmId(), responseAlarmDto);
-
-        return responseAlarmDto;
-
     }
 
     @Override
-    public ResponseAlarmDto createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto, SseEmitter emitter) {
+    public void createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto) {
         // 닉네임 정보 가져오기
         Optional<UserInfo> userInfo2 = userInfoRepository.findByUsername(backgroundAlarmDto.getUsername());
         UserInfo userInfo = userInfo2.get();
-        String nickname = userInfo.getNickname();
-        backgroundAlarmDto.setNickkname(nickname);
 
         // 인코딩한 메세지 넣기
         String messege = "배경 생성이 완료되었습니다.";
         String encodedMessage = new String(messege.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-
+        log.info(encodedMessage);
         // 알람 엔티티 채우기
         Alarm alarm = Alarm.builder()
                 .build();
         alarmRepository.save(alarm);
+        Long alarmId = alarm.getAlarmId();
+        System.out.println(alarmId);
+        AlarmData alarmData = AlarmData.builder().
+                alarmId(alarmId).
+                category(4).
+                imageUrl(backgroundAlarmDto.getImageUrl()).
+                memo(encodedMessage).
+                build();
+        alarmDataRepository.save(alarmData);
 
-        // 새로운 알람 데이터를 생성하고, 등록된 모든 SSE 클라이언트에 전송
-        ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                .memo(encodedMessage)
-                .build();
-
-
-        return responseAlarmDto;
-
-
+        Optional<AlarmUser> alarmUser = alarmUserRepository.findByUserNo(userInfo.getUserPk());
+        if (alarmUser.isPresent()) {
+            AlarmUser alarmUser1 = alarmUser.get();
+            List<Long> alarmIds = alarmUser1.getAlarmIds();
+            alarmIds.add(alarmId);
+            alarmUser1.update(alarmIds);
+            alarmUserRepository.save(alarmUser1);
+        }
+        else {
+            List<Long> alarmIds = new ArrayList<>();
+            alarmIds.add(alarmId);
+            AlarmUser alarmUser1 = AlarmUser.builder().
+                    userNo(userInfo.getUserPk()).
+                    alarmIds(alarmIds).
+                    build();
+            alarmUserRepository.save(alarmUser1);
+        }
     }
 
     @Override
@@ -277,6 +300,12 @@ public class AlarmServiceImpl implements AlarmService {
                 AlarmUser alarmUser1 = alarmUser.get();
                 List<Long> alarmIds = alarmUser1.getAlarmIds();
                 List<AlarmDto> alarmDtos = new ArrayList<>();
+                if (alarmIds == null) {
+                    return null;
+                }
+                if (alarmIds.size() == 0) {
+                    return null;
+                }
                 for (Long alarmId : alarmIds) {
                     Optional<AlarmData> alarmData = alarmDataRepository.findById(alarmId);
                     AlarmData data = alarmData.get();

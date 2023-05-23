@@ -16,13 +16,13 @@ public interface AlarmService {
 
     SseEmitter subscribe(String username);
 
-    ResponseAlarmDto createFollowAlarm(String username, FollowAlarmDto alarmDto, SseEmitter emitter);
+    void createFollowAlarm(String username, FollowAlarmDto alarmDto);
 
     ResponseAlarmDto createLikeAlarm(String username, LikeAlarmDto likeAlarmDto, SseEmitter emitter);
 
-    ResponseAlarmDto createGeminiAlarm(GeminiAlarmDto geminiAlarmDto);
+    void createGeminiAlarm(GeminiAlarmDto geminiAlarmDto);
 
-    ResponseAlarmDto createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto, SseEmitter emitter);
+    void createBackgroundAlarm(BackgroundAlarmDto backgroundAlarmDto);
 
     ResponseGetAllAlarmsDto getAllAlarms(String username);
 
