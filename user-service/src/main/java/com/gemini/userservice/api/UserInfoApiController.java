@@ -2,23 +2,28 @@ package com.gemini.userservice.api;
 
 import com.gemini.userservice.dto.*;
 
+import com.gemini.userservice.dto.request.RequestNicknameDto;
 import com.gemini.userservice.dto.request.RequestSelectPairchildDto;
 
 import com.gemini.userservice.dto.Alarm.FollowAlarmDto;
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
+import com.gemini.userservice.dto.response.ResponseFollowCountDto;
 import com.gemini.userservice.dto.response.ResponseOrdersDto;
+import com.gemini.userservice.repository.GeminiRepository;
 import com.gemini.userservice.service.AlarmService;
 import com.gemini.userservice.service.EmitterService;
 
 import com.gemini.userservice.service.UserInfoService;
 import com.gemini.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user-service/profile")
@@ -35,6 +40,8 @@ public class UserInfoApiController {
 
     @Autowired
     private EmitterService emitterService;
+    @Autowired
+    private GeminiRepository geminiRepository;
 
 
     //  X-Username으로 모두 변경 필요. 로컬 테스트 끝나고. 😀
@@ -63,8 +70,8 @@ public class UserInfoApiController {
             //알람을 보내는 사람 => 팔로우 한 사람
             followAlarmDto.setSendAlarmUserName(currentUsername);
 
-            // 팔로우 알림 생성
-            alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
+//            // 팔로우 알림 생성
+//            alarmService.createFollowAlarm(currentUsername, followAlarmDto, emitter);
 
             emitter.send(SseEmitter.event().name("COMPLETE").data("SUCCESS")); // success message
         } catch (IOException e) { // IOException 뿐만 아니라 InterruptedException도 처리해 주어야 함
@@ -79,16 +86,16 @@ public class UserInfoApiController {
     }
 
 
-    @DeleteMapping("/{userId}") // test complete 😀
+    @DeleteMapping // test complete 😀
     public ResponseEntity<Void> unfollowUser(
             @RequestHeader("X-Username") String currentUsername,
-            @PathVariable("userId") Long userPkToUnfollow) {
+            @RequestBody FollowRequestDto followRequestDto) {
         System.out.println("unfollow test start@@@@@@@@@@@@@@@@@@@@");
 
         System.out.println("currentUsername"+ currentUsername);
-        System.out.println("userPkToUnfollow: "+ userPkToUnfollow);
+        System.out.println("userPkToUnfollow: "+ followRequestDto.toString());
 
-        userService.unfollowUser(currentUsername, userPkToUnfollow);
+        userService.unfollowUser(currentUsername, followRequestDto);
         System.out.println("unfollow success");
         return ResponseEntity.noContent().build();
     }
@@ -117,11 +124,12 @@ public class UserInfoApiController {
         return ResponseEntity.ok("success");
     }
 
-//    @PostMapping("/checkNickname")
-//    public ResponseEntity<NicknameCheckDto> checkNickname(@RequestBody NicknameCheckDto requestDto) {
-//        boolean isDuplicated = userInfoService.isNicknameDuplicated(requestDto.getNickname());
-//        return ResponseEntity.ok(NicknameCheckDto.builder().duplicated(isDuplicated).build());
-//    }
+    @PostMapping("/followcount")
+    public ResponseEntity<ResponseFollowCountDto> getFollowCounts(@RequestBody RequestNicknameDto requestNicknameDto) {
+        ResponseFollowCountDto followCountDTO = userInfoService.getFollowCounts(requestNicknameDto.getNickname());
+        return ResponseEntity.ok(followCountDTO);
+    }
+
 
 
     @PostMapping("/checkNickname") // test complete 😀
@@ -131,9 +139,21 @@ public class UserInfoApiController {
     }
 
     @GetMapping("/{nickname}") // test complete 😀
-    public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@PathVariable String nickname) {
-        OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(nickname);
+    public ResponseEntity<OtherUserProfileResponseDto> getOtherUserProfile(@RequestHeader("X-Username") String username, @PathVariable String nickname) {
+        OtherUserProfileResponseDto otherUserProfileDto = userInfoService.getOtherUserProfile(username, nickname);
         return ResponseEntity.ok(otherUserProfileDto);
+    }
+
+    @PostMapping("/profileImage")
+    public ResponseEntity<String> updateProfileImage(@RequestHeader("X-Username") String username,
+                                                                       @RequestBody Map<String, Long> geminiMap) {
+
+        Long geminiNo = geminiMap.get("geminiPk");
+        String res = userInfoService.updateProfileImage(username, geminiNo);
+        if (res == null) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(res);
     }
 
 }

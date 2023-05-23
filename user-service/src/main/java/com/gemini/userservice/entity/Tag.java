@@ -20,13 +20,13 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Column(name = "prompt")
     private String prompt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_no")
-    private Category category;
+    private Category categoryNo;
 }

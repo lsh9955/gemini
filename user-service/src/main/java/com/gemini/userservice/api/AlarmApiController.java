@@ -1,89 +1,94 @@
 package com.gemini.userservice.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.gemini.userservice.dto.request.RequestContractGeminiDto;
+import com.gemini.userservice.dto.request.RequestGenerateGeminiDto;
+import com.gemini.userservice.dto.response.ResponseGetAllAlarmsDto;
+import com.gemini.userservice.entity.UserInfo;
+import com.gemini.userservice.repository.AlarmRepository;
+import com.gemini.userservice.repository.UserInfoRepository;
+import com.gemini.userservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.gemini.userservice.dto.response.ResponseAlarmDto;
 import com.gemini.userservice.entity.Alarm;
-import com.gemini.userservice.repository.AlarmRepository;
+//import com.gemini.userservice.repository.AlarmRepository;
 import com.gemini.userservice.service.AlarmService;
 
 @RestController
-@RequestMapping("/alarms")
+@RequiredArgsConstructor
+@RequestMapping("/user-service/alarms")
 public class AlarmApiController {
 
-    @Autowired
-    private AlarmRepository alarmRepository;
+//    private final AlarmRepository alarmRepository;
 
-    @Autowired
-    private AlarmService alarmService;
+    private final AlarmService alarmService;
+
+    private final ThreadPoolTaskExecutor taskExecutor;
+
+
+    private final UserInfoRepository userInfoRepository;
 
     // 컨트롤러가 text/event-stream 미디어 유형의 데이터를 반환함
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter streamSseMvc(@RequestParam(value="nickname", required=false) String nickname, HttpServletResponse response) {
-        response.setHeader("Cache-Control", "no-store");
-        System.out.println("nickname");
-        System.out.println(nickname);
-        System.out.println("기도 많이 할게요");
+    // 인코딩 에러 고침
 
-        // SseEmitter 객체 생성
-        SseEmitter emitter = new SseEmitter();
+    @GetMapping("/subscribe")
+    public ResponseEntity<SseEmitter> subscribe(@RequestParam("nickname")String nickname) {
+        // Authentication을 UserDto로 업캐스팅
 
-        // ExecutorService 객체 생성
-        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+        SseEmitter res = alarmService.subscribe(nickname);
 
-        Long latestAlarm = alarmRepository.findTopByOrderByIdDesc().getId();
-
-        final String finalNickname = nickname;
-
-        // ExecutorService에 작업을 제출하여 비동기적으로 SSE 이벤트 생성 및 전송
-        sseMvcExecutor.execute(() -> {
-            try {
-                while (true) {
-                    // AlarmRepository에서 최근 알림 데이터를 가져옴
-                    Optional<List<Alarm>> alarms = alarmRepository.findByOrderByCreatedAtDesc(finalNickname);
-
-                    // 가져온 알림 데이터를 ResponseAlarmDto로 변환하여 SSE 이벤트로 전송
-                    alarms.ifPresent(alarmList -> {
-                        alarmList.forEach(alarm -> {
-                            try {
-                                ResponseAlarmDto responseAlarmDto = ResponseAlarmDto.builder()
-                                        .alarmId(alarm.getId())
-                                        .latestAlarmId(latestAlarm)
-                                        .memo(alarm.getMemo())
-                                        .checked(alarm.getChecked())
-                                        .category(alarm.getCategory())
-                                        .build();
-
-                                SseEmitter.SseEventBuilder event = SseEmitter.event()
-                                        .data(responseAlarmDto);
-                                emitter.send(event);
-                            } catch (IOException e) {
-                                // 에러가 발생해도 무시하고 다음 시행으로 넘어갑니다.
-                                System.err.println("Error sending SSE event: " + e.getMessage());
-                            }
-                        });
-                    });
-
-                    // SSE 연결 유지
-                    Thread.sleep(5000);
-                }
-            } catch (Exception ex) {
-                // 에러 발생 시 SseEmitter를 종료
-                emitter.completeWithError(ex);
-            }
-        });
-        // 완료된 SseEmitter 객체 반환
-        return emitter;
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    @GetMapping("")
+    public ResponseEntity<ResponseGetAllAlarmsDto> getAllAlarms(@RequestHeader("X-Username") String username) {
+
+        ResponseGetAllAlarmsDto responseGetAllAlarmsDto = alarmService.getAllAlarms(username);
+        if (responseGetAllAlarmsDto == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseGetAllAlarmsDto);
+    }
+
+    @PostMapping("/gemini")
+    public ResponseEntity<?> contractGemini(@RequestHeader("X-Username") String username,
+                                            @RequestBody RequestContractGeminiDto requestContractGeminiDto) {
+
+        String res = alarmService.contractGemini(username, requestContractGeminiDto);
+        if (res == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+
+    @DeleteMapping("/{alarmId}")
+    public ResponseEntity<String> deleteAlarm(@RequestHeader("X-Username") String username, @PathVariable("alarmId") Long alarmId) {
+        try {
+            alarmService.deleteAlarm(username, alarmId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("알람을 찾을 수 없습니다.");
+        }
+    }
+
 }

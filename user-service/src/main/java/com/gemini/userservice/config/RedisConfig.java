@@ -1,5 +1,8 @@
 package com.gemini.userservice.config;
 
+import com.gemini.userservice.entity.Alarm;
+import com.gemini.userservice.entity.AlarmData;
+import com.gemini.userservice.entity.AlarmUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +27,11 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
-        redisStandaloneConfiguration.setPassword(password);
-        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+        RedisStandaloneConfiguration redisConfiguration = new RedisStandaloneConfiguration();
+        redisConfiguration.setHostName(host);
+        redisConfiguration.setPort(port);
+        redisConfiguration.setPassword(password);
+        return new LettuceConnectionFactory(redisConfiguration);
     }
 
     @Bean
@@ -36,5 +41,23 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<Long, AlarmData> redisAlarmDataTemplate() {
+        RedisTemplate<Long, AlarmData> redisAlarmDataTemplate = new RedisTemplate<>();
+        redisAlarmDataTemplate.setConnectionFactory(redisConnectionFactory());
+        redisAlarmDataTemplate.setKeySerializer(new StringRedisSerializer());
+        redisAlarmDataTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        return redisAlarmDataTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<Long, AlarmUser> redisAlarmUserTemplate() {
+        RedisTemplate<Long, AlarmUser> redisAlarmUserTemplate = new RedisTemplate<>();
+        redisAlarmUserTemplate.setConnectionFactory(redisConnectionFactory());
+        redisAlarmUserTemplate.setKeySerializer(new StringRedisSerializer());
+        redisAlarmUserTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        return redisAlarmUserTemplate;
     }
 }

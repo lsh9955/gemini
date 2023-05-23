@@ -23,6 +23,6 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "categoryNo", cascade = CascadeType.ALL)
     private Set<Tag> tags = new HashSet<>();
 }

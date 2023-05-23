@@ -24,8 +24,11 @@ public class AuthApiController {
     private ReissueAccessTokenService reissueAccessTokenService;
 
     @GetMapping("/validate") // test complete 😀
-    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> validateToken(@RequestHeader(value="Authorization", required = false) String token) {
         System.out.println("======================@@@@@@@@@@@token_valate start======================@@@@@");
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         System.out.println(token);
         String tokenWithoutBearer = token.replace("Bearer ", "");
         System.out.println(tokenWithoutBearer);
@@ -34,7 +37,7 @@ public class AuthApiController {
         if (username != null) {
             System.out.println("username != null not null!!!! got username!");
             System.out.println("username: "+ username);
-            return ResponseEntity.ok().header("X-username", username).build();
+            return ResponseEntity.ok().header("X-Username", username).build();
         } else {
             System.out.println("username == null @@@@@@@@@@@@@@@");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
